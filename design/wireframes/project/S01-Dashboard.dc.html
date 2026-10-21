@@ -8,28 +8,32 @@
 <body>
 <x-dc>
 <helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
 <style>
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
-a{color:#2F5D8A}a:hover{color:#1E3F60}
-.muted{color:#5B616B}
-.side{flex:1 1 200px;padding:20px 16px;border-right:1px solid #E4E6EA;background:#FAFAFB;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
-.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#1F2328;text-decoration:none}
-.nav.on{background:#E3EEE6;font-weight:700;color:#24452F}
-.mgr{font-size:11px;color:#5B616B;margin-left:6px}
+body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
+a{color:#5E5B3B}a:hover{color:#3B3A2A}
+h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
+.muted{color:#66624A}
+.side{flex:1 1 200px;padding:20px 16px;background:#5E5B3B;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
+.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#FFF4E6;text-decoration:none}
+.nav.on{background:#FFF4E6;font-weight:600;color:#3B3A2A}
+.nav:hover{color:#FFF4E6;background:rgba(255,244,230,.14)}
+.nav.on:hover{color:#3B3A2A;background:#FFF4E6}
+.mgr{font-size:11px;color:#E8E3C5;margin-left:6px}
 .main{flex:999 1 560px;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px}
-.card{border:1px solid #D9DCE1;border-radius:14px;padding:14px 16px;background:#fff}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #3F6B52;background:#E3EEE6;color:#24452F;font:600 14px system-ui,sans-serif;text-decoration:none}
-.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #9AA0A8;background:#fff;color:#1F2328;font:600 14px system-ui,sans-serif;text-decoration:none}
+.card{border:1px solid #E8E3C5;border-radius:18px;padding:14px 16px;background:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 14px "Work Sans",sans-serif;text-decoration:none}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 14px "Work Sans",sans-serif;text-decoration:none}
 .tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
-.pay{background:#FFF1D6;color:#7A4E00}
-.new{background:#E2ECF7;color:#244A73}
+.pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
+.new{background:#E8E3C5;color:#3B3A2A}
 .h2{margin:0;font-size:18px}
 .sess{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;border:1px solid}
 </style>
 </helmet>
-<div style="display:flex;flex-wrap:wrap;min-height:900px;background:#fff">
+<div style="display:flex;flex-wrap:wrap;min-height:900px;background:#FFF4E6">
   <nav class="side" aria-label="Staff menu">
-    <strong style="font-size:17px;padding:4px 12px 14px">The Village · Staff</strong>
+    <div style="padding:2px 12px 18px"><img src="/_blob/0fd3a25ff08c3b71a6d8552903b84305" alt="the village." style="width:130px;height:auto"><div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E8E3C5;margin-top:4px">Staff</div></div>
     <a class="nav on" href="S01-Dashboard.dc.html">Dashboard</a>
     <a class="nav" href="S02-Calendar.dc.html">Calendar</a>
     <a class="nav" href="S04-Customers.dc.html">Customers</a>
@@ -37,7 +41,7 @@ a{color:#2F5D8A}a:hover{color:#1E3F60}
     <a class="nav" href="S08-Reports.dc.html">Reports<span class="mgr">manager</span></a>
     <a class="nav" href="S09-Staff.dc.html">Staff<span class="mgr">manager</span></a>
     <a class="nav" href="S10-Settings.dc.html">Settings<span class="mgr">manager</span></a>
-    <span class="muted" style="font-size:13px;padding:24px 12px 0">Signed in as Thao (Manager)</span>
+    <span style="font-size:13px;padding:24px 12px 0;color:#E8E3C5">Signed in as Thao (Manager)</span>
   </nav>
   <main class="main">
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
@@ -49,7 +53,7 @@ a{color:#2F5D8A}a:hover{color:#1E3F60}
       </div>
     </div>
     <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
-      <section class="card" style="flex:3 1 420px;border:1.5px solid #3C6B9C;display:flex;flex-direction:column;gap:10px">
+      <section class="card" style="flex:3 1 420px;border:2px solid #FFBEA1;display:flex;flex-direction:column;gap:10px">
         <div style="display:flex;justify-content:space-between;align-items:baseline">
           <h2 class="h2">Call to confirm</h2><span class="muted" style="font-size:14px">3 to call · also emailed to managers</span>
         </div>
@@ -71,10 +75,10 @@ a{color:#2F5D8A}a:hover{color:#1E3F60}
       </section>
       <section class="card" style="flex:2 1 300px;display:flex;flex-direction:column;gap:10px">
         <h2 class="h2">Today</h2>
-        <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#3F6B52;background:#F1F7F3;text-decoration:none;color:#1F2328"><strong style="width:48px">09:00</strong><span style="flex:1">Pilates Flow · Mai<br><span class="muted" style="font-size:13px">8/10 · 2 pay on the day</span></span></a>
-        <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#B8643A;background:#FDF3EC;text-decoration:none;color:#1F2328"><strong style="width:48px">10:30</strong><span style="flex:1">Open Play<br><span class="muted" style="font-size:13px">5/10 children</span></span></a>
-        <a class="sess" href="S03-SessionEditor.dc.html" style="border-color:#3C6B9C;background:#EEF4FB;text-decoration:none;color:#1F2328"><strong style="width:48px">13:00</strong><span style="flex:1">Private hire · Birthday party<br><span class="muted" style="font-size:13px">2 hours · Nguyen family</span></span></a>
-        <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#3F6B52;background:#F1F7F3;text-decoration:none;color:#1F2328"><strong style="width:48px">17:30</strong><span style="flex:1">Strength · Anna<br><span class="muted" style="font-size:13px">10/10 · full</span></span></a>
+        <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#5E5B3B;background:#EEEAD3;text-decoration:none;color:#3B3A2A"><strong style="width:48px">09:00</strong><span style="flex:1">Pilates Flow · Mai<br><span class="muted" style="font-size:13px">8/10 · 2 pay on the day</span></span></a>
+        <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#E88D6D;background:#FFE3D6;text-decoration:none;color:#3B3A2A"><strong style="width:48px">10:30</strong><span style="flex:1">Open Play<br><span class="muted" style="font-size:13px">5/10 children</span></span></a>
+        <a class="sess" href="S03-SessionEditor.dc.html" style="border-color:#868259;background:#F3EFDC;text-decoration:none;color:#3B3A2A"><strong style="width:48px">13:00</strong><span style="flex:1">Private hire · Birthday party<br><span class="muted" style="font-size:13px">2 hours · Nguyen family</span></span></a>
+        <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#5E5B3B;background:#EEEAD3;text-decoration:none;color:#3B3A2A"><strong style="width:48px">17:30</strong><span style="flex:1">Strength · Anna<br><span class="muted" style="font-size:13px">10/10 · full</span></span></a>
       </section>
     </div>
   </main>

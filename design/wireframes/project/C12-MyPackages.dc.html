@@ -8,28 +8,30 @@
 <body>
 <x-dc>
 <helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
 <style>
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
-a{color:#2F5D8A}a:hover{color:#1E3F60}
-.muted{color:#5B616B}
+body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
+a{color:#5E5B3B}a:hover{color:#3B3A2A}
+h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
+.muted{color:#66624A}
 .tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
 .later{background:#ECE6F5;color:#4B3A80}
 .todo{background:#FFF1D6;color:#7A4E00}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 8px 0 16px;border-bottom:1px solid #E4E6EA}
-.lang{font-size:13px;color:#5B616B}
-.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#1F2328}
-.card{border:1px solid #D9DCE1;border-radius:14px;padding:14px;background:#fff}
+.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 8px 0 16px;border-bottom:1px solid #E8E3C5}
+.lang{font-size:13px;color:#66624A}
+.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#3B3A2A}
+.card{border:1px solid #E8E3C5;border-radius:18px;padding:14px;background:#fff}
 .big{font-size:40px;font-weight:700;line-height:1}
-.bar{height:8px;border-radius:4px;background:#EEF0F2;display:flex;overflow:hidden;margin:10px 0 8px}
-.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:#5B616B;text-decoration:none}
-.tab.on{color:#24452F;font-weight:700;box-shadow:inset 0 3px 0 #3F6B52}
+.bar{height:8px;border-radius:4px;background:#EFE9D6;display:flex;overflow:hidden;margin:10px 0 8px}
+.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:#66624A;text-decoration:none}
+.tab.on{color:#3B3A2A;font-weight:700;box-shadow:inset 0 3px 0 #E88D6D}
 </style>
 </helmet>
-<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#fff">
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
   <div class="hdr">
-    <strong style="font-size:17px">The Village</strong>
+    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:32px;width:auto">
     <div style="display:flex;align-items:center;gap:4px">
-      <span class="lang"><strong style="color:#1F2328">EN</strong> · VI</span>
+      <span class="lang"><strong style="color:#3B3A2A">EN</strong> · VI</span>
       <a class="iconbtn" href="C14-Menu.dc.html" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></a>
     </div>
   </div>
@@ -38,28 +40,28 @@ a{color:#2F5D8A}a:hover{color:#1E3F60}
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:baseline"><strong>10-class pack</strong><span class="muted" style="font-size:13px">Classes</span></div>
       <div style="display:flex;align-items:baseline;gap:8px;margin-top:10px"><span class="big">6</span><span style="font-size:15px">credits free</span></div>
-      <div class="bar" aria-hidden="true"><span style="width:20%;background:#3F6B52"></span><span style="width:20%;background:#A9C7B3"></span></div>
-      <div class="muted" style="font-size:14px">2 used · 2 reserved by bookings · Expires <strong style="color:#1F2328">15 Jan 2027</strong></div>
+      <div class="bar" aria-hidden="true"><span style="width:20%;background:#5E5B3B"></span><span style="width:20%;background:#C3BF94"></span></div>
+      <div class="muted" style="font-size:14px">2 used · 2 reserved by bookings · Expires <strong style="color:#3B3A2A">15 Jan 2027</strong></div>
     </div>
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:baseline"><strong>10 open play pack</strong><span class="muted" style="font-size:13px">Open play</span></div>
       <div style="display:flex;align-items:baseline;gap:8px;margin-top:10px"><span class="big">6</span><span style="font-size:15px">credits free</span></div>
-      <div class="bar" aria-hidden="true"><span style="width:20%;background:#3F6B52"></span><span style="width:20%;background:#A9C7B3"></span></div>
+      <div class="bar" aria-hidden="true"><span style="width:20%;background:#5E5B3B"></span><span style="width:20%;background:#C3BF94"></span></div>
       <div class="muted" style="font-size:14px">2 used · 2 reserved · Expires 30 Dec 2026</div>
     </div>
-    <div class="card" style="background:#FAFAFB">
+    <div class="card" style="background:#FBF7EF">
       <div style="display:flex;justify-content:space-between;align-items:center"><strong>Intro pack · 3 classes</strong><span class="tag later">Paused</span></div>
       <div class="muted" style="font-size:14px;margin-top:6px">1 credit free · Paused 7 days (travel) · New expiry 9 Dec 2026</div>
       <span class="tag later" style="margin-top:6px">Pausing: +2 weeks release</span>
     </div>
-    <div style="padding:14px;border-radius:14px;background:#F6F9F7;font-size:14px;line-height:1.5">
+    <div style="padding:14px;border-radius:14px;background:#E8E3C5;font-size:14px;line-height:1.5">
       <strong>Buy a pack at the studio</strong><br>
       Pay by QR, transfer or cash and we add it straight away.<br>
       <span class="muted">10 classes [PRICE] · 20 classes [PRICE] · 10 open play [PRICE]</span>
       <span class="tag todo" style="margin-top:6px">Pack prices to come</span>
     </div>
   </div>
-  <nav style="display:flex;border-top:1px solid #E4E6EA;height:64px">
+  <nav style="display:flex;border-top:1px solid #E8E3C5;height:64px">
     <a class="tab" href="C04-Timetable.dc.html">Classes</a>
     <a class="tab" href="C10-MyBookings.dc.html">Bookings</a>
     <a class="tab on" href="C12-MyPackages.dc.html">Packages</a>

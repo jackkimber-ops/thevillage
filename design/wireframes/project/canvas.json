@@ -4,7 +4,7 @@
 "v": 1,
 "at": "2026-10-21T14:30:00Z"
 },
-"title": "The Village wireframes",
+"title": "The Village designs",
 "launch": {
 "view": "canvas"
 },
@@ -320,7 +320,7 @@
 "w": 420,
 "size": "m",
 "fill": "gray",
-"text": "WIREFRAMES, NOT THE FINAL LOOK\n\nLayout and content only. Colours, logo and session pictures come in the visual design step.\n\nAmber tag = waiting on you (prices, hours, wording).\nPurple tag = +2 weeks release.\n\nNames, times and numbers are examples.",
+"text": "DESIGNS v2 · IN THE VILLAGE BRAND (21 OCT)\n\nAll screens now use your colours, fonts and logo.\n\nAmber tag = waiting on you (prices, hours, wording).\nPurple tag = +2 weeks release.\n\nNames, times and numbers are examples. Session pictures are placeholders until the illustrations are ready.",
 "maxH": 560
 },
 "tB": {
@@ -409,7 +409,7 @@
 "w": 440,
 "size": "m",
 "fill": "green",
-"text": "VISUAL STYLE v1\n\nBuilt from your brand pack: Lexend Deca + Work Sans, forrest / sage / sky / coral / rose / linen, and your logos.\n\nThe brand colours are too light for small text, so text and buttons use slightly deeper shades of forrest and coral (see the style sheet).\n\nOnce you're happy with this look, we apply it to every screen.",
+"text": "VISUAL STYLE v1 · APPROVED 21 OCT\n\nThese boards set the look. It is now applied to every screen above.\n\nBuilt from your brand pack: Lexend Deca + Work Sans, forrest / sage / sky / coral / rose / linen, and your logos. Text and buttons use slightly deeper shades of forrest and coral so they're easy to read.",
 "maxH": 700
 },
 "nH": {
