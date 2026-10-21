@@ -360,8 +360,8 @@
 "y": 3788,
 "w": 420,
 "size": "m",
-"fill": "orange",
-"text": "QUESTION FOR YOU\n\nWhen staff drag a session to a new time on the calendar, should the bookings move with it and everyone booked get an email?\n\nOur suggestion: yes. A move that would overlap another session is blocked.",
+"fill": "green",
+"text": "ANSWERED 21 OCT\n\nWhen staff drag a session to a new time, the bookings move with it and everyone booked gets an email. A move that would overlap another session is blocked.",
 "maxH": 520
 },
 "tE": {
