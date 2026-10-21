@@ -8,10 +8,10 @@ Until you answer, the designs use clearly marked placeholders and the default sh
 1. **Design sign-off date** (the doc's only "Decide" row). 14 Nov is 24 days away, and coding can't start until you sign off the designs.
    **Agreed 21 Oct: sign off by Tue 28 Oct.** The 53–85 hour estimate assumed reusing an existing app; a from-scratch build takes longer, so any slip here pushes the customer site to after the pilot (the doc's fallback).
 2. **GitHub.** Repo is `jackkimber-ops/thevillage` (21 Oct). Claude has push access (21 Oct). Done.
-3. **Opening hours.** These also set when private hire can be booked.
+3. **Opening hours.** Answered 21 Oct: **every day 8:30–17:00** (owners are changing Google Maps from 19:00 to 17:00). Private hire fits inside these hours.
 4. **Pack prices and validity.** Class packs and open play packs of 10, 20, 40 and 60, how long each is valid, and how long the intro pack is valid.
 5. **Staff accounts.** Names and emails of the 2 managers and the first instructors.
-6. **Studio details.** Google Maps link received 21 Oct: https://maps.app.goo.gl/shhU5KCEVMMrX4cd8 (used for the website's "Find us on Google Maps" button). Still needed: the address written out, studio WhatsApp and Zalo numbers, Messenger link, Facebook and Instagram pages, and the address emails come from (e.g. `hello@thevillagesaigon.com`).
+6. **Studio details.** Google Maps link received 21 Oct: https://maps.app.goo.gl/shhU5KCEVMMrX4cd8 (used for the website's "Find us on Google Maps" button). Address (21 Oct): **47/1 Quốc Hương, An Khánh, Hồ Chí Minh 700000**. Phone on Google: **+84 933 834 068**. Still needed: is that number also the studio's WhatsApp and Zalo? Plus studio WhatsApp and Zalo numbers, Messenger link, Facebook and Instagram pages, and the address emails come from (e.g. `hello@thevillagesaigon.com`).
 
 ## B. Things in the docs that don't line up
 

@@ -26,7 +26,7 @@ h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-s
 .seg button{min-height:38px;padding:0 16px;border:0;background:#fff;font:500 14px "Work Sans",sans-serif;color:#3B3A2A}
 .seg .on{background:#5E5B3B;color:#FFF4E6}
 .iconbtn{width:40px;height:40px;border:1px solid #E8E3C5;border-radius:20px;background:#fff;display:inline-flex;align-items:center;justify-content:center;color:#3B3A2A}
-.col{position:relative;border-left:1px solid #EFE9D6;height:616px}
+.col{position:relative;border-left:1px solid #EFE9D6;height:504px}
 .ev{position:absolute;left:4px;right:4px;border-radius:8px;border:1.5px solid;padding:4px 6px;font-size:12px;line-height:1.3;overflow:hidden;box-sizing:border-box;cursor:grab}
 .lg{display:inline-flex;align-items:center;gap:6px;font-size:13px}
 .sw{width:14px;height:14px;border-radius:4px;border:1.5px solid}
@@ -70,7 +70,7 @@ h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-s
           <sc-for list="{{days}}" as="d" hint-placeholder-count="7"><span style="padding:8px 6px">{{d.label}}</span></sc-for>
         </div>
         <div style="display:grid;grid-template-columns:56px repeat(7,minmax(0,1fr))">
-          <div style="position:relative;height:616px">
+          <div style="position:relative;height:504px">
             <sc-for list="{{hours}}" as="h" hint-placeholder-count="11"><span class="muted" style="{{h.style}}">{{h.label}}</span></sc-for>
           </div>
           <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
@@ -93,16 +93,16 @@ class Component extends DCLogic {
     const C = { c: 'background:#C3BF94;border-color:#5E5B3B', o: 'background:#FFBEA1;border-color:#E88D6D', p: 'background:#E8E3C5;border-color:#868259', w: 'background:#E88D6D;border-color:#A44A2C', x: 'background:repeating-linear-gradient(135deg,#FBF7EF 0 8px,#EFE9D6 8px 16px);border-color:#C3BF94' };
     const ev = (k, start, len, t, sub) => ({ t, sub, style: C[k] + ';top:' + ((start - 8) * 56) + 'px;height:' + (len * 56 - 4) + 'px' });
     const days = [
-      { label: 'Mon 2', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 8/10'), ev('o', 10.5, 1.5, '10:30 Open Play', '5/10 children'), ev('p', 13, 2, '13:00 Private hire', 'Birthday · 2 h'), ev('c', 17.5, 1, '17:30 Strength', 'Anna · 10/10')] },
-      { label: 'Tue 3', items: [ev('c', 9.5, 1, '9:30 Mum & Baby Yoga', 'Mai · 3/10'), ev('c', 18, 1, '18:00 Dance Fit', 'Thu · 8/10')] },
+      { label: 'Mon 2', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 8/10'), ev('o', 10.5, 1.5, '10:30 Open Play', '5/10 children'), ev('p', 13, 2, '13:00 Private hire', 'Birthday · 2 h'), ev('c', 15.5, 1, '15:30 Strength', 'Anna · 10/10')] },
+      { label: 'Tue 3', items: [ev('c', 9.5, 1, '9:30 Mum & Baby Yoga', 'Mai · 3/10'), ev('c', 16, 1, '16:00 Dance Fit', 'Thu · 8/10')] },
       { label: 'Wed 4', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 6/10'), ev('o', 10.5, 1.5, '10:30 Open Play', '7/10 children')] },
       { label: 'Thu 5', items: [ev('c', 9.5, 1, '9:30 Mum & Baby Yoga', 'Mai · 5/10'), ev('w', 14, 2, '14:00 Sleep talk', 'Workshop · 12/20')] },
-      { label: 'Fri 6', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 4/10'), ev('c', 17.5, 1, '17:30 Strength', 'Anna · 6/10')] },
+      { label: 'Fri 6', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 4/10'), ev('c', 15.5, 1, '15:30 Strength', 'Anna · 6/10')] },
       { label: 'Sat 7', items: [ev('o', 9, 1.5, '9:00 Open Play', '9/10 children'), ev('p', 14, 2, '14:00 Private hire', 'Group · 2 h')] },
-      { label: 'Sun 8', items: [ev('x', 8, 11, 'Closed', '[OPENING HOURS TBC]')] }
+      { label: 'Sun 8', items: [ev('o', 9, 1.5, '9:00 Open Play', '6/10 children'), ev('c', 11, 1, '11:00 Family Yoga', 'Mai · 7/10')] }
     ];
     const hours = [];
-    for (let h = 8; h < 19; h++) hours.push({ label: h + ':00', style: 'position:absolute;right:8px;font-size:11px;top:' + ((h - 8) * 56 + 2) + 'px' });
+    for (let h = 8; h < 17; h++) hours.push({ label: h + ':00', style: 'position:absolute;right:8px;font-size:11px;top:' + ((h - 8) * 56 + 2) + 'px' });
     return { days, hours };
   }
 }
