@@ -9,7 +9,7 @@ Until you answer, the designs use clearly marked placeholders and the default sh
    **Agreed 21 Oct: sign off by Tue 28 Oct.** The 53–85 hour estimate assumed reusing an existing app; a from-scratch build takes longer, so any slip here pushes the customer site to after the pilot (the doc's fallback).
 2. **GitHub.** Repo is `jackkimber-ops/thevillage` (21 Oct). Claude has push access (21 Oct). Done.
 3. **Opening hours.** Answered 21 Oct: **every day 8:30–17:00** (owners are changing Google Maps from 19:00 to 17:00). Private hire fits inside these hours.
-4. **Pack prices and validity.** Class packs and open play packs of 10, 20, 40 and 60, how long each is valid, and how long the intro pack is valid.
+4. **Pack prices and validity.** Decided 21 Oct: drop-in 450,000; 10 classes 4,000,000; 20 classes 7,200,000 (10% off); intro 3 for 750,000. **Still open:** 40 and 60 class packs (or drop them for now?), open play pack prices, how long each pack is valid, and whether the open play drop-in stays at 150,000 per child. Parked: the "arrive at 8:30, stay after class" free-play extra.
 5. **Staff accounts.** Names and emails of the 2 managers and the first instructors.
 6. **Studio details.** Google Maps link received 21 Oct: https://maps.app.goo.gl/shhU5KCEVMMrX4cd8 (used for the website's "Find us on Google Maps" button). Address (21 Oct): **47/1 Quốc Hương, An Khánh, Hồ Chí Minh 700000**. Phone on Google: **+84 933 834 068**. WhatsApp and Zalo: use **+84 933 834 068** for now (owners, 21 Oct); it changes to a business number once the company is registered. Still needed: studio WhatsApp and Zalo numbers, Messenger link, Facebook and Instagram pages, and the address emails come from (e.g. `hello@thevillagesaigon.com`).
 
