@@ -9,7 +9,7 @@ Until you answer, the designs use clearly marked placeholders and the default sh
    **Agreed 21 Oct: sign off by Tue 28 Oct.** The 53–85 hour estimate assumed reusing an existing app; a from-scratch build takes longer, so any slip here pushes the customer site to after the pilot (the doc's fallback).
 2. **GitHub.** Repo is `jackkimber-ops/thevillage` (21 Oct). Claude has push access (21 Oct). Done.
 3. **Opening hours.** Answered 21 Oct: **every day 8:30–17:00** (owners are changing Google Maps from 19:00 to 17:00). Private hire fits inside these hours.
-4. **Pack prices and validity.** Decided 21 Oct: drop-in 450,000; 10 classes 4,000,000; 20 classes 7,200,000 (10% off); intro 3 for 750,000. Decided 21 Oct (2): 10-class pack valid **3 months**, 20-class pack **7 months**; open play stays **150,000 per child**, paid on the day. 40/60 packs and open play packs **undecided, not on sale at launch** (they can be added in the catalog later). **Still open:** how long the intro pack lasts, and whether to run an opening promo (e.g. 10 + 1 free). Parked: the "arrive at 8:30, stay after class" free-play extra.
+4. **Pack prices and validity.** Decided 21 Oct: drop-in 450,000; 10 classes 4,000,000; 20 classes 7,200,000 (10% off); intro 3 for 750,000. Decided 21 Oct (2): 10-class pack valid **3 months**, 20-class pack **7 months**; open play stays **150,000 per child**, paid on the day. 40/60 packs and open play packs **undecided, not on sale at launch** (they can be added in the catalog later). Decided 21 Oct (3): intro pack valid **3 weeks**; **no promotion in the app** (opening weekend free class is handled at the door). Pricing is now complete for launch. Parked: the "arrive at 8:30, stay after class" free-play extra.
 5. **Staff accounts.** Names and emails of the 2 managers and the first instructors.
 6. **Studio details.** Google Maps link received 21 Oct: https://maps.app.goo.gl/shhU5KCEVMMrX4cd8 (used for the website's "Find us on Google Maps" button). Address (21 Oct): **47/1 Quốc Hương, An Khánh, Hồ Chí Minh 700000**. Phone on Google: **+84 933 834 068**. WhatsApp and Zalo: use **+84 933 834 068** for now (owners, 21 Oct); it changes to a business number once the company is registered. Still needed: studio WhatsApp and Zalo numbers, Messenger link, Facebook and Instagram pages, and the address emails come from (e.g. `hello@thevillagesaigon.com`).
 
@@ -43,6 +43,10 @@ The requirements win on *what* to build, so I'll follow the answer in **bold** u
 2. Please add SVGs of the full-colour wordmark and the badges. Only the one-colour wordmark SVGs are in the Drive folder.
 3. The brand guide's sample paragraph is template filler ("Rimberio Coffee…"). Worth replacing before it's shared.
 4. OK to use slightly deeper shades of forrest and coral for small text and buttons? The originals are too light to read at small sizes.
+
+## Ideas noted for later
+
+- **Holiday freeze (owners, 21 Oct):** many expat families are away at Christmas and in summer, so members will want to freeze their pack. Pausing one customer's pack (M2) is already in the +2 weeks release; a studio-wide or self-service freeze can come after. Not needed now.
 
 ## D. Owner tasks still open (from the requirements doc)
 
