@@ -19,7 +19,7 @@
 - At build start: branch protection on `main`, pull-request checks and Dependabot (needs repo admin settings).
 
 ## Waiting on the owners
-- Remaining prices (40/60 packs, open play packs) and how long packs are valid; staff names and emails, and whether +84 933 834 068 is the studio's WhatsApp and Zalo number. (Address and opening hours received 21 Oct.)
+- Intro pack validity and any opening promo; staff names and emails, and whether +84 933 834 068 is the studio's WhatsApp and Zalo number. (Address and opening hours received 21 Oct.)
 - Answers to sections B and C in `docs/open-questions.md`.
 - Brand questions in `design/brand/README.md`: which colour values are the master, and SVGs of the full-colour wordmark and badges.
 

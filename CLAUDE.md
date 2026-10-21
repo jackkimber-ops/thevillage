@@ -67,7 +67,7 @@ Database also enforces: unique active booking per (session, customer); customers
 - Book up to **1 month** ahead, up to **1 hour** before start. Staff can override both, never capacity.
 - Expired pack can't be used; staff can extend.
 - Private hire: 1 or 2 h, in open hours, ≥ 24 h notice, priced and paid in person; arranged on WhatsApp/Zalo, staff add it to the calendar.
-- Prices (updated 21 Oct): single class / drop-in **450,000 VND** (was 400,000; higher on purpose to encourage packs); 10-class pack **4,000,000** (400,000/class); 20-class pack **7,200,000** (10% off, 360,000/class); intro pack 3 classes 750,000 (new customers only, sold by a manager); open play 150,000 per child. **TBC:** 40/60 packs, open play packs, validity of every pack. All prices live in the catalog, never in code.
+- Prices (updated 21 Oct): single class / drop-in **450,000 VND** (was 400,000; higher on purpose to encourage packs); 10-class pack **4,000,000** (400,000/class); 20-class pack **7,200,000** (10% off, 360,000/class); intro pack 3 classes 750,000 (new customers only, sold by a manager); open play 150,000 per child, paid on the day (no open play packs at launch). Validity: 10-class pack **3 months**, 20-class pack **7 months** (calendar months from the valid-from date). **TBC:** intro pack validity; 40/60 packs and open play packs are undecided and not on sale. All prices live in the catalog, never in code.
 - No online payment. Payment by QR at check-in (cash/transfer also recorded). Managers only record payments.
 - Unpaid late cancellation: no fee at launch; no screen says "full price due".
 - Multi-date booking = pick dates one by one; nothing repeats automatically (no recurring series).
