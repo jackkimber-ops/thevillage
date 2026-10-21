@@ -72,7 +72,7 @@ Database also enforces: unique active booking per (session, customer); customers
 - Unpaid late cancellation: no fee at launch; no screen says "full price due".
 - Multi-date booking = pick dates one by one; nothing repeats automatically (no recurring series).
 - Reminder emails at 18:00 the day before.
-- Studio: 47/1 Quốc Hương, An Khánh, Hồ Chí Minh. Open every day 8:30–17:00 (goes in `studio_settings`, not code).
+- Studio: 47/1 Quốc Hương, An Khánh, Hồ Chí Minh. Open every day 8:30–17:00. Contact/WhatsApp/Zalo for now: +84 933 834 068 (temporary until the business is registered). All of these go in `studio_settings`, never in code.
 
 ## Roles
 

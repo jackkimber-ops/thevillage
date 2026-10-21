@@ -11,7 +11,7 @@ Until you answer, the designs use clearly marked placeholders and the default sh
 3. **Opening hours.** Answered 21 Oct: **every day 8:30–17:00** (owners are changing Google Maps from 19:00 to 17:00). Private hire fits inside these hours.
 4. **Pack prices and validity.** Class packs and open play packs of 10, 20, 40 and 60, how long each is valid, and how long the intro pack is valid.
 5. **Staff accounts.** Names and emails of the 2 managers and the first instructors.
-6. **Studio details.** Google Maps link received 21 Oct: https://maps.app.goo.gl/shhU5KCEVMMrX4cd8 (used for the website's "Find us on Google Maps" button). Address (21 Oct): **47/1 Quốc Hương, An Khánh, Hồ Chí Minh 700000**. Phone on Google: **+84 933 834 068**. Still needed: is that number also the studio's WhatsApp and Zalo? Plus studio WhatsApp and Zalo numbers, Messenger link, Facebook and Instagram pages, and the address emails come from (e.g. `hello@thevillagesaigon.com`).
+6. **Studio details.** Google Maps link received 21 Oct: https://maps.app.goo.gl/shhU5KCEVMMrX4cd8 (used for the website's "Find us on Google Maps" button). Address (21 Oct): **47/1 Quốc Hương, An Khánh, Hồ Chí Minh 700000**. Phone on Google: **+84 933 834 068**. WhatsApp and Zalo: use **+84 933 834 068** for now (owners, 21 Oct); it changes to a business number once the company is registered. Still needed: studio WhatsApp and Zalo numbers, Messenger link, Facebook and Instagram pages, and the address emails come from (e.g. `hello@thevillagesaigon.com`).
 
 ## B. Things in the docs that don't line up
 
@@ -52,7 +52,7 @@ The requirements win on *what* to build, so I'll follow the answer in **bold** u
 - [ ] Privacy policy (B1) and cancellation policy (B2) in English and Vietnamese, before the pilot
 - [ ] Class illustrations (C28) and website photos (placeholders until then)
 - [ ] Logo and colours (version 1 stays simple and pastel)
-- [ ] Are the company registration papers ready for Meta and Zalo verification? Apply now
+- [ ] Register the business. Meta (WhatsApp) and Zalo verification need the registration papers, so **WhatsApp/Zalo login codes (C30) wait until then; email codes cover opening day.** Not registered yet (21 Oct)
 - [ ] Google Business Profile (W2): start as soon as the address is final
 - [ ] Vote Yes / No / Not sure on the Ideas for later (not urgent)
 
