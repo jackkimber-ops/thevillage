@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Today, instructor phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.muted{color:#5B616B}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.pay{background:#FFF1D6;color:#7A4E00}
+.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E4E6EA}
+.sess{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;border:1.5px solid;text-decoration:none;color:#1F2328}
+.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:#5B616B;text-decoration:none}
+.tab.on{color:#24452F;font-weight:700;box-shadow:inset 0 3px 0 #3F6B52}
+.day{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#5B616B;margin:8px 0 0}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#fff">
+  <div class="hdr">
+    <strong style="font-size:17px">The Village · Staff</strong>
+    <span class="muted" style="font-size:13px">Mai</span>
+  </div>
+  <div style="flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+    <h1 style="margin:0;font-size:24px">My sessions</h1>
+    <p class="day">Today · Mon 2 Nov</p>
+    <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#3F6B52;background:#F1F7F3">
+      <strong style="width:48px">9:00</strong>
+      <span style="flex:1">Pilates Flow<br><span class="muted" style="font-size:13.5px">8 of 10 · 2 pay on the day</span></span>
+      <span aria-hidden="true">›</span>
+    </a>
+    <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#B8643A;background:#FDF3EC">
+      <strong style="width:48px">10:30</strong>
+      <span style="flex:1">Open Play <span class="muted" style="font-size:13px">(covering)</span><br><span class="muted" style="font-size:13.5px">5 of 10 children</span></span>
+      <span aria-hidden="true">›</span>
+    </a>
+    <p class="day">Tomorrow · Tue 3 Nov</p>
+    <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#3F6B52;background:#F1F7F3">
+      <strong style="width:48px">9:30</strong>
+      <span style="flex:1">Mum &amp; Baby Yoga<br><span class="muted" style="font-size:13.5px">3 of 10</span></span>
+      <span aria-hidden="true">›</span>
+    </a>
+    <p class="day">Wed 4 Nov</p>
+    <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#3F6B52;background:#F1F7F3">
+      <strong style="width:48px">9:00</strong>
+      <span style="flex:1">Pilates Flow<br><span class="muted" style="font-size:13.5px">6 of 10</span></span>
+      <span aria-hidden="true">›</span>
+    </a>
+    <p class="muted" style="margin:6px 0 0;font-size:13px">A manager who also teaches sees this same list for their own classes.</p>
+  </div>
+  <nav style="display:flex;border-top:1px solid #E4E6EA;height:64px">
+    <a class="tab on" href="S11-Today.dc.html">My sessions</a>
+    <a class="tab" href="S02-Calendar.dc.html">Calendar</a>
+    <a class="tab" href="S04-Customers.dc.html">Customers</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

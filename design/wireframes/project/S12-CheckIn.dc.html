@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Check-in list</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.muted{color:#5B616B}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.pay{background:#FFF1D6;color:#7A4E00}
+.new{background:#E2ECF7;color:#244A73}
+.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E4E6EA}
+.p{border:1px solid #D9DCE1;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.a{min-height:40px;border-radius:12px;border:1.5px solid #9AA0A8;background:#fff;font:600 13.5px system-ui,sans-serif;color:#1F2328}
+.a.on{border-color:#3F6B52;background:#E3EEE6;color:#24452F}
+.btn2{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:22px;border:1.5px solid #9AA0A8;background:#fff;color:#1F2328;font:600 15px system-ui,sans-serif;text-decoration:none}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#fff">
+  <div class="hdr">
+    <a href="S11-Today.dc.html" style="font-size:15px;text-decoration:none">← My sessions</a>
+    <span class="muted" style="font-size:13px">Mai</span>
+  </div>
+  <div style="flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+    <div>
+      <h1 style="margin:0;font-size:22px">Pilates Flow · 9:00</h1>
+      <div class="muted" style="font-size:14px">Mon 2 Nov · 8 of 10 · 3 here</div>
+    </div>
+    <sc-for list="{{people}}" as="p" hint-placeholder-count="4">
+      <div class="p">
+        <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+          <div><strong>{{p.name}}</strong><br><span class="muted" style="font-size:13.5px">{{p.kids}}</span></div>
+          <sc-if value="{{p.tag}}" hint-placeholder-val="{{false}}"><span class="tag {{p.cls}}">{{p.tag}}</span></sc-if>
+        </div>
+        <div class="acts">
+          <button type="button" class="{{p.c1}}">Here</button>
+          <button type="button" class="a">No-show</button>
+          <button type="button" class="a">Late cancel</button>
+        </div>
+      </div>
+    </sc-for>
+    <span class="muted" style="font-size:13px">+ 4 more. Anyone not marked is set to attended automatically after the class.</span>
+    <a class="btn2" href="S13-BookCustomer.dc.html" style="margin-top:auto">+ Book someone in</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const p = (name, kids, here, tag, cls) => ({ name, kids, c1: here ? 'a on' : 'a', tag: tag || '', cls: cls || '' });
+    return {
+      people: [
+        p('Phuong Nguyen', 'Bao · 9 months', true),
+        p('Linh Tran', 'Bao · 8 months', true, 'Pay on the day · new', 'pay'),
+        p('Hoa Le', 'Minh · 11 months', true, 'Free trial', 'new'),
+        p('Emma Brown', 'No child details', false, 'Pay on the day', 'pay')
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

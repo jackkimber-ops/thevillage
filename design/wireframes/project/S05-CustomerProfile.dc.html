@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Customer profile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.muted{color:#5B616B}
+.side{flex:1 1 200px;padding:20px 16px;border-right:1px solid #E4E6EA;background:#FAFAFB;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
+.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#1F2328;text-decoration:none}
+.nav.on{background:#E3EEE6;font-weight:700;color:#24452F}
+.mgr{font-size:11px;color:#5B616B;margin-left:6px}
+.main{flex:999 1 560px;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px}
+.card{border:1px solid #D9DCE1;border-radius:14px;padding:14px 16px;background:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:19px;border:1.5px solid #3F6B52;background:#E3EEE6;color:#24452F;font:600 14px system-ui,sans-serif;text-decoration:none}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:19px;border:1.5px solid #9AA0A8;background:#fff;color:#1F2328;font:600 14px system-ui,sans-serif;text-decoration:none}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.later{background:#ECE6F5;color:#4B3A80}
+.ok{background:#E3EEE6;color:#24452F}
+.pay{background:#FFF1D6;color:#7A4E00}
+.h2{margin:0 0 8px;font-size:16px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #EEF0F2;font-size:14px;flex-wrap:wrap}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{text-align:left;font-size:12px;color:#5B616B;font-weight:600;padding:6px 8px;border-bottom:1px solid #D9DCE1}
+td{padding:7px 8px;border-bottom:1px solid #EEF0F2}
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;min-height:900px;background:#fff">
+  <nav class="side" aria-label="Staff menu">
+    <strong style="font-size:17px;padding:4px 12px 14px">The Village · Staff</strong>
+    <a class="nav" href="S01-Dashboard.dc.html">Dashboard</a>
+    <a class="nav" href="S02-Calendar.dc.html">Calendar</a>
+    <a class="nav on" href="S04-Customers.dc.html">Customers</a>
+    <a class="nav" href="S07-Catalog.dc.html">Catalog<span class="mgr">manager</span></a>
+    <a class="nav" href="S08-Reports.dc.html">Reports<span class="mgr">manager</span></a>
+    <a class="nav" href="S09-Staff.dc.html">Staff<span class="mgr">manager</span></a>
+    <a class="nav" href="S10-Settings.dc.html">Settings<span class="mgr">manager</span></a>
+    <span class="muted" style="font-size:13px;padding:24px 12px 0">Signed in as Thao (Manager)</span>
+  </nav>
+  <main class="main">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+      <div>
+        <a href="S04-Customers.dc.html" style="font-size:14px">← Customers</a>
+        <h1 style="margin:4px 0 2px;font-size:26px">Phuong Nguyen</h1>
+        <div class="muted" style="font-size:14px">+84 90 555 1234 <span class="tag ok">verified</span> · phuong@example.com · English · customer since 26 Oct</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <a class="btn" href="S13-BookCustomer.dc.html">Book in</a>
+        <a class="btn2" href="S06-SellPack.dc.html">Sell a pack</a>
+        <button class="btn2" type="button">Give free trial</button>
+        <button class="btn2" type="button">Edit details</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+      <div style="flex:1 1 320px;display:flex;flex-direction:column;gap:16px">
+        <section class="card">
+          <h2 class="h2">Packs</h2>
+          <div class="row"><span><strong>10-class pack</strong><br><span class="muted">6 free · 2 reserved · 2 used · expires 15 Jan 2027</span></span><span style="display:flex;gap:6px"><button class="btn2" type="button">Extend</button><button class="btn2" type="button">Pause <span class="tag later" style="margin-left:4px">+2 wks</span></button></span></div>
+          <div class="row"><span><strong>10 open play pack</strong><br><span class="muted">6 free · 2 reserved · expires 30 Dec 2026</span></span><button class="btn2" type="button">Extend</button></div>
+          <button class="btn2" type="button" style="margin-top:10px">+ Bonus credits (with a reason)</button>
+        </section>
+        <section class="card">
+          <h2 class="h2">Children</h2>
+          <div class="row"><span>Bao · born Jan 2026 (9 months)</span><a href="S05-CustomerProfile.dc.html">Edit</a></div>
+          <div class="row"><span>Mi · born Oct 2023 (3 years)</span><a href="S05-CustomerProfile.dc.html">Edit</a></div>
+          <a href="S05-CustomerProfile.dc.html" style="font-size:14px;display:inline-block;padding-top:8px">+ Add a child</a>
+        </section>
+        <section class="card" style="font-size:14px;display:flex;flex-direction:column;gap:8px">
+          <button class="btn2" type="button">Sign out on all devices</button>
+          <button class="btn2" type="button">Deactivate customer</button>
+          <button class="btn2" type="button">Delete personal data (keeps money records) <span class="tag later" style="margin-left:6px">+2 wks</span></button>
+        </section>
+      </div>
+      <div style="flex:2 1 440px;display:flex;flex-direction:column;gap:16px">
+        <section class="card">
+          <h2 class="h2">Bookings</h2>
+          <div class="row"><span><strong>Pilates Flow</strong> · Mon 2 Nov 9:00 · you + Bao · credit</span><button class="btn2" type="button">Cancel</button></div>
+          <div class="row"><span><strong>Open Play</strong> · Wed 4 Nov 10:30 · 2 children · 2 credits</span><button class="btn2" type="button">Cancel</button></div>
+          <div class="row"><span><strong>Mum &amp; Baby Yoga</strong> · Tue 10 Nov 9:30 <span class="tag pay">Pay on the day</span></span><button class="btn2" type="button">Cancel</button></div>
+          <div class="row" style="background:#FAFAFB"><span class="muted">Pilates Flow · Mon 26 Oct · Late cancellation, credit used</span><button class="btn2" type="button">Restore credit</button></div>
+        </section>
+        <section class="card">
+          <h2 class="h2">Credit history</h2>
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr><th>When</th><th>What</th><th>Credits</th><th>By</th><th>Reason</th></tr></thead>
+              <tbody>
+                <tr><td>21 Oct 18:02</td><td>Reserved · Open Play 4 Nov</td><td>−2</td><td>Customer</td><td>Online booking</td></tr>
+                <tr><td>26 Oct 10:15</td><td>Used · Pilates Flow 26 Oct</td><td>−1</td><td>System</td><td>Late cancellation</td></tr>
+                <tr><td>20 Oct 11:30</td><td>Bonus</td><td>+1</td><td>Thao</td><td>Promo 10 + 1 free</td></tr>
+                <tr><td>20 Oct 11:30</td><td>Pack bought · 10-class</td><td>+10</td><td>Thao</td><td>QR · [PRICE]</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

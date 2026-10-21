@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>New or edit session</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.muted{color:#5B616B}
+.side{flex:1 1 200px;padding:20px 16px;border-right:1px solid #E4E6EA;background:#FAFAFB;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
+.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#1F2328;text-decoration:none}
+.nav.on{background:#E3EEE6;font-weight:700;color:#24452F}
+.mgr{font-size:11px;color:#5B616B;margin-left:6px}
+.main{flex:999 1 560px;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px}
+.card{border:1px solid #D9DCE1;border-radius:14px;padding:16px;background:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #3F6B52;background:#E3EEE6;color:#24452F;font:600 14px system-ui,sans-serif;text-decoration:none}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #9AA0A8;background:#fff;color:#1F2328;font:600 14px system-ui,sans-serif;text-decoration:none}
+.danger{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #9B3B2E;background:#FBE9E6;color:#7A2A1F;font:600 14px system-ui,sans-serif}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.later{background:#ECE6F5;color:#4B3A80}
+.pay{background:#FFF1D6;color:#7A4E00}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-size:13px;font-weight:600}
+.f input,.f select,.f textarea{border:1px solid #9AA0A8;border-radius:10px;min-height:40px;padding:8px 10px;font:15px system-ui,sans-serif;box-sizing:border-box;width:100%;background:#fff}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ph{border:1.5px dashed #B9BEC6;border-radius:12px;background:#F7F7F8;color:#5B616B;display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center}
+.row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #EEF0F2;font-size:14px;gap:8px}
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;min-height:900px;background:#fff">
+  <nav class="side" aria-label="Staff menu">
+    <strong style="font-size:17px;padding:4px 12px 14px">The Village · Staff</strong>
+    <a class="nav" href="S01-Dashboard.dc.html">Dashboard</a>
+    <a class="nav on" href="S02-Calendar.dc.html">Calendar</a>
+    <a class="nav" href="S04-Customers.dc.html">Customers</a>
+    <a class="nav" href="S07-Catalog.dc.html">Catalog<span class="mgr">manager</span></a>
+    <a class="nav" href="S08-Reports.dc.html">Reports<span class="mgr">manager</span></a>
+    <a class="nav" href="S09-Staff.dc.html">Staff<span class="mgr">manager</span></a>
+    <a class="nav" href="S10-Settings.dc.html">Settings<span class="mgr">manager</span></a>
+    <span class="muted" style="font-size:13px;padding:24px 12px 0">Signed in as Thao (Manager)</span>
+  </nav>
+  <main class="main">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div><a href="S02-Calendar.dc.html" style="font-size:14px">← Calendar</a><h1 style="margin:4px 0 0;font-size:24px">Pilates Flow · Mon 2 Nov, 9:00</h1></div>
+      <div style="display:flex;gap:8px"><a class="btn2" href="S02-Calendar.dc.html">Discard</a><button class="btn" type="button">Save</button></div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+      <form class="card" style="flex:3 1 440px;display:flex;flex-direction:column;gap:14px">
+        <div class="g2">
+          <div class="f"><label for="t">Session type</label><select id="t"><option>Group class</option><option>Open play</option><option>Private hire</option><option>Workshop / event (+2 weeks)</option></select></div>
+          <div class="f"><label for="ct">Class type</label><select id="ct"><option>Pilates</option><option>Yoga</option><option>Strength</option><option>Fitness</option><option>Dance</option><option>+ New class type…</option></select></div>
+        </div>
+        <div class="f"><label for="ti">Title</label><input id="ti" value="Pilates Flow"></div>
+        <div class="g3">
+          <div class="f"><label for="d">Date</label><input id="d" value="Mon 2 Nov 2026"></div>
+          <div class="f"><label for="s">Start</label><input id="s" value="09:00"></div>
+          <div class="f"><label for="l">Length</label><select id="l"><option>60 min</option></select></div>
+        </div>
+        <div class="g3">
+          <div class="f"><label for="c">Capacity</label><input id="c" value="10 parents"></div>
+          <div class="f"><label for="i">Instructor</label><select id="i"><option>Mai</option></select></div>
+          <div class="f"><label for="r">Repeat</label><select id="r"><option>Every week until 31 Dec</option><option>Just once</option></select></div>
+        </div>
+        <div class="f"><label for="de">Description, ages, what to bring <span class="muted" style="font-weight:400">(filled from the class type; change for this session only if needed)</span></label><textarea id="de" rows="3">A gentle full-body Pilates class… · Babies and crawlers · Water, towel, a blanket for baby</textarea></div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="ph" style="width:96px;height:72px">Picture</div>
+          <span class="muted" style="font-size:13px">Uses the Pilates picture. <a href="S03-SessionEditor.dc.html">Upload one for this session</a></span>
+        </div>
+        <div class="card" style="background:#FAFAFB;font-size:13.5px">
+          <strong>Private hire</strong> shows instead: customer, group size, agreed price and notes. <strong>Workshop</strong> adds its own ticket price (never pack credits).
+        </div>
+      </form>
+      <section class="card" style="flex:2 1 300px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><h2 style="margin:0;font-size:17px">Booked · 8 of 10</h2><a href="S12-CheckIn.dc.html" style="font-size:14px">Check-in list</a></div>
+        <div class="row"><span>Phuong Nguyen + Bao</span><span class="muted">credit</span></div>
+        <div class="row"><span>Linh Tran</span><span class="tag pay">Pay on the day</span></div>
+        <div class="row"><span>Hoa Le + Minh</span><span class="muted">free trial</span></div>
+        <div class="row"><span class="muted">+ 5 more</span><span></span></div>
+        <a class="btn2" href="S13-BookCustomer.dc.html" style="margin-top:8px">Book someone in</a>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid #E4E6EA">
+          <button class="btn2" type="button">Swap instructor <span class="tag later" style="margin-left:6px">+2 weeks</span></button>
+          <button class="danger" type="button">Cancel session for everyone</button>
+          <span class="muted" style="font-size:12.5px">Cancels all 8 bookings, returns credits and emails everyone (illness, floods…).</span>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

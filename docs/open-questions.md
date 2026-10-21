@@ -6,8 +6,8 @@ Until you answer, the designs use clearly marked placeholders and the default sh
 ## A. Needed to keep 14 November (please answer this week)
 
 1. **Design sign-off date** (the doc's only "Decide" row). 14 Nov is 24 days away, and coding can't start until you sign off the designs.
-   **Suggestion: sign off by Tue 28 Oct.** The 53–85 hour estimate assumed reusing an existing app; a from-scratch build takes longer, so any slip here pushes the customer site to after the pilot (the doc's fallback).
-2. **GitHub.** Which GitHub account or organisation should own the private repository (e.g. a new `thevillagesaigon` org), and who should be invited? I need access to it to push.
+   **Agreed 21 Oct: sign off by Tue 28 Oct.** The 53–85 hour estimate assumed reusing an existing app; a from-scratch build takes longer, so any slip here pushes the customer site to after the pilot (the doc's fallback).
+2. **GitHub.** Repo is `jackkimber-ops/thevillage` (21 Oct). Still needed: give Claude push access (connect GitHub at claude.ai/connect-github and install the Claude GitHub App on the repo).
 3. **Opening hours.** These also set when private hire can be booked.
 4. **Pack prices and validity.** Class packs and open play packs of 10, 20, 40 and 60, how long each is valid, and how long the intro pack is valid.
 5. **Staff accounts.** Names and emails of the 2 managers and the first instructors.
@@ -35,6 +35,7 @@ The requirements win on *what* to build, so I'll follow the answer in **bold** u
 5. **WhatsApp/Zalo login buttons before Meta/Zalo approve.** Suggest hiding them until approved, so opening day shows email login only.
 6. **Instructor "Own sessions only / All customers" setting.** It belongs on the Staff page, which comes in the +2 weeks release. Suggest I set it for you at opening, like the staff accounts.
 7. **Name punctuation.** "The Village - Family Club" or "The Village: Family Club"? (The sketches use "The Village · Family Club".)
+8. **Selling a pack to someone with a pay-on-the-day booking.** Suggest: their upcoming unpaid bookings switch to credits from the new pack, so they don't pay twice.
 
 ## D. Owner tasks still open (from the requirements doc)
 

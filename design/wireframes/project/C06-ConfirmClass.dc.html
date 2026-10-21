@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Confirm a class booking</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #3F6B52;background:#E3EEE6;color:#24452F;font:600 16px system-ui,sans-serif;text-decoration:none;box-sizing:border-box}
+.muted{color:#5B616B}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.later{background:#ECE6F5;color:#4B3A80}
+.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E4E6EA}
+.lang{font-size:13px;color:#5B616B}
+.card{border:1px solid #D9DCE1;border-radius:14px;padding:12px 14px;background:#fff}
+.h2{font-size:14px;font-weight:700;margin:0}
+.check{display:flex;align-items:center;gap:10px;min-height:44px;font-size:15px}
+.check input{width:22px;height:22px;margin:0}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid #9AA0A8;border-radius:12px;overflow:hidden}
+.seg button{min-height:44px;border:0;background:#fff;font:500 15px system-ui,sans-serif;color:#1F2328}
+.seg .on{background:#1F2328;color:#fff}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#fff">
+  <div class="hdr">
+    <a href="C05-Session.dc.html" style="font-size:15px;text-decoration:none">← Back</a>
+    <span class="lang"><strong style="color:#1F2328">EN</strong> · VI</span>
+  </div>
+  <div style="flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:14px;overflow:hidden">
+    <div>
+      <h1 style="margin:0;font-size:24px">Pilates Flow</h1>
+      <div class="muted" style="font-size:15px">Mon 2 Nov · 9:00–10:00 · 4 of 10 places left</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <p class="h2">How often</p>
+      <div class="seg"><button class="on" type="button">Just this time</button><a href="C08-PickDates.dc.html" style="display:flex;align-items:center;justify-content:center;text-decoration:none;color:#1F2328;font-size:15px">Pick dates</a></div>
+      <span class="tag later" style="align-self:flex-start">Pick dates: +2 weeks release</span>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:2px">
+      <p class="h2">Who's coming</p>
+      <div class="check"><input type="checkbox" checked disabled id="p"><label for="p">You (Phuong)</label></div>
+      <div class="check"><input type="checkbox" checked id="k1"><label for="k1">Bao · 9 months</label></div>
+      <div class="check"><input type="checkbox" id="k2"><label for="k2">Mi · 3 years</label></div>
+      <a href="C06-ConfirmClass.dc.html" style="font-size:14px;padding:6px 0">+ Add a child</a>
+      <div class="muted" style="font-size:13px">Up to 2 children, free with you.</div>
+    </div>
+    <div class="card" style="background:#F6F9F7">
+      <div style="font-size:15px">Uses <strong>1 credit</strong> from your <strong>10-class pack</strong></div>
+      <div class="muted" style="font-size:13.5px;margin-top:2px">6 free now · 5 after this · expires 15 Jan 2027</div>
+    </div>
+    <p class="muted" style="margin:0;font-size:13.5px;line-height:1.45">Free cancellation until <strong style="color:#1F2328">20:00 on Sun 1 Nov</strong>. After that, message us and the credit is used.</p>
+  </div>
+  <div style="padding:12px 20px 20px;border-top:1px solid #E4E6EA">
+    <a class="btn" href="C09-Booked.dc.html">Confirm booking</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

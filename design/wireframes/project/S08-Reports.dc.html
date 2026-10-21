@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reports</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.muted{color:#5B616B}
+.side{flex:1 1 200px;padding:20px 16px;border-right:1px solid #E4E6EA;background:#FAFAFB;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
+.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#1F2328;text-decoration:none}
+.nav.on{background:#E3EEE6;font-weight:700;color:#24452F}
+.mgr{font-size:11px;color:#5B616B;margin-left:6px}
+.main{flex:999 1 560px;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:18px}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:19px;border:1.5px solid #9AA0A8;background:#fff;color:#1F2328;font:600 14px system-ui,sans-serif;text-decoration:none}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.later{background:#ECE6F5;color:#4B3A80}
+.seg{display:inline-grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #9AA0A8;border-radius:12px;overflow:hidden}
+.seg button{min-height:38px;padding:0 16px;border:0;background:#fff;font:500 14px system-ui,sans-serif;color:#1F2328}
+.seg .on{background:#1F2328;color:#fff}
+.stat{border:1px solid #D9DCE1;border-radius:14px;padding:14px 16px;flex:1 1 160px}
+.stat b{display:block;font-size:24px;margin-top:4px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-size:12.5px;color:#5B616B;font-weight:600;padding:9px 10px;border-bottom:1px solid #D9DCE1;white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid #EEF0F2}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.box{overflow-x:auto;border:1px solid #E4E6EA;border-radius:12px}
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;min-height:900px;background:#fff">
+  <nav class="side" aria-label="Staff menu">
+    <strong style="font-size:17px;padding:4px 12px 14px">The Village · Staff</strong>
+    <a class="nav" href="S01-Dashboard.dc.html">Dashboard</a>
+    <a class="nav" href="S02-Calendar.dc.html">Calendar</a>
+    <a class="nav" href="S04-Customers.dc.html">Customers</a>
+    <a class="nav" href="S07-Catalog.dc.html">Catalog<span class="mgr">manager</span></a>
+    <a class="nav on" href="S08-Reports.dc.html">Reports<span class="mgr">manager</span></a>
+    <a class="nav" href="S09-Staff.dc.html">Staff<span class="mgr">manager</span></a>
+    <a class="nav" href="S10-Settings.dc.html">Settings<span class="mgr">manager</span></a>
+    <span class="muted" style="font-size:13px;padding:24px 12px 0">Signed in as Thao (Manager)</span>
+  </nav>
+  <main class="main">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px"><h1 style="margin:0;font-size:26px">Reports</h1><span class="tag later">+2 weeks release</span></div>
+      <div class="seg" style="grid-template-columns:repeat(2,minmax(0,1fr))"><button type="button" class="on">Money</button><button type="button">Instructors</button></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <div class="seg"><button type="button">Day</button><button type="button" class="on">Week</button><button type="button">Month</button></div>
+      <strong>16 – 22 November 2026</strong>
+      <button class="btn2" type="button">Download spreadsheet</button>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div class="stat"><span class="muted" style="font-size:13px">Total received</span><b>12,350,000 ₫</b></div>
+      <div class="stat"><span class="muted" style="font-size:13px">QR</span><b>8,900,000 ₫</b></div>
+      <div class="stat"><span class="muted" style="font-size:13px">Transfer</span><b>2,250,000 ₫</b></div>
+      <div class="stat"><span class="muted" style="font-size:13px">Cash</span><b>1,200,000 ₫</b></div>
+    </div>
+    <div class="box">
+      <table>
+        <thead><tr><th>Day</th><th class="n">QR</th><th class="n">Transfer</th><th class="n">Cash</th><th class="n">Total</th><th>Sales</th></tr></thead>
+        <tbody>
+          <tr><td>Mon 16 Nov</td><td class="n">2,750,000</td><td class="n">—</td><td class="n">400,000</td><td class="n">3,150,000</td><td>2 packs · 1 drop-in</td></tr>
+          <tr><td>Tue 17 Nov</td><td class="n">1,150,000</td><td class="n">750,000</td><td class="n">—</td><td class="n">1,900,000</td><td>1 intro pack · 1 pack · 1 free trial (0)</td></tr>
+          <tr><td>Wed 18 Nov</td><td class="n">300,000</td><td class="n">—</td><td class="n">150,000</td><td class="n">450,000</td><td>3 open play drop-ins</td></tr>
+          <tr><td>Sat 21 Nov</td><td class="n">4,700,000</td><td class="n">1,500,000</td><td class="n">650,000</td><td class="n">6,850,000</td><td>Private hire · 3 packs</td></tr>
+          <tr><td><strong>Week</strong></td><td class="n"><strong>8,900,000</strong></td><td class="n"><strong>2,250,000</strong></td><td class="n"><strong>1,200,000</strong></td><td class="n"><strong>12,350,000</strong></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="border:1px dashed #B9BEC6;border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.5">
+      <strong>Instructors tab:</strong> one row per instructor for the month: sessions taught, total attendance, no-shows. Download as a spreadsheet for pay day.
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

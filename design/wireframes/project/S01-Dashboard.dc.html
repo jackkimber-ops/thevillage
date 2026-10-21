@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Staff dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.muted{color:#5B616B}
+.side{flex:1 1 200px;padding:20px 16px;border-right:1px solid #E4E6EA;background:#FAFAFB;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
+.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#1F2328;text-decoration:none}
+.nav.on{background:#E3EEE6;font-weight:700;color:#24452F}
+.mgr{font-size:11px;color:#5B616B;margin-left:6px}
+.main{flex:999 1 560px;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px}
+.card{border:1px solid #D9DCE1;border-radius:14px;padding:14px 16px;background:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #3F6B52;background:#E3EEE6;color:#24452F;font:600 14px system-ui,sans-serif;text-decoration:none}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #9AA0A8;background:#fff;color:#1F2328;font:600 14px system-ui,sans-serif;text-decoration:none}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.pay{background:#FFF1D6;color:#7A4E00}
+.new{background:#E2ECF7;color:#244A73}
+.h2{margin:0;font-size:18px}
+.sess{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;border:1px solid}
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;min-height:900px;background:#fff">
+  <nav class="side" aria-label="Staff menu">
+    <strong style="font-size:17px;padding:4px 12px 14px">The Village · Staff</strong>
+    <a class="nav on" href="S01-Dashboard.dc.html">Dashboard</a>
+    <a class="nav" href="S02-Calendar.dc.html">Calendar</a>
+    <a class="nav" href="S04-Customers.dc.html">Customers</a>
+    <a class="nav" href="S07-Catalog.dc.html">Catalog<span class="mgr">manager</span></a>
+    <a class="nav" href="S08-Reports.dc.html">Reports<span class="mgr">manager</span></a>
+    <a class="nav" href="S09-Staff.dc.html">Staff<span class="mgr">manager</span></a>
+    <a class="nav" href="S10-Settings.dc.html">Settings<span class="mgr">manager</span></a>
+    <span class="muted" style="font-size:13px;padding:24px 12px 0">Signed in as Thao (Manager)</span>
+  </nav>
+  <main class="main">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <h1 style="margin:0;font-size:26px">Monday 2 November</h1>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <a class="btn" href="S13-BookCustomer.dc.html">Book someone in</a>
+        <a class="btn2" href="S14-NewCustomer.dc.html">Add customer</a>
+        <a class="btn2" href="S06-SellPack.dc.html">Sell a pack</a>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+      <section class="card" style="flex:3 1 420px;border:1.5px solid #3C6B9C;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <h2 class="h2">Call to confirm</h2><span class="muted" style="font-size:14px">3 to call · also emailed to managers</span>
+        </div>
+        <sc-for list="{{calls}}" as="c" hint-placeholder-count="3">
+          <div class="card" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
+            <div style="min-width:220px">
+              <div><strong>{{c.name}}</strong> <span class="tag {{c.cls}}">{{c.why}}</span></div>
+              <div class="muted" style="font-size:14px">{{c.what}}</div>
+              <div class="muted" style="font-size:14px">{{c.phone}}</div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <a class="btn2" href="https://wa.me/">WhatsApp</a>
+              <a class="btn2" href="tel:+84">Call</a>
+              <button class="btn" type="button">Called ✓</button>
+            </div>
+          </div>
+        </sc-for>
+        <span class="muted" style="font-size:13px">Bookings stand straight away. Tick Called once you've spoken, or cancel the booking from the session.</span>
+      </section>
+      <section class="card" style="flex:2 1 300px;display:flex;flex-direction:column;gap:10px">
+        <h2 class="h2">Today</h2>
+        <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#3F6B52;background:#F1F7F3;text-decoration:none;color:#1F2328"><strong style="width:48px">09:00</strong><span style="flex:1">Pilates Flow · Mai<br><span class="muted" style="font-size:13px">8/10 · 2 pay on the day</span></span></a>
+        <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#B8643A;background:#FDF3EC;text-decoration:none;color:#1F2328"><strong style="width:48px">10:30</strong><span style="flex:1">Open Play<br><span class="muted" style="font-size:13px">5/10 children</span></span></a>
+        <a class="sess" href="S03-SessionEditor.dc.html" style="border-color:#3C6B9C;background:#EEF4FB;text-decoration:none;color:#1F2328"><strong style="width:48px">13:00</strong><span style="flex:1">Private hire · Birthday party<br><span class="muted" style="font-size:13px">2 hours · Nguyen family</span></span></a>
+        <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#3F6B52;background:#F1F7F3;text-decoration:none;color:#1F2328"><strong style="width:48px">17:30</strong><span style="flex:1">Strength · Anna<br><span class="muted" style="font-size:13px">10/10 · full</span></span></a>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      calls: [
+        { name: 'Linh Tran', why: 'New · guest', cls: 'new', what: 'Pilates Flow · Mon 9:00 · pay on the day', phone: '+84 90 123 4567' },
+        { name: 'Sarah Jones', why: 'Unpaid drop-in', cls: 'pay', what: 'Open Play · Mon 10:30 · 1 child · 150,000 ₫', phone: '+84 93 222 0101' },
+        { name: 'Hoa Le', why: 'New · added by staff', cls: 'new', what: 'Mum & Baby Yoga · Tue 9:30 · free trial', phone: '+84 91 777 8888' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Staff calendar</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.muted{color:#5B616B}
+.side{flex:1 1 200px;padding:20px 16px;border-right:1px solid #E4E6EA;background:#FAFAFB;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
+.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#1F2328;text-decoration:none}
+.nav.on{background:#E3EEE6;font-weight:700;color:#24452F}
+.mgr{font-size:11px;color:#5B616B;margin-left:6px}
+.main{flex:999 1 560px;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #3F6B52;background:#E3EEE6;color:#24452F;font:600 14px system-ui,sans-serif;text-decoration:none}
+.seg{display:inline-grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #9AA0A8;border-radius:12px;overflow:hidden}
+.seg button{min-height:38px;padding:0 16px;border:0;background:#fff;font:500 14px system-ui,sans-serif;color:#1F2328}
+.seg .on{background:#1F2328;color:#fff}
+.iconbtn{width:40px;height:40px;border:1px solid #D9DCE1;border-radius:20px;background:#fff;display:inline-flex;align-items:center;justify-content:center;color:#1F2328}
+.col{position:relative;border-left:1px solid #EEF0F2;height:616px}
+.ev{position:absolute;left:4px;right:4px;border-radius:8px;border:1.5px solid;padding:4px 6px;font-size:12px;line-height:1.3;overflow:hidden;box-sizing:border-box;cursor:grab}
+.lg{display:inline-flex;align-items:center;gap:6px;font-size:13px}
+.sw{width:14px;height:14px;border-radius:4px;border:1.5px solid}
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;min-height:900px;background:#fff">
+  <nav class="side" aria-label="Staff menu">
+    <strong style="font-size:17px;padding:4px 12px 14px">The Village · Staff</strong>
+    <a class="nav" href="S01-Dashboard.dc.html">Dashboard</a>
+    <a class="nav on" href="S02-Calendar.dc.html">Calendar</a>
+    <a class="nav" href="S04-Customers.dc.html">Customers</a>
+    <a class="nav" href="S07-Catalog.dc.html">Catalog<span class="mgr">manager</span></a>
+    <a class="nav" href="S08-Reports.dc.html">Reports<span class="mgr">manager</span></a>
+    <a class="nav" href="S09-Staff.dc.html">Staff<span class="mgr">manager</span></a>
+    <a class="nav" href="S10-Settings.dc.html">Settings<span class="mgr">manager</span></a>
+    <span class="muted" style="font-size:13px;padding:24px 12px 0">Signed in as Thao (Manager)</span>
+  </nav>
+  <main class="main">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="iconbtn" type="button" aria-label="Previous week">‹</button>
+        <h1 style="margin:0;font-size:22px">2 – 8 November 2026</h1>
+        <button class="iconbtn" type="button" aria-label="Next week">›</button>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <div class="seg"><button type="button">Day</button><button type="button" class="on">Week</button><button type="button">Month</button></div>
+        <a class="btn" href="S03-SessionEditor.dc.html">+ New session</a>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <span class="lg"><span class="sw" style="background:#E3EEE6;border-color:#3F6B52"></span>Group class</span>
+      <span class="lg"><span class="sw" style="background:#FBE7DA;border-color:#B8643A"></span>Open play</span>
+      <span class="lg"><span class="sw" style="background:#E2ECF7;border-color:#3C6B9C"></span>Private hire</span>
+      <span class="lg"><span class="sw" style="background:#ECE6F5;border-color:#6B57A0"></span>Workshop (+2 weeks)</span>
+      <span class="lg"><span class="sw" style="background:#F0F1F3;border-color:#9AA0A8"></span>Closed</span>
+    </div>
+    <div style="overflow-x:auto;border:1px solid #E4E6EA;border-radius:12px">
+      <div style="min-width:860px">
+        <div style="display:grid;grid-template-columns:56px repeat(7,minmax(0,1fr));border-bottom:1px solid #E4E6EA;font-size:13px;font-weight:600">
+          <span></span>
+          <sc-for list="{{days}}" as="d" hint-placeholder-count="7"><span style="padding:8px 6px">{{d.label}}</span></sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:56px repeat(7,minmax(0,1fr))">
+          <div style="position:relative;height:616px">
+            <sc-for list="{{hours}}" as="h" hint-placeholder-count="11"><span class="muted" style="{{h.style}}">{{h.label}}</span></sc-for>
+          </div>
+          <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+            <div class="col">
+              <sc-for list="{{d.items}}" as="e" hint-placeholder-count="2">
+                <div class="ev" style="{{e.style}}"><strong>{{e.t}}</strong><br>{{e.sub}}</div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <span class="muted" style="font-size:13px">Drag a session to move it. Sessions can't overlap: there is one room. Instructors can edit only their own classes.</span>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const C = { c: 'background:#E3EEE6;border-color:#3F6B52', o: 'background:#FBE7DA;border-color:#B8643A', p: 'background:#E2ECF7;border-color:#3C6B9C', w: 'background:#ECE6F5;border-color:#6B57A0', x: 'background:#F0F1F3;border-color:#9AA0A8' };
+    const ev = (k, start, len, t, sub) => ({ t, sub, style: C[k] + ';top:' + ((start - 8) * 56) + 'px;height:' + (len * 56 - 4) + 'px' });
+    const days = [
+      { label: 'Mon 2', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 8/10'), ev('o', 10.5, 1.5, '10:30 Open Play', '5/10 children'), ev('p', 13, 2, '13:00 Private hire', 'Birthday · 2 h'), ev('c', 17.5, 1, '17:30 Strength', 'Anna · 10/10')] },
+      { label: 'Tue 3', items: [ev('c', 9.5, 1, '9:30 Mum & Baby Yoga', 'Mai · 3/10'), ev('c', 18, 1, '18:00 Dance Fit', 'Thu · 8/10')] },
+      { label: 'Wed 4', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 6/10'), ev('o', 10.5, 1.5, '10:30 Open Play', '7/10 children')] },
+      { label: 'Thu 5', items: [ev('c', 9.5, 1, '9:30 Mum & Baby Yoga', 'Mai · 5/10'), ev('w', 14, 2, '14:00 Sleep talk', 'Workshop · 12/20')] },
+      { label: 'Fri 6', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 4/10'), ev('c', 17.5, 1, '17:30 Strength', 'Anna · 6/10')] },
+      { label: 'Sat 7', items: [ev('o', 9, 1.5, '9:00 Open Play', '9/10 children'), ev('p', 14, 2, '14:00 Private hire', 'Group · 2 h')] },
+      { label: 'Sun 8', items: [ev('x', 8, 11, 'Closed', '[OPENING HOURS TBC]')] }
+    ];
+    const hours = [];
+    for (let h = 8; h < 19; h++) hours.push({ label: h + ':00', style: 'position:absolute;right:8px;font-size:11px;top:' + ((h - 8) * 56 + 2) + 'px' });
+    return { days, hours };
+  }
+}
+</script>
+</body>
+</html>

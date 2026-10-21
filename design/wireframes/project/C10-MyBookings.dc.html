@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My bookings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.muted{color:#5B616B}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.pay{background:#FFF1D6;color:#7A4E00}
+.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 8px 0 16px;border-bottom:1px solid #E4E6EA}
+.lang{font-size:13px;color:#5B616B}
+.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#1F2328}
+.card{border:1px solid #D9DCE1;border-radius:14px;padding:12px 14px;background:#fff;display:flex;align-items:center;gap:10px}
+.act{min-height:40px;padding:0 14px;border-radius:20px;border:1.5px solid #9AA0A8;background:#fff;color:#1F2328;font:600 14px system-ui,sans-serif;text-decoration:none;display:flex;align-items:center;white-space:nowrap}
+.sec{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#5B616B;margin:8px 0 0}
+.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:#5B616B;text-decoration:none}
+.tab.on{color:#24452F;font-weight:700;box-shadow:inset 0 3px 0 #3F6B52}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#fff">
+  <div class="hdr">
+    <strong style="font-size:17px">The Village</strong>
+    <div style="display:flex;align-items:center;gap:4px">
+      <span class="lang"><strong style="color:#1F2328">EN</strong> · VI</span>
+      <a class="iconbtn" href="C14-Menu.dc.html" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></a>
+    </div>
+  </div>
+  <div style="flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+    <h1 style="margin:0;font-size:24px">My bookings</h1>
+    <p class="sec">Upcoming</p>
+    <div class="card">
+      <div style="flex:1">
+        <div style="font-weight:700">Pilates Flow</div>
+        <div class="muted" style="font-size:14px">Mon 2 Nov · 9:00 · You + Bao</div>
+        <div class="muted" style="font-size:13px">Can't cancel online after 20:00 Sun 1 Nov</div>
+      </div>
+      <a class="act" href="https://wa.me/">Message us</a>
+    </div>
+    <div class="card">
+      <div style="flex:1">
+        <div style="font-weight:700">Open Play</div>
+        <div class="muted" style="font-size:14px">Wed 4 Nov · 10:30 · Bao, Mi</div>
+        <div class="muted" style="font-size:13px">Free cancellation until 20:00 Tue 3 Nov</div>
+      </div>
+      <a class="act" href="C11-Cancel.dc.html">Cancel</a>
+    </div>
+    <div class="card">
+      <div style="flex:1">
+        <div style="font-weight:700">Mum &amp; Baby Yoga</div>
+        <div class="muted" style="font-size:14px">Tue 10 Nov · 9:30 · You + Bao</div>
+        <span class="tag pay" style="margin-top:4px">Pay on the day · 400,000 ₫</span>
+      </div>
+      <a class="act" href="C11-Cancel.dc.html">Cancel</a>
+    </div>
+    <p class="sec">Past</p>
+    <div class="card" style="background:#FAFAFB">
+      <div style="flex:1">
+        <div style="font-weight:600">Pilates Flow</div>
+        <div class="muted" style="font-size:14px">Mon 26 Oct · Attended</div>
+      </div>
+    </div>
+    <div class="card" style="background:#FAFAFB">
+      <div style="flex:1">
+        <div style="font-weight:600">Open Play</div>
+        <div class="muted" style="font-size:14px">Wed 21 Oct · Cancelled, credit returned</div>
+      </div>
+    </div>
+  </div>
+  <nav style="display:flex;border-top:1px solid #E4E6EA;height:64px">
+    <a class="tab" href="C04-Timetable.dc.html">Classes</a>
+    <a class="tab on" href="C10-MyBookings.dc.html">Bookings</a>
+    <a class="tab" href="C12-MyPackages.dc.html">Packages</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Session details</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #3F6B52;background:#E3EEE6;color:#24452F;font:600 16px system-ui,sans-serif;text-decoration:none;box-sizing:border-box}
+.muted{color:#5B616B}
+.tag{display:inline-block;padding:3px 9px;border-radius:10px;font-size:12.5px;font-weight:600;background:#F0F1F3;color:#1F2328}
+.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E4E6EA}
+.lang{font-size:13px;color:#5B616B}
+.ph{border:1.5px dashed #B9BEC6;background:#F7F7F8;color:#5B616B;display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center}
+.row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #EEF0F2;font-size:15px}
+.row dt{width:110px;flex:none;color:#5B616B}
+.row dd{margin:0}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#fff">
+  <div class="hdr">
+    <a href="C04-Timetable.dc.html" style="font-size:15px;text-decoration:none">← Classes</a>
+    <span class="lang"><strong style="color:#1F2328">EN</strong> · VI</span>
+  </div>
+  <div class="ph" style="height:180px">Class illustration (C28): parent and child doing Pilates<br>[PLACEHOLDER]</div>
+  <div style="flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:10px;overflow:hidden">
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span class="tag">Group class</span><span class="tag">Babies &amp; crawlers</span>
+    </div>
+    <h1 style="margin:0;font-size:26px">Pilates Flow</h1>
+    <p style="margin:0;font-size:15px;line-height:1.5">A gentle full-body Pilates class to rebuild your core. Your little one plays on the mat beside you. [PLACEHOLDER description]</p>
+    <dl style="margin:4px 0 0">
+      <div class="row"><dt>When</dt><dd>Mon 2 Nov · 9:00–10:00 (60 min)</dd></div>
+      <div class="row"><dt>Instructor</dt><dd>Mai</dd></div>
+      <div class="row"><dt>Suits</dt><dd>Babies and crawlers</dd></div>
+      <div class="row"><dt>Bring</dt><dd>Water, a towel, a blanket for baby</dd></div>
+      <div class="row"><dt>Places</dt><dd>4 of 10 left</dd></div>
+      <div class="row"><dt>Price</dt><dd>1 class credit, or 400,000 ₫ on the day</dd></div>
+    </dl>
+  </div>
+  <div style="padding:12px 20px 20px;border-top:1px solid #E4E6EA">
+    <a class="btn" href="C06-ConfirmClass.dc.html">Book this class</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

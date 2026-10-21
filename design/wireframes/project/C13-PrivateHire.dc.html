@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hire the studio</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #3F6B52;background:#E3EEE6;color:#24452F;font:600 16px system-ui,sans-serif;text-decoration:none;box-sizing:border-box}
+.btn2{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #9AA0A8;background:#fff;color:#1F2328;font:600 16px system-ui,sans-serif;text-decoration:none;box-sizing:border-box}
+.muted{color:#5B616B}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.todo{background:#FFF1D6;color:#7A4E00}
+.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E4E6EA}
+.lang{font-size:13px;color:#5B616B}
+.ph{border:1.5px dashed #B9BEC6;border-radius:12px;background:#F7F7F8;color:#5B616B;display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:14px;font-weight:600}
+.field input,.field select{border:1px solid #9AA0A8;border-radius:10px;min-height:44px;padding:0 12px;font-size:16px;box-sizing:border-box;width:100%;background:#fff}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid #9AA0A8;border-radius:12px;overflow:hidden}
+.seg button{min-height:44px;border:0;background:#fff;font:500 15px system-ui,sans-serif;color:#1F2328}
+.seg .on{background:#1F2328;color:#fff}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#fff">
+  <div class="hdr">
+    <a href="C14-Menu.dc.html" style="font-size:15px;text-decoration:none">← Menu</a>
+    <span class="lang"><strong style="color:#1F2328">EN</strong> · VI</span>
+  </div>
+  <div style="flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+    <div class="ph" style="height:120px">Studio photo [PLACEHOLDER]</div>
+    <div>
+      <h1 style="margin:0 0 6px;font-size:24px">Hire the studio</h1>
+      <p class="muted" style="margin:0;font-size:15px;line-height:1.45">Parties and family groups, 1 or 2 hours, in any free slot during opening hours. Please ask at least 24 hours ahead. Price agreed in chat.</p>
+      <span class="tag todo" style="margin-top:6px">Opening hours to come</span>
+    </div>
+    <form style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+        <div class="field"><label for="h1">Date</label><input id="h1" value="Sat 14 Nov"></div>
+        <div class="field"><label for="h2">Start time</label><input id="h2" value="14:00"></div>
+      </div>
+      <div class="field"><label>How long</label><div class="seg"><button type="button">1 hour</button><button type="button" class="on">2 hours</button></div></div>
+      <div class="field"><label for="h3">Group size</label><input id="h3" value="6 families, about 14 people"></div>
+      <div class="field"><label for="h4">Anything else <span class="muted" style="font-weight:400">(optional)</span></label><input id="h4" placeholder="e.g. a 2nd birthday"></div>
+    </form>
+    <a class="btn" href="https://wa.me/">Send on WhatsApp</a>
+    <a class="btn2" href="https://zalo.me/">Send on Zalo</a>
+    <p class="muted" style="margin:0;font-size:13px;text-align:center">Opens a chat with your details already written. Nothing is booked until we confirm.</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

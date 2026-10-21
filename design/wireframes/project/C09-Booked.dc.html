@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Booked</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #3F6B52;background:#E3EEE6;color:#24452F;font:600 16px system-ui,sans-serif;text-decoration:none;box-sizing:border-box}
+.btn2{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #9AA0A8;background:#fff;color:#1F2328;font:600 16px system-ui,sans-serif;text-decoration:none;box-sizing:border-box}
+.muted{color:#5B616B}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.later{background:#ECE6F5;color:#4B3A80}
+.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E4E6EA}
+.lang{font-size:13px;color:#5B616B}
+.card{border:1px solid #D9DCE1;border-radius:14px;padding:14px;background:#fff}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#fff">
+  <div class="hdr">
+    <strong style="font-size:17px">The Village</strong>
+    <span class="lang"><strong style="color:#1F2328">EN</strong> · VI</span>
+  </div>
+  <div style="flex:1;padding:28px 20px;display:flex;flex-direction:column;gap:16px">
+    <div style="width:64px;height:64px;border-radius:32px;background:#E3EEE6;display:flex;align-items:center;justify-content:center;color:#24452F">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
+    </div>
+    <div>
+      <h1 style="margin:0 0 6px;font-size:26px">You're booked</h1>
+      <p class="muted" style="margin:0;font-size:15px">We've emailed the details to phuong@example.com.</p>
+    </div>
+    <div class="card">
+      <div style="font-weight:700;font-size:16px">Pilates Flow</div>
+      <div style="font-size:15px">Mon 2 Nov · 9:00–10:00 · with Mai</div>
+      <div class="muted" style="font-size:14px;margin-top:4px">You + Bao · 1 class credit</div>
+      <div class="muted" style="font-size:14px">Free cancellation until 20:00 on Sun 1 Nov</div>
+    </div>
+    <div class="card" style="border-style:dashed;font-size:14px;line-height:1.45">
+      <strong>Guest or pay-on-the-day version:</strong> "Pay at the studio by QR code before the class. We'll call you to say hello before your first visit."
+    </div>
+    <div class="card" style="background:#F6F9F7;display:flex;flex-direction:column;gap:10px">
+      <div style="font-weight:700">Keep The Village on your phone</div>
+      <div class="muted" style="font-size:14px;line-height:1.45">Add it to your home screen to book like an app. On iPhone you'll log in once more inside the icon.</div>
+      <button class="btn2" type="button">Show me how</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <button class="btn2" type="button">Add to my calendar</button>
+      <span class="tag later" style="align-self:center">+2 weeks release</span>
+    </div>
+    <a class="btn" href="C10-MyBookings.dc.html" style="margin-top:auto">See my bookings</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

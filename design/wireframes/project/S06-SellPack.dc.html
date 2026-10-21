@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sell a pack and record payment</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.muted{color:#5B616B}
+.side{flex:1 1 200px;padding:20px 16px;border-right:1px solid #E4E6EA;background:#FAFAFB;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
+.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#1F2328;text-decoration:none}
+.nav.on{background:#E3EEE6;font-weight:700;color:#24452F}
+.mgr{font-size:11px;color:#5B616B;margin-left:6px}
+.main{flex:999 1 560px;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px}
+.card{border:1px solid #D9DCE1;border-radius:14px;padding:16px;background:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:22px;border:1.5px solid #3F6B52;background:#E3EEE6;color:#24452F;font:600 15px system-ui,sans-serif;text-decoration:none}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:19px;border:1.5px solid #9AA0A8;background:#fff;color:#1F2328;font:600 14px system-ui,sans-serif;text-decoration:none}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.todo{background:#FFF1D6;color:#7A4E00}
+.ok{background:#E3EEE6;color:#24452F}
+.pay{background:#FFF1D6;color:#7A4E00}
+.pk{border:1.5px solid #D9DCE1;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:4px;background:#fff;text-align:left;font:14px system-ui,sans-serif;color:#1F2328}
+.pk.on{border-color:#3F6B52;background:#F1F7F3;box-shadow:0 0 0 2px #3F6B52 inset}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-size:13px;font-weight:600}
+.f input{border:1px solid #9AA0A8;border-radius:10px;min-height:40px;padding:0 10px;font:15px system-ui,sans-serif;box-sizing:border-box;width:100%}
+.seg{display:inline-grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #9AA0A8;border-radius:12px;overflow:hidden}
+.seg button{min-height:40px;padding:0 18px;border:0;background:#fff;font:500 14px system-ui,sans-serif;color:#1F2328}
+.seg .on{background:#1F2328;color:#fff}
+.h2{margin:0 0 10px;font-size:16px}
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;min-height:900px;background:#fff">
+  <nav class="side" aria-label="Staff menu">
+    <strong style="font-size:17px;padding:4px 12px 14px">The Village · Staff</strong>
+    <a class="nav" href="S01-Dashboard.dc.html">Dashboard</a>
+    <a class="nav" href="S02-Calendar.dc.html">Calendar</a>
+    <a class="nav on" href="S04-Customers.dc.html">Customers</a>
+    <a class="nav" href="S07-Catalog.dc.html">Catalog<span class="mgr">manager</span></a>
+    <a class="nav" href="S08-Reports.dc.html">Reports<span class="mgr">manager</span></a>
+    <a class="nav" href="S09-Staff.dc.html">Staff<span class="mgr">manager</span></a>
+    <a class="nav" href="S10-Settings.dc.html">Settings<span class="mgr">manager</span></a>
+    <span class="muted" style="font-size:13px;padding:24px 12px 0">Signed in as Thao (Manager)</span>
+  </nav>
+  <main class="main">
+    <div>
+      <a href="S05-CustomerProfile.dc.html" style="font-size:14px">← Linh Tran</a>
+      <h1 style="margin:4px 0 0;font-size:24px">Take a payment · Linh Tran</h1>
+      <span class="muted" style="font-size:14px">Managers only</span>
+    </div>
+    <section class="card">
+      <h2 class="h2">Unpaid bookings</h2>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:14px">
+        <span>Pilates Flow · Mon 2 Nov 9:00 <span class="tag pay">Pay on the day · 400,000 ₫</span></span>
+        <span class="muted">Pay for it below, or sell a pack and it uses a credit instead</span>
+      </div>
+    </section>
+    <section class="card">
+      <h2 class="h2">What are they buying?</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px">
+        <button class="pk" type="button">Single class (drop-in)<strong>400,000 ₫</strong></button>
+        <button class="pk on" type="button">Intro pack · 3 classes<strong>750,000 ₫</strong><span class="tag ok" style="align-self:flex-start">Eligible: new customer</span></button>
+        <button class="pk" type="button">10 classes<strong>[PRICE]</strong><span class="muted">valid [?] days</span></button>
+        <button class="pk" type="button">20 classes<strong>[PRICE]</strong><span class="muted">valid [?] days</span></button>
+        <button class="pk" type="button">40 / 60 classes<strong>[PRICE]</strong></button>
+        <button class="pk" type="button">10 open play<strong>[PRICE]</strong></button>
+        <button class="pk" type="button">Promo: 10 + 1 free<strong>[PRICE]</strong><span class="muted">until 30 Nov</span></button>
+        <button class="pk" type="button">Open play drop-in<strong>150,000 ₫ / child</strong></button>
+      </div>
+      <span class="tag todo" style="margin-top:10px">Pack prices and validity to come</span>
+    </section>
+    <section class="card" style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end">
+      <div class="f" style="flex:1 1 160px"><label for="vf">Valid from</label><input id="vf" value="2 Nov 2026"></div>
+      <div class="f" style="flex:1 1 160px"><label>Expires</label><input value="[set by validity]" disabled></div>
+      <div class="f" style="flex:1 1 160px"><label for="am">Amount received (₫)</label><input id="am" value="750,000"></div>
+      <div class="f" style="flex:2 1 300px"><label>Paid by</label><div class="seg"><button type="button" class="on">QR</button><button type="button">Transfer</button><button type="button">Cash</button></div></div>
+    </section>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <span class="muted" style="font-size:14px">The price is saved with the sale; later price changes don't affect it. Mon 2 Nov's booking switches to a credit from this pack.</span>
+      <button class="btn" type="button">Record sale · 750,000 ₫ by QR</button>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

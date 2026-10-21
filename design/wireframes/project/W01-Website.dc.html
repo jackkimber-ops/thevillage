@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Village website</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.muted{color:#5B616B}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px;box-sizing:border-box}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 22px;border-radius:23px;border:1.5px solid #3F6B52;background:#E3EEE6;color:#24452F;font:600 16px system-ui,sans-serif;text-decoration:none}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 22px;border-radius:23px;border:1.5px solid #9AA0A8;background:#fff;color:#1F2328;font:600 16px system-ui,sans-serif;text-decoration:none}
+.soc{width:40px;height:40px;border-radius:20px;border:1px solid #B9BEC6;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#1F2328;text-decoration:none}
+.ph{border:1.5px dashed #B9BEC6;background:#F3F4F6;color:#5B616B;display:flex;align-items:center;justify-content:center;font-size:13px;text-align:center}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.card{border:1px solid #D9DCE1;border-radius:16px;padding:20px;background:#fff}
+section{padding:56px 0;border-bottom:1px solid #EEF0F2}
+h2{font-size:28px;margin:0 0 18px}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF1D6;color:#7A4E00}
+</style>
+</helmet>
+<div style="background:#fff">
+  <header style="border-bottom:1px solid #E4E6EA">
+    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;min-height:72px">
+      <strong style="font-size:19px">The Village · Family Club</strong>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <a class="soc" href="https://facebook.com/" aria-label="Facebook">f</a>
+        <a class="soc" href="https://instagram.com/" aria-label="Instagram">IG</a>
+        <span class="muted" style="font-size:14px;padding:0 6px"><strong style="color:#1F2328">EN</strong> · VI</span>
+        <a class="btn" href="Main.dc.html">Book now</a>
+      </div>
+    </div>
+  </header>
+  <div class="ph" style="min-height:460px;flex-direction:column;align-items:stretch;border-left:0;border-right:0">
+    <div class="wrap" style="width:100%;text-align:left;color:#1F2328;display:flex;flex-direction:column;gap:16px;padding-top:40px;padding-bottom:40px">
+      <span class="muted" style="align-self:flex-end;font-size:13px">Full-width photo of a class [PLACEHOLDER]</span>
+      <h1 style="margin:0;font-size:clamp(34px,5vw,54px);line-height:1.1;max-width:640px">Pilates and movement for mums and little ones</h1>
+      <p style="margin:0;font-size:19px" class="muted">Move. Connect. Belong. Bring your children along.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="Main.dc.html">Book a class</a><a class="btn2" href="C04-Timetable.dc.html">See the timetable</a></div>
+    </div>
+  </div>
+  <section>
+    <div class="wrap">
+      <h2>It takes a village to raise a child</h2>
+      <p style="font-size:18px;font-weight:600;margin:0 0 8px">Parents shouldn't have to choose between looking after themselves and their children.</p>
+      <p style="font-size:17px;line-height:1.55;margin:0 0 28px;max-width:760px">So we built exercise around parenthood: proper classes, with your little ones playing, exploring or simply close by. Not a gym, not a play centre. A place designed with you in mind.</p>
+      <div class="grid3">
+        <div><h3 style="margin:0 0 6px;font-size:20px;color:#3F6B52">Move</h3><p style="margin:0;line-height:1.5">Pilates, yoga, strength, fitness and dance, worth doing in their own right.</p></div>
+        <div><h3 style="margin:0 0 6px;font-size:20px;color:#3F6B52">Connect</h3><p style="margin:0;line-height:1.5">Children stay close. Meet parents at your stage over coffee, workshops and events.</p></div>
+        <div><h3 style="margin:0 0 6px;font-size:20px;color:#3F6B52">Belong</h3><p style="margin:0;line-height:1.5">Made for this stage of life. Arrive with your baby, no awkwardness. You belong here.</p></div>
+      </div>
+      <p class="muted" style="margin:24px 0 0">Made with mums and young children in mind. Dads, expectant parents and families are welcome too.</p>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <h2>What's on</h2>
+      <div class="grid3">
+        <a class="card" href="C04-Timetable.dc.html" style="text-decoration:none;color:#1F2328"><div class="ph" style="height:140px;border-radius:12px;margin-bottom:14px">Picture</div><strong style="font-size:18px">Classes</strong><p class="muted" style="margin:6px 0 0">Pilates, yoga, strength, fitness, dance.</p></a>
+        <a class="card" href="C04-Timetable.dc.html" style="text-decoration:none;color:#1F2328"><div class="ph" style="height:140px;border-radius:12px;margin-bottom:14px">Picture</div><strong style="font-size:18px">Open play</strong><p class="muted" style="margin:6px 0 0">Play time for parents and kids.</p></a>
+        <a class="card" href="C13-PrivateHire.dc.html" style="text-decoration:none;color:#1F2328"><div class="ph" style="height:140px;border-radius:12px;margin-bottom:14px">Picture</div><strong style="font-size:18px">Private hire</strong><p class="muted" style="margin:6px 0 0">Hire the whole studio: message us on WhatsApp.</p></a>
+      </div>
+      <p class="muted" style="margin:20px 0 0">Coming soon: workshops on parenting and baby health and safety, and events for the whole family.</p>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <h2>What parents say <span class="tag" style="vertical-align:middle">With permission, after opening</span></h2>
+      <div class="grid3">
+        <div class="card"><p style="margin:0 0 10px">"[Quote from a parent]"</p><span class="muted">First name, mum of one</span></div>
+        <div class="card"><p style="margin:0 0 10px">"[Quote from a parent]"</p><span class="muted">First name, mum of two</span></div>
+        <div class="card"><p style="margin:0 0 10px">"[Quote from a parent]"</p><span class="muted">First name, dad of one</span></div>
+      </div>
+    </div>
+  </section>
+  <section style="border-bottom:0">
+    <div class="wrap" style="display:flex;flex-wrap:wrap;gap:28px;align-items:stretch">
+      <div style="flex:1 1 320px">
+        <h2>Visit us</h2>
+        <p style="margin:0 0 6px;font-size:17px">[ADDRESS]</p>
+        <p class="muted" style="margin:0 0 18px">[OPENING HOURS]</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="Main.dc.html">Book now</a><a class="btn2" href="https://maps.google.com/">Find us on Google Maps</a></div>
+      </div>
+      <div class="ph" style="flex:1 1 360px;min-height:240px;border-radius:16px">Map</div>
+    </div>
+  </section>
+  <footer style="background:#F3F4F6">
+    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;min-height:80px">
+      <strong>The Village · Family Club</strong>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <a href="C14-Menu.dc.html" style="font-size:14px">Privacy</a>
+        <a href="C14-Menu.dc.html" style="font-size:14px">Terms</a>
+        <a class="soc" href="https://facebook.com/" aria-label="Facebook">f</a>
+        <a class="soc" href="https://instagram.com/" aria-label="Instagram">IG</a>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2200}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

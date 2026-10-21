@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Customers</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.muted{color:#5B616B}
+.side{flex:1 1 200px;padding:20px 16px;border-right:1px solid #E4E6EA;background:#FAFAFB;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
+.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#1F2328;text-decoration:none}
+.nav.on{background:#E3EEE6;font-weight:700;color:#24452F}
+.mgr{font-size:11px;color:#5B616B;margin-left:6px}
+.main{flex:999 1 560px;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #3F6B52;background:#E3EEE6;color:#24452F;font:600 14px system-ui,sans-serif;text-decoration:none}
+.chip{display:inline-flex;align-items:center;min-height:34px;padding:0 14px;border-radius:17px;border:1px solid #B9BEC6;background:#fff;font:500 14px system-ui,sans-serif;color:#1F2328}
+.chip.on{background:#1F2328;color:#fff;border-color:#1F2328}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.pay{background:#FFF1D6;color:#7A4E00}
+.new{background:#E2ECF7;color:#244A73}
+.warn{background:#FBE9E6;color:#7A2A1F}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-size:12.5px;color:#5B616B;font-weight:600;padding:10px 12px;border-bottom:1px solid #D9DCE1;white-space:nowrap}
+td{padding:12px;border-bottom:1px solid #EEF0F2;vertical-align:top}
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;min-height:900px;background:#fff">
+  <nav class="side" aria-label="Staff menu">
+    <strong style="font-size:17px;padding:4px 12px 14px">The Village · Staff</strong>
+    <a class="nav" href="S01-Dashboard.dc.html">Dashboard</a>
+    <a class="nav" href="S02-Calendar.dc.html">Calendar</a>
+    <a class="nav on" href="S04-Customers.dc.html">Customers</a>
+    <a class="nav" href="S07-Catalog.dc.html">Catalog<span class="mgr">manager</span></a>
+    <a class="nav" href="S08-Reports.dc.html">Reports<span class="mgr">manager</span></a>
+    <a class="nav" href="S09-Staff.dc.html">Staff<span class="mgr">manager</span></a>
+    <a class="nav" href="S10-Settings.dc.html">Settings<span class="mgr">manager</span></a>
+    <span class="muted" style="font-size:13px;padding:24px 12px 0">Signed in as Thao (Manager)</span>
+  </nav>
+  <main class="main">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <h1 style="margin:0;font-size:26px">Customers</h1>
+      <a class="btn" href="S14-NewCustomer.dc.html">+ Add customer</a>
+    </div>
+    <label for="q" style="position:absolute;left:-9999px">Search customers</label>
+    <input id="q" placeholder="Search name, phone or email" style="border:1px solid #9AA0A8;border-radius:12px;min-height:44px;padding:0 14px;font-size:15px;max-width:480px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="chip on" type="button">All · 86</button>
+      <button class="chip" type="button">New · 4</button>
+      <button class="chip" type="button">Unpaid bookings · 3</button>
+      <button class="chip" type="button">Pack expires in 14 days · 5</button>
+      <button class="chip" type="button">Check for duplicate · 1</button>
+    </div>
+    <div style="overflow-x:auto;border:1px solid #E4E6EA;border-radius:12px">
+      <table>
+        <thead><tr><th>Name</th><th>Phone · Email</th><th>Children</th><th>Class credits</th><th>Open play</th><th>Next booking</th><th></th></tr></thead>
+        <tbody>
+          <sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+            <tr>
+              <td><a href="S05-CustomerProfile.dc.html" style="font-weight:600">{{r.name}}</a></td>
+              <td>{{r.phone}}<br><span class="muted">{{r.email}}</span></td>
+              <td>{{r.kids}}</td>
+              <td>{{r.cc}}</td>
+              <td>{{r.op}}</td>
+              <td>{{r.next}}</td>
+              <td><sc-if value="{{r.flag}}" hint-placeholder-val="{{false}}"><span class="tag {{r.fcls}}">{{r.flag}}</span></sc-if></td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+    <span class="muted" style="font-size:13px">Instructors set to "Own sessions only" see just the people booked into their sessions.</span>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const r = (name, phone, email, kids, cc, op, next, flag, fcls) => ({ name, phone, email, kids, cc, op, next, flag: flag || '', fcls: fcls || '' });
+    return {
+      rows: [
+        r('Phuong Nguyen', '+84 90 555 1234', 'phuong@example.com', 'Bao (9 mo), Mi (3 y)', '6 free · 2 reserved', '6 free', 'Mon 2 Nov 9:00'),
+        r('Linh Tran', '+84 90 123 4567', 'linh@example.com', 'Bao (8 mo)', '—', '—', 'Mon 2 Nov 9:00', 'New · pay on the day', 'new'),
+        r('Sarah Jones', '+84 93 222 0101', 'sarah@example.com', 'Olivia (2 y)', '—', '—', 'Mon 2 Nov 10:30', 'Unpaid drop-in', 'pay'),
+        r('Hoa Le', '+84 91 777 8888', 'hoa@example.com', 'Minh (11 mo)', 'Free trial', '—', 'Tue 3 Nov 9:30', 'New', 'new'),
+        r('Emma Brown', '+84 94 300 4000', 'emma@example.com', '—', '1 free · expires 5 Nov', '—', '—', 'Expires soon', 'pay'),
+        r('Thanh Vo', '+84 97 410 2020', 'thanh@example.com', 'An (1 y)', '3 free', '—', 'Thu 5 Nov 9:30', 'Guest booking: phone matched another customer', 'warn')
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Staff accounts</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1F2328}
+a{color:#2F5D8A}a:hover{color:#1E3F60}
+.muted{color:#5B616B}
+.side{flex:1 1 200px;padding:20px 16px;border-right:1px solid #E4E6EA;background:#FAFAFB;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
+.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#1F2328;text-decoration:none}
+.nav.on{background:#E3EEE6;font-weight:700;color:#24452F}
+.mgr{font-size:11px;color:#5B616B;margin-left:6px}
+.main{flex:999 1 560px;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:19px;border:1.5px solid #3F6B52;background:#E3EEE6;color:#24452F;font:600 14px system-ui,sans-serif;text-decoration:none}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 12px;border-radius:17px;border:1.5px solid #9AA0A8;background:#fff;color:#1F2328;font:600 13px system-ui,sans-serif;text-decoration:none}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.later{background:#ECE6F5;color:#4B3A80}
+.ok{background:#E3EEE6;color:#24452F}
+.todo{background:#FFF1D6;color:#7A4E00}
+select{border:1px solid #9AA0A8;border-radius:10px;min-height:36px;padding:0 8px;font:14px system-ui,sans-serif;background:#fff}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-size:12.5px;color:#5B616B;font-weight:600;padding:9px 10px;border-bottom:1px solid #D9DCE1;white-space:nowrap}
+td{padding:10px;border-bottom:1px solid #EEF0F2;vertical-align:middle}
+.box{overflow-x:auto;border:1px solid #E4E6EA;border-radius:12px}
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;min-height:900px;background:#fff">
+  <nav class="side" aria-label="Staff menu">
+    <strong style="font-size:17px;padding:4px 12px 14px">The Village · Staff</strong>
+    <a class="nav" href="S01-Dashboard.dc.html">Dashboard</a>
+    <a class="nav" href="S02-Calendar.dc.html">Calendar</a>
+    <a class="nav" href="S04-Customers.dc.html">Customers</a>
+    <a class="nav" href="S07-Catalog.dc.html">Catalog<span class="mgr">manager</span></a>
+    <a class="nav" href="S08-Reports.dc.html">Reports<span class="mgr">manager</span></a>
+    <a class="nav on" href="S09-Staff.dc.html">Staff<span class="mgr">manager</span></a>
+    <a class="nav" href="S10-Settings.dc.html">Settings<span class="mgr">manager</span></a>
+    <span class="muted" style="font-size:13px;padding:24px 12px 0">Signed in as Thao (Manager)</span>
+  </nav>
+  <main class="main">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px"><h1 style="margin:0;font-size:26px">Staff</h1><span class="tag later">+2 weeks release</span></div>
+      <button class="btn" type="button">+ Add staff member</button>
+    </div>
+    <p class="muted" style="margin:0;font-size:14px">At opening the developer creates these accounts. <span class="tag todo">Names and emails to come</span></p>
+    <div class="box">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Can see customers</th><th>2-step login</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Thao</td><td>[MANAGER 1 EMAIL]</td><td>Manager + teaches</td><td>All</td><td><span class="tag ok">On</span></td><td><button class="btn2" type="button">Reset login</button></td></tr>
+          <tr><td>[Manager 2]</td><td>[MANAGER 2 EMAIL]</td><td>Manager</td><td>All</td><td><span class="tag ok">On</span></td><td><button class="btn2" type="button">Reset login</button></td></tr>
+          <tr><td>Mai</td><td>[EMAIL]</td><td>Instructor</td><td><label style="position:absolute;left:-9999px" for="a1">Access for Mai</label><select id="a1"><option>Own sessions only</option><option>All customers</option></select></td><td>Optional</td><td style="white-space:nowrap"><button class="btn2" type="button">Reset login</button> <button class="btn2" type="button">Remove</button></td></tr>
+          <tr><td>Anna</td><td>[EMAIL]</td><td>Instructor</td><td><label style="position:absolute;left:-9999px" for="a2">Access for Anna</label><select id="a2"><option>Own sessions only</option><option>All customers</option></select></td><td>Optional</td><td style="white-space:nowrap"><button class="btn2" type="button">Reset login</button> <button class="btn2" type="button">Remove</button></td></tr>
+          <tr><td>Thu</td><td>[EMAIL]</td><td>Instructor</td><td><label style="position:absolute;left:-9999px" for="a3">Access for Thu</label><select id="a3"><option>All customers</option><option>Own sessions only</option></select></td><td>Optional</td><td style="white-space:nowrap"><button class="btn2" type="button">Reset login</button> <button class="btn2" type="button">Remove</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="border:1px dashed #B9BEC6;border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.5">
+      <strong>Own sessions only</strong> (the default): the instructor sees the people and children booked into their own sessions, and can search names to book someone in. <strong>All customers</strong>: they see the full customer list. Every change is recorded in the audit log.
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
