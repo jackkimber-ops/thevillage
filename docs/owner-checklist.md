@@ -22,6 +22,8 @@ Nothing here is needed until the designs are signed off, **except** Meta/Zalo ve
 | Domain | — | about $1–2 | See above |
 | WhatsApp / Zalo / SMS | pay per message | about $0–10 | Once approved |
 
-Optional: Supabase through the Vercel Marketplace (one bill). Check that daily backups and Pro limits are included first. An inbox on the domain (Google Workspace or Zoho) is separate and optional.
+Email inbox (decided 21 Oct): **Namecheap Private Email, Launch plan** (1 mailbox, about $15/year after the free first month): **hello@thevillagesaigon.com**, plus free aliases such as bookings@ and privacy@ that deliver into it. Buy it in the same Namecheap account as the domain, and don't edit the DNS records yourselves: Claude sets up the email records and Resend's together so neither lands in spam.
+
+Optional: Supabase through the Vercel Marketplace (one bill). Check that daily backups and Pro limits are included first. 
 
 Free accounts I'll ask you to open or approve later: Sentry, an uptime monitor, Cloudflare Turnstile.

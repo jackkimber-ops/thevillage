@@ -75,7 +75,7 @@ Database also enforces: unique active booking per (session, customer); customers
 - Open play: up to 2 children (1 credit or 150,000 each) and up to 2 parents free per booking.
 - Booking after the cutoff is allowed (until 1 h before start); the confirm screen says "This booking can't be cancelled online".
 - Staff dragging a session to a new time moves its bookings with it and emails everyone booked; a move that overlaps another session is refused.
-- Studio: 47/1 Quốc Hương, An Khánh, Hồ Chí Minh. Open every day 8:30–17:00. Contact email for now: thevillage.saigon@gmail.com. Contact/WhatsApp/Zalo for now: +84 933 834 068 (temporary until the business is registered). All of these go in `studio_settings`, never in code.
+- Studio: 47/1 Quốc Hương, An Khánh, Hồ Chí Minh. Open every day 8:30–17:00. Contact email for now: thevillage.saigon@gmail.com, later hello@thevillagesaigon.com (one shared Namecheap mailbox; staff log in with personal emails). Contact/WhatsApp/Zalo for now: +84 933 834 068 (temporary until the business is registered). All of these go in `studio_settings`, never in code.
 
 ## Roles
 
