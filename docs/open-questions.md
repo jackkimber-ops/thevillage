@@ -37,6 +37,13 @@ The requirements win on *what* to build, so I'll follow the answer in **bold** u
 7. **Name punctuation.** "The Village - Family Club" or "The Village: Family Club"? (The sketches use "The Village · Family Club".)
 8. **Selling a pack to someone with a pay-on-the-day booking.** Suggest: their upcoming unpaid bookings switch to credits from the new pack, so they don't pay twice.
 
+## C2. Brand (from the brand pack, 21 Oct)
+
+1. Coral and forrest are slightly different in the brand guide and the logo files (coral `#E88D6D` vs `#F68665`). We use the guide's values. Which is the master?
+2. Please add SVGs of the full-colour wordmark and the badges. Only the one-colour wordmark SVGs are in the Drive folder.
+3. The brand guide's sample paragraph is template filler ("Rimberio Coffee…"). Worth replacing before it's shared.
+4. OK to use slightly deeper shades of forrest and coral for small text and buttons? The originals are too light to read at small sizes.
+
 ## D. Owner tasks still open (from the requirements doc)
 
 - [ ] First month's timetable: classes, days, times, instructor (in progress)

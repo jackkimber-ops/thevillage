@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Confirm a class, styled</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
+a{color:#5E5B3B}a:hover{color:#3B3A2A}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500}
+.btn{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:27px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none}
+.card{background:#fff;border-radius:20px;padding:14px 16px}
+.lbl{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:0 0 6px}
+.check{display:flex;align-items:center;gap:12px;min-height:44px;font-size:15.5px}
+.check input{width:22px;height:22px;margin:0;accent-color:#5E5B3B}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg button{min-height:40px;border:0;border-radius:18px;background:transparent;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg .on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
+  <div style="height:200px;background:#C3BF94;position:relative;display:flex;align-items:flex-end;padding:16px 20px;box-sizing:border-box;overflow:hidden">
+    <div style="position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:#FFBEA1;opacity:.7" aria-hidden="true"></div>
+    <img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="position:absolute;right:28px;top:40px;width:110px;height:110px">
+    <a href="V02-Timetable.dc.html" aria-label="Back" style="position:absolute;left:14px;top:14px;width:44px;height:44px;border-radius:22px;background:#FFF4E6;display:flex;align-items:center;justify-content:center;color:#5E5B3B"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
+    <div style="position:relative">
+      <div style="font-size:12px;font-weight:600;background:#FFF4E6;border-radius:10px;padding:3px 9px;display:inline-block">Session picture · placeholder</div>
+    </div>
+  </div>
+  <div style="flex:1;padding:18px 18px 12px;display:flex;flex-direction:column;gap:14px;overflow:hidden">
+    <div>
+      <div class="h" style="font-size:28px;color:#5E5B3B">pilates flow</div>
+      <div style="font-size:15px;color:#66624A">Mon 2 Nov · 9:00–10:00 · with Mai · 4 places left</div>
+    </div>
+    <div class="seg"><button class="on" type="button">Just this time</button><button type="button">Pick dates</button></div>
+    <div class="card">
+      <p class="lbl">who's coming</p>
+      <div class="check"><input type="checkbox" checked disabled id="p"><label for="p">You (Phuong)</label></div>
+      <div class="check"><input type="checkbox" checked id="k1"><label for="k1">Bao · 9 months</label></div>
+      <div class="check"><input type="checkbox" id="k2"><label for="k2">Mi · 3 years</label></div>
+      <div style="font-size:13px;color:#66624A;margin-top:2px">Up to 2 children, free with you.</div>
+    </div>
+    <div class="card" style="background:#E8E3C5;display:flex;align-items:center;gap:14px">
+      <div style="width:48px;height:48px;border-radius:24px;background:#5E5B3B;color:#FFF4E6;display:flex;align-items:center;justify-content:center;font:600 20px 'Lexend Deca',sans-serif">1</div>
+      <div><div style="font-weight:600">credit from your 10-class pack</div><div style="font-size:13.5px;color:#66624A">5 left after this · expires 15 Jan 2027</div></div>
+    </div>
+    <p style="margin:0;font-size:13.5px;color:#66624A;line-height:1.45">Free cancellation until <strong style="color:#3B3A2A">20:00 on Sun 1 Nov</strong>.</p>
+  </div>
+  <div style="padding:10px 18px 22px">
+    <a class="btn" href="C09-Booked.dc.html">Confirm booking</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

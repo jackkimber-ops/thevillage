@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Website, styled</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
+a{color:#5E5B3B}a:hover{color:#3B3A2A}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px;box-sizing:border-box}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 26px;border-radius:25px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 26px;border-radius:25px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none}
+.soc{width:42px;height:42px;border-radius:21px;background:#E8E3C5;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#3B3A2A;text-decoration:none}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
+.card{border-radius:26px;padding:26px;text-decoration:none;color:#3B3A2A;display:flex;flex-direction:column;gap:8px}
+</style>
+</helmet>
+<div style="background:#FFF4E6">
+  <header>
+    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;min-height:88px">
+      <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:48px;width:auto">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <a class="soc" href="https://facebook.com/" aria-label="Facebook">f</a>
+        <a class="soc" href="https://instagram.com/" aria-label="Instagram">IG</a>
+        <span style="font-size:14px;padding:0 6px"><strong>EN</strong> · VI</span>
+        <a class="btn" href="V01-Login.dc.html">Book now</a>
+      </div>
+    </div>
+  </header>
+  <div class="wrap" style="padding-top:12px;padding-bottom:56px">
+    <div style="display:flex;flex-wrap:wrap;gap:36px;align-items:center">
+      <div style="flex:1 1 420px;display:flex;flex-direction:column;gap:20px">
+        <h1 class="h" style="margin:0;font-size:clamp(38px,5vw,60px);line-height:1.05;color:#5E5B3B">pilates and movement for mums and little ones</h1>
+        <p style="margin:0;font-size:19px;color:#66624A">Move. Connect. Belong. Bring your children along.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="V01-Login.dc.html">Book a class</a><a class="btn2" href="V02-Timetable.dc.html">See the timetable</a></div>
+      </div>
+      <div style="flex:1 1 420px;position:relative;min-height:420px">
+        <div style="position:absolute;inset:0 0 0 30px;border-radius:200px 200px 32px 32px;background:#C3BF94;display:flex;align-items:center;justify-content:center;color:#3B3A2A;font-size:14px;font-weight:600">Photo of a class [PLACEHOLDER]</div>
+        <div style="position:absolute;left:0;bottom:24px;width:140px;height:140px"><img src="/_blob/bedcf8ee28231b21f461eb693d7e1a77" alt="" style="width:140px;height:140px"></div>
+        <div style="position:absolute;right:-10px;top:-10px;width:90px;height:90px;border-radius:50%;background:#FFBEA1" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+  <section style="background:#fff;padding:64px 0;border-radius:40px 40px 0 0">
+    <div class="wrap">
+      <h2 class="h" style="font-size:34px;margin:0 0 14px;color:#5E5B3B">it takes a village to raise a child</h2>
+      <p style="font-size:18px;font-weight:600;margin:0 0 8px">Parents shouldn't have to choose between looking after themselves and their children.</p>
+      <p style="font-size:17px;line-height:1.6;margin:0 0 30px;max-width:760px">So we built exercise around parenthood: proper classes, with your little ones playing, exploring or simply close by. Not a gym, not a play centre. A place designed with you in mind.</p>
+      <div class="grid3">
+        <div class="card" style="background:#C3BF94"><div class="h" style="font-size:24px">move</div><p style="margin:0;line-height:1.5">Pilates, yoga, strength, fitness and dance, worth doing in their own right.</p></div>
+        <div class="card" style="background:#FFBEA1"><div class="h" style="font-size:24px">connect</div><p style="margin:0;line-height:1.5">Children stay close. Meet parents at your stage over coffee, workshops and events.</p></div>
+        <div class="card" style="background:#E8E3C5"><div class="h" style="font-size:24px">belong</div><p style="margin:0;line-height:1.5">Made for this stage of life. Arrive with your baby, no awkwardness. You belong here.</p></div>
+      </div>
+    </div>
+  </section>
+  <section style="background:#fff;padding:0 0 72px">
+    <div class="wrap">
+      <h2 class="h" style="font-size:34px;margin:0 0 20px;color:#5E5B3B">what's on</h2>
+      <div class="grid3">
+        <a class="card" href="V02-Timetable.dc.html" style="background:#FFF4E6"><div style="height:140px;border-radius:18px;background:#C3BF94;display:flex;align-items:center;justify-content:center;font-size:13px">Picture</div><strong style="font-size:19px;margin-top:6px">Classes</strong><span style="color:#66624A">Pilates, yoga, strength, fitness, dance.</span></a>
+        <a class="card" href="V02-Timetable.dc.html" style="background:#FFF4E6"><div style="height:140px;border-radius:18px;background:#FFBEA1;display:flex;align-items:center;justify-content:center;font-size:13px">Picture</div><strong style="font-size:19px;margin-top:6px">Open play</strong><span style="color:#66624A">Play time for parents and kids.</span></a>
+        <a class="card" href="C13-PrivateHire.dc.html" style="background:#FFF4E6"><div style="height:140px;border-radius:18px;background:#E8E3C5;display:flex;align-items:center;justify-content:center;font-size:13px">Picture</div><strong style="font-size:19px;margin-top:6px">Private hire</strong><span style="color:#66624A">Hire the whole studio: message us on WhatsApp.</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

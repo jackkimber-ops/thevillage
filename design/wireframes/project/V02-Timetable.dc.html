@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Timetable, styled</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
+a{color:#5E5B3B}a:hover{color:#3B3A2A}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500}
+.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#5E5B3B;border-radius:22px}
+.pill{display:inline-flex;align-items:center;min-height:38px;padding:0 16px;border-radius:19px;font:500 14px "Work Sans",sans-serif;border:0;background:#E8E3C5;color:#3B3A2A}
+.pill.on{background:#5E5B3B;color:#FFF4E6}
+.card{background:#fff;border-radius:20px;padding:10px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 0 #E8E3C5}
+.pic{width:60px;height:60px;border-radius:16px;flex:none;display:flex;align-items:center;justify-content:center}
+.book{min-height:40px;min-width:74px;padding:0 16px;border-radius:20px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 15px "Work Sans",sans-serif;text-decoration:none;display:flex;align-items:center;justify-content:center}
+.day{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:8px 0 0}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
+  <div style="display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 8px 0 18px">
+    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:34px;width:auto">
+    <div style="display:flex;align-items:center;gap:2px">
+      <span style="font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px"><strong>EN</strong> · VI</span>
+      <a class="iconbtn" href="C14-Menu.dc.html" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></a>
+    </div>
+  </div>
+  <div style="flex:1;overflow:hidden;padding:6px 16px 12px;display:flex;flex-direction:column;gap:10px">
+    <div class="h" style="font-size:28px;color:#5E5B3B">hi phuong</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;background:#E8E3C5;border-radius:22px">
+      <button class="iconbtn" type="button" aria-label="Previous week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <strong style="font-size:15px">2 – 8 November</strong>
+      <button class="iconbtn" type="button" aria-label="Next week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="pill on" type="button">All</button>
+      <button class="pill" type="button">Classes</button>
+      <button class="pill" type="button">Open play</button>
+    </div>
+    <sc-for list="{{days}}" as="d" hint-placeholder-count="2">
+      <p class="day">{{d.label}}</p>
+      <sc-for list="{{d.items}}" as="s" hint-placeholder-count="3">
+        <div class="card">
+          <div class="pic" style="{{s.pic}}"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:40px;height:40px;opacity:.9"></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;font-size:15.5px">{{s.title}}</div>
+            <div style="font-size:13.5px;color:#66624A">{{s.time}} · {{s.who}}</div>
+            <div style="font-size:13.5px;margin-top:2px">{{s.left}}</div>
+          </div>
+          <sc-if value="{{s.full}}" hint-placeholder-val="{{false}}">
+            <span style="font-size:14px;font-weight:600;color:#66624A;padding:0 10px">Full</span>
+          </sc-if>
+          <sc-if value="{{s.open}}" hint-placeholder-val="{{true}}">
+            <a class="book" href="C06-ConfirmClass.dc.html">Book</a>
+          </sc-if>
+          <sc-if value="{{s.mine}}" hint-placeholder-val="{{false}}">
+            <span style="font-size:13px;font-weight:600;color:#3B3A2A;background:#C3BF94;border-radius:12px;padding:6px 10px">Booked ✓</span>
+          </sc-if>
+        </div>
+      </sc-for>
+    </sc-for>
+  </div>
+  <nav style="display:flex;background:#fff;height:68px;border-radius:24px 24px 0 0;box-shadow:0 -1px 0 #E8E3C5">
+    <a class="tab on" href="C04-Timetable.dc.html"><span style="width:6px;height:6px;border-radius:3px;background:#E88D6D"></span>Classes</a>
+    <a class="tab" href="C10-MyBookings.dc.html"><span style="width:6px;height:6px"></span>Bookings</a>
+    <a class="tab" href="C12-MyPackages.dc.html"><span style="width:6px;height:6px"></span>Packages</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const P = { c: 'background:#C3BF94', o: 'background:#FFBEA1' };
+    const s = (k, title, time, who, left, state) => ({ pic: P[k], title, time, who, left, full: state === 'full', open: state === 'open', mine: state === 'mine' });
+    return {
+      days: [
+        { label: 'monday 2 nov', items: [
+          s('c', 'Pilates Flow', '9:00–10:00', 'Mai', '4 of 10 places left', 'mine'),
+          s('o', 'Open Play', '10:30–12:00', 'Staff', '5 child places left', 'open'),
+          s('c', 'Strength', '17:30–18:30', 'Anna', 'Full', 'full')
+        ]},
+        { label: 'tuesday 3 nov', items: [
+          s('c', 'Mum & Baby Yoga', '9:30–10:30', 'Mai', '7 of 10 places left', 'open'),
+          s('c', 'Dance Fit', '18:00–19:00', 'Thu', '2 of 10 places left', 'open')
+        ]}
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

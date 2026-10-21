@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Style sheet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
+a{color:#5E5B3B}a:hover{color:#3B3A2A}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em}
+.lbl{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#66624A;margin:0 0 14px}
+.sw{display:flex;flex-direction:column;gap:6px;font-size:12.5px}
+.chip{width:100%;height:72px;border-radius:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 24px;border-radius:24px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 24px;border-radius:24px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif}
+.pill{display:inline-flex;align-items:center;min-height:36px;padding:0 16px;border-radius:18px;font:500 14px "Work Sans",sans-serif;border:0}
+.tag{display:inline-block;padding:4px 10px;border-radius:12px;font-size:12.5px;font-weight:600;color:#3B3A2A}
+</style>
+</helmet>
+<div style="width:1280px;height:900px;box-sizing:border-box;background:#FFF4E6;padding:48px 56px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:28px;row-gap:36px;align-content:start">
+  <section style="grid-column:span 7">
+    <p class="lbl">Logos</p>
+    <div style="display:flex;align-items:center;gap:36px">
+      <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village. wordmark" style="width:300px;height:auto">
+      <img src="/_blob/bedcf8ee28231b21f461eb693d7e1a77" alt="the village badge" style="width:120px;height:120px">
+      <div style="width:120px;height:120px;border-radius:28px;background:#868259;display:flex;align-items:center;justify-content:center"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="Home-screen icon" style="width:96px;height:96px"></div>
+    </div>
+    <p class="muted" style="margin:10px 0 0;font-size:13px;color:#66624A">Wordmark · badge · home-screen icon</p>
+  </section>
+  <section style="grid-column:span 5">
+    <p class="lbl">Type</p>
+    <div class="h" style="font-size:40px;line-height:1.05;color:#5E5B3B;font-weight:500">welcome to<br>the family club</div>
+    <div style="margin-top:12px;font-size:16px;line-height:1.55;max-width:420px">Body text in Work Sans. Pilates, yoga and dance for mums, with your little ones close by.</div>
+    <div style="margin-top:6px;font-size:13px;color:#66624A">Headings: Lexend Deca, lowercase · Body: Work Sans</div>
+  </section>
+  <section style="grid-column:span 12">
+    <p class="lbl">Brand colours · backgrounds, logos, accents</p>
+    <div style="display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:16px">
+      <div class="sw"><div class="chip" style="background:#868259"></div><strong>Forrest</strong>#868259</div>
+      <div class="sw"><div class="chip" style="background:#C3BF94"></div><strong>Sage</strong>#C3BF94</div>
+      <div class="sw"><div class="chip" style="background:#E8E3C5"></div><strong>Sky</strong>#E8E3C5</div>
+      <div class="sw"><div class="chip" style="background:#E88D6D"></div><strong>Coral</strong>#E88D6D</div>
+      <div class="sw"><div class="chip" style="background:#FFBEA1"></div><strong>Rose</strong>#FFBEA1</div>
+      <div class="sw"><div class="chip" style="background:#FFF4E6;box-shadow:inset 0 0 0 1px #E8E3C5"></div><strong>Linen</strong>#FFF4E6</div>
+      <div class="sw"><div class="chip" style="background:#3B3A2A"></div><strong>Ink</strong>#3B3A2A · text</div>
+      <div class="sw"><div class="chip" style="background:#66624A"></div><strong>Muted</strong>#66624A · small text</div>
+      <div class="sw"><div class="chip" style="background:#5E5B3B"></div><strong>Forrest deep</strong>#5E5B3B · buttons</div>
+      <div class="sw"><div class="chip" style="background:#A44A2C"></div><strong>Coral deep</strong>#A44A2C · alerts</div>
+    </div>
+    <p style="margin:10px 0 0;font-size:13px;color:#66624A">The last four are added: darker shades of your colours so small text and buttons are easy to read.</p>
+  </section>
+  <section style="grid-column:span 6">
+    <p class="lbl">Buttons and filters</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <button class="btn" type="button">Book</button>
+      <button class="btn2" type="button">Message us</button>
+      <button class="pill" type="button" style="background:#5E5B3B;color:#FFF4E6">All</button>
+      <button class="pill" type="button" style="background:#E8E3C5;color:#3B3A2A">Classes</button>
+      <button class="pill" type="button" style="background:#E8E3C5;color:#3B3A2A">Open play</button>
+    </div>
+  </section>
+  <section style="grid-column:span 6">
+    <p class="lbl">Session types and status</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <span class="tag" style="background:#C3BF94">Group class</span>
+      <span class="tag" style="background:#FFBEA1">Open play</span>
+      <span class="tag" style="background:#E8E3C5">Private hire</span>
+      <span class="tag" style="background:#E88D6D">Workshop</span>
+      <span class="tag" style="background:#FFF4E6;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C">Pay on the day</span>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
