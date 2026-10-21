@@ -11,7 +11,7 @@ Until you answer, the designs use clearly marked placeholders and the default sh
 3. **Opening hours.** These also set when private hire can be booked.
 4. **Pack prices and validity.** Class packs and open play packs of 10, 20, 40 and 60, how long each is valid, and how long the intro pack is valid.
 5. **Staff accounts.** Names and emails of the 2 managers and the first instructors.
-6. **Studio details.** Address, studio WhatsApp and Zalo numbers, Messenger link, Facebook and Instagram pages, and the address emails come from (e.g. `hello@thevillagesaigon.com`).
+6. **Studio details.** Google Maps link received 21 Oct: https://maps.app.goo.gl/shhU5KCEVMMrX4cd8 (used for the website's "Find us on Google Maps" button). Still needed: the address written out, studio WhatsApp and Zalo numbers, Messenger link, Facebook and Instagram pages, and the address emails come from (e.g. `hello@thevillagesaigon.com`).
 
 ## B. Things in the docs that don't line up
 
