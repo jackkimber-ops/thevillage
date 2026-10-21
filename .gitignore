@@ -1,0 +1,23 @@
+# dependencies & builds
+node_modules/
+.next/
+out/
+dist/
+coverage/
+.vercel/
+.turbo/
+
+# secrets: never commit
+.env
+.env.*
+!.env.example
+
+# supabase local
+supabase/.branches/
+supabase/.temp/
+
+# OS / editor
+.DS_Store
+*.log
+.idea/
+.vscode/
