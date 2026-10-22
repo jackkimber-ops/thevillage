@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Classes timetable, week view</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
+a{color:#5E5B3B}a:hover{color:#3B3A2A}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;color:#5E5B3B;margin:0}
+.lbl{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:6px 0 0}
+.muted{color:#66624A}
+.card{background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 1px 0 #E8E3C5}
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.btn:hover{color:#FFF4E6;background:#4E4B30}
+.btn2{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.danger{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #A44A2C;background:#fff;color:#A44A2C;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.pill{font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px}
+.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#5E5B3B;border-radius:22px}
+.back{width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;color:#5E5B3B;box-shadow:0 1px 0 #E8E3C5;flex:none}
+.tag{display:inline-block;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#3B3A2A}
+.pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
+.ok{background:#C3BF94;color:#3B3A2A}
+.new{background:#E8E3C5;color:#3B3A2A}
+.todo{background:#FFF1D6;color:#7A4E00}
+.later{background:#ECE6F5;color:#4B3A80}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg button{min-height:40px;border:0;border-radius:18px;background:transparent;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg .on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:14px;font-weight:600}
+input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16px;font:16px "Work Sans",sans-serif;background:#fff;color:#3B3A2A;box-sizing:border-box;width:100%}
+.pill{display:inline-flex;align-items:center;min-height:38px;padding:0 16px;border-radius:19px;font:500 14px "Work Sans",sans-serif;border:0;background:#E8E3C5;color:#3B3A2A}
+.pill.on{background:#5E5B3B;color:#FFF4E6}
+.scard{background:#fff;border-radius:20px;padding:10px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 0 #E8E3C5}
+.pic{width:60px;height:60px;border-radius:16px;flex:none;display:flex;align-items:center;justify-content:center}
+.book{min-height:40px;min-width:74px;padding:0 16px;border-radius:20px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 15px "Work Sans",sans-serif;text-decoration:none;display:flex;align-items:center;justify-content:center}
+.day{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:8px 0 0}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
+.lang{font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px;color:#3B3A2A}
+.check{display:flex;align-items:center;gap:12px;min-height:44px;font-size:15.5px}
+.check input{width:22px;height:22px;min-height:0;margin:0;padding:0;accent-color:#5E5B3B;flex:none}
+.seg a{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:18px;text-decoration:none;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg3 a{display:flex;align-items:center;justify-content:center;min-height:36px;border-radius:18px;text-decoration:none;font:500 14px "Work Sans",sans-serif;color:#3B3A2A}
+.seg3 a.on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+.wk{position:relative;display:grid;grid-template-columns:26px repeat(7,minmax(0,1fr));column-gap:3px}
+.dh{text-align:center;font-size:11px;color:#66624A;line-height:1.2;padding-bottom:6px}
+.dh strong{display:block;font:500 15px "Lexend Deca",sans-serif;color:#3B3A2A}
+.dh.today strong{display:inline-flex;width:26px;height:26px;border-radius:13px;background:#5E5B3B;color:#FFF4E6;align-items:center;justify-content:center}
+.col{position:relative;height:396px;background:#fff;border-radius:10px}
+.blk{position:absolute;left:2px;right:2px;border-radius:8px;padding:3px 3px;font-size:10px;line-height:1.2;color:#3B3A2A;text-decoration:none;overflow:hidden;box-sizing:border-box}
+.blk b{display:block;font-size:10.5px}
+.hr{position:absolute;right:2px;font-size:9.5px;color:#66624A}
+.lg{display:inline-flex;align-items:center;gap:6px;font-size:12.5px}
+.sw{width:12px;height:12px;border-radius:4px}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
+  <div style="display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 8px 0 18px">
+    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:34px;width:auto">
+    <div style="display:flex;align-items:center;gap:2px">
+      <span class="lang"><strong>EN</strong> · VI</span>
+      <a class="iconbtn" href="C14-Menu.dc.html" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></a>
+    </div>
+  </div>
+  <div style="flex:1;overflow:hidden;padding:6px 16px 12px;display:flex;flex-direction:column;gap:10px">
+    <div class="h" style="font-size:28px">hi lan</div>
+    <nav class="seg3" aria-label="Timetable view"><a href="C04-Timetable.dc.html">List</a><a class="on" href="C04b-TimetableWeek.dc.html" aria-current="page">Week</a><a href="C04c-TimetableMonth.dc.html">Month</a></nav>
+    <div style="display:flex;align-items:center;justify-content:space-between;background:#E8E3C5;border-radius:22px">
+      <button class="iconbtn" type="button" aria-label="Previous week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <strong style="font-size:15px">2 – 8 November</strong>
+      <button class="iconbtn" type="button" aria-label="Next week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="wk">
+      <span></span>
+      <sc-for list="{{days}}" as="d" hint-placeholder-count="7"><div class="{{d.cls}}">{{d.dow}}<strong>{{d.num}}</strong></div></sc-for>
+      <div style="position:relative;height:396px">
+        <sc-for list="{{hours}}" as="h" hint-placeholder-count="9"><span class="hr" style="{{h.style}}">{{h.label}}</span></sc-for>
+      </div>
+      <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+        <div class="col">
+          <sc-for list="{{d.items}}" as="e" hint-placeholder-count="2">
+            <a class="blk" href="{{e.href}}" style="{{e.style}}" aria-label="{{e.aria}}"><b>{{e.t}}</b>{{e.sub}}</a>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <span class="lg"><span class="sw" style="background:#C3BF94"></span>Class</span>
+      <span class="lg"><span class="sw" style="background:#FFBEA1"></span>Open play</span>
+      <span class="lg"><span class="sw" style="background:#fff;box-shadow:inset 0 0 0 2px #5E5B3B"></span>You're booked</span>
+      <span class="lg"><span class="sw" style="background:#EFE9D6"></span>Full</span>
+    </div>
+  </div>
+  <nav style="display:flex;background:#fff;height:68px;border-radius:24px 24px 0 0;box-shadow:0 -1px 0 #E8E3C5">
+    <a class="tab on" href="C04-Timetable.dc.html"><span style="width:6px;height:6px;border-radius:3px;background:#E88D6D"></span>Classes</a>
+    <a class="tab" href="C10-MyBookings.dc.html"><span style="width:6px;height:6px"></span>Bookings</a>
+    <a class="tab" href="C12-MyPackages.dc.html"><span style="width:6px;height:6px"></span>Packages</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const F = { c: 'background:#C3BF94', o: 'background:#FFBEA1', f: 'background:#EFE9D6;color:#66624A' };
+    const H = { c: 'C05-Session.dc.html', o: 'C07-ConfirmOpenPlay.dc.html' };
+    const e = (k, start, len, t, time, state) => {
+      let st = (state === 'full' ? F.f : F[k]) + ';top:' + Math.round((start - 8.5) * 44 + 2) + 'px;height:' + Math.round(len * 44 - 4) + 'px';
+      if (state === 'mine') st += ';box-shadow:inset 0 0 0 2px #5E5B3B';
+      return { t, sub: time, style: st, href: state === 'full' ? 'C04b-TimetableWeek.dc.html' : H[k], aria: t + ' ' + time + (state === 'full' ? ', full' : state === 'mine' ? ', you are booked' : '') };
+    };
+    const days = [
+      { dow: 'Mon', num: '2', cls: 'dh today', items: [e('c', 9, 1, 'Pilates', '9:00', 'mine'), e('o', 10.5, 1.5, 'Open play', '10:30'), e('c', 15.5, 1, 'Strength', '15:30', 'full')] },
+      { dow: 'Tue', num: '3', cls: 'dh', items: [e('c', 9.5, 1, 'Yoga', '9:30'), e('c', 16, 1, 'Dance', '16:00')] },
+      { dow: 'Wed', num: '4', cls: 'dh', items: [e('c', 9, 1, 'Pilates', '9:00'), e('o', 10.5, 1.5, 'Open play', '10:30')] },
+      { dow: 'Thu', num: '5', cls: 'dh', items: [e('c', 9.5, 1, 'Yoga', '9:30')] },
+      { dow: 'Fri', num: '6', cls: 'dh', items: [e('c', 9, 1, 'Pilates', '9:00'), e('c', 15.5, 1, 'Strength', '15:30')] },
+      { dow: 'Sat', num: '7', cls: 'dh', items: [e('o', 9, 1.5, 'Open play', '9:00')] },
+      { dow: 'Sun', num: '8', cls: 'dh', items: [e('o', 9, 1.5, 'Open play', '9:00'), e('c', 11, 1, 'Family yoga', '11:00')] }
+    ];
+    const hours = [];
+    for (let h = 9; h <= 16; h++) hours.push({ label: String(h), style: 'top:' + Math.round((h - 8.5) * 44 - 6) + 'px' });
+    return { days, hours };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Classes timetable, month view</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
+a{color:#5E5B3B}a:hover{color:#3B3A2A}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;color:#5E5B3B;margin:0}
+.lbl{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:6px 0 0}
+.muted{color:#66624A}
+.card{background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 1px 0 #E8E3C5}
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.btn:hover{color:#FFF4E6;background:#4E4B30}
+.btn2{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.danger{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #A44A2C;background:#fff;color:#A44A2C;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.pill{font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px}
+.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#5E5B3B;border-radius:22px}
+.back{width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;color:#5E5B3B;box-shadow:0 1px 0 #E8E3C5;flex:none}
+.tag{display:inline-block;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#3B3A2A}
+.pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
+.ok{background:#C3BF94;color:#3B3A2A}
+.new{background:#E8E3C5;color:#3B3A2A}
+.todo{background:#FFF1D6;color:#7A4E00}
+.later{background:#ECE6F5;color:#4B3A80}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg button{min-height:40px;border:0;border-radius:18px;background:transparent;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg .on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:14px;font-weight:600}
+input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16px;font:16px "Work Sans",sans-serif;background:#fff;color:#3B3A2A;box-sizing:border-box;width:100%}
+.pill{display:inline-flex;align-items:center;min-height:38px;padding:0 16px;border-radius:19px;font:500 14px "Work Sans",sans-serif;border:0;background:#E8E3C5;color:#3B3A2A}
+.pill.on{background:#5E5B3B;color:#FFF4E6}
+.scard{background:#fff;border-radius:20px;padding:10px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 0 #E8E3C5}
+.pic{width:60px;height:60px;border-radius:16px;flex:none;display:flex;align-items:center;justify-content:center}
+.book{min-height:40px;min-width:74px;padding:0 16px;border-radius:20px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 15px "Work Sans",sans-serif;text-decoration:none;display:flex;align-items:center;justify-content:center}
+.day{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:8px 0 0}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
+.lang{font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px;color:#3B3A2A}
+.check{display:flex;align-items:center;gap:12px;min-height:44px;font-size:15.5px}
+.check input{width:22px;height:22px;min-height:0;margin:0;padding:0;accent-color:#5E5B3B;flex:none}
+.seg a{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:18px;text-decoration:none;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg3 a{display:flex;align-items:center;justify-content:center;min-height:36px;border-radius:18px;text-decoration:none;font:500 14px "Work Sans",sans-serif;color:#3B3A2A}
+.seg3 a.on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+.mo{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));row-gap:2px;background:#fff;border-radius:20px;padding:8px 6px;box-shadow:0 1px 0 #E8E3C5}
+.dw{text-align:center;font-size:11px;color:#66624A;padding:2px 0 6px}
+.cell{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:38px;border-radius:12px;text-decoration:none;color:#3B3A2A;font:500 14px "Lexend Deca",sans-serif}
+.cell.sel{background:#5E5B3B;color:#FFF4E6}
+.cell.mine .n{box-shadow:0 0 0 2px #5E5B3B;border-radius:11px;padding:0 5px}
+.cell.sel.mine .n{box-shadow:0 0 0 2px #FFF4E6}
+.cell.late{color:#9C987E}
+.dots{display:flex;gap:3px;height:6px}
+.dot{width:6px;height:6px;border-radius:3px}
+.lg{display:inline-flex;align-items:center;gap:6px;font-size:12.5px}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
+  <div style="display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 8px 0 18px">
+    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:34px;width:auto">
+    <div style="display:flex;align-items:center;gap:2px">
+      <span class="lang"><strong>EN</strong> · VI</span>
+      <a class="iconbtn" href="C14-Menu.dc.html" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></a>
+    </div>
+  </div>
+  <div style="flex:1;overflow:hidden;padding:6px 16px 12px;display:flex;flex-direction:column;gap:10px">
+    <div class="h" style="font-size:28px">hi lan</div>
+    <nav class="seg3" aria-label="Timetable view"><a href="C04-Timetable.dc.html">List</a><a href="C04b-TimetableWeek.dc.html">Week</a><a class="on" href="C04c-TimetableMonth.dc.html" aria-current="page">Month</a></nav>
+    <div style="display:flex;align-items:center;justify-content:space-between;background:#E8E3C5;border-radius:22px">
+      <button class="iconbtn" type="button" aria-label="Previous month"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <strong style="font-size:15px">November 2026</strong>
+      <button class="iconbtn" type="button" aria-label="Next month"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="mo">
+      <sc-for list="{{dows}}" as="w" hint-placeholder-count="7"><span class="dw">{{w}}</span></sc-for>
+      <sc-for list="{{cells}}" as="c" hint-placeholder-count="35">
+        <sc-if value="{{c.blank}}" hint-placeholder-val="{{false}}"><span aria-hidden="true"></span></sc-if>
+        <sc-if value="{{c.day}}" hint-placeholder-val="{{true}}">
+          <a class="{{c.cls}}" href="C04c-TimetableMonth.dc.html" aria-label="{{c.aria}}"><span class="n">{{c.n}}</span><span class="dots"><sc-for list="{{c.dots}}" as="dt" hint-placeholder-count="2"><span class="dot" style="{{dt}}"></span></sc-for></span></a>
+        </sc-if>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <span class="lg"><span class="dot" style="background:#868259"></span>Class</span>
+      <span class="lg"><span class="dot" style="background:#A44A2C"></span>Open play</span>
+      <span class="lg"><span style="font:500 12px 'Lexend Deca',sans-serif;box-shadow:0 0 0 2px #5E5B3B;border-radius:9px;padding:0 4px">2</span>You're booked</span>
+      <span class="lg" style="color:#66624A">Grey dates open for booking later</span>
+    </div>
+    <p class="day" style="margin:2px 0 0">monday 2 nov</p>
+    <div class="scard">
+      <div class="pic" style="background:#C3BF94;width:48px;height:48px"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:32px;height:32px"></div>
+      <div style="flex:1;min-width:0"><div style="font-weight:600;font-size:15px">Pilates Flow</div><div style="font-size:13px;color:#66624A">9:00 · Mai</div></div>
+      <span class="tag ok" style="padding:6px 10px">Booked ✓</span>
+    </div>
+    <div class="scard">
+      <div class="pic" style="background:#FFBEA1;width:48px;height:48px"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:32px;height:32px"></div>
+      <div style="flex:1;min-width:0"><div style="font-weight:600;font-size:15px">Open Play</div><div style="font-size:13px;color:#66624A">10:30 · 5 child places left</div></div>
+      <a class="book" href="C07-ConfirmOpenPlay.dc.html">Book</a>
+    </div>
+    <a href="C04-Timetable.dc.html" style="font-size:14px;text-align:center">+ 1 more on this day</a>
+  </div>
+  <nav style="display:flex;background:#fff;height:68px;border-radius:24px 24px 0 0;box-shadow:0 -1px 0 #E8E3C5">
+    <a class="tab on" href="C04-Timetable.dc.html"><span style="width:6px;height:6px;border-radius:3px;background:#E88D6D"></span>Classes</a>
+    <a class="tab" href="C10-MyBookings.dc.html"><span style="width:6px;height:6px"></span>Bookings</a>
+    <a class="tab" href="C12-MyPackages.dc.html"><span style="width:6px;height:6px"></span>Packages</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const CL = 'background:#868259', OP = 'background:#A44A2C';
+    const names = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const cells = [];
+    for (let i = 0; i < 6; i++) cells.push({ blank: true, day: false });
+    for (let n = 1; n <= 30; n++) {
+      const dow = (n + 5) % 7; // 1 Nov 2026 is a Sunday (index 6)
+      const dots = dow >= 5 ? [OP] : (dow === 0 || dow === 2) ? [CL, OP] : [CL];
+      const late = n > 22; // booking window: 1 month ahead
+      const mine = n === 2 || n === 9;
+      let cls = 'cell' + (n === 2 ? ' sel' : '') + (mine ? ' mine' : '') + (late ? ' late' : '');
+      cells.push({ blank: false, day: true, n: String(n), cls, dots: late ? [] : dots, aria: names[dow] + ' ' + n + ' November' + (mine ? ', you are booked' : '') + (late ? ', opens for booking later' : '') });
+    }
+    return { dows: names.map(d => d.slice(0, 2)), cells };
+  }
+}
+</script>
+</body>
+</html>

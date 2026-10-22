@@ -20,6 +20,7 @@
 
 - 22 Oct: **designs v3**: all 29 screens redesigned to the full visual style (logo, rounded cards, coloured session pictures, brand fonts), not just recoloured.
 - 22 Oct: **clickable prototype** of the customer flow on the canvas (open 'C1 · Log in' and press Play).
+- 22 Oct: customer timetable gets **Week** and **Month** views (owner request), screens C4b and C4c.
 - 22 Oct: all open questions in sections A–C answered (see `docs/open-questions.md`).
 
 ## Waiting on the owners

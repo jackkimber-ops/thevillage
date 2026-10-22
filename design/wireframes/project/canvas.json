@@ -281,6 +281,22 @@
 "h": 1500,
 "title": "Styled · Website (top half)",
 "expand": "fill"
+},
+"C04b-TimetableWeek.dc.html": {
+"x": 3830,
+"y": 0,
+"w": 390,
+"h": 844,
+"title": "C4b · Classes, week view",
+"is_interactive": true
+},
+"C04c-TimetableMonth.dc.html": {
+"x": 4300,
+"y": 0,
+"w": 390,
+"h": 844,
+"title": "C4c · Classes, month view",
+"is_interactive": true
 }
 },
 "order": [
@@ -288,6 +304,8 @@
 "C02-EmailCode.dc.html",
 "C03-Guest.dc.html",
 "C04-Timetable.dc.html",
+"C04b-TimetableWeek.dc.html",
+"C04c-TimetableMonth.dc.html",
 "C05-Session.dc.html",
 "C06-ConfirmClass.dc.html",
 "C07-ConfirmOpenPlay.dc.html",
@@ -443,6 +461,15 @@
 "fill": "teal",
 "text": "TRY IT ON YOUR PHONE\n\nOpen 'C1 · Log in' and press Play. Tap through like a parent:\n\nSend me a code → Log in → Book a class → Confirm → See my bookings → Cancel.\n\nAlso try: Book as a guest, Open Play, Pick dates, Packages, the menu and Hire the studio.\n\nOnly the main buttons work; filters and language switch are for show.",
 "maxH": 560
+},
+"nW": {
+"x": 4770,
+"y": 0,
+"w": 380,
+"size": "m",
+"fill": "orange",
+"text": "NEW 22 OCT: WEEK AND MONTH VIEWS\n\nAsked for by the owners. This brings back views dropped on 21 Oct to save time.\n\nList stays the default. Tap a session block (week) or a day (month) to book.\n\nAdds roughly a few hours to the build.",
+"maxH": 520
 }
 },
 "designSystems": []

@@ -49,6 +49,9 @@ input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16
 .check{display:flex;align-items:center;gap:12px;min-height:44px;font-size:15.5px}
 .check input{width:22px;height:22px;min-height:0;margin:0;padding:0;accent-color:#5E5B3B;flex:none}
 .seg a{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:18px;text-decoration:none;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg3 a{display:flex;align-items:center;justify-content:center;min-height:36px;border-radius:18px;text-decoration:none;font:500 14px "Work Sans",sans-serif;color:#3B3A2A}
+.seg3 a.on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
@@ -61,6 +64,7 @@ input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16
   </div>
   <div style="flex:1;overflow:hidden;padding:6px 16px 12px;display:flex;flex-direction:column;gap:10px">
     <div class="h" style="font-size:28px">hi lan</div>
+    <nav class="seg3" aria-label="Timetable view"><a class="on" href="C04-Timetable.dc.html" aria-current="page">List</a><a href="C04b-TimetableWeek.dc.html">Week</a><a href="C04c-TimetableMonth.dc.html">Month</a></nav>
     <div style="display:flex;align-items:center;justify-content:space-between;background:#E8E3C5;border-radius:22px">
       <button class="iconbtn" type="button" aria-label="Previous week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
       <strong style="font-size:15px">2 – 8 November</strong>

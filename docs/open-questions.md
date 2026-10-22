@@ -46,6 +46,10 @@ The requirements win on *what* to build, so I'll follow the answer in **bold** u
 3. The brand guide's sample paragraph is template filler ("Rimberio Coffee…"). Worth replacing before it's shared.
 4. OK to use slightly deeper shades of forrest and coral for small text and buttons? The originals are too light to read at small sizes. **Answered 22 Oct: yes.**
 
+## Changes after review
+
+- **22 Oct: week and month views on the customer timetable** (owners). Reverses the 21 Oct "week list only" decision (Mockup row 9 / C2). List stays the default; Week and Month added. Adds a few hours to the build; re-estimated at sign-off.
+
 ## Ideas noted for later
 
 - **Holiday freeze (owners, 21 Oct):** many expat families are away at Christmas and in summer, so members will want to freeze their pack. Pausing one customer's pack (M2) is already in the +2 weeks release; a studio-wide or self-service freeze can come after. Not needed now.
