@@ -18,6 +18,7 @@
 - Then a clickable prototype for phones.
 - At build start: branch protection on `main`, pull-request checks and Dependabot (needs repo admin settings).
 
+- 22 Oct: **designs v3**: all 29 screens redesigned to the full visual style (logo, rounded cards, coloured session pictures, brand fonts), not just recoloured.
 - 22 Oct: all open questions in sections A–C answered (see `docs/open-questions.md`).
 
 ## Waiting on the owners
