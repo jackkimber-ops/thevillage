@@ -8,60 +8,78 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
 <style>
 body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
 a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;color:#5E5B3B;margin:0}
+.lbl{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:6px 0 0}
 .muted{color:#66624A}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
-.later{background:#ECE6F5;color:#4B3A80}
+.card{background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 1px 0 #E8E3C5}
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.btn:hover{color:#FFF4E6;background:#4E4B30}
+.btn2{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.danger{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #A44A2C;background:#fff;color:#A44A2C;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.pill{font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px}
+.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#5E5B3B;border-radius:22px}
+.back{width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;color:#5E5B3B;box-shadow:0 1px 0 #E8E3C5;flex:none}
+.tag{display:inline-block;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#3B3A2A}
+.pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
+.ok{background:#C3BF94;color:#3B3A2A}
+.new{background:#E8E3C5;color:#3B3A2A}
 .todo{background:#FFF1D6;color:#7A4E00}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 8px 0 16px;border-bottom:1px solid #E8E3C5}
-.lang{font-size:13px;color:#66624A}
-.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#3B3A2A}
-.card{border:1px solid #E8E3C5;border-radius:18px;padding:14px;background:#fff}
-.big{font-size:40px;font-weight:700;line-height:1}
-.bar{height:8px;border-radius:4px;background:#EFE9D6;display:flex;overflow:hidden;margin:10px 0 8px}
-.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:#66624A;text-decoration:none}
-.tab.on{color:#3B3A2A;font-weight:700;box-shadow:inset 0 3px 0 #E88D6D}
+.later{background:#ECE6F5;color:#4B3A80}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg button{min-height:40px;border:0;border-radius:18px;background:transparent;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg .on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:14px;font-weight:600}
+input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16px;font:16px "Work Sans",sans-serif;background:#fff;color:#3B3A2A;box-sizing:border-box;width:100%}
+.big{font-family:"Lexend Deca",sans-serif;font-size:48px;font-weight:500;line-height:1;color:#5E5B3B}
+.bar{height:10px;border-radius:5px;background:#EFE9D6;display:flex;overflow:hidden;margin:12px 0 8px}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
-  <div class="hdr">
-    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:32px;width:auto">
-    <div style="display:flex;align-items:center;gap:4px">
-      <span class="lang"><strong style="color:#3B3A2A">EN</strong> · VI</span>
+  <div style="display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 8px 0 18px">
+    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:34px;width:auto">
+    <div style="display:flex;align-items:center;gap:2px">
+      <span class="pill"><strong>EN</strong> · VI</span>
       <a class="iconbtn" href="C14-Menu.dc.html" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></a>
     </div>
   </div>
-  <div style="flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
-    <h1 style="margin:0;font-size:24px">My packages</h1>
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:baseline"><strong>10-class pack</strong><span class="muted" style="font-size:13px">Classes</span></div>
-      <div style="display:flex;align-items:baseline;gap:8px;margin-top:10px"><span class="big">6</span><span style="font-size:15px">credits free</span></div>
+  <div style="flex:1;overflow:hidden;padding:6px 16px 12px;display:flex;flex-direction:column;gap:12px">
+    <h1 class="h" style="font-size:28px">my packages</h1>
+    <div class="card" style="padding:16px 18px">
+      <div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-weight:600">10-class pack</strong><span class="tag ok">Classes</span></div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-top:12px"><span class="big">6</span><span style="font-size:15px">credits free</span></div>
       <div class="bar" aria-hidden="true"><span style="width:20%;background:#5E5B3B"></span><span style="width:20%;background:#C3BF94"></span></div>
-      <div class="muted" style="font-size:14px">2 used · 2 reserved by bookings · Expires <strong style="color:#3B3A2A">20 Jan 2027</strong></div>
+      <div class="muted" style="font-size:13.5px">2 used · 2 reserved by bookings · Expires <strong style="color:#3B3A2A">20 Jan 2027</strong></div>
     </div>
-    <div class="card" style="background:#FFE3D6">
-      <div style="display:flex;justify-content:space-between;align-items:baseline"><strong>Open play</strong><span style="font-size:13px">No pack needed</span></div>
-      <div style="font-size:14px;margin-top:6px">150,000 ₫ per child, paid at the studio on the day.</div>
+    <div class="card" style="background:#FFE3D6;box-shadow:none;display:flex;gap:14px;align-items:center">
+      <div style="width:46px;height:46px;border-radius:23px;background:#FFBEA1;flex:none;display:flex;align-items:center;justify-content:center;color:#3B3A2A"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c2.5 2.5 2.5 13.5 0 16M12 4c-2.5 2.5-2.5 13.5 0 16"/></svg></div>
+      <div><div style="display:flex;gap:8px;align-items:baseline"><strong style="font-weight:600">Open play</strong><span style="font-size:13px">No pack needed</span></div>
+      <div style="font-size:14px;margin-top:2px">150,000 ₫ per child, paid at the studio on the day.</div></div>
     </div>
-    <div class="card" style="background:#FBF7EF">
-      <div style="display:flex;justify-content:space-between;align-items:center"><strong>Intro pack · 3 classes</strong><span class="tag later">Paused</span></div>
-      <div class="muted" style="font-size:14px;margin-top:6px">1 credit free · Paused 7 days (travel) · New expiry 9 Dec 2026</div>
-      <span class="tag later" style="margin-top:6px">Pausing: +2 weeks release</span>
+    <div class="card" style="background:#FBF7EF;box-shadow:none">
+      <div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-weight:600">Intro pack · 3 classes</strong><span class="tag later">Paused</span></div>
+      <div class="muted" style="font-size:13.5px;margin-top:6px">1 credit free · Paused 7 days (travel) · New expiry 9 Dec 2026</div>
+      <span class="tag later" style="margin-top:8px">Pausing: +2 weeks release</span>
     </div>
-    <div style="padding:14px;border-radius:14px;background:#E8E3C5;font-size:14px;line-height:1.5">
-      <strong>Buy a pack at the studio</strong><br>
-      Pay by QR, transfer or cash and we add it straight away.<br>
-      <span class="muted">10 classes 4,000,000 ₫ · 20 classes 7,200,000 ₫<br>10 classes last 3 months · 20 classes last 7 months</span>
+    <div style="padding:16px 18px;border-radius:20px;background:#5E5B3B;color:#FFF4E6;font-size:14px;line-height:1.55">
+      <div class="h" style="font-size:18px;color:#FFF4E6;margin-bottom:4px">buy a pack at the studio</div>
+      Pay by QR, transfer or cash and we add it straight away.
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px">
+        <div style="background:#FFF4E6;color:#3B3A2A;border-radius:14px;padding:8px 10px"><strong>10 classes</strong><br>4,000,000 ₫<br><span class="muted" style="font-size:12.5px">lasts 3 months</span></div>
+        <div style="background:#FFF4E6;color:#3B3A2A;border-radius:14px;padding:8px 10px"><strong>20 classes</strong><br>7,200,000 ₫<br><span class="muted" style="font-size:12.5px">lasts 7 months</span></div>
+      </div>
     </div>
   </div>
-  <nav style="display:flex;border-top:1px solid #E8E3C5;height:64px">
-    <a class="tab" href="C04-Timetable.dc.html">Classes</a>
-    <a class="tab" href="C10-MyBookings.dc.html">Bookings</a>
-    <a class="tab on" href="C12-MyPackages.dc.html">Packages</a>
+  <nav style="display:flex;background:#fff;height:68px;border-radius:24px 24px 0 0;box-shadow:0 -1px 0 #E8E3C5">
+    <a class="tab" href="C04-Timetable.dc.html"><span style="width:6px;height:6px"></span>Classes</a>
+    <a class="tab" href="C10-MyBookings.dc.html"><span style="width:6px;height:6px"></span>Bookings</a>
+    <a class="tab on" href="C12-MyPackages.dc.html"><span style="width:6px;height:6px;border-radius:3px;background:#E88D6D"></span>Packages</a>
   </nav>
 </div>
 </x-dc>

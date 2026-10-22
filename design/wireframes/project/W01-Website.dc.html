@@ -8,93 +8,108 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
 <style>
 body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
 a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
-.muted{color:#66624A}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500}
 .wrap{max-width:1120px;margin:0 auto;padding:0 24px;box-sizing:border-box}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 22px;border-radius:23px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none}
-.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 22px;border-radius:23px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none}
-.soc{width:40px;height:40px;border-radius:20px;border:1px solid #C3BF94;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#3B3A2A;text-decoration:none}
-.ph{border:1.5px dashed #C3BF94;background:#E8E3C5;color:#66624A;display:flex;align-items:center;justify-content:center;font-size:13px;text-align:center}
-.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
-.card{border:1px solid #E8E3C5;border-radius:16px;padding:20px;background:#fff}
-section{padding:56px 0;border-bottom:1px solid #EFE9D6}
-h2{font-size:28px;margin:0 0 18px}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF1D6;color:#7A4E00}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 26px;border-radius:25px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none}
+.btn:hover{color:#FFF4E6;background:#3B3A2A}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 26px;border-radius:25px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none}
+.soc{width:42px;height:42px;border-radius:21px;background:#E8E3C5;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#3B3A2A;text-decoration:none}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
+.card{border-radius:26px;padding:26px;text-decoration:none;color:#3B3A2A;display:flex;flex-direction:column;gap:8px}
+.tag{display:inline-block;padding:3px 10px;border-radius:12px;font:600 12px "Work Sans",sans-serif;text-transform:none;letter-spacing:0;vertical-align:middle}
+.todo{background:#FFF1D6;color:#7A4E00}
+.sec{font-size:34px;margin:0 0 20px;color:#5E5B3B}
+.foot a{color:#FFF4E6}
+.foot a:hover{color:#E8E3C5}
 </style>
 </helmet>
 <div style="background:#FFF4E6">
-  <header style="border-bottom:1px solid #E8E3C5">
-    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;min-height:72px">
-      <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village. family club" style="height:46px;width:auto">
+  <header>
+    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;min-height:88px">
+      <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village. family club" style="height:48px;width:auto">
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
         <a class="soc" href="https://www.facebook.com/thevillage.saigon" aria-label="Facebook">f</a>
         <a class="soc" href="https://www.instagram.com/thevillage.saigon" aria-label="Instagram">IG</a>
-        <span class="muted" style="font-size:14px;padding:0 6px"><strong style="color:#3B3A2A">EN</strong> · VI</span>
+        <span style="font-size:14px;padding:0 6px"><strong>EN</strong> · VI</span>
         <a class="btn" href="Main.dc.html">Book now</a>
       </div>
     </div>
   </header>
-  <div class="ph" style="min-height:460px;flex-direction:column;align-items:stretch;border-left:0;border-right:0">
-    <div class="wrap" style="width:100%;text-align:left;color:#3B3A2A;display:flex;flex-direction:column;gap:16px;padding-top:40px;padding-bottom:40px">
-      <span class="muted" style="align-self:flex-end;font-size:13px">Full-width photo of a class [PLACEHOLDER]</span>
-      <h1 style="margin:0;font-size:clamp(34px,5vw,54px);line-height:1.1;max-width:640px">Pilates and movement for mums and little ones</h1>
-      <p style="margin:0;font-size:19px" class="muted">Move. Connect. Belong. Bring your children along.</p>
-      <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="Main.dc.html">Book a class</a><a class="btn2" href="C04-Timetable.dc.html">See the timetable</a></div>
+  <div class="wrap" style="padding-top:12px;padding-bottom:64px">
+    <div style="display:flex;flex-wrap:wrap;gap:36px;align-items:center">
+      <div style="flex:1 1 420px;display:flex;flex-direction:column;gap:20px">
+        <h1 class="h" style="margin:0;font-size:clamp(38px,5vw,60px);line-height:1.05;color:#5E5B3B">pilates and movement for mums and little ones</h1>
+        <p style="margin:0;font-size:19px;color:#66624A">Move. Connect. Belong. Bring your children along.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="Main.dc.html">Book a class</a><a class="btn2" href="C04-Timetable.dc.html">See the timetable</a></div>
+      </div>
+      <div style="flex:1 1 420px;position:relative;min-height:420px">
+        <div style="position:absolute;inset:0 0 0 30px;border-radius:200px 200px 32px 32px;background:#C3BF94;display:flex;align-items:center;justify-content:center;color:#3B3A2A;font-size:14px;font-weight:600">Full-width photo of a class [PLACEHOLDER]</div>
+        <div style="position:absolute;left:0;bottom:24px;width:140px;height:140px"><img src="/_blob/bedcf8ee28231b21f461eb693d7e1a77" alt="" style="width:140px;height:140px"></div>
+        <div style="position:absolute;right:-10px;top:-10px;width:90px;height:90px;border-radius:50%;background:#FFBEA1" aria-hidden="true"></div>
+      </div>
     </div>
   </div>
-  <section>
+  <section style="background:#fff;padding:64px 0;border-radius:40px 40px 0 0">
     <div class="wrap">
-      <h2>It takes a village to raise a child</h2>
+      <h2 class="h sec" style="margin-bottom:14px">it takes a village to raise a child</h2>
       <p style="font-size:18px;font-weight:600;margin:0 0 8px">Parents shouldn't have to choose between looking after themselves and their children.</p>
-      <p style="font-size:17px;line-height:1.55;margin:0 0 28px;max-width:760px">So we built exercise around parenthood: proper classes, with your little ones playing, exploring or simply close by. Not a gym, not a play centre. A place designed with you in mind.</p>
+      <p style="font-size:17px;line-height:1.6;margin:0 0 30px;max-width:760px">So we built exercise around parenthood: proper classes, with your little ones playing, exploring or simply close by. Not a gym, not a play centre. A place designed with you in mind.</p>
       <div class="grid3">
-        <div><h3 style="margin:0 0 6px;font-size:20px;color:#5E5B3B">Move</h3><p style="margin:0;line-height:1.5">Pilates, yoga, strength, fitness and dance, worth doing in their own right.</p></div>
-        <div><h3 style="margin:0 0 6px;font-size:20px;color:#5E5B3B">Connect</h3><p style="margin:0;line-height:1.5">Children stay close. Meet parents at your stage over coffee, workshops and events.</p></div>
-        <div><h3 style="margin:0 0 6px;font-size:20px;color:#5E5B3B">Belong</h3><p style="margin:0;line-height:1.5">Made for this stage of life. Arrive with your baby, no awkwardness. You belong here.</p></div>
+        <div class="card" style="background:#C3BF94"><div class="h" style="font-size:24px">move</div><p style="margin:0;line-height:1.5">Pilates, yoga, strength, fitness and dance, worth doing in their own right.</p></div>
+        <div class="card" style="background:#FFBEA1"><div class="h" style="font-size:24px">connect</div><p style="margin:0;line-height:1.5">Children stay close. Meet parents at your stage over coffee, workshops and events.</p></div>
+        <div class="card" style="background:#E8E3C5"><div class="h" style="font-size:24px">belong</div><p style="margin:0;line-height:1.5">Made for this stage of life. Arrive with your baby, no awkwardness. You belong here.</p></div>
       </div>
-      <p class="muted" style="margin:24px 0 0">Made with mums and young children in mind. Dads, expectant parents and families are welcome too.</p>
+      <p style="margin:24px 0 0;color:#66624A">Made with mums and young children in mind. Dads, expectant parents and families are welcome too.</p>
     </div>
   </section>
-  <section>
+  <section style="background:#fff;padding:0 0 72px">
     <div class="wrap">
-      <h2>What's on</h2>
+      <h2 class="h sec">what's on</h2>
       <div class="grid3">
-        <a class="card" href="C04-Timetable.dc.html" style="text-decoration:none;color:#3B3A2A"><div class="ph" style="height:140px;border-radius:12px;margin-bottom:14px">Picture</div><strong style="font-size:18px">Classes</strong><p class="muted" style="margin:6px 0 0">Pilates, yoga, strength, fitness, dance.</p></a>
-        <a class="card" href="C04-Timetable.dc.html" style="text-decoration:none;color:#3B3A2A"><div class="ph" style="height:140px;border-radius:12px;margin-bottom:14px">Picture</div><strong style="font-size:18px">Open play</strong><p class="muted" style="margin:6px 0 0">Play time for parents and kids.</p></a>
-        <a class="card" href="C13-PrivateHire.dc.html" style="text-decoration:none;color:#3B3A2A"><div class="ph" style="height:140px;border-radius:12px;margin-bottom:14px">Picture</div><strong style="font-size:18px">Private hire</strong><p class="muted" style="margin:6px 0 0">Hire the whole studio: message us on WhatsApp.</p></a>
+        <a class="card" href="C04-Timetable.dc.html" style="background:#FFF4E6"><div style="height:150px;border-radius:20px;background:#C3BF94;display:flex;align-items:center;justify-content:center"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:80px;height:80px"></div><strong class="h" style="font-size:21px;margin-top:8px;color:#5E5B3B">classes</strong><span style="color:#66624A">Pilates, yoga, strength, fitness, dance.</span></a>
+        <a class="card" href="C04-Timetable.dc.html" style="background:#FFF4E6"><div style="height:150px;border-radius:20px;background:#FFBEA1;display:flex;align-items:center;justify-content:center"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:80px;height:80px"></div><strong class="h" style="font-size:21px;margin-top:8px;color:#5E5B3B">open play</strong><span style="color:#66624A">Play time for parents and kids.</span></a>
+        <a class="card" href="C13-PrivateHire.dc.html" style="background:#FFF4E6"><div style="height:150px;border-radius:20px;background:#E8E3C5;display:flex;align-items:center;justify-content:center"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:80px;height:80px"></div><strong class="h" style="font-size:21px;margin-top:8px;color:#5E5B3B">private hire</strong><span style="color:#66624A">Hire the whole studio: message us on WhatsApp.</span></a>
       </div>
-      <p class="muted" style="margin:20px 0 0">Coming soon: workshops on parenting and baby health and safety, and events for the whole family.</p>
+      <p style="margin:22px 0 0;color:#66624A">Coming soon: workshops on parenting and baby health and safety, and events for the whole family.</p>
     </div>
   </section>
-  <section>
+  <section style="padding:72px 0;background:#FFF4E6">
     <div class="wrap">
-      <h2>What parents say <span class="tag" style="vertical-align:middle">With permission, after opening</span></h2>
+      <h2 class="h sec">what parents say <span class="tag todo">With permission, after opening</span></h2>
       <div class="grid3">
-        <div class="card"><p style="margin:0 0 10px">"[Quote from a parent]"</p><span class="muted">First name, mum of one</span></div>
-        <div class="card"><p style="margin:0 0 10px">"[Quote from a parent]"</p><span class="muted">First name, mum of two</span></div>
-        <div class="card"><p style="margin:0 0 10px">"[Quote from a parent]"</p><span class="muted">First name, dad of one</span></div>
+        <div class="card" style="background:#fff"><div class="h" style="font-size:48px;line-height:.6;color:#E88D6D" aria-hidden="true">"</div><p style="margin:0 0 6px;font-size:17px;line-height:1.5">[Quote from a parent]</p><span style="color:#66624A">First name, mum of one</span></div>
+        <div class="card" style="background:#fff"><div class="h" style="font-size:48px;line-height:.6;color:#E88D6D" aria-hidden="true">"</div><p style="margin:0 0 6px;font-size:17px;line-height:1.5">[Quote from a parent]</p><span style="color:#66624A">First name, mum of two</span></div>
+        <div class="card" style="background:#fff"><div class="h" style="font-size:48px;line-height:.6;color:#E88D6D" aria-hidden="true">"</div><p style="margin:0 0 6px;font-size:17px;line-height:1.5">[Quote from a parent]</p><span style="color:#66624A">First name, dad of one</span></div>
       </div>
     </div>
   </section>
-  <section style="border-bottom:0">
-    <div class="wrap" style="display:flex;flex-wrap:wrap;gap:28px;align-items:stretch">
-      <div style="flex:1 1 320px">
-        <h2>Visit us</h2>
-        <p style="margin:0 0 6px;font-size:17px">47/1 Quốc Hương, An Khánh, Hồ Chí Minh</p>
-        <p class="muted" style="margin:0 0 18px">Open every day, 8:30–17:00</p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="Main.dc.html">Book now</a><a class="btn2" href="https://maps.app.goo.gl/shhU5KCEVMMrX4cd8">Find us on Google Maps</a></div>
+  <section style="padding:0 0 80px;background:#FFF4E6">
+    <div class="wrap">
+      <div style="background:#fff;border-radius:32px;padding:36px;display:flex;flex-wrap:wrap;gap:32px;align-items:stretch">
+        <div style="flex:1 1 320px;display:flex;flex-direction:column;gap:10px">
+          <h2 class="h sec" style="margin:0 0 6px">visit us</h2>
+          <p style="margin:0;font-size:18px">47/1 Quốc Hương, An Khánh, Hồ Chí Minh</p>
+          <p style="margin:0 0 16px;color:#66624A">Open every day, 8:30–17:00</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="Main.dc.html">Book now</a><a class="btn2" href="https://maps.app.goo.gl/shhU5KCEVMMrX4cd8">Find us on Google Maps</a></div>
+        </div>
+        <div style="flex:1 1 360px;min-height:260px;border-radius:24px;background:#E8E3C5;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">
+          <div style="position:absolute;right:-40px;bottom:-40px;width:160px;height:160px;border-radius:50%;background:#C3BF94" aria-hidden="true"></div>
+          <span style="position:relative">Map</span>
+        </div>
       </div>
-      <div class="ph" style="flex:1 1 360px;min-height:240px;border-radius:16px">Map</div>
     </div>
   </section>
-  <footer style="background:#E8E3C5">
-    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;min-height:80px">
-      <strong>The Village - Family Club</strong>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+  <footer class="foot" style="background:#5E5B3B;color:#FFF4E6;border-radius:40px 40px 0 0">
+    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;min-height:120px">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <img src="/_blob/0fd3a25ff08c3b71a6d8552903b84305" alt="the village." style="height:40px;width:auto">
+        <strong style="font-size:15px">The Village - Family Club</strong>
+      </div>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
         <a href="C14-Menu.dc.html" style="font-size:14px">Privacy</a>
         <a href="C14-Menu.dc.html" style="font-size:14px">Terms</a>
         <a class="soc" href="https://www.facebook.com/thevillage.saigon" aria-label="Facebook">f</a>

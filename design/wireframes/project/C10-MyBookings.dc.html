@@ -8,78 +8,90 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
 <style>
 body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
 a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;color:#5E5B3B;margin:0}
+.lbl{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:6px 0 0}
 .muted{color:#66624A}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.card{background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 1px 0 #E8E3C5}
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.btn:hover{color:#FFF4E6;background:#4E4B30}
+.btn2{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.danger{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #A44A2C;background:#fff;color:#A44A2C;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.pill{font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px}
+.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#5E5B3B;border-radius:22px}
+.back{width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;color:#5E5B3B;box-shadow:0 1px 0 #E8E3C5;flex:none}
+.tag{display:inline-block;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#3B3A2A}
 .pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 8px 0 16px;border-bottom:1px solid #E8E3C5}
-.lang{font-size:13px;color:#66624A}
-.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#3B3A2A}
-.card{border:1px solid #E8E3C5;border-radius:18px;padding:12px 14px;background:#fff;display:flex;align-items:center;gap:10px}
+.ok{background:#C3BF94;color:#3B3A2A}
+.new{background:#E8E3C5;color:#3B3A2A}
+.todo{background:#FFF1D6;color:#7A4E00}
+.later{background:#ECE6F5;color:#4B3A80}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg button{min-height:40px;border:0;border-radius:18px;background:transparent;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg .on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:14px;font-weight:600}
+input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16px;font:16px "Work Sans",sans-serif;background:#fff;color:#3B3A2A;box-sizing:border-box;width:100%}
+.bk{background:#fff;border-radius:20px;padding:12px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 0 #E8E3C5}
+.dt{width:52px;flex:none;border-radius:16px;padding:8px 0;text-align:center;font-family:"Lexend Deca",sans-serif;line-height:1.1}
+.dt b{display:block;font-size:20px;font-weight:500}
+.dt span{font-size:11px;text-transform:lowercase;letter-spacing:.06em}
 .act{min-height:40px;padding:0 14px;border-radius:20px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 14px "Work Sans",sans-serif;text-decoration:none;display:flex;align-items:center;white-space:nowrap}
-.sec{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#66624A;margin:8px 0 0}
-.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:#66624A;text-decoration:none}
-.tab.on{color:#3B3A2A;font-weight:700;box-shadow:inset 0 3px 0 #E88D6D}
+.past{background:#FBF7EF;border-radius:18px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
-  <div class="hdr">
-    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:32px;width:auto">
-    <div style="display:flex;align-items:center;gap:4px">
-      <span class="lang"><strong style="color:#3B3A2A">EN</strong> · VI</span>
+  <div style="display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 8px 0 18px">
+    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:34px;width:auto">
+    <div style="display:flex;align-items:center;gap:2px">
+      <span class="pill"><strong>EN</strong> · VI</span>
       <a class="iconbtn" href="C14-Menu.dc.html" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></a>
     </div>
   </div>
-  <div style="flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
-    <h1 style="margin:0;font-size:24px">My bookings</h1>
-    <p class="sec">Upcoming</p>
-    <div class="card">
-      <div style="flex:1">
-        <div style="font-weight:700">Pilates Flow</div>
-        <div class="muted" style="font-size:14px">Mon 2 Nov · 9:00 · You + Bao</div>
-        <div class="muted" style="font-size:13px">Can't cancel online after 20:00 Sun 1 Nov</div>
+  <div style="flex:1;overflow:hidden;padding:6px 16px 12px;display:flex;flex-direction:column;gap:10px">
+    <h1 class="h" style="font-size:28px">my bookings</h1>
+    <p class="lbl">upcoming</p>
+    <div class="bk">
+      <div class="dt" style="background:#C3BF94"><b>2</b><span>nov · mon</span></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:15.5px">Pilates Flow</div>
+        <div class="muted" style="font-size:13.5px">9:00 · You + Bao</div>
+        <div style="font-size:12.5px;color:#A44A2C;margin-top:2px">Can't cancel online after 20:00 Sun 1 Nov</div>
       </div>
       <a class="act" href="https://wa.me/84933834068">Message us</a>
     </div>
-    <div class="card">
-      <div style="flex:1">
-        <div style="font-weight:700">Open Play</div>
-        <div class="muted" style="font-size:14px">Wed 4 Nov · 10:30 · Bao, Mi</div>
-        <div class="muted" style="font-size:13px">Free cancellation until 20:00 Tue 3 Nov</div>
-        <span class="tag pay" style="margin-top:4px">Pay on the day · 300,000 ₫</span>
+    <div class="bk">
+      <div class="dt" style="background:#FFBEA1"><b>4</b><span>nov · wed</span></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:15.5px">Open Play</div>
+        <div class="muted" style="font-size:13.5px">10:30 · Bao, Mi</div>
+        <div class="muted" style="font-size:12.5px">Free cancellation until 20:00 Tue 3 Nov</div>
+        <span class="tag pay" style="margin-top:6px">Pay on the day · 300,000 ₫</span>
       </div>
       <a class="act" href="C11-Cancel.dc.html">Cancel</a>
     </div>
-    <div class="card">
-      <div style="flex:1">
-        <div style="font-weight:700">Mum &amp; Baby Yoga</div>
-        <div class="muted" style="font-size:14px">Tue 10 Nov · 9:30 · You + Bao</div>
-        <span class="tag pay" style="margin-top:4px">Pay on the day · 450,000 ₫</span>
+    <div class="bk">
+      <div class="dt" style="background:#C3BF94"><b>10</b><span>nov · tue</span></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:15.5px">Mum &amp; Baby Yoga</div>
+        <div class="muted" style="font-size:13.5px">9:30 · You + Bao</div>
+        <span class="tag pay" style="margin-top:6px">Pay on the day · 450,000 ₫</span>
       </div>
       <a class="act" href="C11-Cancel.dc.html">Cancel</a>
     </div>
-    <p class="sec">Past</p>
-    <div class="card" style="background:#FBF7EF">
-      <div style="flex:1">
-        <div style="font-weight:600">Pilates Flow</div>
-        <div class="muted" style="font-size:14px">Mon 26 Oct · Attended</div>
-      </div>
-    </div>
-    <div class="card" style="background:#FBF7EF">
-      <div style="flex:1">
-        <div style="font-weight:600">Open Play</div>
-        <div class="muted" style="font-size:14px">Wed 21 Oct · Cancelled, credit returned</div>
-      </div>
-    </div>
+    <p class="lbl">past</p>
+    <div class="past"><span><strong style="font-weight:600">Pilates Flow</strong> · Mon 26 Oct</span><span class="tag ok">Attended</span></div>
+    <div class="past"><span><strong style="font-weight:600">Open Play</strong> · Wed 21 Oct</span><span class="muted" style="font-size:13px">Cancelled, credit returned</span></div>
   </div>
-  <nav style="display:flex;border-top:1px solid #E8E3C5;height:64px">
-    <a class="tab" href="C04-Timetable.dc.html">Classes</a>
-    <a class="tab on" href="C10-MyBookings.dc.html">Bookings</a>
-    <a class="tab" href="C12-MyPackages.dc.html">Packages</a>
+  <nav style="display:flex;background:#fff;height:68px;border-radius:24px 24px 0 0;box-shadow:0 -1px 0 #E8E3C5">
+    <a class="tab" href="C04-Timetable.dc.html"><span style="width:6px;height:6px"></span>Classes</a>
+    <a class="tab on" href="C10-MyBookings.dc.html"><span style="width:6px;height:6px;border-radius:3px;background:#E88D6D"></span>Bookings</a>
+    <a class="tab" href="C12-MyPackages.dc.html"><span style="width:6px;height:6px"></span>Packages</a>
   </nav>
 </div>
 </x-dc>

@@ -8,50 +8,73 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
 <style>
 body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
 a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;color:#5E5B3B;margin:0}
+.lbl{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:6px 0 0}
 .muted{color:#66624A}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
-.later{background:#ECE6F5;color:#4B3A80}
+.card{background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 1px 0 #E8E3C5}
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.btn:hover{color:#FFF4E6;background:#4E4B30}
+.btn2{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.danger{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #A44A2C;background:#fff;color:#A44A2C;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.pill{font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px}
+.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#5E5B3B;border-radius:22px}
+.back{width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;color:#5E5B3B;box-shadow:0 1px 0 #E8E3C5;flex:none}
+.tag{display:inline-block;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#3B3A2A}
+.pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
+.ok{background:#C3BF94;color:#3B3A2A}
+.new{background:#E8E3C5;color:#3B3A2A}
 .todo{background:#FFF1D6;color:#7A4E00}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E8E3C5}
-.msg{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:64px;border:1px solid #E8E3C5;border-radius:14px;font-size:13px;font-weight:600;color:#3B3A2A;text-decoration:none}
-.dot{width:26px;height:26px;border-radius:13px;background:#E8E3C5}
-.sec{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#66624A;margin:10px 0 2px}
-.item{display:flex;align-items:center;justify-content:space-between;min-height:46px;border-bottom:1px solid #EFE9D6;font-size:15px;color:#3B3A2A;text-decoration:none}
-.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid #868259;border-radius:12px;overflow:hidden;width:150px}
-.seg button{min-height:36px;border:0;background:#fff;font:500 14px "Work Sans",sans-serif;color:#3B3A2A}
-.seg .on{background:#5E5B3B;color:#FFF4E6}
+.later{background:#ECE6F5;color:#4B3A80}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg button{min-height:40px;border:0;border-radius:18px;background:transparent;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg .on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:14px;font-weight:600}
+input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16px;font:16px "Work Sans",sans-serif;background:#fff;color:#3B3A2A;box-sizing:border-box;width:100%}
+.msg{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:76px;background:#fff;border-radius:20px;box-shadow:0 1px 0 #E8E3C5;font-size:13px;font-weight:600;color:#3B3A2A;text-decoration:none}
+.ic{width:34px;height:34px;border-radius:17px;display:flex;align-items:center;justify-content:center;color:#3B3A2A}
+.grp{background:#fff;border-radius:20px;box-shadow:0 1px 0 #E8E3C5;padding:0 16px}
+.item{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:48px;border-bottom:1px solid #EFE9D6;font-size:15px;color:#3B3A2A;text-decoration:none}
+.item:last-child{border-bottom:0}
+.seg button{min-height:34px;font-size:14px;padding:0 10px}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
-  <div class="hdr">
-    <a href="C04-Timetable.dc.html" style="font-size:15px;text-decoration:none">← Close</a>
-    <strong>Menu</strong>
-    <span style="width:52px"></span>
+  <div style="display:flex;align-items:center;gap:12px;height:64px;padding:0 16px">
+    <a class="back" href="C04-Timetable.dc.html" aria-label="Close menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></a>
+    <h1 class="h" style="font-size:24px">menu</h1>
   </div>
-  <div style="flex:1;padding:12px 20px;display:flex;flex-direction:column;gap:6px;overflow:hidden">
-    <p class="sec">Message us</p>
+  <div style="flex:1;padding:0 16px 14px;display:flex;flex-direction:column;gap:8px;overflow:hidden">
+    <p class="lbl" style="margin-top:0">message us</p>
     <div style="display:flex;gap:8px">
-      <a class="msg" href="https://zalo.me/0933834068"><span class="dot" aria-hidden="true"></span>Zalo</a>
-      <a class="msg" href="https://wa.me/84933834068"><span class="dot" aria-hidden="true"></span>WhatsApp</a>
-      <a class="msg" href="https://m.me/thevillage.saigon"><span class="dot" aria-hidden="true"></span>Messenger</a>
+      <a class="msg" href="https://zalo.me/0933834068"><span class="ic" style="background:#E8E3C5"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>Zalo</a>
+      <a class="msg" href="https://wa.me/84933834068"><span class="ic" style="background:#C3BF94"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 19l1.3-3.6A8 8 0 1 1 9.6 18z"/></svg></span>WhatsApp</a>
+      <a class="msg" href="https://m.me/thevillage.saigon"><span class="ic" style="background:#FFBEA1"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3C7 3 3 6.6 3 11c0 2.4 1.2 4.6 3 6v4l3.5-2a10 10 0 0 0 2.5.3c5 0 9-3.6 9-8S17 3 12 3z"/><path d="M7.5 13l3-3 2.5 2 3.5-3"/></svg></span>Messenger</a>
     </div>
-    <a class="item" href="C13-PrivateHire.dc.html"><span>Hire the studio</span><span aria-hidden="true">›</span></a>
-    <div class="item"><span>Language</span><div class="seg"><button class="on" type="button">English</button><button type="button">Tiếng Việt</button></div></div>
-    <p class="sec">My details</p>
-    <div class="item"><span>Lan Nguyen<br><span class="muted" style="font-size:13px">+84 90 555 1234 · lan@example.com</span></span><span class="tag later">Edit: +2 wks</span></div>
-    <a class="item" href="C14-Menu.dc.html"><span>Children <span class="muted">· Bao (Jan 2026), Mi (Oct 2023)</span></span><span>Edit</span></a>
-    <div class="item"><span>Add bookings to my calendar</span><span class="tag later">+2 weeks</span></div>
-    <p class="sec">The Village</p>
-    <div class="item" style="align-items:flex-start;padding:8px 0"><span style="font-size:14px">47/1 Quốc Hương, An Khánh, Hồ Chí Minh<br><span class="muted">Open every day, 8:30–17:00</span></span><a href="https://maps.app.goo.gl/shhU5KCEVMMrX4cd8" style="font-size:14px;white-space:nowrap">Map</a></div>
-    <a class="item" href="C14-Menu.dc.html"><span>Privacy policy</span><span aria-hidden="true">›</span></a>
-    <a class="item" href="C14-Menu.dc.html"><span>Booking and cancellation terms</span><span aria-hidden="true">›</span></a>
-    <a class="item" href="C14-Menu.dc.html"><span>Ask us to delete my data</span><span aria-hidden="true">›</span></a>
-    <div style="display:flex;gap:16px;margin-top:10px">
+    <div class="grp">
+      <a class="item" href="C13-PrivateHire.dc.html"><span>Hire the studio</span><span aria-hidden="true">›</span></a>
+      <div class="item"><span>Language</span><div class="seg" style="width:180px"><button class="on" type="button">English</button><button type="button">Tiếng Việt</button></div></div>
+    </div>
+    <p class="lbl">my details</p>
+    <div class="grp">
+      <div class="item"><span>Lan Nguyen<br><span class="muted" style="font-size:13px">+84 90 555 1234 · lan@example.com</span></span><span class="tag later">Edit: +2 wks</span></div>
+      <a class="item" href="C14-Menu.dc.html"><span>Children <span class="muted">· Bao (Jan 2026), Mi (Oct 2023)</span></span><span>Edit</span></a>
+      <div class="item"><span>Add bookings to my calendar</span><span class="tag later">+2 weeks</span></div>
+    </div>
+    <p class="lbl">the village</p>
+    <div class="grp">
+      <div class="item" style="padding:8px 0;align-items:flex-start"><span style="font-size:14px">47/1 Quốc Hương, An Khánh, Hồ Chí Minh<br><span class="muted">Open every day, 8:30–17:00</span></span><a href="https://maps.app.goo.gl/shhU5KCEVMMrX4cd8" style="font-size:14px;white-space:nowrap">Map</a></div>
+      <a class="item" href="C14-Menu.dc.html"><span>Privacy policy</span><span aria-hidden="true">›</span></a>
+      <a class="item" href="C14-Menu.dc.html"><span>Booking and cancellation terms</span><span aria-hidden="true">›</span></a>
+      <a class="item" href="C14-Menu.dc.html"><span>Ask us to delete my data</span><span aria-hidden="true">›</span></a>
+    </div>
+    <div style="display:flex;gap:16px;margin-top:4px">
       <a href="Main.dc.html" style="font-size:15px;padding:10px 0">Log out</a>
       <a href="Main.dc.html" style="font-size:15px;padding:10px 0">Log out on all devices</a>
     </div>

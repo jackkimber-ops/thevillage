@@ -8,36 +8,35 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
 <style>
 body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
 a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
-.muted{color:#66624A}
-.side{flex:1 1 200px;padding:20px 16px;background:#5E5B3B;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
-.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#FFF4E6;text-decoration:none}
-.nav.on{background:#FFF4E6;font-weight:600;color:#3B3A2A}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500}
+.side{flex:1 1 200px;padding:22px 14px;background:#5E5B3B;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
+.nav{display:flex;align-items:center;min-height:42px;padding:0 14px;border-radius:14px;font-size:15px;color:#FFF4E6;text-decoration:none}
 .nav:hover{color:#FFF4E6;background:rgba(255,244,230,.14)}
-.nav.on:hover{color:#3B3A2A;background:#FFF4E6}
+.nav.on,.nav.on:hover{background:#FFF4E6;color:#3B3A2A;font-weight:600}
 .mgr{font-size:11px;color:#E8E3C5;margin-left:6px}
-.main{flex:999 1 560px;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px}
-.card{border:1px solid #E8E3C5;border-radius:18px;padding:16px;background:#fff;display:flex;flex-direction:column;gap:12px}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 14px "Work Sans",sans-serif;text-decoration:none}
-.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 12px;border-radius:17px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 13px "Work Sans",sans-serif}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
-.later{background:#ECE6F5;color:#4B3A80}
+.main{flex:999 1 560px;min-width:0;padding:28px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px;background:#FFF4E6}
+.card{background:#fff;border-radius:22px;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.h2{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;font-size:20px;color:#5E5B3B;margin:0}
+.muted{color:#66624A}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:22px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 14px "Work Sans",sans-serif;text-decoration:none}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 16px;border-radius:19px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 13px "Work Sans",sans-serif}
+.tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600;font-family:"Work Sans",sans-serif;text-transform:none;letter-spacing:0}
 .todo{background:#FFF1D6;color:#7A4E00}
-.f{display:flex;flex-direction:column;gap:5px}
+.later{background:#ECE6F5;color:#4B3A80}
+.f{display:flex;flex-direction:column;gap:6px}
 .f label{font-size:13px;font-weight:600}
-.f input{border:1px solid #868259;border-radius:10px;min-height:40px;padding:0 10px;font:15px "Work Sans",sans-serif;box-sizing:border-box;width:100%}
-.g2{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-.h2{margin:0;font-size:17px}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #EFE9D6;font-size:14px}
+.f input{border:1.5px solid #C3BF94;border-radius:14px;min-height:42px;padding:0 12px;font:15px "Work Sans",sans-serif;color:#3B3A2A;background:#fff;box-sizing:border-box;width:100%}
+.g2{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;background:#FBF7EF;font-size:14.5px}
 </style>
 </helmet>
 <div style="display:flex;flex-wrap:wrap;min-height:900px;background:#FFF4E6">
   <nav class="side" aria-label="Staff menu">
-    <div style="padding:2px 12px 18px"><img src="/_blob/0fd3a25ff08c3b71a6d8552903b84305" alt="the village." style="width:130px;height:auto"><div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E8E3C5;margin-top:4px">Staff</div></div>
+    <div style="padding:2px 10px 20px"><img src="/_blob/0fd3a25ff08c3b71a6d8552903b84305" alt="the village." style="width:140px;height:auto"><div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E8E3C5;margin:6px 0 0 4px">Staff</div></div>
     <a class="nav" href="S01-Dashboard.dc.html">Dashboard</a>
     <a class="nav" href="S02-Calendar.dc.html">Calendar</a>
     <a class="nav" href="S04-Customers.dc.html">Customers</a>
@@ -45,17 +44,17 @@ h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-s
     <a class="nav" href="S08-Reports.dc.html">Reports<span class="mgr">manager</span></a>
     <a class="nav" href="S09-Staff.dc.html">Staff<span class="mgr">manager</span></a>
     <a class="nav on" href="S10-Settings.dc.html">Settings<span class="mgr">manager</span></a>
-    <span style="font-size:13px;padding:24px 12px 0;color:#E8E3C5">Signed in as Phuong (Manager)</span>
+    <span style="font-size:13px;padding:24px 14px 0;color:#E8E3C5">Signed in as Phuong (Manager)</span>
   </nav>
   <main class="main">
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-      <div style="display:flex;align-items:center;gap:10px"><h1 style="margin:0;font-size:26px">Studio settings</h1><span class="tag later">+2 weeks release</span></div>
+      <div style="display:flex;align-items:center;gap:12px"><h1 class="h" style="margin:0;font-size:30px;color:#5E5B3B">studio settings</h1><span class="tag later">+2 weeks release</span></div>
       <button class="btn" type="button">Save changes</button>
     </div>
     <p class="muted" style="margin:0;font-size:14px">Until then the developer sets these to the values you agreed.</p>
-    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+    <div style="display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start">
       <section class="card" style="flex:1 1 380px">
-        <h2 class="h2">Booking rules</h2>
+        <h2 class="h2">booking rules</h2>
         <div class="g2">
           <div class="f"><label for="b1">Free cancellation until</label><input id="b1" value="20:00 the evening before"></div>
           <div class="f"><label for="b2">Book up to</label><input id="b2" value="1 month ahead"></div>
@@ -66,7 +65,7 @@ h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-s
         </div>
       </section>
       <section class="card" style="flex:1 1 380px">
-        <h2 class="h2">Studio details <span class="tag todo" style="margin-left:6px">To come</span></h2>
+        <h2 class="h2">studio details <span class="tag todo" style="margin-left:6px;vertical-align:middle">To come</span></h2>
         <div class="g2">
           <div class="f"><label for="d1">Name</label><input id="d1" value="The Village - Family Club"></div>
           <div class="f"><label for="d2">Address</label><input id="d2" value="47/1 Quốc Hương, An Khánh, Hồ Chí Minh"></div>
@@ -80,12 +79,12 @@ h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-s
         </div>
       </section>
       <section class="card" style="flex:1 1 380px">
-        <h2 class="h2">Opening hours</h2>
-        <div class="row"><span>Monday – Sunday</span><span>8:30 – 17:00</span></div>
-        <div class="row"><span class="muted">Sessions and private hire can only be booked inside these hours</span><span></span></div>
+        <h2 class="h2">opening hours</h2>
+        <div class="row" style="background:#C3BF94"><strong>Monday – Sunday</strong><strong class="h" style="font-size:18px">8:30 – 17:00</strong></div>
+        <span class="muted" style="font-size:13.5px">Sessions and private hire can only be booked inside these hours</span>
       </section>
       <section class="card" style="flex:1 1 380px">
-        <h2 class="h2">Closed dates</h2>
+        <h2 class="h2">closed dates</h2>
         <div class="row"><span>Tet · [DATES]</span><span class="muted">Packs extended 7 days</span></div>
         <button class="btn2" type="button" style="align-self:flex-start">+ Add closure</button>
         <span class="muted" style="font-size:13px">Sessions already booked on a new closed date are cancelled for everyone, with credits returned and emails sent.</span>

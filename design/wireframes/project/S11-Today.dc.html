@@ -8,57 +8,77 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
 <style>
 body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
 a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;color:#5E5B3B;margin:0}
+.lbl{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:6px 0 0}
 .muted{color:#66624A}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.card{background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 1px 0 #E8E3C5}
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.btn:hover{color:#FFF4E6;background:#4E4B30}
+.btn2{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.danger{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #A44A2C;background:#fff;color:#A44A2C;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.pill{font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px}
+.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#5E5B3B;border-radius:22px}
+.back{width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;color:#5E5B3B;box-shadow:0 1px 0 #E8E3C5;flex:none}
+.tag{display:inline-block;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#3B3A2A}
 .pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E8E3C5}
-.sess{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;border:1.5px solid;text-decoration:none;color:#3B3A2A}
-.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:#66624A;text-decoration:none}
-.tab.on{color:#3B3A2A;font-weight:700;box-shadow:inset 0 3px 0 #E88D6D}
-.day{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#66624A;margin:8px 0 0}
+.ok{background:#C3BF94;color:#3B3A2A}
+.new{background:#E8E3C5;color:#3B3A2A}
+.todo{background:#FFF1D6;color:#7A4E00}
+.later{background:#ECE6F5;color:#4B3A80}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg button{min-height:40px;border:0;border-radius:18px;background:transparent;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg .on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:14px;font-weight:600}
+input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16px;font:16px "Work Sans",sans-serif;background:#fff;color:#3B3A2A;box-sizing:border-box;width:100%}
+.sess{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:20px;text-decoration:none;color:#3B3A2A}
+.sess:hover{color:#3B3A2A}
+.tm{font-family:"Lexend Deca",sans-serif;font-size:17px;font-weight:500;width:50px}
+.chev{width:32px;height:32px;border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;color:#5E5B3B;flex:none}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
-  <div class="hdr">
-    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village. staff" style="height:30px;width:auto">
-    <span class="muted" style="font-size:13px">Mai</span>
+  <div style="display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 18px">
+    <div style="display:flex;align-items:center;gap:10px"><img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:30px;width:auto"><span style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#66624A;font-weight:600">staff</span></div>
+    <span class="pill">Mai</span>
   </div>
-  <div style="flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
-    <h1 style="margin:0;font-size:24px">My sessions</h1>
-    <p class="day">Today · Mon 2 Nov</p>
-    <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#5E5B3B;background:#EEEAD3">
-      <strong style="width:48px">9:00</strong>
-      <span style="flex:1">Pilates Flow<br><span class="muted" style="font-size:13.5px">8 of 10 · 2 pay on the day</span></span>
-      <span aria-hidden="true">›</span>
+  <div style="flex:1;overflow:hidden;padding:6px 16px 12px;display:flex;flex-direction:column;gap:10px">
+    <h1 class="h" style="font-size:28px">my sessions</h1>
+    <p class="lbl">today · mon 2 nov</p>
+    <a class="sess" href="S12-CheckIn.dc.html" style="background:#C3BF94">
+      <span class="tm">9:00</span>
+      <span style="flex:1"><strong style="font-weight:600">Pilates Flow</strong><br><span style="font-size:13.5px">8 of 10 · 2 pay on the day</span></span>
+      <span class="chev" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
     </a>
-    <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#E88D6D;background:#FFE3D6">
-      <strong style="width:48px">10:30</strong>
-      <span style="flex:1">Open Play <span class="muted" style="font-size:13px">(covering)</span><br><span class="muted" style="font-size:13.5px">5 of 10 children</span></span>
-      <span aria-hidden="true">›</span>
+    <a class="sess" href="S12-CheckIn.dc.html" style="background:#FFBEA1">
+      <span class="tm">10:30</span>
+      <span style="flex:1"><strong style="font-weight:600">Open Play</strong> <span style="font-size:13px">(covering)</span><br><span style="font-size:13.5px">5 of 10 children</span></span>
+      <span class="chev" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
     </a>
-    <p class="day">Tomorrow · Tue 3 Nov</p>
-    <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#5E5B3B;background:#EEEAD3">
-      <strong style="width:48px">9:30</strong>
-      <span style="flex:1">Mum &amp; Baby Yoga<br><span class="muted" style="font-size:13.5px">3 of 10</span></span>
-      <span aria-hidden="true">›</span>
+    <p class="lbl">tomorrow · tue 3 nov</p>
+    <a class="sess" href="S12-CheckIn.dc.html" style="background:#EEEAD3">
+      <span class="tm">9:30</span>
+      <span style="flex:1"><strong style="font-weight:600">Mum &amp; Baby Yoga</strong><br><span style="font-size:13.5px">3 of 10</span></span>
+      <span class="chev" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
     </a>
-    <p class="day">Wed 4 Nov</p>
-    <a class="sess" href="S12-CheckIn.dc.html" style="border-color:#5E5B3B;background:#EEEAD3">
-      <strong style="width:48px">9:00</strong>
-      <span style="flex:1">Pilates Flow<br><span class="muted" style="font-size:13.5px">6 of 10</span></span>
-      <span aria-hidden="true">›</span>
+    <p class="lbl">wed 4 nov</p>
+    <a class="sess" href="S12-CheckIn.dc.html" style="background:#EEEAD3">
+      <span class="tm">9:00</span>
+      <span style="flex:1"><strong style="font-weight:600">Pilates Flow</strong><br><span style="font-size:13.5px">6 of 10</span></span>
+      <span class="chev" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
     </a>
     <p class="muted" style="margin:6px 0 0;font-size:13px">A manager who also teaches sees this same list for their own classes.</p>
   </div>
-  <nav style="display:flex;border-top:1px solid #E8E3C5;height:64px">
-    <a class="tab on" href="S11-Today.dc.html">My sessions</a>
-    <a class="tab" href="S02-Calendar.dc.html">Calendar</a>
-    <a class="tab" href="S04-Customers.dc.html">Customers</a>
+  <nav style="display:flex;background:#fff;height:68px;border-radius:24px 24px 0 0;box-shadow:0 -1px 0 #E8E3C5">
+    <a class="tab on" href="S11-Today.dc.html"><span style="width:6px;height:6px;border-radius:3px;background:#E88D6D"></span>My sessions</a>
+    <a class="tab" href="S02-Calendar.dc.html"><span style="width:6px;height:6px"></span>Calendar</a>
+    <a class="tab" href="S04-Customers.dc.html"><span style="width:6px;height:6px"></span>Customers</a>
   </nav>
 </div>
 </x-dc>

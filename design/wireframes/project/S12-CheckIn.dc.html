@@ -8,37 +8,55 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
 <style>
 body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
 a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;color:#5E5B3B;margin:0}
+.lbl{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:6px 0 0}
 .muted{color:#66624A}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.card{background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 1px 0 #E8E3C5}
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.btn:hover{color:#FFF4E6;background:#4E4B30}
+.btn2{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.danger{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #A44A2C;background:#fff;color:#A44A2C;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.pill{font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px}
+.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#5E5B3B;border-radius:22px}
+.back{width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;color:#5E5B3B;box-shadow:0 1px 0 #E8E3C5;flex:none}
+.tag{display:inline-block;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#3B3A2A}
 .pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
+.ok{background:#C3BF94;color:#3B3A2A}
 .new{background:#E8E3C5;color:#3B3A2A}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E8E3C5}
-.p{border:1px solid #E8E3C5;border-radius:18px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.todo{background:#FFF1D6;color:#7A4E00}
+.later{background:#ECE6F5;color:#4B3A80}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg button{min-height:40px;border:0;border-radius:18px;background:transparent;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg .on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:14px;font-weight:600}
+input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16px;font:16px "Work Sans",sans-serif;background:#fff;color:#3B3A2A;box-sizing:border-box;width:100%}
+.p{background:#fff;border-radius:20px;padding:12px 14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 0 #E8E3C5}
 .acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.a{min-height:40px;border-radius:12px;border:1.5px solid #868259;background:#fff;font:600 13.5px "Work Sans",sans-serif;color:#3B3A2A}
-.a.on{border-color:#5E5B3B;background:#C3BF94;color:#3B3A2A}
-.btn2{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:22px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 15px "Work Sans",sans-serif;text-decoration:none}
+.a{min-height:42px;border-radius:14px;border:1.5px solid #C3BF94;background:#fff;font:600 13.5px "Work Sans",sans-serif;color:#3B3A2A}
+.a.on{border-color:#5E5B3B;background:#5E5B3B;color:#FFF4E6}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
-  <div class="hdr">
-    <a href="S11-Today.dc.html" style="font-size:15px;text-decoration:none">← My sessions</a>
-    <span class="muted" style="font-size:13px">Mai</span>
+  <div style="display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 16px">
+    <a class="back" href="S11-Today.dc.html" aria-label="Back to my sessions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
+    <span style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#66624A;font-weight:600">staff · Mai</span>
   </div>
-  <div style="flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
-    <div>
-      <h1 style="margin:0;font-size:22px">Pilates Flow · 9:00</h1>
-      <div class="muted" style="font-size:14px">Mon 2 Nov · 8 of 10 · 3 here</div>
+  <div style="flex:1;overflow:hidden;padding:0 16px 14px;display:flex;flex-direction:column;gap:10px">
+    <div style="background:#C3BF94;border-radius:22px;padding:14px 16px">
+      <h1 class="h" style="font-size:24px;color:#3B3A2A">pilates flow · 9:00</h1>
+      <div style="font-size:14px;margin-top:2px">Mon 2 Nov · 8 of 10 · <strong>3 here</strong></div>
     </div>
     <sc-for list="{{people}}" as="p" hint-placeholder-count="4">
       <div class="p">
         <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
-          <div><strong>{{p.name}}</strong><br><span class="muted" style="font-size:13.5px">{{p.kids}}</span></div>
+          <div><strong style="font-weight:600">{{p.name}}</strong><br><span class="muted" style="font-size:13.5px">{{p.kids}}</span></div>
           <sc-if value="{{p.tag}}" hint-placeholder-val="{{false}}"><span class="tag {{p.cls}}">{{p.tag}}</span></sc-if>
         </div>
         <div class="acts">

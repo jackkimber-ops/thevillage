@@ -8,40 +8,58 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
 <style>
 body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
 a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;color:#5E5B3B;margin:0}
+.lbl{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:6px 0 0}
 .muted{color:#66624A}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E8E3C5}
-.btn{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:24px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none}
-.field{display:flex;flex-direction:column;gap:5px}
+.card{background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 1px 0 #E8E3C5}
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.btn:hover{color:#FFF4E6;background:#4E4B30}
+.btn2{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.danger{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #A44A2C;background:#fff;color:#A44A2C;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.pill{font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px}
+.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#5E5B3B;border-radius:22px}
+.back{width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;color:#5E5B3B;box-shadow:0 1px 0 #E8E3C5;flex:none}
+.tag{display:inline-block;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#3B3A2A}
+.pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
+.ok{background:#C3BF94;color:#3B3A2A}
+.new{background:#E8E3C5;color:#3B3A2A}
+.todo{background:#FFF1D6;color:#7A4E00}
+.later{background:#ECE6F5;color:#4B3A80}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg button{min-height:40px;border:0;border-radius:18px;background:transparent;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg .on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+.field{display:flex;flex-direction:column;gap:6px}
 .field label{font-size:14px;font-weight:600}
-.field input{border:1px solid #868259;border-radius:10px;min-height:44px;padding:0 12px;font-size:16px;box-sizing:border-box;width:100%;background:#fff}
-.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid #868259;border-radius:12px;overflow:hidden}
-.seg button{min-height:40px;border:0;background:#fff;font:500 14px "Work Sans",sans-serif;color:#3B3A2A}
-.seg .on{background:#5E5B3B;color:#FFF4E6}
+input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16px;font:16px "Work Sans",sans-serif;background:#fff;color:#3B3A2A;box-sizing:border-box;width:100%}
+input{min-height:48px}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
-  <div class="hdr">
-    <a href="S13-BookCustomer.dc.html" style="font-size:15px;text-decoration:none">← Back</a>
-    <span class="muted" style="font-size:13px">Staff</span>
+  <div style="display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 16px">
+    <a class="back" href="S13-BookCustomer.dc.html" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
+    <span style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#66624A;font-weight:600">staff</span>
   </div>
-  <form style="flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
-    <h1 style="margin:0;font-size:22px">New customer</h1>
+  <form style="flex:1;overflow:hidden;padding:0 16px 18px;display:flex;flex-direction:column;gap:10px">
+    <h1 class="h" style="font-size:26px">new customer</h1>
     <div class="field"><label for="n">Name</label><input id="n" value="Hoa Le"></div>
     <div class="field"><label for="p">Phone (WhatsApp)</label><input id="p" type="tel" value="+84 91 777 8888"></div>
     <div class="field"><label for="e">Email</label><input id="e" type="email" value="hoa@example.com"></div>
     <div class="field"><label>Language for emails</label><div class="seg"><button class="on" type="button">English</button><button type="button">Tiếng Việt</button></div></div>
-    <div style="font-size:14px;font-weight:600;margin-top:4px">Child <span class="muted" style="font-weight:400">(optional)</span></div>
-    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
-      <div class="field"><label for="c1" style="font-weight:400;font-size:13px">Name</label><input id="c1" value="Minh"></div>
-      <div class="field"><label for="c2" style="font-weight:400;font-size:13px">Born (month/year)</label><input id="c2" value="11 / 2025"></div>
+    <div class="card" style="background:#FFE3D6;box-shadow:none;display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:14px;font-weight:600">Child <span style="font-weight:400">(optional)</span></div>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+        <div class="field"><label for="c1" style="font-weight:400;font-size:13px">Name</label><input id="c1" value="Minh"></div>
+        <div class="field"><label for="c2" style="font-weight:400;font-size:13px">Born (month/year)</label><input id="c2" value="11 / 2025"></div>
+      </div>
+      <a href="S14-NewCustomer.dc.html" style="font-size:14px;font-weight:600">+ Add a second child</a>
     </div>
-    <a href="S14-NewCustomer.dc.html" style="font-size:14px">+ Add a second child</a>
-    <p class="muted" style="margin:4px 0 0;font-size:13px;line-height:1.45">They get a welcome email in their language with the booking link. If the phone or email already belongs to a customer, we open that customer instead of making a second account.</p>
+    <p class="muted" style="margin:0;font-size:13px;line-height:1.45">They get a welcome email in their language with the booking link. If the phone or email already belongs to a customer, we open that customer instead of making a second account.</p>
     <a class="btn" href="S13-BookCustomer.dc.html" style="margin-top:auto">Save and book</a>
   </form>
 </div>

@@ -8,51 +8,77 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
 <style>
 body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
 a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
-.btn2{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;color:#5E5B3B;margin:0}
+.lbl{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:6px 0 0}
 .muted{color:#66624A}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.card{background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 1px 0 #E8E3C5}
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.btn:hover{color:#FFF4E6;background:#4E4B30}
+.btn2{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.danger{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #A44A2C;background:#fff;color:#A44A2C;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.pill{font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px}
+.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#5E5B3B;border-radius:22px}
+.back{width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;color:#5E5B3B;box-shadow:0 1px 0 #E8E3C5;flex:none}
+.tag{display:inline-block;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#3B3A2A}
+.pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
+.ok{background:#C3BF94;color:#3B3A2A}
+.new{background:#E8E3C5;color:#3B3A2A}
+.todo{background:#FFF1D6;color:#7A4E00}
 .later{background:#ECE6F5;color:#4B3A80}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E8E3C5}
-.lang{font-size:13px;color:#66624A}
-.card{border:1px solid #E8E3C5;border-radius:18px;padding:14px;background:#fff}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg button{min-height:40px;border:0;border-radius:18px;background:transparent;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg .on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:14px;font-weight:600}
+input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16px;font:16px "Work Sans",sans-serif;background:#fff;color:#3B3A2A;box-sizing:border-box;width:100%}
 </style>
 </helmet>
-<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
-  <div class="hdr">
-    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:32px;width:auto">
-    <span class="lang"><strong style="color:#3B3A2A">EN</strong> · VI</span>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6;position:relative;overflow:hidden">
+  <div style="position:absolute;right:-80px;top:-80px;width:240px;height:240px;border-radius:50%;background:#FFBEA1;opacity:.55" aria-hidden="true"></div>
+  <div style="position:absolute;left:-60px;top:250px;width:130px;height:130px;border-radius:50%;background:#C3BF94;opacity:.4" aria-hidden="true"></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;position:relative">
+    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:34px;width:auto">
+    <span class="lang"><strong>EN</strong> · VI</span>
   </div>
-  <div style="flex:1;padding:28px 20px;display:flex;flex-direction:column;gap:16px">
-    <div style="width:64px;height:64px;border-radius:32px;background:#C3BF94;display:flex;align-items:center;justify-content:center;color:#3B3A2A">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
+  <div style="flex:1;padding:16px 20px 20px;display:flex;flex-direction:column;gap:12px;position:relative">
+    <div style="width:68px;height:68px;border-radius:34px;background:#5E5B3B;color:#FFF4E6;display:flex;align-items:center;justify-content:center">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
     </div>
     <div>
-      <h1 style="margin:0 0 6px;font-size:26px">You're booked</h1>
+      <div class="h" style="font-size:30px;margin-bottom:4px">you're booked</div>
       <p class="muted" style="margin:0;font-size:15px">We've emailed the details to lan@example.com.</p>
     </div>
-    <div class="card">
-      <div style="font-weight:700;font-size:16px">Pilates Flow</div>
-      <div style="font-size:15px">Mon 2 Nov · 9:00–10:00 · with Mai</div>
-      <div class="muted" style="font-size:14px;margin-top:4px">You + Bao · 1 class credit</div>
-      <div class="muted" style="font-size:14px">Free cancellation until 20:00 on Sun 1 Nov</div>
+    <div class="card" style="display:flex;gap:12px;align-items:center">
+      <div style="width:56px;height:56px;border-radius:16px;background:#C3BF94;display:flex;align-items:center;justify-content:center;flex:none"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:38px;height:38px"></div>
+      <div>
+        <div style="font-weight:600;font-size:16px">Pilates Flow</div>
+        <div style="font-size:14px">Mon 2 Nov · 9:00–10:00 · with Mai</div>
+        <div class="muted" style="font-size:13.5px">You + Bao · 1 class credit</div>
+        <div class="muted" style="font-size:13.5px">Free cancellation until 20:00 on Sun 1 Nov</div>
+      </div>
     </div>
-    <div class="card" style="border-style:dashed;font-size:14px;line-height:1.45">
+    <div style="border:1.5px dashed #C3BF94;border-radius:16px;padding:10px 12px;font-size:13.5px;line-height:1.45">
       <strong>Guest or pay-on-the-day version:</strong> "Pay at the studio by QR code before the class. We'll call you to say hello before your first visit."
     </div>
-    <div class="card" style="background:#E8E3C5;display:flex;flex-direction:column;gap:10px">
-      <div style="font-weight:700">Keep The Village on your phone</div>
-      <div class="muted" style="font-size:14px;line-height:1.45">Add it to your home screen to book like an app. On iPhone you'll log in once more inside the icon.</div>
-      <button class="btn2" type="button">Show me how</button>
+    <div class="card" style="background:#E8E3C5;box-shadow:none;display:flex;flex-direction:column;gap:8px">
+      <div style="font-weight:600">Keep the village on your phone</div>
+      <div style="font-size:14px;line-height:1.45">Add it to your home screen to book like an app. On iPhone you'll log in once more inside the icon.</div>
+      <button class="btn2" type="button" style="min-height:44px">Show me how</button>
     </div>
-    <div style="display:flex;flex-direction:column;gap:6px">
-      <button class="btn2" type="button">Add to my calendar</button>
-      <span class="tag later" style="align-self:center">+2 weeks release</span>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="btn2" type="button" style="flex:1;min-height:46px">Add to my calendar</button>
+      <span class="tag later">+2 weeks release</span>
     </div>
     <a class="btn" href="C10-MyBookings.dc.html" style="margin-top:auto">See my bookings</a>
   </div>
