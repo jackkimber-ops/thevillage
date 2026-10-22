@@ -42,6 +42,9 @@ input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16
 .check{display:flex;align-items:center;gap:12px;min-height:44px;font-size:15.5px}
 .check input{width:22px;height:22px;min-height:0;margin:0;padding:0;accent-color:#5E5B3B;flex:none}
 .seg a{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:18px;text-decoration:none;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg3 button{min-height:38px;border:0;border-radius:18px;background:transparent;font:500 14px "Work Sans",sans-serif;color:#3B3A2A}
+.seg3 .on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
@@ -49,7 +52,7 @@ input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16
     <a class="back" href="C05-Session.dc.html" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
     <span class="lang"><strong>EN</strong> · VI</span>
   </div>
-  <div style="flex:1;padding:4px 18px 16px;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+  <div style="flex:1;min-height:0;padding:4px 18px 16px;display:flex;flex-direction:column;gap:12px;overflow-y:auto">
     <div style="display:flex;gap:12px;align-items:center;background:#C3BF94;border-radius:20px;padding:10px 12px;position:relative;overflow:hidden">
       <div style="position:absolute;right:-30px;top:-30px;width:100px;height:100px;border-radius:50%;background:#FFBEA1;opacity:.7" aria-hidden="true"></div>
       <img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:48px;height:48px;position:relative">
@@ -60,9 +63,10 @@ input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16
       <span class="tag pay" style="position:relative">Pay on the day · 450,000 ₫</span>
     </div>
     <div class="h" style="font-size:26px;margin-top:2px">your details</div>
-    <form style="display:flex;flex-direction:column;gap:10px">
+    <form style="display:flex;flex-direction:column;gap:8px">
       <div class="field"><label for="g1">Your name</label><input id="g1" value="Linh Tran"></div>
-      <div class="field"><label for="g2">Phone (WhatsApp)</label><input id="g2" type="tel" value="+84 90 123 4567"></div>
+      <div class="field"><label for="g2">Mobile number</label><input id="g2" type="tel" value="+84 90 123 4567"></div>
+      <div class="field"><span style="font-size:14px;font-weight:600" id="g2c">Best way to reach you</span><div class="seg3" role="group" aria-labelledby="g2c"><button type="button" class="on">WhatsApp</button><button type="button">Zalo</button><button type="button">Call</button></div></div>
       <div class="field"><label for="g3">Email</label><input id="g3" type="email" placeholder="For your confirmation and login"></div>
       <div class="card" style="display:flex;flex-direction:column;gap:8px;padding:12px 14px">
         <p class="lbl" style="margin:0">child coming with you · optional</p>
@@ -72,7 +76,7 @@ input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16
         </div>
         <a href="C03-Guest.dc.html" style="font-size:14px;font-weight:500">+ Add a second child</a>
       </div>
-      <div class="ph" style="height:48px">Bot check (Turnstile)</div>
+      <div class="ph" style="height:40px">Bot check (Turnstile)</div>
       <a class="btn" href="C09-Booked.dc.html">Book, pay on the day</a>
     </form>
     <p class="muted" style="margin:0;font-size:12.5px;line-height:1.45">We'll call to say hello before your first visit. Free cancellation until 20:00 the evening before. By booking you agree to our <a href="C14-Menu.dc.html">privacy policy</a>.</p>

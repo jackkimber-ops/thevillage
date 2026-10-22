@@ -72,6 +72,8 @@ Database also enforces: unique active booking per (session, customer); customers
 - Unpaid late cancellation: no fee at launch; no screen says "full price due".
 - Multi-date booking = pick dates one by one; nothing repeats automatically (no recurring series).
 - Reminder emails at 18:00 the day before.
+- Customers give a **mobile number** plus a **preferred contact: WhatsApp, Zalo or call** (guest form and staff "add customer"); store it on the customer and show it in the call-to-confirm list.
+- Login screen has a full-width studio photo header (photo to come).
 - Customer timetable (changed 22 Oct, reverses 21 Oct): **List** (default, week list by day), **Week** (7-day grid) and **Month** (calendar with dots; tap a day to see its sessions). Month greys out days beyond the 1-month booking window.
 - Open play: up to 2 children (1 credit or 150,000 each) and up to 2 parents free per booking.
 - Booking after the cutoff is allowed (until 1 h before start); the confirm screen says "This booking can't be cancelled online".

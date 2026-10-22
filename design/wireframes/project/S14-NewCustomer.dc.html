@@ -38,6 +38,9 @@ a{color:#5E5B3B}a:hover{color:#3B3A2A}
 .field label{font-size:14px;font-weight:600}
 input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16px;font:16px "Work Sans",sans-serif;background:#fff;color:#3B3A2A;box-sizing:border-box;width:100%}
 input{min-height:48px}
+.seg3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg3 button{min-height:38px;border:0;border-radius:18px;background:transparent;font:500 14px "Work Sans",sans-serif;color:#3B3A2A}
+.seg3 .on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
@@ -45,10 +48,11 @@ input{min-height:48px}
     <a class="back" href="S13-BookCustomer.dc.html" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
     <span style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#66624A;font-weight:600">staff</span>
   </div>
-  <form style="flex:1;overflow:hidden;padding:0 16px 18px;display:flex;flex-direction:column;gap:10px">
+  <form style="flex:1;min-height:0;overflow-y:auto;padding:0 16px 18px;display:flex;flex-direction:column;gap:10px">
     <h1 class="h" style="font-size:26px">new customer</h1>
     <div class="field"><label for="n">Name</label><input id="n" value="Hoa Le"></div>
-    <div class="field"><label for="p">Phone (WhatsApp)</label><input id="p" type="tel" value="+84 91 777 8888"></div>
+    <div class="field"><label for="p">Mobile number</label><input id="p" type="tel" value="+84 91 777 8888"></div>
+      <div class="field"><span style="font-size:14px;font-weight:600" id="pc">Best way to reach them</span><div class="seg3" role="group" aria-labelledby="pc"><button type="button" class="on">WhatsApp</button><button type="button">Zalo</button><button type="button">Call</button></div></div>
     <div class="field"><label for="e">Email</label><input id="e" type="email" value="hoa@example.com"></div>
     <div class="field"><label>Language for emails</label><div class="seg"><button class="on" type="button">English</button><button type="button">Tiếng Việt</button></div></div>
     <div class="card" style="background:#FFE3D6;box-shadow:none;display:flex;flex-direction:column;gap:8px">

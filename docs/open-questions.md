@@ -50,6 +50,9 @@ The requirements win on *what* to build, so I'll follow the answer in **bold** u
 
 - **22 Oct: week and month views on the customer timetable** (owners). Reverses the 21 Oct "week list only" decision (Mockup row 9 / C2). List stays the default; Week and Month added. Adds a few hours to the build; re-estimated at sign-off.
 
+- **22 Oct: phone field** (owners): "Phone (WhatsApp)" was confusing for Zalo users. Now "Mobile number" plus "Best way to reach you: WhatsApp / Zalo / Call".
+- **22 Oct: login screen photo** (owners): full-width photo of The Village at the top of C1. Owners to supply the photo.
+
 ## Ideas noted for later
 
 - **Holiday freeze (owners, 21 Oct):** many expat families are away at Christmas and in summer, so members will want to freeze their pack. Pausing one customer's pack (M2) is already in the +2 weeks release; a studio-wide or self-service freeze can come after. Not needed now.
@@ -60,7 +63,7 @@ The requirements win on *what* to build, so I'll follow the answer in **bold** u
 - [ ] Buy `thevillagesaigon.com`; check the matching Facebook and Instagram handles
 - [ ] Who writes or checks the Vietnamese wording (not a launch blocker)
 - [ ] Privacy policy (B1) and cancellation policy (B2) in English and Vietnamese, before the pilot
-- [ ] Class illustrations (C28) and website photos (placeholders until then)
+- [ ] Class illustrations (C28), website photos and a photo of the studio for the login screen (placeholders until then)
 - [ ] Logo and colours (version 1 stays simple and pastel)
 - [ ] Register the business. Meta (WhatsApp) and Zalo verification need the registration papers, so **WhatsApp/Zalo login codes (C30) wait until then; email codes cover opening day.** Not registered yet (21 Oct)
 - [ ] Google Business Profile (W2): start as soon as the address is final
