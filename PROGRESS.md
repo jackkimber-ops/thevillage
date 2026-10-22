@@ -18,10 +18,11 @@
 - Then a clickable prototype for phones.
 - At build start: branch protection on `main`, pull-request checks and Dependabot (needs repo admin settings).
 
+- 22 Oct: all open questions in sections A–C answered (see `docs/open-questions.md`).
+
 ## Waiting on the owners
-- Phuong's and Caroline's login emails, which of them teaches, instructor names and emails, and whether +84 933 834 068 is the studio's WhatsApp and Zalo number. (Address and opening hours received 21 Oct.)
-- Answers to sections B and C in `docs/open-questions.md`.
-- Brand questions in `design/brand/README.md`: which colour values are the master, and SVGs of the full-colour wordmark and badges.
+- Caroline's login email, instructor names and emails, and whether +84 933 834 068 is the studio's WhatsApp and Zalo number. (Address and opening hours received 21 Oct.)
+- SVGs of the full-colour wordmark and badges (later).
 
 ## Sign-off log
 - Designs: target **28 Oct**, not yet signed off. **No app code, database tables or paid services until they are.**

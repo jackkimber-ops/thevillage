@@ -43,7 +43,7 @@ Rules:
 
 ## Notes and questions for the owners
 
-1. **Colour values differ slightly** between the brand guide and the logo files. For example, coral is `#E88D6D` in the guide but `#F68665` in the logos, and forrest is `#868259` versus `#868153`. We use the guide's values for the app. Which should be the master?
+1. **Colour values differ slightly** between the brand guide and the logo files. For example, coral is `#E88D6D` in the guide but `#F68665` in the logos, and forrest is `#868259` versus `#868153`. We use the guide's values for the app. **Answered 22 Oct: the brand guide's values are the master.**
 2. **The body text in the brand guide is template filler** ("Rimberio Coffee is a modern Filipino coffee brand…"). Worth replacing before the guide goes to anyone else.
 3. **SVG files:** please add SVGs of the full-colour wordmark and the badges. The Primary SVG folder only has the one-colour versions.
 4. The Drive also holds social files (`Social Media Set Up`: Instagram highlight covers, launch posts). We haven't copied these into the repo, since the booking system doesn't use them.

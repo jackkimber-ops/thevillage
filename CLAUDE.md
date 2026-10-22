@@ -74,10 +74,15 @@ Database also enforces: unique active booking per (session, customer); customers
 - Reminder emails at 18:00 the day before.
 - Open play: up to 2 children (1 credit or 150,000 each) and up to 2 parents free per booking.
 - Booking after the cutoff is allowed (until 1 h before start); the confirm screen says "This booking can't be cancelled online".
+- Login email: 6-digit code with a one-tap link underneath; the screen asks for the code. WhatsApp/Zalo login hidden until Meta/Zalo approve (after business registration).
+- No limit on unpaid bookings for logged-in customers (all go to the call-to-confirm list). Free trial is for a class only and doesn't block the intro pack later.
+- Selling a pack to a customer with unpaid bookings switches those bookings to credits from the new pack.
+- Private hire: no group-size limit.
+- Instructors default to "own sessions only" access.
 - Staff dragging a session to a new time moves its bookings with it and emails everyone booked; a move that overlaps another session is refused.
-- Studio: 47/1 Quốc Hương, An Khánh, Hồ Chí Minh. Open every day 8:30–17:00. Contact email for now: thevillage.saigon@gmail.com, later hello@thevillagesaigon.com (one shared Namecheap mailbox; staff log in with personal emails). Contact/WhatsApp/Zalo for now: +84 933 834 068 (temporary until the business is registered). All of these go in `studio_settings`, never in code.
+- Studio: 47/1 Quốc Hương, An Khánh, Hồ Chí Minh. Open every day 8:30–17:00. Contact email for now: thevillage.saigon@gmail.com, later hello@thevillagesaigon.com (one shared Namecheap mailbox; staff log in with personal emails). Contact/WhatsApp/Zalo for now: +84 933 834 068 (temporary until the business is registered). Social: facebook.com/thevillage.saigon, instagram.com/thevillage.saigon, Messenger m.me/thevillage.saigon. Name is written "The Village - Family Club". All of these go in `studio_settings`, never in code.
 
 ## Roles
 
-Manager (2: Phuong and Caroline) and Instructor (up to 4, names to come); a manager can also teach. Roles in `staff_roles` / `app_metadata`, **never** `user_metadata`.
+Manager (2: Phuong, who also teaches, and Caroline) and Instructor (up to 4, names to come); a manager can also teach. Roles in `staff_roles` / `app_metadata`, **never** `user_metadata`.
 Enforced by RLS and DB functions, not by hiding pages. See the "Who can do what" and RLS tables in developer notes.
