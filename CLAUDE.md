@@ -84,7 +84,7 @@ Database also enforces: unique active booking per (session, customer); customers
 - Private hire: no group-size limit.
 - Instructors default to "own sessions only" access.
 - Staff dragging a session to a new time moves its bookings with it and emails everyone booked; a move that overlaps another session is refused.
-- Studio: 47/1 Quốc Hương, An Khánh, Hồ Chí Minh. Open every day 8:30–17:00. Contact email for now: thevillage.saigon@gmail.com, later hello@thevillagesaigon.com (one shared Namecheap mailbox; staff log in with personal emails). Contact/WhatsApp/Zalo for now: +84 933 834 068 (temporary until the business is registered). Social: facebook.com/thevillage.saigon, instagram.com/thevillage.saigon, Messenger m.me/thevillage.saigon. Name is written "The Village - Family Club". All of these go in `studio_settings`, never in code.
+- Studio: 47/1 Quốc Hương, An Khánh, Hồ Chí Minh. Open every day 8:30–17:00. Contact email for now: thevillage.saigon@gmail.com, later hello@thevillagesaigon.com (one shared Namecheap mailbox; staff log in with personal emails). Contact/WhatsApp/Zalo for now: +84 933 834 068 (temporary until the business is registered). "Message us" buttons: Zalo, WhatsApp, Messenger and Email (studio contact email). Social: facebook.com/thevillage.saigon, instagram.com/thevillage.saigon, Messenger m.me/thevillage.saigon. Name is written "The Village - Family Club". All of these go in `studio_settings`, never in code.
 
 ## Roles
 
