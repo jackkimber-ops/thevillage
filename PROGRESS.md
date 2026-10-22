@@ -14,11 +14,12 @@
 ## Next
 - Owners review the wireframes and leave comments on the preview.
 - Owners review designs v2 and comment on the canvas.
-- Clickable prototype for phones (customer booking flow), then formal sign-off by 28 Oct.
+- Owners try the prototype on their phones, then formal sign-off (target 28 Oct, earlier is better).
 - Then a clickable prototype for phones.
 - At build start: branch protection on `main`, pull-request checks and Dependabot (needs repo admin settings).
 
 - 22 Oct: **designs v3**: all 29 screens redesigned to the full visual style (logo, rounded cards, coloured session pictures, brand fonts), not just recoloured.
+- 22 Oct: **clickable prototype** of the customer flow on the canvas (open 'C1 · Log in' and press Play).
 - 22 Oct: all open questions in sections A–C answered (see `docs/open-questions.md`).
 
 ## Waiting on the owners

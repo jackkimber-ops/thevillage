@@ -15,98 +15,112 @@
 "y": 0,
 "w": 390,
 "h": 844,
-"title": "C1 · Log in or book as a guest"
+"title": "C1 · Log in or book as a guest",
+"is_interactive": true
 },
 "C02-EmailCode.dc.html": {
 "x": 470,
 "y": 0,
 "w": 390,
 "h": 844,
-"title": "C2 · Enter the code"
+"title": "C2 · Enter the code",
+"is_interactive": true
 },
 "C03-Guest.dc.html": {
 "x": 940,
 "y": 0,
 "w": 390,
 "h": 844,
-"title": "C3 · Book as a guest"
+"title": "C3 · Book as a guest",
+"is_interactive": true
 },
 "C04-Timetable.dc.html": {
 "x": 1410,
 "y": 0,
 "w": 390,
 "h": 844,
-"title": "C4 · Classes (timetable)"
+"title": "C4 · Classes (timetable)",
+"is_interactive": true
 },
 "C05-Session.dc.html": {
 "x": 1880,
 "y": 0,
 "w": 390,
 "h": 844,
-"title": "C5 · Session details"
+"title": "C5 · Session details",
+"is_interactive": true
 },
 "C06-ConfirmClass.dc.html": {
 "x": 2350,
 "y": 0,
 "w": 390,
 "h": 844,
-"title": "C6 · Confirm a class"
+"title": "C6 · Confirm a class",
+"is_interactive": true
 },
 "C07-ConfirmOpenPlay.dc.html": {
 "x": 2820,
 "y": 0,
 "w": 390,
 "h": 844,
-"title": "C7 · Confirm open play"
+"title": "C7 · Confirm open play",
+"is_interactive": true
 },
 "C08-PickDates.dc.html": {
 "x": 0,
 "y": 1244,
 "w": 390,
 "h": 844,
-"title": "C8 · Pick dates (+2 weeks)"
+"title": "C8 · Pick dates (+2 weeks)",
+"is_interactive": true
 },
 "C09-Booked.dc.html": {
 "x": 470,
 "y": 1244,
 "w": 390,
 "h": 844,
-"title": "C9 · Booked"
+"title": "C9 · Booked",
+"is_interactive": true
 },
 "C10-MyBookings.dc.html": {
 "x": 940,
 "y": 1244,
 "w": 390,
 "h": 844,
-"title": "C10 · My bookings"
+"title": "C10 · My bookings",
+"is_interactive": true
 },
 "C11-Cancel.dc.html": {
 "x": 1410,
 "y": 1244,
 "w": 390,
 "h": 844,
-"title": "C11 · Cancel a booking"
+"title": "C11 · Cancel a booking",
+"is_interactive": true
 },
 "C12-MyPackages.dc.html": {
 "x": 1880,
 "y": 1244,
 "w": 390,
 "h": 844,
-"title": "C12 · My packages"
+"title": "C12 · My packages",
+"is_interactive": true
 },
 "C13-PrivateHire.dc.html": {
 "x": 2350,
 "y": 1244,
 "w": 390,
 "h": 844,
-"title": "C13 · Hire the studio"
+"title": "C13 · Hire the studio",
+"is_interactive": true
 },
 "C14-Menu.dc.html": {
 "x": 2820,
 "y": 1244,
 "w": 390,
 "h": 844,
-"title": "C14 · Menu: message us, language, my details"
+"title": "C14 · Menu: message us, language, my details",
+"is_interactive": true
 },
 "S01-Dashboard.dc.html": {
 "x": 0,
@@ -420,6 +434,15 @@
 "fill": "orange",
 "text": "QUESTIONS\n\n1. Coral and forrest differ slightly between the brand guide and the logo files. Which is the master?\n2. Can we get SVGs of the full-colour wordmark and the badges?\n3. Session pictures are placeholders until the illustrations are ready.",
 "maxH": 500
+},
+"nP": {
+"x": 3330,
+"y": 620,
+"w": 420,
+"size": "m",
+"fill": "teal",
+"text": "TRY IT ON YOUR PHONE\n\nOpen 'C1 · Log in' and press Play. Tap through like a parent:\n\nSend me a code → Log in → Book a class → Confirm → See my bookings → Cancel.\n\nAlso try: Book as a guest, Open Play, Pick dates, Packages, the menu and Hire the studio.\n\nOnly the main buttons work; filters and language switch are for show.",
+"maxH": 560
 }
 },
 "designSystems": []
