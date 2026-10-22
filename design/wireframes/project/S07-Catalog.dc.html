@@ -8,34 +8,37 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
 <style>
 body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
 a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
-.muted{color:#66624A}
-.side{flex:1 1 200px;padding:20px 16px;background:#5E5B3B;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
-.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#FFF4E6;text-decoration:none}
-.nav.on{background:#FFF4E6;font-weight:600;color:#3B3A2A}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500}
+.side{flex:1 1 200px;padding:22px 14px;background:#5E5B3B;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
+.nav{display:flex;align-items:center;min-height:42px;padding:0 14px;border-radius:14px;font-size:15px;color:#FFF4E6;text-decoration:none}
 .nav:hover{color:#FFF4E6;background:rgba(255,244,230,.14)}
-.nav.on:hover{color:#3B3A2A;background:#FFF4E6}
+.nav.on,.nav.on:hover{background:#FFF4E6;color:#3B3A2A;font-weight:600}
 .mgr{font-size:11px;color:#E8E3C5;margin-left:6px}
-.main{flex:999 1 560px;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:18px}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:19px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 14px "Work Sans",sans-serif;text-decoration:none}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.main{flex:999 1 560px;min-width:0;padding:28px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:22px;background:#FFF4E6}
+.card{background:#fff;border-radius:22px;padding:20px 22px}
+.h2{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;font-size:20px;color:#5E5B3B;margin:0}
+.muted{color:#66624A}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;border-radius:21px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 14px "Work Sans",sans-serif;text-decoration:none}
+.tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#3B3A2A}
+.new{background:#E8E3C5}
 .todo{background:#FFF1D6;color:#7A4E00}
-.new{background:#E8E3C5;color:#3B3A2A}
-.sw{display:inline-block;width:14px;height:14px;border-radius:4px;border:1.5px solid;vertical-align:-2px;margin-right:6px}
-.pic{width:40px;height:30px;border:1.5px dashed #C3BF94;border-radius:6px;background:#F3EEDC}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th{text-align:left;font-size:12.5px;color:#66624A;font-weight:600;padding:9px 10px;border-bottom:1px solid #E8E3C5;white-space:nowrap}
-td{padding:9px 10px;border-bottom:1px solid #EFE9D6;vertical-align:middle}
-.box{overflow-x:auto;border:1px solid #E8E3C5;border-radius:12px}
+.pic{width:44px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+.box{overflow-x:auto}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:14px}
+th{background:#E8E3C5;text-align:left;font-size:12.5px;font-weight:600;color:#3B3A2A;padding:10px 12px;white-space:nowrap}
+th:first-child{border-radius:12px 0 0 12px}th:last-child{border-radius:0 12px 12px 0}
+td{padding:11px 12px;border-bottom:1px solid #EFE9D6;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tr.off td{color:#66624A}
 </style>
 </helmet>
 <div style="display:flex;flex-wrap:wrap;min-height:900px;background:#FFF4E6">
   <nav class="side" aria-label="Staff menu">
-    <div style="padding:2px 12px 18px"><img src="/_blob/0fd3a25ff08c3b71a6d8552903b84305" alt="the village." style="width:130px;height:auto"><div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E8E3C5;margin-top:4px">Staff</div></div>
+    <div style="padding:2px 10px 20px"><img src="/_blob/0fd3a25ff08c3b71a6d8552903b84305" alt="the village." style="width:140px;height:auto"><div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E8E3C5;margin:6px 0 0 4px">Staff</div></div>
     <a class="nav" href="S01-Dashboard.dc.html">Dashboard</a>
     <a class="nav" href="S02-Calendar.dc.html">Calendar</a>
     <a class="nav" href="S04-Customers.dc.html">Customers</a>
@@ -43,36 +46,36 @@ td{padding:9px 10px;border-bottom:1px solid #EFE9D6;vertical-align:middle}
     <a class="nav" href="S08-Reports.dc.html">Reports<span class="mgr">manager</span></a>
     <a class="nav" href="S09-Staff.dc.html">Staff<span class="mgr">manager</span></a>
     <a class="nav" href="S10-Settings.dc.html">Settings<span class="mgr">manager</span></a>
-    <span style="font-size:13px;padding:24px 12px 0;color:#E8E3C5">Signed in as Phuong (Manager)</span>
+    <span style="font-size:13px;padding:24px 14px 0;color:#E8E3C5">Signed in as Phuong (Manager)</span>
   </nav>
   <main class="main">
-    <h1 style="margin:0;font-size:26px">Catalog</h1>
-    <section style="display:flex;flex-direction:column;gap:10px">
-      <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:18px">Class and session types</h2><button class="btn" type="button">+ New type</button></div>
+    <h1 class="h" style="margin:0;font-size:30px;color:#5E5B3B">catalog</h1>
+    <section class="card" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h2 class="h2">class and session types</h2><button class="btn" type="button">+ New type</button></div>
       <div class="box">
         <table>
           <thead><tr><th>Picture</th><th>Name</th><th>Kind</th><th>Length</th><th>Capacity</th><th>Suits</th><th>Single price</th><th></th></tr></thead>
           <tbody>
-            <tr><td><div class="pic"></div></td><td><span class="sw" style="background:#C3BF94;border-color:#5E5B3B"></span>Pilates</td><td>Group class</td><td>60 min</td><td>10 parents</td><td>Babies, crawlers</td><td>450,000 ₫</td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
-            <tr><td><div class="pic"></div></td><td><span class="sw" style="background:#C3BF94;border-color:#5E5B3B"></span>Yoga</td><td>Group class</td><td>60 min</td><td>10 parents</td><td>Babies</td><td>450,000 ₫</td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
-            <tr><td><div class="pic"></div></td><td><span class="sw" style="background:#C3BF94;border-color:#5E5B3B"></span>Strength · Fitness · Dance</td><td>Group class</td><td>60 min</td><td>10 parents</td><td>All ages</td><td>450,000 ₫</td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
-            <tr><td><div class="pic"></div></td><td><span class="sw" style="background:#FFBEA1;border-color:#E88D6D"></span>Open Play</td><td>Open play</td><td>90 min</td><td>10 children</td><td>[AGES]</td><td>150,000 ₫ / child</td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
-            <tr><td><div class="pic"></div></td><td><span class="sw" style="background:#E8E3C5;border-color:#868259"></span>Private hire</td><td>Private hire</td><td>1 or 2 h</td><td>Whole room</td><td>—</td><td>Agreed in chat</td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
+            <tr><td><div class="pic" style="background:#C3BF94"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:26px;height:26px"></div></td><td><strong>Pilates</strong></td><td>Group class</td><td>60 min</td><td>10 parents</td><td>Babies, crawlers</td><td>450,000 ₫</td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
+            <tr><td><div class="pic" style="background:#C3BF94"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:26px;height:26px"></div></td><td><strong>Yoga</strong></td><td>Group class</td><td>60 min</td><td>10 parents</td><td>Babies</td><td>450,000 ₫</td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
+            <tr><td><div class="pic" style="background:#C3BF94"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:26px;height:26px"></div></td><td><strong>Strength · Fitness · Dance</strong></td><td>Group class</td><td>60 min</td><td>10 parents</td><td>All ages</td><td>450,000 ₫</td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
+            <tr><td><div class="pic" style="background:#FFBEA1"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:26px;height:26px"></div></td><td><strong>Open Play</strong></td><td>Open play</td><td>90 min</td><td>10 children</td><td>[AGES]</td><td>150,000 ₫ / child</td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
+            <tr><td><div class="pic" style="background:#E8E3C5"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:26px;height:26px"></div></td><td><strong>Private hire</strong></td><td>Private hire</td><td>1 or 2 h</td><td>Whole room</td><td>—</td><td>Agreed in chat</td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
           </tbody>
         </table>
       </div>
     </section>
-    <section style="display:flex;flex-direction:column;gap:10px">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h2 style="margin:0;font-size:18px">Packs and promotions</h2><div style="display:flex;gap:8px;align-items:center"><button class="btn" type="button">+ New pack</button></div></div>
+    <section class="card" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h2 class="h2">packs and promotions</h2><button class="btn" type="button">+ New pack</button></div>
       <div class="box">
         <table>
           <thead><tr><th>Name</th><th>Covers</th><th>Credits</th><th>Price</th><th>Valid for</th><th>On sale</th><th>Rules</th><th></th></tr></thead>
           <tbody>
-            <tr><td>Intro pack</td><td>All classes</td><td>3</td><td>750,000 ₫</td><td>3 weeks</td><td>Always</td><td><span class="tag new">New customers · once</span></td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
-            <tr><td>10 classes</td><td>All classes</td><td>10</td><td>4,000,000 ₫</td><td>3 months</td><td>Always</td><td></td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
-            <tr><td>20 classes</td><td>All classes</td><td>20</td><td>7,200,000 ₫</td><td>7 months</td><td>Always</td><td><span class="tag new">10% off</span></td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
-            <tr><td>40 / 60 classes</td><td>All classes</td><td>40 / 60</td><td>—</td><td>—</td><td>Not on sale</td><td><span class="tag todo">Undecided</span></td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
-            <tr><td>10 / 20 / 40 / 60 open play</td><td>Open play</td><td>10 – 60</td><td>—</td><td>—</td><td>Not on sale</td><td><span class="tag todo">Undecided</span></td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
+            <tr><td><strong>Intro pack</strong></td><td>All classes</td><td>3</td><td>750,000 ₫</td><td>3 weeks</td><td>Always</td><td><span class="tag new">New customers · once</span></td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
+            <tr><td><strong>10 classes</strong></td><td>All classes</td><td>10</td><td>4,000,000 ₫</td><td>3 months</td><td>Always</td><td></td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
+            <tr><td><strong>20 classes</strong></td><td>All classes</td><td>20</td><td>7,200,000 ₫</td><td>7 months</td><td>Always</td><td><span class="tag new">10% off</span></td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
+            <tr class="off"><td>40 / 60 classes</td><td>All classes</td><td>40 / 60</td><td>—</td><td>—</td><td>Not on sale</td><td><span class="tag todo">Undecided</span></td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
+            <tr class="off"><td>10 / 20 / 40 / 60 open play</td><td>Open play</td><td>10 – 60</td><td>—</td><td>—</td><td>Not on sale</td><td><span class="tag todo">Undecided</span></td><td><a href="S07-Catalog.dc.html">Edit</a></td></tr>
           </tbody>
         </table>
       </div>

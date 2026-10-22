@@ -8,53 +8,34 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
-<style>
-body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
-a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
-.btn2{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
-.muted{color:#66624A}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
-.todo{background:#FFF1D6;color:#7A4E00}
-.later{background:#ECE6F5;color:#4B3A80}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E8E3C5}
-.lang{font-size:13px;color:#66624A}
-.ph{border:1.5px dashed #C3BF94;border-radius:12px;background:#F3EEDC;color:#66624A;display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center}
-.field{display:flex;flex-direction:column;gap:6px}
-.field label{font-size:14px;font-weight:600}
-.field input{border:1px solid #868259;border-radius:10px;min-height:46px;padding:0 12px;font-size:16px;box-sizing:border-box;width:100%;background:#fff}
+@@KIT@@
 </style>
 </helmet>
-<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
-  <div class="hdr">
-    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:32px;width:auto">
-    <span class="lang"><strong style="color:#3B3A2A">EN</strong> · VI</span>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6;position:relative;overflow:hidden">
+  <div style="position:absolute;right:-90px;top:-90px;width:260px;height:260px;border-radius:50%;background:#FFBEA1;opacity:.55" aria-hidden="true"></div>
+  <div style="position:absolute;left:-70px;top:170px;width:150px;height:150px;border-radius:50%;background:#C3BF94;opacity:.45" aria-hidden="true"></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;position:relative">
+    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:34px;width:auto">
+    <span class="lang"><strong>EN</strong> · VI</span>
   </div>
-  <div style="flex:1;padding:24px 20px;display:flex;flex-direction:column;gap:16px">
-    <div class="ph" style="height:150px">Welcome picture<br>[PLACEHOLDER]</div>
-    <div>
-      <h1 style="margin:0 0 6px;font-size:26px">Log in or book</h1>
-      <p class="muted" style="margin:0;font-size:15px">No password. We send you a 6-digit code.</p>
-    </div>
-    <form style="display:flex;flex-direction:column;gap:12px">
+  <div style="flex:1;padding:14px 26px 22px;display:flex;flex-direction:column;gap:14px;position:relative">
+    <div class="h" style="font-size:28px;line-height:1.15;text-align:center;margin-top:12px">welcome to<br>the family club</div>
+    <p class="muted" style="margin:0;text-align:center;font-size:15px">Log in or book. No password: we send you a 6-digit code.</p>
+    <form style="display:flex;flex-direction:column;gap:10px">
       <div class="field">
         <label for="em">Email</label>
         <input id="em" type="email" placeholder="you@example.com">
       </div>
-      <button class="btn" type="button">Send me a code</button>
+      <a class="btn" href="C02-EmailCode.dc.html">Send me a code</a>
     </form>
-    <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;flex-direction:column;gap:8px">
       <button class="btn2" type="button">Get the code on WhatsApp</button>
       <button class="btn2" type="button">Get the code on Zalo</button>
-      <span class="tag later" style="align-self:flex-start">Hidden until Meta / Zalo approve</span>
+      <span class="tag later" style="align-self:center">Hidden until Meta / Zalo approve</span>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;color:#66624A;font-size:13px">
-      <span style="flex:1;height:1px;background:#E8E3C5"></span>or<span style="flex:1;height:1px;background:#E8E3C5"></span>
-    </div>
+    <div style="display:flex;align-items:center;gap:12px;color:#66624A;font-size:13px"><span style="flex:1;height:1px;background:#C3BF94"></span>new here?<span style="flex:1;height:1px;background:#C3BF94"></span></div>
     <a class="btn2" href="C03-Guest.dc.html">Book as a guest</a>
-    <p class="muted" style="margin:0;font-size:13px;text-align:center">First time? Book now and pay at the studio.<br>You stay logged in on this phone.</p>
+    <p class="muted" style="margin:auto 0 0;text-align:center;font-size:13px;line-height:1.45">First time? Book now and pay at the studio.<br>You stay logged in on this phone.</p>
   </div>
 </div>
 </x-dc>

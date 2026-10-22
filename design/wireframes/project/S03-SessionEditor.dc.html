@@ -13,33 +13,47 @@
 body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
 a{color:#5E5B3B}a:hover{color:#3B3A2A}
 h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;color:#5E5B3B}
 .muted{color:#66624A}
-.side{flex:1 1 200px;padding:20px 16px;background:#5E5B3B;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
-.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#FFF4E6;text-decoration:none}
-.nav.on{background:#FFF4E6;font-weight:600;color:#3B3A2A}
+.side{flex:1 1 200px;padding:22px 14px;background:#5E5B3B;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
+.nav{display:flex;align-items:center;min-height:42px;padding:0 14px;border-radius:14px;font-size:15px;color:#FFF4E6;text-decoration:none}
 .nav:hover{color:#FFF4E6;background:rgba(255,244,230,.14)}
+.nav.on{background:#FFF4E6;color:#3B3A2A;font-weight:600}
 .nav.on:hover{color:#3B3A2A;background:#FFF4E6}
 .mgr{font-size:11px;color:#E8E3C5;margin-left:6px}
-.main{flex:999 1 560px;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px}
-.card{border:1px solid #E8E3C5;border-radius:18px;padding:16px;background:#fff}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 14px "Work Sans",sans-serif;text-decoration:none}
-.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 14px "Work Sans",sans-serif;text-decoration:none}
-.danger{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #A44A2C;background:#fff;color:#A44A2C;font:600 14px "Work Sans",sans-serif}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
-.later{background:#ECE6F5;color:#4B3A80}
+.main{flex:999 1 560px;min-width:0;padding:28px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:22px;background:#FFF4E6}
+.card{background:#fff;border-radius:22px;padding:18px 20px;box-sizing:border-box}
+.sec{margin:0 0 12px;font-size:20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:0 18px;border-radius:21px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 14px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.btn:hover{color:#FFF4E6}
+.btn2{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:0 18px;border-radius:21px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 14px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.danger{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;border-radius:21px;border:1.5px solid #A44A2C;background:#fff;color:#A44A2C;font:600 14px "Work Sans",sans-serif}
+.tag{display:inline-block;padding:3px 9px;border-radius:10px;font-size:12px;font-weight:600;color:#3B3A2A}
 .pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
-.f{display:flex;flex-direction:column;gap:5px}
+.new{background:#E8E3C5;color:#3B3A2A}
+.warn{background:#FFE3D6;color:#A44A2C}
+.ok{background:#C3BF94;color:#3B3A2A}
+.todo{background:#FFF1D6;color:#7A4E00}
+.later{background:#ECE6F5;color:#4B3A80}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #EFE9D6;font-size:14px;flex-wrap:wrap}
+.row:last-child{border-bottom:0}
+.f{display:flex;flex-direction:column;gap:6px}
 .f label{font-size:13px;font-weight:600}
-.f input,.f select,.f textarea{border:1px solid #868259;border-radius:10px;min-height:40px;padding:8px 10px;font:15px "Work Sans",sans-serif;box-sizing:border-box;width:100%;background:#fff}
-.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.ph{border:1.5px dashed #C3BF94;border-radius:12px;background:#F3EEDC;color:#66624A;display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center}
-.row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #EFE9D6;font-size:14px;gap:8px}
+input,select,textarea{border:1.5px solid #C3BF94;border-radius:14px;min-height:42px;padding:8px 12px;font:15px "Work Sans",sans-serif;box-sizing:border-box;width:100%;background:#fff;color:#3B3A2A}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-size:12.5px;color:#3B3A2A;font-weight:600;padding:11px 14px;background:#E8E3C5;white-space:nowrap}
+th:first-child{border-radius:14px 0 0 14px}th:last-child{border-radius:0 14px 14px 0}
+td{padding:12px 14px;border-bottom:1px solid #EFE9D6;vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+.tbl{overflow-x:auto}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.ph{border-radius:16px;background:#C3BF94;color:#3B3A2A;display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center}
 </style>
 </helmet>
 <div style="display:flex;flex-wrap:wrap;min-height:900px;background:#FFF4E6">
   <nav class="side" aria-label="Staff menu">
-    <div style="padding:2px 12px 18px"><img src="/_blob/0fd3a25ff08c3b71a6d8552903b84305" alt="the village." style="width:130px;height:auto"><div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E8E3C5;margin-top:4px">Staff</div></div>
+    <div style="padding:2px 10px 20px"><img src="/_blob/0fd3a25ff08c3b71a6d8552903b84305" alt="the village." style="width:140px;height:auto"></div>
     <a class="nav" href="S01-Dashboard.dc.html">Dashboard</a>
     <a class="nav on" href="S02-Calendar.dc.html">Calendar</a>
     <a class="nav" href="S04-Customers.dc.html">Customers</a>
@@ -47,15 +61,15 @@ h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-s
     <a class="nav" href="S08-Reports.dc.html">Reports<span class="mgr">manager</span></a>
     <a class="nav" href="S09-Staff.dc.html">Staff<span class="mgr">manager</span></a>
     <a class="nav" href="S10-Settings.dc.html">Settings<span class="mgr">manager</span></a>
-    <span style="font-size:13px;padding:24px 12px 0;color:#E8E3C5">Signed in as Phuong (Manager)</span>
+    <span style="font-size:13px;padding:24px 14px 0;color:#E8E3C5">Signed in as Phuong (Manager)</span>
   </nav>
   <main class="main">
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-      <div><a href="S02-Calendar.dc.html" style="font-size:14px">← Calendar</a><h1 style="margin:4px 0 0;font-size:24px">Pilates Flow · Mon 2 Nov, 9:00</h1></div>
+      <div><a href="S02-Calendar.dc.html" style="font-size:14px">← Calendar</a><h1 class="h" style="margin:4px 0 0;font-size:28px">pilates flow · mon 2 nov, 9:00</h1></div>
       <div style="display:flex;gap:8px"><a class="btn2" href="S02-Calendar.dc.html">Discard</a><button class="btn" type="button">Save</button></div>
     </div>
-    <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
-      <form class="card" style="flex:3 1 440px;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start">
+      <form class="card" style="flex:3 1 440px;display:flex;flex-direction:column;gap:16px">
         <div class="g2">
           <div class="f"><label for="t">Session type</label><select id="t"><option>Group class</option><option>Open play</option><option>Private hire</option><option>Workshop / event (+2 weeks)</option></select></div>
           <div class="f"><label for="ct">Class type</label><select id="ct"><option>Pilates</option><option>Yoga</option><option>Strength</option><option>Fitness</option><option>Dance</option><option>+ New class type…</option></select></div>
@@ -72,22 +86,22 @@ h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-s
           <div class="f"><label for="r">Repeat</label><select id="r"><option>Every week until 31 Dec</option><option>Just once</option></select></div>
         </div>
         <div class="f"><label for="de">Description, ages, what to bring <span class="muted" style="font-weight:400">(filled from the class type; change for this session only if needed)</span></label><textarea id="de" rows="3">A gentle full-body Pilates class… · Babies and crawlers · Water, towel, a blanket for baby</textarea></div>
-        <div style="display:flex;gap:12px;align-items:center">
-          <div class="ph" style="width:96px;height:72px">Picture</div>
+        <div style="display:flex;gap:14px;align-items:center">
+          <div class="ph" style="width:96px;height:72px"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:52px;height:52px"></div>
           <span class="muted" style="font-size:13px">Uses the Pilates picture. <a href="S03-SessionEditor.dc.html">Upload one for this session</a></span>
         </div>
-        <div class="card" style="background:#FBF7EF;font-size:13.5px">
+        <div style="background:#FFF4E6;border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.5">
           <strong>Private hire</strong> shows instead: customer, group size, agreed price and notes. <strong>Workshop</strong> adds its own ticket price (never pack credits).
         </div>
       </form>
-      <section class="card" style="flex:2 1 300px;display:flex;flex-direction:column;gap:6px">
-        <div style="display:flex;justify-content:space-between;align-items:baseline"><h2 style="margin:0;font-size:17px">Booked · 8 of 10</h2><a href="S12-CheckIn.dc.html" style="font-size:14px">Check-in list</a></div>
+      <section class="card" style="flex:2 1 300px;display:flex;flex-direction:column;gap:4px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><h2 class="h sec" style="margin:0">booked · 8 of 10</h2><a href="S12-CheckIn.dc.html" style="font-size:14px">Check-in list</a></div>
         <div class="row"><span>Lan Nguyen + Bao</span><span class="muted">credit</span></div>
         <div class="row"><span>Linh Tran</span><span class="tag pay">Pay on the day</span></div>
         <div class="row"><span>Hoa Le + Minh</span><span class="muted">free trial</span></div>
         <div class="row"><span class="muted">+ 5 more</span><span></span></div>
         <a class="btn2" href="S13-BookCustomer.dc.html" style="margin-top:8px">Book someone in</a>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid #E8E3C5">
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid #EFE9D6">
           <button class="btn2" type="button">Swap instructor <span class="tag later" style="margin-left:6px">+2 weeks</span></button>
           <button class="danger" type="button">Cancel session for everyone</button>
           <span class="muted" style="font-size:12.5px">Cancels all 8 bookings, returns credits and emails everyone (illness, floods…).</span>

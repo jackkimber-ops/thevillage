@@ -13,28 +13,52 @@
 body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
 a{color:#5E5B3B}a:hover{color:#3B3A2A}
 h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;color:#5E5B3B}
 .muted{color:#66624A}
-.side{flex:1 1 200px;padding:20px 16px;background:#5E5B3B;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
-.nav{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:15px;color:#FFF4E6;text-decoration:none}
-.nav.on{background:#FFF4E6;font-weight:600;color:#3B3A2A}
+.side{flex:1 1 200px;padding:22px 14px;background:#5E5B3B;display:flex;flex-direction:column;gap:2px;box-sizing:border-box}
+.nav{display:flex;align-items:center;min-height:42px;padding:0 14px;border-radius:14px;font-size:15px;color:#FFF4E6;text-decoration:none}
 .nav:hover{color:#FFF4E6;background:rgba(255,244,230,.14)}
+.nav.on{background:#FFF4E6;color:#3B3A2A;font-weight:600}
 .nav.on:hover{color:#3B3A2A;background:#FFF4E6}
 .mgr{font-size:11px;color:#E8E3C5;margin-left:6px}
-.main{flex:999 1 560px;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 14px "Work Sans",sans-serif;text-decoration:none}
-.seg{display:inline-grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #868259;border-radius:12px;overflow:hidden}
-.seg button{min-height:38px;padding:0 16px;border:0;background:#fff;font:500 14px "Work Sans",sans-serif;color:#3B3A2A}
-.seg .on{background:#5E5B3B;color:#FFF4E6}
-.iconbtn{width:40px;height:40px;border:1px solid #E8E3C5;border-radius:20px;background:#fff;display:inline-flex;align-items:center;justify-content:center;color:#3B3A2A}
+.main{flex:999 1 560px;min-width:0;padding:28px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:22px;background:#FFF4E6}
+.card{background:#fff;border-radius:22px;padding:18px 20px;box-sizing:border-box}
+.sec{margin:0 0 12px;font-size:20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:0 18px;border-radius:21px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 14px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.btn:hover{color:#FFF4E6}
+.btn2{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:0 18px;border-radius:21px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 14px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.danger{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;border-radius:21px;border:1.5px solid #A44A2C;background:#fff;color:#A44A2C;font:600 14px "Work Sans",sans-serif}
+.tag{display:inline-block;padding:3px 9px;border-radius:10px;font-size:12px;font-weight:600;color:#3B3A2A}
+.pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
+.new{background:#E8E3C5;color:#3B3A2A}
+.warn{background:#FFE3D6;color:#A44A2C}
+.ok{background:#C3BF94;color:#3B3A2A}
+.todo{background:#FFF1D6;color:#7A4E00}
+.later{background:#ECE6F5;color:#4B3A80}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #EFE9D6;font-size:14px;flex-wrap:wrap}
+.row:last-child{border-bottom:0}
+.f{display:flex;flex-direction:column;gap:6px}
+.f label{font-size:13px;font-weight:600}
+input,select,textarea{border:1.5px solid #C3BF94;border-radius:14px;min-height:42px;padding:8px 12px;font:15px "Work Sans",sans-serif;box-sizing:border-box;width:100%;background:#fff;color:#3B3A2A}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-size:12.5px;color:#3B3A2A;font-weight:600;padding:11px 14px;background:#E8E3C5;white-space:nowrap}
+th:first-child{border-radius:14px 0 0 14px}th:last-child{border-radius:0 14px 14px 0}
+td{padding:12px 14px;border-bottom:1px solid #EFE9D6;vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+.tbl{overflow-x:auto}
+.iconbtn{width:42px;height:42px;border:0;border-radius:21px;background:#fff;display:inline-flex;align-items:center;justify-content:center;color:#5E5B3B;font:600 18px "Work Sans",sans-serif}
+.seg{display:inline-grid;grid-template-columns:repeat(3,minmax(0,1fr));background:#E8E3C5;border-radius:21px;padding:4px}
+.seg button{min-height:34px;padding:0 16px;border:0;border-radius:17px;background:transparent;font:500 14px "Work Sans",sans-serif;color:#3B3A2A}
+.seg .on{background:#5E5B3B;color:#FFF4E6;font-weight:600}
 .col{position:relative;border-left:1px solid #EFE9D6;height:504px}
-.ev{position:absolute;left:4px;right:4px;border-radius:8px;border:1.5px solid;padding:4px 6px;font-size:12px;line-height:1.3;overflow:hidden;box-sizing:border-box;cursor:grab}
-.lg{display:inline-flex;align-items:center;gap:6px;font-size:13px}
-.sw{width:14px;height:14px;border-radius:4px;border:1.5px solid}
+.ev{position:absolute;left:4px;right:4px;border-radius:10px;padding:5px 7px;font-size:12px;line-height:1.3;overflow:hidden;box-sizing:border-box;cursor:grab;color:#3B3A2A}
+.lg{display:inline-flex;align-items:center;gap:8px;font-size:13px;background:#fff;border-radius:16px;padding:6px 12px 6px 8px}
+.sw{width:16px;height:16px;border-radius:6px}
 </style>
 </helmet>
 <div style="display:flex;flex-wrap:wrap;min-height:900px;background:#FFF4E6">
   <nav class="side" aria-label="Staff menu">
-    <div style="padding:2px 12px 18px"><img src="/_blob/0fd3a25ff08c3b71a6d8552903b84305" alt="the village." style="width:130px;height:auto"><div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E8E3C5;margin-top:4px">Staff</div></div>
+    <div style="padding:2px 10px 20px"><img src="/_blob/0fd3a25ff08c3b71a6d8552903b84305" alt="the village." style="width:140px;height:auto"></div>
     <a class="nav" href="S01-Dashboard.dc.html">Dashboard</a>
     <a class="nav on" href="S02-Calendar.dc.html">Calendar</a>
     <a class="nav" href="S04-Customers.dc.html">Customers</a>
@@ -42,13 +66,13 @@ h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-s
     <a class="nav" href="S08-Reports.dc.html">Reports<span class="mgr">manager</span></a>
     <a class="nav" href="S09-Staff.dc.html">Staff<span class="mgr">manager</span></a>
     <a class="nav" href="S10-Settings.dc.html">Settings<span class="mgr">manager</span></a>
-    <span style="font-size:13px;padding:24px 12px 0;color:#E8E3C5">Signed in as Phuong (Manager)</span>
+    <span style="font-size:13px;padding:24px 14px 0;color:#E8E3C5">Signed in as Phuong (Manager)</span>
   </nav>
   <main class="main">
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
       <div style="display:flex;align-items:center;gap:10px">
         <button class="iconbtn" type="button" aria-label="Previous week">‹</button>
-        <h1 style="margin:0;font-size:22px">2 – 8 November 2026</h1>
+        <h1 class="h" style="margin:0;font-size:28px">2 – 8 november 2026</h1>
         <button class="iconbtn" type="button" aria-label="Next week">›</button>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
@@ -56,50 +80,52 @@ h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-s
         <a class="btn" href="S03-SessionEditor.dc.html">+ New session</a>
       </div>
     </div>
-    <div style="display:flex;gap:16px;flex-wrap:wrap">
-      <span class="lg"><span class="sw" style="background:#C3BF94;border-color:#5E5B3B"></span>Group class</span>
-      <span class="lg"><span class="sw" style="background:#FFBEA1;border-color:#E88D6D"></span>Open play</span>
-      <span class="lg"><span class="sw" style="background:#E8E3C5;border-color:#868259"></span>Private hire</span>
-      <span class="lg"><span class="sw" style="background:#E88D6D;border-color:#A44A2C"></span>Workshop (+2 weeks)</span>
-      <span class="lg"><span class="sw" style="background:repeating-linear-gradient(135deg,#FBF7EF 0 4px,#EFE9D6 4px 8px);border-color:#C3BF94"></span>Closed</span>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <span class="lg"><span class="sw" style="background:#C3BF94"></span>Group class</span>
+      <span class="lg"><span class="sw" style="background:#FFBEA1"></span>Open play</span>
+      <span class="lg"><span class="sw" style="background:#E8E3C5"></span>Private hire</span>
+      <span class="lg"><span class="sw" style="background:#E88D6D"></span>Workshop (+2 weeks)</span>
+      <span class="lg"><span class="sw" style="background:repeating-linear-gradient(135deg,#FBF7EF 0 4px,#EFE9D6 4px 8px);box-shadow:inset 0 0 0 1px #C3BF94"></span>Closed</span>
     </div>
-    <div style="overflow-x:auto;border:1px solid #E8E3C5;border-radius:12px">
-      <div style="min-width:860px">
-        <div style="display:grid;grid-template-columns:56px repeat(7,minmax(0,1fr));border-bottom:1px solid #E8E3C5;font-size:13px;font-weight:600">
-          <span></span>
-          <sc-for list="{{days}}" as="d" hint-placeholder-count="7"><span style="padding:8px 6px">{{d.label}}</span></sc-for>
-        </div>
-        <div style="display:grid;grid-template-columns:56px repeat(7,minmax(0,1fr))">
-          <div style="position:relative;height:504px">
-            <sc-for list="{{hours}}" as="h" hint-placeholder-count="11"><span class="muted" style="{{h.style}}">{{h.label}}</span></sc-for>
+    <div class="card" style="padding:14px 10px 10px">
+      <div style="overflow-x:auto">
+        <div style="min-width:860px">
+          <div style="display:grid;grid-template-columns:56px repeat(7,minmax(0,1fr));font-size:13px;font-weight:600;font-family:'Lexend Deca',sans-serif;color:#5E5B3B">
+            <span></span>
+            <sc-for list="{{days}}" as="d" hint-placeholder-count="7"><span style="padding:4px 6px 10px">{{d.label}}</span></sc-for>
           </div>
-          <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
-            <div class="col">
-              <sc-for list="{{d.items}}" as="e" hint-placeholder-count="2">
-                <div class="ev" style="{{e.style}}"><strong>{{e.t}}</strong><br>{{e.sub}}</div>
-              </sc-for>
+          <div style="display:grid;grid-template-columns:56px repeat(7,minmax(0,1fr))">
+            <div style="position:relative;height:504px">
+              <sc-for list="{{hours}}" as="h" hint-placeholder-count="9"><span class="muted" style="{{h.style}}">{{h.label}}</span></sc-for>
             </div>
-          </sc-for>
+            <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+              <div class="col">
+                <sc-for list="{{d.items}}" as="e" hint-placeholder-count="2">
+                  <div class="ev" style="{{e.style}}"><strong>{{e.t}}</strong><br>{{e.sub}}</div>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
         </div>
       </div>
     </div>
-    <span class="muted" style="font-size:13px">Drag a session to move it. Sessions can't overlap: there is one room. Instructors can edit only their own classes.</span>
+    <span class="muted" style="font-size:13px">Drag a session to move it: its bookings move too and everyone booked gets an email. Sessions can't overlap: there is one room. Instructors can edit only their own classes.</span>
   </main>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
 class Component extends DCLogic {
   renderVals() {
-    const C = { c: 'background:#C3BF94;border-color:#5E5B3B', o: 'background:#FFBEA1;border-color:#E88D6D', p: 'background:#E8E3C5;border-color:#868259', w: 'background:#E88D6D;border-color:#A44A2C', x: 'background:repeating-linear-gradient(135deg,#FBF7EF 0 8px,#EFE9D6 8px 16px);border-color:#C3BF94' };
+    const C = { c: 'background:#C3BF94', o: 'background:#FFBEA1', p: 'background:#E8E3C5', w: 'background:#E88D6D', x: 'background:repeating-linear-gradient(135deg,#FBF7EF 0 8px,#EFE9D6 8px 16px)' };
     const ev = (k, start, len, t, sub) => ({ t, sub, style: C[k] + ';top:' + ((start - 8) * 56) + 'px;height:' + (len * 56 - 4) + 'px' });
     const days = [
-      { label: 'Mon 2', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 8/10'), ev('o', 10.5, 1.5, '10:30 Open Play', '5/10 children'), ev('p', 13, 2, '13:00 Private hire', 'Birthday · 2 h'), ev('c', 15.5, 1, '15:30 Strength', 'Anna · 10/10')] },
-      { label: 'Tue 3', items: [ev('c', 9.5, 1, '9:30 Mum & Baby Yoga', 'Mai · 3/10'), ev('c', 16, 1, '16:00 Dance Fit', 'Thu · 8/10')] },
-      { label: 'Wed 4', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 6/10'), ev('o', 10.5, 1.5, '10:30 Open Play', '7/10 children')] },
-      { label: 'Thu 5', items: [ev('c', 9.5, 1, '9:30 Mum & Baby Yoga', 'Mai · 5/10'), ev('w', 14, 2, '14:00 Sleep talk', 'Workshop · 12/20')] },
-      { label: 'Fri 6', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 4/10'), ev('c', 15.5, 1, '15:30 Strength', 'Anna · 6/10')] },
-      { label: 'Sat 7', items: [ev('o', 9, 1.5, '9:00 Open Play', '9/10 children'), ev('p', 14, 2, '14:00 Private hire', 'Group · 2 h')] },
-      { label: 'Sun 8', items: [ev('o', 9, 1.5, '9:00 Open Play', '6/10 children'), ev('c', 11, 1, '11:00 Family Yoga', 'Mai · 7/10')] }
+      { label: 'mon 2', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 8/10'), ev('o', 10.5, 1.5, '10:30 Open Play', '5/10 children'), ev('p', 13, 2, '13:00 Private hire', 'Birthday · 2 h'), ev('c', 15.5, 1, '15:30 Strength', 'Anna · 10/10')] },
+      { label: 'tue 3', items: [ev('c', 9.5, 1, '9:30 Mum & Baby Yoga', 'Mai · 3/10'), ev('c', 16, 1, '16:00 Dance Fit', 'Thu · 8/10')] },
+      { label: 'wed 4', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 6/10'), ev('o', 10.5, 1.5, '10:30 Open Play', '7/10 children')] },
+      { label: 'thu 5', items: [ev('c', 9.5, 1, '9:30 Mum & Baby Yoga', 'Mai · 5/10'), ev('w', 14, 2, '14:00 Sleep talk', 'Workshop · 12/20')] },
+      { label: 'fri 6', items: [ev('c', 9, 1, '9:00 Pilates Flow', 'Mai · 4/10'), ev('c', 15.5, 1, '15:30 Strength', 'Anna · 6/10')] },
+      { label: 'sat 7', items: [ev('o', 9, 1.5, '9:00 Open Play', '9/10 children'), ev('p', 14, 2, '14:00 Private hire', 'Group · 2 h')] },
+      { label: 'sun 8', items: [ev('o', 9, 1.5, '9:00 Open Play', '6/10 children'), ev('c', 11, 1, '11:00 Family Yoga', 'Mai · 7/10')] }
     ];
     const hours = [];
     for (let h = 8; h < 17; h++) hours.push({ label: h + ':00', style: 'position:absolute;right:8px;font-size:11px;top:' + ((h - 8) * 56 + 2) + 'px' });

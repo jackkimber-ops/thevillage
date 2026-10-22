@@ -8,57 +8,39 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
-<style>
-body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
-a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
-.muted{color:#66624A}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
-.later{background:#ECE6F5;color:#4B3A80}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E8E3C5}
-.lang{font-size:13px;color:#66624A}
-.card{border:1px solid #E8E3C5;border-radius:18px;padding:12px 14px;background:#fff}
-.h2{font-size:14px;font-weight:700;margin:0}
-.check{display:flex;align-items:center;gap:10px;min-height:44px;font-size:15px}
-.check input{width:22px;height:22px;margin:0}
-.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid #868259;border-radius:12px;overflow:hidden}
-.seg button{min-height:44px;border:0;background:#fff;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
-.seg .on{background:#5E5B3B;color:#FFF4E6}
+@@KIT@@
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
-  <div class="hdr">
-    <a href="C05-Session.dc.html" style="font-size:15px;text-decoration:none">← Back</a>
-    <span class="lang"><strong style="color:#3B3A2A">EN</strong> · VI</span>
-  </div>
-  <div style="flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:14px;overflow:hidden">
-    <div>
-      <h1 style="margin:0;font-size:24px">Pilates Flow</h1>
-      <div class="muted" style="font-size:15px">Mon 2 Nov · 9:00–10:00 · 4 of 10 places left</div>
+  <div style="height:150px;background:#C3BF94;position:relative;overflow:hidden;flex:none">
+    <div style="position:absolute;right:-40px;top:-50px;width:180px;height:180px;border-radius:50%;background:#FFBEA1;opacity:.7" aria-hidden="true"></div>
+    <img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="position:absolute;right:28px;top:26px;width:96px;height:96px">
+    <a class="back" href="C05-Session.dc.html" aria-label="Back" style="position:absolute;left:14px;top:14px;background:#FFF4E6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
+    <div style="position:absolute;left:18px;bottom:14px">
+      <div class="h" style="font-size:28px;color:#3B3A2A">pilates flow</div>
+      <div style="font-size:14px">Mon 2 Nov · 9:00–10:00 · 4 places left</div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <p class="h2">How often</p>
-      <div class="seg"><button class="on" type="button">Just this time</button><a href="C08-PickDates.dc.html" style="display:flex;align-items:center;justify-content:center;text-decoration:none;color:#3B3A2A;font-size:15px">Pick dates</a></div>
+  </div>
+  <div style="flex:1;padding:14px 18px 8px;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div class="seg"><button class="on" type="button">Just this time</button><a href="C08-PickDates.dc.html">Pick dates</a></div>
       <span class="tag later" style="align-self:flex-start">Pick dates: +2 weeks release</span>
     </div>
-    <div class="card" style="display:flex;flex-direction:column;gap:2px">
-      <p class="h2">Who's coming</p>
+    <div class="card" style="padding:10px 16px">
+      <p class="lbl">who's coming</p>
       <div class="check"><input type="checkbox" checked disabled id="p"><label for="p">You (Lan)</label></div>
       <div class="check"><input type="checkbox" checked id="k1"><label for="k1">Bao · 9 months</label></div>
       <div class="check"><input type="checkbox" id="k2"><label for="k2">Mi · 3 years</label></div>
-      <a href="C06-ConfirmClass.dc.html" style="font-size:14px;padding:6px 0">+ Add a child</a>
-      <div class="muted" style="font-size:13px">Up to 2 children, free with you.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#66624A"><span>Up to 2 children, free with you.</span><a href="C06-ConfirmClass.dc.html" style="font-size:14px;font-weight:500;padding:6px 0">+ Add a child</a></div>
     </div>
-    <div class="card" style="background:#E8E3C5">
-      <div style="font-size:15px">Uses <strong>1 credit</strong> from your <strong>10-class pack</strong></div>
-      <div class="muted" style="font-size:13.5px;margin-top:2px">6 free now · 5 after this · expires 20 Jan 2027</div>
+    <div class="card" style="background:#E8E3C5;display:flex;align-items:center;gap:14px;box-shadow:none">
+      <div style="width:46px;height:46px;border-radius:23px;background:#5E5B3B;color:#FFF4E6;display:flex;align-items:center;justify-content:center;font:600 20px 'Lexend Deca',sans-serif;flex:none">1</div>
+      <div><div style="font-weight:600">credit from your 10-class pack</div><div style="font-size:13.5px;color:#66624A">6 free now · 5 after this · expires 20 Jan 2027</div></div>
     </div>
     <p class="muted" style="margin:0;font-size:13.5px;line-height:1.45">Free cancellation until <strong style="color:#3B3A2A">20:00 on Sun 1 Nov</strong>. After that, message us and the credit is used.</p>
-    <div style="border:1.5px dashed #A44A2C;border-radius:14px;padding:10px 12px;font-size:13.5px;line-height:1.45"><span class="muted">Booking after 20:00 the evening before? This shows instead:</span><br><strong style="color:#A44A2C">This booking can't be cancelled online.</strong> Message us if your plans change.</div>
+    <div style="border:1.5px dashed #A44A2C;border-radius:16px;padding:10px 12px;font-size:13px;line-height:1.45"><span class="muted">Booking after 20:00 the evening before? This shows instead:</span><br><strong style="color:#A44A2C">This booking can't be cancelled online.</strong> Message us if your plans change.</div>
   </div>
-  <div style="padding:12px 20px 20px;border-top:1px solid #E8E3C5">
+  <div style="padding:10px 18px 20px">
     <a class="btn" href="C09-Booked.dc.html">Confirm booking</a>
   </div>
 </div>

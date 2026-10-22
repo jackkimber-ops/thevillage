@@ -8,50 +8,40 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
-<style>
-body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
-a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
-.muted{color:#66624A}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
-.pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E8E3C5}
-.lang{font-size:13px;color:#66624A}
-.card{border:1px solid #E8E3C5;border-radius:18px;padding:12px 14px;background:#fff}
-.field{display:flex;flex-direction:column;gap:5px}
-.field label{font-size:14px;font-weight:600}
-.field input,.field select{border:1px solid #868259;border-radius:10px;min-height:44px;padding:0 12px;font-size:16px;box-sizing:border-box;width:100%;background:#fff}
-.ph{border:1.5px dashed #C3BF94;border-radius:10px;background:#F3EEDC;color:#66624A;display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center}
+@@KIT@@
+.ph{border:1.5px dashed #C3BF94;border-radius:16px;background:#FBF7EF;color:#66624A;display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
-  <div class="hdr">
-    <a href="C05-Session.dc.html" style="font-size:15px;text-decoration:none">← Back</a>
-    <span class="lang"><strong style="color:#3B3A2A">EN</strong> · VI</span>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px">
+    <a class="back" href="C05-Session.dc.html" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
+    <span class="lang"><strong>EN</strong> · VI</span>
   </div>
-  <div style="flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:12px">
-    <div class="card" style="display:flex;justify-content:space-between;align-items:center">
-      <div>
-        <div style="font-weight:700">Pilates Flow</div>
-        <div class="muted" style="font-size:14px">Mon 2 Nov · 9:00–10:00</div>
+  <div style="flex:1;padding:4px 18px 16px;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+    <div style="display:flex;gap:12px;align-items:center;background:#C3BF94;border-radius:20px;padding:10px 12px;position:relative;overflow:hidden">
+      <div style="position:absolute;right:-30px;top:-30px;width:100px;height:100px;border-radius:50%;background:#FFBEA1;opacity:.7" aria-hidden="true"></div>
+      <img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:48px;height:48px;position:relative">
+      <div style="flex:1;position:relative">
+        <div style="font-weight:600">Pilates Flow</div>
+        <div style="font-size:14px">Mon 2 Nov · 9:00–10:00</div>
       </div>
-      <span class="tag pay">Pay on the day · 450,000 ₫</span>
+      <span class="tag pay" style="position:relative">Pay on the day · 450,000 ₫</span>
     </div>
-    <h1 style="margin:4px 0 0;font-size:22px">Your details</h1>
+    <div class="h" style="font-size:26px;margin-top:2px">your details</div>
     <form style="display:flex;flex-direction:column;gap:10px">
       <div class="field"><label for="g1">Your name</label><input id="g1" value="Linh Tran"></div>
       <div class="field"><label for="g2">Phone (WhatsApp)</label><input id="g2" type="tel" value="+84 90 123 4567"></div>
       <div class="field"><label for="g3">Email</label><input id="g3" type="email" placeholder="For your confirmation and login"></div>
-      <div style="font-size:14px;font-weight:600;margin-top:4px">Child coming with you <span class="muted" style="font-weight:400">(optional)</span></div>
-      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
-        <div class="field"><label for="g4" style="font-weight:400;font-size:13px">Name</label><input id="g4" placeholder="e.g. Bao"></div>
-        <div class="field"><label for="g5" style="font-weight:400;font-size:13px">Born (month/year)</label><input id="g5" placeholder="MM / YYYY"></div>
+      <div class="card" style="display:flex;flex-direction:column;gap:8px;padding:12px 14px">
+        <p class="lbl" style="margin:0">child coming with you · optional</p>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+          <div class="field"><label for="g4" style="font-weight:500;font-size:13px">Name</label><input id="g4" placeholder="e.g. Bao" style="min-height:46px"></div>
+          <div class="field"><label for="g5" style="font-weight:500;font-size:13px">Born (month/year)</label><input id="g5" placeholder="MM / YYYY" style="min-height:46px"></div>
+        </div>
+        <a href="C03-Guest.dc.html" style="font-size:14px;font-weight:500">+ Add a second child</a>
       </div>
-      <a href="C03-Guest.dc.html" style="font-size:14px">+ Add a second child</a>
-      <div class="ph" style="height:56px">Bot check (Turnstile)</div>
-      <button class="btn" type="button">Book, pay on the day</button>
+      <div class="ph" style="height:48px">Bot check (Turnstile)</div>
+      <a class="btn" href="C09-Booked.dc.html">Book, pay on the day</a>
     </form>
     <p class="muted" style="margin:0;font-size:12.5px;line-height:1.45">We'll call to say hello before your first visit. Free cancellation until 20:00 the evening before. By booking you agree to our <a href="C14-Menu.dc.html">privacy policy</a>.</p>
   </div>

@@ -8,89 +8,83 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
-<style>
-body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
-a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
-.muted{color:#66624A}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 8px 0 16px;border-bottom:1px solid #E8E3C5}
-.lang{font-size:13px;color:#66624A}
-.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#3B3A2A;border-radius:22px}
-.chip{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:18px;border:1px solid #C3BF94;background:#fff;font:500 14px "Work Sans",sans-serif;color:#3B3A2A}
-.chip.on{background:#5E5B3B;color:#FFF4E6;border-color:#5E5B3B}
-.card{border:1px solid #E8E3C5;border-radius:18px;padding:10px;background:#fff;display:flex;gap:12px;align-items:center}
-.pic{width:56px;height:56px;border-radius:12px;border:1.5px dashed #C3BF94;background:#F3EEDC;flex:none;display:flex;align-items:center;justify-content:center;font-size:10px;color:#66624A;text-align:center}
-.book{min-height:40px;min-width:72px;padding:0 14px;border-radius:20px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 15px "Work Sans",sans-serif;text-decoration:none;display:flex;align-items:center;justify-content:center}
-.day{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#66624A;margin:6px 0 0}
-.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:#66624A;text-decoration:none}
-.tab.on{color:#3B3A2A;font-weight:700;box-shadow:inset 0 3px 0 #E88D6D}
+@@KIT@@
+.pill{display:inline-flex;align-items:center;min-height:38px;padding:0 16px;border-radius:19px;font:500 14px "Work Sans",sans-serif;border:0;background:#E8E3C5;color:#3B3A2A}
+.pill.on{background:#5E5B3B;color:#FFF4E6}
+.scard{background:#fff;border-radius:20px;padding:10px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 0 #E8E3C5}
+.pic{width:60px;height:60px;border-radius:16px;flex:none;display:flex;align-items:center;justify-content:center}
+.book{min-height:40px;min-width:74px;padding:0 16px;border-radius:20px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 15px "Work Sans",sans-serif;text-decoration:none;display:flex;align-items:center;justify-content:center}
+.day{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:8px 0 0}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
-  <div class="hdr">
-    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:32px;width:auto">
-    <div style="display:flex;align-items:center;gap:4px">
-      <span class="lang"><strong style="color:#3B3A2A">EN</strong> · VI</span>
+  <div style="display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 8px 0 18px">
+    <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:34px;width:auto">
+    <div style="display:flex;align-items:center;gap:2px">
+      <span class="lang"><strong>EN</strong> · VI</span>
       <a class="iconbtn" href="C14-Menu.dc.html" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></a>
     </div>
   </div>
-  <div style="flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
-    <h1 style="margin:0;font-size:24px">Hi Lan</h1>
-    <div style="display:flex;align-items:center;justify-content:space-between">
-      <button class="iconbtn" type="button" aria-label="Previous week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+  <div style="flex:1;overflow:hidden;padding:6px 16px 12px;display:flex;flex-direction:column;gap:10px">
+    <div class="h" style="font-size:28px">hi lan</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;background:#E8E3C5;border-radius:22px">
+      <button class="iconbtn" type="button" aria-label="Previous week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
       <strong style="font-size:15px">2 – 8 November</strong>
-      <button class="iconbtn" type="button" aria-label="Next week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      <button class="iconbtn" type="button" aria-label="Next week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
     <div style="display:flex;gap:8px">
-      <button class="chip on" type="button">All</button>
-      <button class="chip" type="button">Classes</button>
-      <button class="chip" type="button">Open play</button>
+      <button class="pill on" type="button">All</button>
+      <button class="pill" type="button">Classes</button>
+      <button class="pill" type="button">Open play</button>
     </div>
     <sc-for list="{{days}}" as="d" hint-placeholder-count="2">
       <p class="day">{{d.label}}</p>
       <sc-for list="{{d.items}}" as="s" hint-placeholder-count="3">
-        <div class="card">
-          <div class="pic">picture</div>
+        <div class="scard">
+          <div class="pic" style="{{s.pic}}"><img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="width:40px;height:40px"></div>
           <div style="flex:1;min-width:0">
-            <div style="font-weight:700;font-size:15px">{{s.title}}</div>
-            <div class="muted" style="font-size:13.5px">{{s.time}} · {{s.who}}</div>
+            <div style="font-weight:600;font-size:15.5px">{{s.title}}</div>
+            <div style="font-size:13.5px;color:#66624A">{{s.time}} · {{s.who}}</div>
             <div style="font-size:13.5px;margin-top:2px">{{s.left}}</div>
           </div>
           <sc-if value="{{s.full}}" hint-placeholder-val="{{false}}">
-            <span class="muted" style="font-size:14px;font-weight:600;padding:0 10px">Full</span>
+            <span style="font-size:14px;font-weight:600;color:#66624A;padding:0 10px">Full</span>
           </sc-if>
           <sc-if value="{{s.open}}" hint-placeholder-val="{{true}}">
-            <a class="book" href="C05-Session.dc.html">Book</a>
+            <a class="book" href="{{s.href}}">Book</a>
           </sc-if>
           <sc-if value="{{s.mine}}" hint-placeholder-val="{{false}}">
-            <span style="font-size:13px;font-weight:700;color:#3B3A2A;background:#C3BF94;border-radius:10px;padding:4px 8px">Booked ✓</span>
+            <span class="tag ok" style="padding:6px 10px">Booked ✓</span>
           </sc-if>
         </div>
       </sc-for>
     </sc-for>
   </div>
-  <nav style="display:flex;border-top:1px solid #E8E3C5;height:64px">
-    <a class="tab on" href="C04-Timetable.dc.html">Classes</a>
-    <a class="tab" href="C10-MyBookings.dc.html">Bookings</a>
-    <a class="tab" href="C12-MyPackages.dc.html">Packages</a>
+  <nav style="display:flex;background:#fff;height:68px;border-radius:24px 24px 0 0;box-shadow:0 -1px 0 #E8E3C5">
+    <a class="tab on" href="C04-Timetable.dc.html"><span style="width:6px;height:6px;border-radius:3px;background:#E88D6D"></span>Classes</a>
+    <a class="tab" href="C10-MyBookings.dc.html"><span style="width:6px;height:6px"></span>Bookings</a>
+    <a class="tab" href="C12-MyPackages.dc.html"><span style="width:6px;height:6px"></span>Packages</a>
   </nav>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
   renderVals() {
-    const s = (title, time, who, left, state) => ({ title, time, who, left, full: state === 'full', open: state === 'open', mine: state === 'mine' });
+    const P = { c: 'background:#C3BF94', o: 'background:#FFBEA1' };
+    const H = { c: 'C05-Session.dc.html', o: 'C07-ConfirmOpenPlay.dc.html' };
+    const s = (k, title, time, who, left, state) => ({ pic: P[k], href: H[k], title, time, who, left, full: state === 'full', open: state === 'open', mine: state === 'mine' });
     return {
       days: [
-        { label: 'Monday 2 Nov', items: [
-          s('Pilates Flow', '9:00–10:00', 'Mai', '4 of 10 places left', 'mine'),
-          s('Open Play', '10:30–12:00', 'Staff', '5 child places left', 'open'),
-          s('Strength', '15:30–16:30', 'Anna', 'Full', 'full')
+        { label: 'monday 2 nov', items: [
+          s('c', 'Pilates Flow', '9:00–10:00', 'Mai', '4 of 10 places left', 'mine'),
+          s('o', 'Open Play', '10:30–12:00', 'Staff', '5 child places left', 'open'),
+          s('c', 'Strength', '15:30–16:30', 'Anna', 'Full', 'full')
         ]},
-        { label: 'Tuesday 3 Nov', items: [
-          s('Mum & Baby Yoga', '9:30–10:30', 'Mai', '7 of 10 places left', 'open'),
-          s('Dance Fit', '16:00–17:00', 'Thu', '2 of 10 places left', 'open')
+        { label: 'tuesday 3 nov', items: [
+          s('c', 'Mum & Baby Yoga', '9:30–10:30', 'Mai', '7 of 10 places left', 'open'),
+          s('c', 'Dance Fit', '16:00–17:00', 'Thu', '2 of 10 places left', 'open')
         ]}
       ]
     };

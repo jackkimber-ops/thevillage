@@ -8,35 +8,30 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
-<style>
-body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
-a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
-.muted{color:#66624A}
-.tag{display:inline-block;padding:3px 9px;border-radius:10px;font-size:12.5px;font-weight:600;background:#E8E3C5;color:#3B3A2A}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E8E3C5}
-.lang{font-size:13px;color:#66624A}
-.ph{border:1.5px dashed #C3BF94;background:#F3EEDC;color:#66624A;display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center}
+@@KIT@@
 .row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #EFE9D6;font-size:15px}
-.row dt{width:110px;flex:none;color:#66624A}
+.row:last-child{border-bottom:0}
+.row dt{width:96px;flex:none;color:#66624A}
 .row dd{margin:0}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
-  <div class="hdr">
-    <a href="C04-Timetable.dc.html" style="font-size:15px;text-decoration:none">← Classes</a>
-    <span class="lang"><strong style="color:#3B3A2A">EN</strong> · VI</span>
-  </div>
-  <div class="ph" style="height:180px">Class illustration (C28): parent and child doing Pilates<br>[PLACEHOLDER]</div>
-  <div style="flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:10px;overflow:hidden">
-    <div style="display:flex;gap:6px;flex-wrap:wrap">
-      <span class="tag">Group class</span><span class="tag">Babies &amp; crawlers</span>
+  <div style="height:220px;background:#C3BF94;position:relative;overflow:hidden;flex:none">
+    <div style="position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:#FFBEA1;opacity:.7" aria-hidden="true"></div>
+    <img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="position:absolute;right:30px;top:46px;width:120px;height:120px">
+    <a class="back" href="C04-Timetable.dc.html" aria-label="Back to classes" style="position:absolute;left:14px;top:14px;background:#FFF4E6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
+    <span class="lang" style="position:absolute;right:14px;top:20px;background:#FFF4E6"><strong>EN</strong> · VI</span>
+    <div style="position:absolute;left:18px;bottom:16px;display:flex;flex-direction:column;gap:6px;align-items:flex-start">
+      <span style="font-size:12px;font-weight:600;background:#FFF4E6;border-radius:10px;padding:3px 9px">Class illustration (C28) · placeholder</span>
     </div>
-    <h1 style="margin:0;font-size:26px">Pilates Flow</h1>
-    <p style="margin:0;font-size:15px;line-height:1.5">A gentle full-body Pilates class to rebuild your core. Your little one plays on the mat beside you. [PLACEHOLDER description]</p>
-    <dl style="margin:4px 0 0">
+  </div>
+  <div style="flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:10px;overflow:hidden">
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span class="tag ok">Group class</span><span class="tag" style="background:#E8E3C5">Babies &amp; crawlers</span>
+    </div>
+    <div class="h" style="font-size:30px">pilates flow</div>
+    <p style="margin:0;font-size:15px;line-height:1.5">A gentle full-body Pilates class to rebuild your core. Your little one plays on the mat beside you. <span class="tag todo">description to come</span></p>
+    <dl class="card" style="margin:4px 0 0;padding:4px 16px">
       <div class="row"><dt>When</dt><dd>Mon 2 Nov · 9:00–10:00 (60 min)</dd></div>
       <div class="row"><dt>Instructor</dt><dd>Mai</dd></div>
       <div class="row"><dt>Suits</dt><dd>Babies and crawlers</dd></div>
@@ -45,7 +40,7 @@ h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-s
       <div class="row"><dt>Price</dt><dd>1 class credit, or 450,000 ₫ on the day</dd></div>
     </dl>
   </div>
-  <div style="padding:12px 20px 20px;border-top:1px solid #E8E3C5">
+  <div style="padding:10px 18px 22px">
     <a class="btn" href="C06-ConfirmClass.dc.html">Book this class</a>
   </div>
 </div>

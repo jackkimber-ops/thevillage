@@ -8,33 +8,24 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
-<style>
-body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
-a{color:#5E5B3B}a:hover{color:#3B3A2A}
-h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-spacing:.01em}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #5E5B3B;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
-.btn2{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:24px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
-.muted{color:#66624A}
-.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;border-bottom:1px solid #E8E3C5}
-.lang{font-size:13px;color:#66624A}
-.digit{width:44px;height:56px;border:1px solid #868259;border-radius:10px;font-size:24px;text-align:center;box-sizing:border-box}
+@@KIT@@
+.digit{width:46px;height:60px;border:1.5px solid #C3BF94;border-radius:16px;font:600 24px "Lexend Deca",sans-serif;text-align:center;box-sizing:border-box;background:#fff;color:#3B3A2A}
 </style>
 </helmet>
-<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
-  <div class="hdr">
-    <a href="Main.dc.html" style="font-size:15px;text-decoration:none">← Back</a>
-    <span class="lang"><strong style="color:#3B3A2A">EN</strong> · VI</span>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6;position:relative;overflow:hidden">
+  <div style="position:absolute;right:-70px;top:120px;width:180px;height:180px;border-radius:50%;background:#FFBEA1;opacity:.5" aria-hidden="true"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;position:relative">
+    <a class="back" href="Main.dc.html" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
+    <span class="lang"><strong>EN</strong> · VI</span>
   </div>
-  <div style="flex:1;padding:32px 20px;display:flex;flex-direction:column;gap:20px">
+  <div style="flex:1;padding:20px 22px 22px;display:flex;flex-direction:column;gap:20px;position:relative">
     <div>
-      <h1 style="margin:0 0 8px;font-size:26px">Check your email</h1>
+      <div class="h" style="font-size:30px;margin-bottom:8px">check your email</div>
       <p class="muted" style="margin:0;font-size:15px;line-height:1.45">We sent a 6-digit code to <strong style="color:#3B3A2A">lan@example.com</strong>. It works for 10 minutes.</p>
     </div>
-    <form style="display:flex;flex-direction:column;gap:16px">
-      <label for="d1" style="font-size:14px;font-weight:600">Code</label>
-      <div style="display:flex;gap:8px;justify-content:space-between">
+    <form class="card" style="display:flex;flex-direction:column;gap:14px;padding:18px">
+      <label for="d1" class="lbl" style="margin:0">your code</label>
+      <div style="display:flex;gap:6px;justify-content:space-between">
         <input id="d1" class="digit" inputmode="numeric" value="4" aria-label="Digit 1">
         <input class="digit" inputmode="numeric" value="8" aria-label="Digit 2">
         <input class="digit" inputmode="numeric" value="1" aria-label="Digit 3">
@@ -42,12 +33,12 @@ h1,h2,h3{font-family:"Lexend Deca",system-ui,sans-serif;font-weight:500;letter-s
         <input class="digit" inputmode="numeric" aria-label="Digit 5">
         <input class="digit" inputmode="numeric" aria-label="Digit 6">
       </div>
-      <button class="btn" type="button">Log in</button>
+      <a class="btn" href="C04-Timetable.dc.html">Log in</a>
     </form>
-    <p class="muted" style="margin:0;font-size:14px;line-height:1.45">On iPhone the code can fill in by itself from the Mail app. WhatsApp and Zalo codes: tap <em>Copy code</em> in the message, then paste here.</p>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-top:auto">
+    <div style="background:#E8E3C5;border-radius:18px;padding:12px 14px;font-size:14px;line-height:1.45">On iPhone the code can fill in by itself from the Mail app. WhatsApp and Zalo codes: tap <em>Copy code</em> in the message, then paste here.</div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-top:auto">
       <button class="btn2" type="button">Send a new code</button>
-      <a href="Main.dc.html" style="text-align:center;font-size:15px;padding:12px">Use a different email</a>
+      <a href="Main.dc.html" style="text-align:center;font-size:15px;padding:12px;font-weight:500">Use a different email</a>
     </div>
   </div>
 </div>
