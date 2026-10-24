@@ -69,7 +69,7 @@
     "C08-PickDates.dc.html": {
       "h": 844,
       "is_interactive": true,
-      "title": "C8 · Pick dates (+2 weeks)",
+      "title": "C8 · Pick dates (+1 month)",
       "w": 390,
       "x": 0,
       "y": 1244
@@ -189,7 +189,7 @@
     "S08-Reports.dc.html": {
       "expand": "fill",
       "h": 900,
-      "title": "S8 · Reports (managers, +2 weeks)",
+      "title": "S8 · Reports (managers, +1 month)",
       "w": 1280,
       "x": 2720,
       "y": 3788
@@ -197,7 +197,7 @@
     "S09-Staff.dc.html": {
       "expand": "fill",
       "h": 900,
-      "title": "S9 · Staff (managers, +2 weeks)",
+      "title": "S9 · Staff (managers, +1 month)",
       "w": 1280,
       "x": 4080,
       "y": 3788
@@ -205,7 +205,7 @@
     "S10-Settings.dc.html": {
       "expand": "fill",
       "h": 900,
-      "title": "S10 · Studio settings (managers, +2 weeks)",
+      "title": "S10 · Studio settings (managers, +1 month)",
       "w": 1280,
       "x": 5440,
       "y": 3788
@@ -304,7 +304,7 @@
       "fill": "gray",
       "maxH": 560,
       "size": 24,
-      "text": "DESIGNS v3 · FULL VISUAL STYLE (22 OCT)\n\nEvery screen is now designed in the approved visual style: logo, rounded cards on linen, coloured session pictures, brand fonts.\n\nAmber tag = waiting on you (wording, pictures).\nPurple tag = +2 weeks release.\n\nNames and numbers are examples. Session pictures are placeholders until the illustrations are ready.",
+      "text": "DESIGNS v3 · FULL VISUAL STYLE (22 OCT)\n\nEvery screen is now designed in the approved visual style: logo, rounded cards on linen, coloured session pictures, brand fonts.\n\nAmber tag = waiting on you (wording, pictures).\nPurple tag = +1 month release.\n\nNames and numbers are examples. Session pictures are placeholders until the illustrations are ready.",
       "w": 420,
       "x": 3330,
       "y": 0

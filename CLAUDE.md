@@ -86,6 +86,10 @@ Database also enforces: unique active booking per (session, customer); customers
 - Staff dragging a session to a new time moves its bookings with it and emails everyone booked; a move that overlaps another session is refused.
 - Studio: 47/1 Quốc Hương, An Khánh, Hồ Chí Minh. Open every day 8:30–17:00. Contact email for now: thevillage.saigon@gmail.com, later hello@thevillagesaigon.com (one shared Namecheap mailbox; staff log in with personal emails). Contact/WhatsApp/Zalo for now: +84 933 834 068 (temporary until the business is registered). "Message us" buttons: Zalo, WhatsApp, Messenger and Email (studio contact email). Social: facebook.com/thevillage.saigon, instagram.com/thevillage.saigon, Messenger m.me/thevillage.saigon. Name is written "The Village - Family Club". All of these go in `studio_settings`, never in code.
 
+## Releases
+
+Opening day **14 Nov 2026**; the second release is **1 month later** (changed 24 Oct from "+2 weeks"). Requirement rows marked "+2 weeks" in the brief now mean this +1 month release.
+
 ## Roles
 
 Manager (2: Phuong, who also teaches, and Caroline) and Instructor (up to 4, names to come); a manager can also teach. Roles in `staff_roles` / `app_metadata`, **never** `user_metadata`.

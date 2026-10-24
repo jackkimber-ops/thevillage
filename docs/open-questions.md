@@ -35,7 +35,7 @@ The requirements win on *what* to build, so I'll follow the answer in **bold** u
 3. **Unpaid bookings for logged-in customers.** No limit is set. Suggest no limit at launch, as agreed, with all unpaid bookings in the manager's list. **Answered 22 Oct: yes, no limit.**
 4. **Free trial.** Suggest a class only, not open play, and it doesn't stop the customer buying the intro pack later. **Answered 22 Oct: yes.**
 5. **WhatsApp/Zalo login buttons before Meta/Zalo approve.** Suggest hiding them until approved, so opening day shows email login only. **Answered 22 Oct: yes, hidden until approved.**
-6. **Instructor "Own sessions only / All customers" setting.** It belongs on the Staff page, which comes in the +2 weeks release. Suggest I set it for you at opening, like the staff accounts. **Answered 22 Oct: yes.**
+6. **Instructor "Own sessions only / All customers" setting.** It belongs on the Staff page, which comes in the +1 month release. Suggest I set it for you at opening, like the staff accounts. **Answered 22 Oct: yes.**
 7. **Name punctuation.** "The Village - Family Club" or "The Village: Family Club"? (The sketches use "The Village · Family Club".) **Answered 22 Oct: "The Village - Family Club" (with a dash).**
 8. **Selling a pack to someone with a pay-on-the-day booking.** Suggest: their upcoming unpaid bookings switch to credits from the new pack, so they don't pay twice. **Answered 22 Oct: yes.**
 
@@ -53,9 +53,12 @@ The requirements win on *what* to build, so I'll follow the answer in **bold** u
 - **22 Oct: phone field** (owners): "Phone (WhatsApp)" was confusing for Zalo users. Now "Mobile number" plus "Best way to reach you: WhatsApp / Zalo / Call".
 - **22 Oct: login screen photo** (owners): full-width photo of The Village at the top of C1. Owners to supply the photo.
 
+- **24 Oct: second release is 1 month after opening, not 2 weeks** (owners). All "+1 month" labels renamed "+1 month".
+- **24 Oct: C6 confirm** drops "After that, message us and the credit is used"; it now just states the free cancellation time.
+
 ## Ideas noted for later
 
-- **Holiday freeze (owners, 21 Oct):** many expat families are away at Christmas and in summer, so members will want to freeze their pack. Pausing one customer's pack (M2) is already in the +2 weeks release; a studio-wide or self-service freeze can come after. Not needed now.
+- **Holiday freeze (owners, 21 Oct):** many expat families are away at Christmas and in summer, so members will want to freeze their pack. Pausing one customer's pack (M2) is already in the +1 month release; a studio-wide or self-service freeze can come after. Not needed now.
 
 ## D. Owner tasks still open (from the requirements doc)
 
