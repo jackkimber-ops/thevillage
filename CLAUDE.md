@@ -76,6 +76,7 @@ Database also enforces: unique active booking per (session, customer); customers
 - Login screen has a full-width studio photo header (photo to come).
 - Guest form: child details sit behind an optional "Add your child" row (opens the name + month/year fields, up to 2). Turnstile runs invisibly (no visible widget unless challenged).
 - Customer timetable (changed 22 Oct, reverses 21 Oct): **List** (default, week list by day), **Week** (7-day grid) and **Month** (calendar with dots; tap a day to see its sessions). Month greys out days beyond the 1-month booking window.
+- Customers see "x of 10 places left" for classes, but **not for open play** (24 Oct); open play just shows "Full" when full. Staff screens always show counts.
 - Open play: up to 2 children (1 credit or 150,000 each) and up to 2 parents free per booking.
 - Booking after the cutoff is allowed (until 1 h before start); the confirm screen says "This booking can't be cancelled online".
 - Login email: 6-digit code with a one-tap link underneath; the screen asks for the code. WhatsApp/Zalo login hidden until Meta/Zalo approve (after business registration).

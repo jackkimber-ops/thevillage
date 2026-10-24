@@ -56,6 +56,8 @@ The requirements win on *what* to build, so I'll follow the answer in **bold** u
 - **24 Oct: second release is 1 month after opening, not 2 weeks** (owners). All "+1 month" labels renamed "+1 month".
 - **24 Oct: C6 confirm** drops "After that, message us and the credit is used"; it now just states the free cancellation time.
 
+- **24 Oct: open play hides "places left"** for customers (owners); classes keep it.
+
 ## Ideas noted for later
 
 - **Holiday freeze (owners, 21 Oct):** many expat families are away at Christmas and in summer, so members will want to freeze their pack. Pausing one customer's pack (M2) is already in the +1 month release; a studio-wide or self-service freeze can come after. Not needed now.
