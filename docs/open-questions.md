@@ -53,7 +53,7 @@ The requirements win on *what* to build, so I'll follow the answer in **bold** u
 - **22 Oct: phone field** (owners): "Phone (WhatsApp)" was confusing for Zalo users. Now "Mobile number" plus "Best way to reach you: WhatsApp / Zalo / Call".
 - **22 Oct: login screen photo** (owners): full-width photo of The Village at the top of C1. Owners to supply the photo.
 
-- **24 Oct: second release is 1 month after opening, not 2 weeks** (owners). All "+1 month" labels renamed "+1 month".
+- **24 Oct: second release is 1 month after opening, not 2 weeks** (owners). All "+2 weeks" labels renamed "+1 month".
 - **24 Oct: C6 confirm** drops "After that, message us and the credit is used"; it now just states the free cancellation time.
 
 - **24 Oct: open play hides "places left"** for customers (owners); classes keep it.
