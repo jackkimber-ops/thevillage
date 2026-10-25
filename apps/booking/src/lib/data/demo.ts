@@ -71,6 +71,9 @@ export const demoData: DataSource = {
   async settings() {
     return settings;
   },
+  async dropInPrices() {
+    return { classVnd: 450000, openPlayVnd: 150000 };
+  },
   async timetable(from, to) {
     return demoSessions().filter((s) => new Date(s.startsAt) >= from && new Date(s.startsAt) < to);
   },

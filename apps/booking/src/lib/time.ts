@@ -92,3 +92,8 @@ export function formatRange(fromKey: string, toKey: string, locale: string): str
 export function minutesBetween(start: Date | string, end: Date | string): number {
   return Math.round((new Date(end).getTime() - new Date(start).getTime()) / 60000);
 }
+
+/** The current time (server components read it once per request). */
+export function nowMs(): number {
+  return Date.now();
+}

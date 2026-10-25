@@ -1,8 +1,20 @@
 {
   "_status": "DRAFT Vietnamese: every string here needs checking by a Vietnamese speaker before launch (owner task).",
-  "nav": { "back": "Quay lại", "home": "Trang chủ The Village", "menu": "Menu" },
-  "tabs": { "label": "Mục chính", "classes": "Lớp học", "bookings": "Lịch đã đặt", "packages": "Gói của tôi" },
-  "language": { "label": "Ngôn ngữ: Tiếng Việt. Chạm để chọn English", "short": "VN" },
+  "nav": {
+    "back": "Quay lại",
+    "home": "Trang chủ The Village",
+    "menu": "Menu"
+  },
+  "tabs": {
+    "label": "Mục chính",
+    "classes": "Lớp học",
+    "bookings": "Lịch đã đặt",
+    "packages": "Gói của tôi"
+  },
+  "language": {
+    "label": "Ngôn ngữ: Tiếng Việt. Chạm để chọn English",
+    "short": "VN"
+  },
   "home": {
     "logIn": "Đăng nhập",
     "title": "chào mừng đến the village",
@@ -18,9 +30,17 @@
   "timetable": {
     "title": "lớp học",
     "viewLabel": "Kiểu xem lịch",
-    "views": { "list": "Danh sách", "week": "Tuần", "month": "Tháng" },
+    "views": {
+      "list": "Danh sách",
+      "week": "Tuần",
+      "month": "Tháng"
+    },
     "filterLabel": "Hiển thị",
-    "filters": { "all": "Tất cả", "classes": "Lớp học", "open-play": "Giờ chơi tự do" },
+    "filters": {
+      "all": "Tất cả",
+      "classes": "Lớp học",
+      "open-play": "Giờ chơi tự do"
+    },
     "prevWeek": "Tuần trước",
     "nextWeek": "Tuần sau",
     "prevMonth": "Tháng trước",
@@ -28,7 +48,13 @@
     "nothingThisWeek": "Tuần này chưa có lịch.",
     "nothingThisDay": "Ngày này chưa có lịch.",
     "opensLater": "sẽ mở đặt chỗ sau",
-    "legend": { "class": "Lớp học", "openPlay": "Giờ chơi tự do", "full": "Hết chỗ", "greyLater": "Ngày màu xám sẽ mở đặt chỗ sau" }
+    "legend": {
+      "class": "Lớp học",
+      "openPlay": "Giờ chơi tự do",
+      "full": "Hết chỗ",
+      "greyLater": "Ngày màu xám sẽ mở đặt chỗ sau"
+    },
+    "greeting": "chào {name}"
   },
   "session": {
     "book": "Đặt",
@@ -45,7 +71,12 @@
     "price": "Giá",
     "priceClass": "1 buổi trong gói, hoặc {price} trả tại studio",
     "priceOpenPlay": "{price} mỗi bé, trả tại studio",
-    "kinds": { "class": "Lớp nhóm", "open_play": "Giờ chơi tự do", "private_hire": "Thuê riêng", "workshop": "Workshop" },
+    "kinds": {
+      "class": "Lớp nhóm",
+      "open_play": "Giờ chơi tự do",
+      "private_hire": "Thuê riêng",
+      "workshop": "Workshop"
+    },
     "bookClass": "Đặt lớp này",
     "bookOpenPlay": "Đặt giờ chơi",
     "fullMessage": "Buổi này đã hết chỗ.",
@@ -55,16 +86,28 @@
     "title": "menu",
     "close": "Đóng menu",
     "messageUs": "nhắn cho chúng tôi",
-    "channels": { "zalo": "Zalo", "whatsapp": "WhatsApp", "messenger": "Messenger", "email": "Email" },
+    "channels": {
+      "zalo": "Zalo",
+      "whatsapp": "WhatsApp",
+      "messenger": "Messenger",
+      "email": "Email"
+    },
     "hire": "Thuê studio",
     "language": "Ngôn ngữ",
     "logIn": "Đăng nhập",
     "studio": "the village",
     "map": "Bản đồ",
     "privacy": "Chính sách bảo mật",
-    "terms": "Điều khoản đặt chỗ và huỷ"
+    "terms": "Điều khoản đặt chỗ và huỷ",
+    "myDetails": "thông tin của tôi",
+    "children": "Con",
+    "logOut": "Đăng xuất"
   },
-  "policies": { "privacyTitle": "chính sách bảo mật", "termsTitle": "điều khoản đặt chỗ và huỷ", "comingSoon": "nội dung chính sách từ chủ studio" },
+  "policies": {
+    "privacyTitle": "chính sách bảo mật",
+    "termsTitle": "điều khoản đặt chỗ và huỷ",
+    "comingSoon": "nội dung chính sách từ chủ studio"
+  },
   "hire": {
     "title": "thuê studio",
     "intro": "Tiệc và nhóm gia đình, 1 hoặc 2 giờ vào khung giờ trống. Vui lòng hỏi trước ít nhất 24 giờ.",
@@ -79,5 +122,166 @@
     "nothingBooked": "Mở cuộc trò chuyện với thông tin đã điền sẵn. Chưa có gì được đặt cho đến khi chúng tôi xác nhận.",
     "copied": "Đã sao chép thông tin: hãy dán vào cuộc trò chuyện Zalo. Chưa có gì được đặt cho đến khi chúng tôi xác nhận.",
     "message": "Chào The Village! Tôi muốn thuê studio.\nNgày: {date}\nGiờ bắt đầu: {time}\nThời lượng: {hours} giờ\nSố người: {group}\nGhi chú: {notes}"
+  },
+  "login": {
+    "home": "Trang chủ The Village",
+    "menu": "Menu",
+    "title": "chào mừng đến the village",
+    "intro": "Đăng nhập hoặc đặt chỗ. Không cần mật khẩu: chúng tôi gửi mã 6 số.",
+    "email": "Email",
+    "sendCode": "Gửi mã cho tôi",
+    "newHere": "lần đầu?",
+    "bookAsGuest": "Đặt chỗ không cần tài khoản",
+    "stayLoggedIn": "Lần đầu đến? Đặt ngay và thanh toán tại studio. Bạn sẽ được giữ đăng nhập trên điện thoại này.",
+    "checkEmail": "kiểm tra email",
+    "sentTo": "Chúng tôi đã gửi mã 6 số tới <strong>{email}</strong>. Mã có hiệu lực 10 phút.",
+    "yourCode": "mã của bạn",
+    "logIn": "Đăng nhập",
+    "newCode": "Gửi mã mới",
+    "differentEmail": "Dùng email khác"
+  },
+  "details": {
+    "title": "thông tin của bạn",
+    "intro": "Chỉ một lần, để chúng tôi biết ai sẽ đến.",
+    "name": "Họ tên",
+    "mobile": "Số điện thoại",
+    "email": "Email",
+    "reachYou": "Cách liên lạc tiện nhất",
+    "contact": {
+      "whatsapp": "WhatsApp",
+      "zalo": "Zalo",
+      "call": "Gọi điện"
+    },
+    "child": "Con của bạn",
+    "childName": "Tên bé",
+    "childBorn": "Tháng và năm sinh",
+    "addChild": "Thêm bé",
+    "optional": "không bắt buộc",
+    "addChildHint": "Tên và tháng/năm sinh",
+    "save": "Lưu và xem lớp học",
+    "changeLater": "Bạn có thể thay đổi bất cứ lúc nào trong menu."
+  },
+  "book": {
+    "placesLeft": "còn {n} chỗ",
+    "whosComing": "ai sẽ đến",
+    "you": "Bạn ({name})",
+    "secondParent": "Thêm một phụ huynh (miễn phí)",
+    "ageMonths": "{n} tháng",
+    "ageYears": "{n} tuổi",
+    "addChild": "Thêm bé",
+    "childName": "Tên bé",
+    "childNameExample": "ví dụ: Mi",
+    "childBorn": "Tháng và năm sinh",
+    "cancel": "Huỷ",
+    "addChildButton": "Thêm bé",
+    "savedForNextTime": "Được lưu cho lần sau. Tối đa 2 bé mỗi lần đặt.",
+    "classRule": "Tối đa 2 bé, miễn phí khi đi cùng bạn.",
+    "openPlayRule": "Chọn từng bé sẽ đến (tối đa 2). Phụ huynh miễn phí.",
+    "addChildLink": "+ Thêm bé",
+    "creditsFrom": "{n} buổi từ {pack}",
+    "creditsAfter": "còn {now} · sau khi đặt còn {after} · hết hạn {day}",
+    "payOnTheDay": "Trả tại studio",
+    "payHow": "Bằng QR, chuyển khoản hoặc tiền mặt tại studio.",
+    "freeCancel": "Huỷ miễn phí trước {time} ngày {day}.",
+    "cantCancel": "Không thể huỷ chỗ này trực tuyến.",
+    "messageIfChange": "Hãy nhắn cho chúng tôi nếu bạn thay đổi kế hoạch.",
+    "confirm": "Xác nhận đặt chỗ"
+  },
+  "guest": {
+    "payOnTheDay": "Trả tại studio",
+    "perChild": "{price} mỗi bé",
+    "title": "thông tin của bạn",
+    "emailHint": "Để nhận xác nhận và đăng nhập",
+    "childN": "Bé {n}",
+    "addAnother": "Thêm bé khác",
+    "childHint": "Tên và tháng/năm sinh, tối đa 2",
+    "submit": "Đặt chỗ, trả tại studio",
+    "smallPrint": "Chúng tôi sẽ liên hệ trước buổi đầu tiên để chào bạn. Huỷ miễn phí trước {time} tối hôm trước. Khi đặt chỗ, bạn đồng ý với <privacy>chính sách bảo mật</privacy>."
+  },
+  "booked": {
+    "you": "Bạn",
+    "title": "đã đặt xong, {name}",
+    "payOnTheDay": "Trả tại studio",
+    "fromPack": "{n} buổi từ {pack}",
+    "freeCancel": "Huỷ miễn phí trước {time} ngày {day}.",
+    "cantCancel": "Không thể huỷ chỗ này trực tuyến.",
+    "emailSent": "Chúng tôi đã gửi email chi tiết cho bạn.",
+    "addToCalendar": "Thêm vào lịch của tôi",
+    "seeBookings": "Xem lịch đã đặt",
+    "bookAnother": "Đặt lớp khác",
+    "guestTitle": "đã đặt xong",
+    "guestBody": "Chúng tôi sẽ gửi chi tiết tới {email} và liên hệ trước buổi đầu tiên. Thanh toán tại studio vào hôm đó.",
+    "logInToSee": "Đăng nhập để xem lịch đã đặt"
+  },
+  "bookings": {
+    "title": "lịch đã đặt",
+    "you": "Bạn",
+    "payOnTheDay": "Trả tại studio",
+    "cancel": "Huỷ",
+    "messageUs": "Nhắn cho chúng tôi",
+    "none": "Chưa có lịch sắp tới.",
+    "findClass": "Tìm lớp học",
+    "past": "đã qua",
+    "cancelledNote": "Đã huỷ chỗ.",
+    "status": {
+      "booked": "Đã đặt",
+      "attended": "Đã tham gia",
+      "no_show": "Vắng mặt",
+      "cancelled": "Đã huỷ",
+      "late_cancelled": "Huỷ muộn"
+    }
+  },
+  "cancel": {
+    "title": "huỷ chỗ này?",
+    "creditBack": "{n} buổi sẽ được hoàn lại vào {pack}.",
+    "nothingToPay": "Không phải trả gì.",
+    "yes": "Có, huỷ chỗ",
+    "keep": "Giữ lại"
+  },
+  "packages": {
+    "title": "gói của tôi",
+    "none": "Chưa có gói. Mua tại studio.",
+    "classes": "Lớp học",
+    "remaining": "buổi còn lại",
+    "summary": "đã dùng {used} · {reserved} đang giữ cho lịch đặt",
+    "expires": "Hết hạn",
+    "paused": "tạm dừng {n} ngày",
+    "openPlay": "Giờ chơi tự do",
+    "noPack": "Không cần gói",
+    "openPlayPrice": "{price} mỗi bé, trả tại studio vào hôm đó.",
+    "finished": "Đã kết thúc",
+    "endedOn": "Kết thúc {day}",
+    "buyTitle": "mua gói tại studio",
+    "buyHow": "Thanh toán bằng QR, chuyển khoản hoặc tiền mặt, chúng tôi thêm ngay.",
+    "lastsMonths": "dùng trong {n} tháng",
+    "lastsDays": "dùng trong {n} ngày"
+  },
+  "errors": {
+    "generic": "Có lỗi xảy ra. Vui lòng thử lại hoặc nhắn cho chúng tôi.",
+    "invalid_email": "Vui lòng kiểm tra địa chỉ email.",
+    "invalid_phone": "Vui lòng kiểm tra số điện thoại.",
+    "name_required": "Vui lòng nhập họ tên.",
+    "invalid_contact": "Vui lòng chọn cách liên lạc.",
+    "code_not_sent": "Không gửi được mã. Vui lòng thử lại.",
+    "too_many_codes": "Đã gửi quá nhiều mã. Vui lòng đợi vài phút.",
+    "wrong_code": "Mã không đúng. Kiểm tra lại hoặc gửi mã mới.",
+    "not_saved": "Không lưu được. Vui lòng thử lại.",
+    "not_logged_in": "Vui lòng đăng nhập trước.",
+    "child_name_required": "Vui lòng nhập tên bé.",
+    "child_month_required": "Vui lòng nhập tháng và năm sinh.",
+    "session_full": "Rất tiếc, buổi này vừa hết chỗ.",
+    "session_not_bookable": "Không thể đặt buổi này.",
+    "already_booked": "Bạn đã đặt buổi này rồi.",
+    "too_late_to_book": "Đã hết hạn đặt buổi này (trước 1 giờ).",
+    "too_far_ahead": "Ngày này chưa mở đặt chỗ.",
+    "too_many_children": "Tối đa 2 bé mỗi lần đặt.",
+    "open_play_needs_a_child": "Vui lòng chọn ít nhất một bé cho giờ chơi.",
+    "too_many_parents": "Tối đa 2 phụ huynh mỗi lần đặt giờ chơi.",
+    "one_parent_per_booking": "Một phụ huynh cho mỗi lần đặt lớp.",
+    "child_not_found": "Vui lòng chọn bé của bạn.",
+    "guest_unpaid_limit": "Bạn đã có một chỗ trả tại studio. Đăng nhập để đặt thêm ngày, hoặc nhắn cho chúng tôi.",
+    "cutoff_passed": "Đã quá hạn huỷ trực tuyến. Vui lòng nhắn cho chúng tôi.",
+    "booking_not_found": "Không tìm thấy chỗ đã đặt.",
+    "booking_not_active": "Chỗ này đã huỷ hoặc đã kết thúc."
   }
 }

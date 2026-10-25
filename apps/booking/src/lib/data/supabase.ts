@@ -59,6 +59,16 @@ export const supabaseData: DataSource = {
     };
   },
 
+  async dropInPrices() {
+    const supabase = await createClient();
+    const { data } = await supabase.from("session_types").select("kind, drop_in_price_vnd").eq("active", true);
+    const first = (kind: string) => {
+      const row = (data ?? []).find((r) => r.kind === kind && r.drop_in_price_vnd !== null);
+      return row ? Number(row.drop_in_price_vnd) : null;
+    };
+    return { classVnd: first("class"), openPlayVnd: first("open_play") };
+  },
+
   async timetable(from, to) {
     const supabase = await createClient();
     const { data, error } = await supabase.rpc("timetable", { p_from: from.toISOString(), p_to: to.toISOString() });

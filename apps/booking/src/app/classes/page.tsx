@@ -4,7 +4,7 @@ import { BackIcon, NextIcon } from "@/components/Icons";
 import { SessionCard } from "@/components/SessionCard";
 import { TabBar } from "@/components/TabBar";
 import { TopBar } from "@/components/TopBar";
-import { data, type TimetableEntry } from "@/lib/data";
+import { account, data, type TimetableEntry } from "@/lib/data";
 import {
   addDays, addMonths, formatDayLong, formatMonth, formatRange, formatTime, formatWeekRange, isDateKey, monthStart,
   vnDateKey, vnDayStart, weekStart,
@@ -23,7 +23,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
   const t = await getTranslations("timetable");
   const locale = await getLocale();
   const db = data();
-  const settings = await db.settings();
+  const [settings, me] = await Promise.all([db.settings(), account().me()]);
 
   const view: View = ["week", "month"].includes(first(sp.view) ?? "") ? (first(sp.view) as View) : "list";
   const filter: Filter = ["classes", "open-play"].includes(first(sp.filter) ?? "") ? (first(sp.filter) as Filter) : "all";
@@ -132,7 +132,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
     <div className="page">
       <TopBar />
       <main className="page-body">
-        <h1 className="heading" style={{ fontSize: 28 }}>{t("title")}</h1>
+        <h1 className="heading" style={{ fontSize: 28 }}>{me ? t("greeting", { name: me.fullName.split(" ")[0].toLowerCase() }) : t("title")}</h1>
         {nav}
         {body}
       </main>
