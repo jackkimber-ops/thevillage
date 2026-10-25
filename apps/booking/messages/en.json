@@ -1,11 +1,82 @@
 {
+  "nav": { "back": "Back", "home": "The Village home", "menu": "Menu" },
+  "tabs": { "label": "Main sections", "classes": "Classes", "bookings": "Bookings", "packages": "Packages" },
+  "language": { "label": "Language: English. Tap for Tiếng Việt", "short": "EN" },
   "home": {
+    "logIn": "Log in",
     "title": "welcome to the village",
     "subtitle": "Classes for parents, little ones close by.",
-    "comingSoon": "Booking opens soon."
+    "comingUp": "coming up",
+    "seeAll": "See all classes ›",
+    "nothingSoon": "New sessions are on their way. Check back soon.",
+    "firstClass": "First class? Book as a guest and pay at the studio.",
+    "map": "Map",
+    "findUs": "find us",
+    "openMaps": "Open in Google Maps"
   },
-  "language": {
-    "label": "Language: English. Tap for Tiếng Việt",
-    "short": "EN"
+  "timetable": {
+    "title": "classes",
+    "viewLabel": "Timetable view",
+    "views": { "list": "List", "week": "Week", "month": "Month" },
+    "filterLabel": "Show",
+    "filters": { "all": "All", "classes": "Classes", "open-play": "Open play" },
+    "prevWeek": "Previous week",
+    "nextWeek": "Next week",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "nothingThisWeek": "Nothing on this week.",
+    "nothingThisDay": "Nothing on this day.",
+    "opensLater": "opens for booking later",
+    "legend": { "class": "Class", "openPlay": "Open play", "full": "Full", "greyLater": "Grey dates open for booking later" }
+  },
+  "session": {
+    "book": "Book",
+    "full": "Full",
+    "placesLeft": "{left} of {capacity} places left",
+    "placesShort": "{left} of {capacity} left",
+    "perChild": "{price} per child",
+    "minutes": "{n} min",
+    "when": "When",
+    "instructor": "Instructor",
+    "suits": "Suits",
+    "bring": "Bring",
+    "places": "Places",
+    "price": "Price",
+    "priceClass": "1 class credit, or {price} on the day",
+    "priceOpenPlay": "{price} per child, paid on the day",
+    "kinds": { "class": "Group class", "open_play": "Open play", "private_hire": "Private hire", "workshop": "Workshop" },
+    "bookClass": "Book this class",
+    "bookOpenPlay": "Book open play",
+    "fullMessage": "This session is full.",
+    "questions": "Questions about this class? Message us"
+  },
+  "menu": {
+    "title": "menu",
+    "close": "Close menu",
+    "messageUs": "message us",
+    "channels": { "zalo": "Zalo", "whatsapp": "WhatsApp", "messenger": "Messenger", "email": "Email" },
+    "hire": "Hire the studio",
+    "language": "Language",
+    "logIn": "Log in",
+    "studio": "the village",
+    "map": "Map",
+    "privacy": "Privacy policy",
+    "terms": "Booking and cancellation terms"
+  },
+  "policies": { "privacyTitle": "privacy policy", "termsTitle": "booking and cancellation terms", "comingSoon": "policy wording from the owners" },
+  "hire": {
+    "title": "hire the studio",
+    "intro": "Parties and family groups, 1 or 2 hours in any free slot. Please ask at least 24 hours ahead.",
+    "date": "Date",
+    "start": "Start time",
+    "length": "How long",
+    "hours": "{n, plural, one {# hour} other {# hours}}",
+    "group": "Group size",
+    "notes": "Anything else (optional)",
+    "sendWhatsapp": "Send on WhatsApp",
+    "sendZalo": "Send on Zalo",
+    "nothingBooked": "Opens a chat with your details already written. Nothing is booked until we confirm.",
+    "copied": "Your details are copied: paste them into the Zalo chat. Nothing is booked until we confirm.",
+    "message": "Hello The Village! I'd like to hire the studio.\nDate: {date}\nStart: {time}\nLength: {hours, plural, one {# hour} other {# hours}}\nGroup size: {group}\nNotes: {notes}"
   }
 }

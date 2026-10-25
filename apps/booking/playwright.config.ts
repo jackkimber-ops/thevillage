@@ -8,6 +8,7 @@ export default defineConfig({
   projects: [{ name: "phone", use: { ...devices["Pixel 7"] } }],
   webServer: {
     command: `npm run start -- -p ${PORT}`,
+    env: { DEMO_DATA: "1" },
     url: `http://localhost:${PORT}/api/health`,
     reuseExistingServer: !process.env.CI,
   },
