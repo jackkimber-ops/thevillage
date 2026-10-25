@@ -8,6 +8,7 @@ Nothing here is needed until the designs are signed off, **except** Meta/Zalo ve
 - [ ] **Domain:** buy `thevillagesaigon.com` (about $10–20/year) and turn on the **registrar lock**. I'll add the DNS records (email SPF/DKIM/DMARC, Vercel) later.
 - [ ] **Meta (WhatsApp):** create a Meta Business Portfolio at business.facebook.com and start business verification (company registration certificate + website or domain email). This can take days or weeks.
 - [ ] **Zalo:** create a Zalo Official Account at oa.zalo.me and start verification (business licence). Verified tiers are paid. Ask me before buying one.
+- [ ] **SMS sender name (after registration, optional):** register a text-message sender name (up to 11 characters, e.g. "TheVillage") with an SMS provider. Vietnam blocks business texts from unregistered senders, and registration needs the stamped business registration certificate. Approval can take days to months, and every text costs money. Only needed if we want SMS login codes or reminders as well as email/Zalo/WhatsApp. Ask me before signing up.
 - [ ] **Google Business Profile** (W2), as soon as the address is final.
 - [ ] **GitHub:** create a GitHub organisation (free) for The Village, or tell me whose account should own the repo, then invite the developer.
 
