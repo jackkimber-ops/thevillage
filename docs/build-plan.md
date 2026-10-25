@@ -8,9 +8,9 @@ Times are Claude's build-and-test time, assuming owner replies within an hour or
 | # | Stage | What's in it | Build time | Owner check | Status |
 |---|---|---|---|---|---|
 | 1 | Design sign-off | Designs frozen; later changes via `docs/change-list.md` | — | — | **Done 25 Oct** |
-| 2 | Accounts and services | Domain + Namecheap mailbox, Vercel Pro, Supabase (staging + production, Singapore), Resend, GitHub settings; later free: Turnstile, Sentry, uptime monitor | owners: ~1 h; Claude: setup ~1–2 h | Buy, then invite Claude | Waiting on owners |
-| 3 | Foundations | Next.js app, `book.` and `staff.` hostnames, staging/production, CI tests on every PR, EN/VI set-up, health route | 1–2 h | Quick look at preview | Next |
-| 4 | Database and core rules | Tables, RLS on every table, safe-booking function, credit ledger, pg_cron attendance, studio settings, catalog and prices as seed data, Vietnam time, overlap rule; automated tests | 4–6 h | Short summary to approve | |
+| 2 | Accounts and services | Domain + Namecheap mailbox, Vercel Pro, Supabase (staging + production, Singapore), Resend, GitHub settings; later free: Turnstile, Sentry, uptime monitor | owners: ~1 h; Claude: setup ~1–2 h | Buy, then invite Claude | Waiting on owners (repo stays under jackkimber-ops) |
+| 3 | Foundations | Next.js app, `book.` and `staff.` hostnames, staging/production, CI tests on every PR, EN/VI set-up, health route | 1–2 h | Quick look at preview | Built 25 Oct (branch `build/stage-3-foundations`); PR once Vercel is connected |
+| 4 | Database and core rules | Tables, RLS on every table, safe-booking function, credit ledger, pg_cron attendance, studio settings, catalog and prices as seed data, Vietnam time, overlap rule; automated tests | 4–6 h | Short summary to approve | Built 25 Oct (branch `build/stage-4-database`): 52 tests pass. Plan in `docs/database.md` |
 | 5 | Login and guest booking | Email code login (Resend), first-login "your details", guest booking, Turnstile | 2–4 h | Try on your phone | |
 | 6 | Customer booking site | Home, timetable (List/Week/Month), session, confirm (class and open play), booked, my bookings, cancel, packages, menu, hire the studio | 5–8 h | Tap through on your phone | |
 | 7 | Staff app | Dashboard and get-in-touch list, calendar with drag to move, session editor, customers and profile, sell pack and record payment, catalog, instructor phone screens (today, check-in, book someone in, new customer) | 6–10 h | Try the main tasks | |
