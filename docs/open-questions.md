@@ -1,6 +1,6 @@
 # Open questions for the owners
 
-> **Status 22 Oct:** sections A–C are all answered. Still waiting on: Caroline's login email, instructor names and emails, SVG logos (later), and the owner tasks in section D.
+> **Status 22 Oct:** sections A–C are all answered. Still waiting on: instructor names and emails, SVG logos (later), and the owner tasks in section D.
 
 As of 21 October 2026, after reading the requirements doc, the developer notes and the wireframe sketches.
 Until you answer, the designs use clearly marked placeholders and the default shown under each question.
@@ -12,7 +12,7 @@ Until you answer, the designs use clearly marked placeholders and the default sh
 2. **GitHub.** Repo is `jackkimber-ops/thevillage` (21 Oct). Claude has push access (21 Oct). Done.
 3. **Opening hours.** Answered 21 Oct: **every day 8:30–17:00** (owners are changing Google Maps from 19:00 to 17:00). Private hire fits inside these hours.
 4. **Pack prices and validity.** Decided 21 Oct: drop-in 450,000; 10 classes 4,000,000; 20 classes 7,200,000 (10% off); intro 3 for 750,000. Decided 21 Oct (2): 10-class pack valid **3 months**, 20-class pack **7 months**; open play stays **150,000 per child**, paid on the day. 40/60 packs and open play packs **undecided, not on sale at launch** (they can be added in the catalog later). Decided 21 Oct (3): intro pack valid **3 weeks**; **no promotion in the app** (opening weekend free class is handled at the door). Pricing is now complete for launch. Parked: the "arrive at 8:30, stay after class" free-play extra.
-5. **Staff accounts.** Managers (21 Oct): **Phuong** and **Caroline**. Domain email is one shared inbox (hello@), so staff log in with **their personal emails**. Phuong logs in with ph.nguyen4787@gmail.com and **also teaches** (22 Oct). Still needed: Caroline's login email, and the instructors' names and emails (coming later).
+5. **Staff accounts.** Managers (21 Oct): **Phuong** and **Caroline**. Domain email is one shared inbox (hello@), so staff log in with **their personal emails**. Phuong logs in with ph.nguyen4787@gmail.com and **also teaches** (22 Oct). Caroline logs in with yousun.nam@gmail.com (26 Oct). Still needed: the instructors' names and emails (coming later).
 6. **Studio details.** Studio contact email for now: **thevillage.saigon@gmail.com**, moving to **hello@thevillagesaigon.com** once the Namecheap inbox is set up ( automated emails will still send from the domain via Resend, with replies going to this address). Google Maps link received 21 Oct: https://maps.app.goo.gl/shhU5KCEVMMrX4cd8 (used for the website's "Find us on Google Maps" button). Address (21 Oct): **47/1 Quốc Hương, An Khánh, Hồ Chí Minh 700000**. Phone on Google: **+84 933 834 068**. WhatsApp and Zalo: use **+84 933 834 068** for now (owners, 21 Oct); it changes to a business number once the company is registered. Social (22 Oct): facebook.com/thevillage.saigon, instagram.com/thevillage.saigon, Messenger m.me/thevillage.saigon (check messaging is switched on in the page settings). Automated emails will come from an address on the domain once it's bought.
 
 ## B. Things in the docs that don't line up

@@ -134,6 +134,7 @@ describe("capacity and duplicates", () => {
       const [row] = await db.su("select count(*)::int n from public.bookings where session_id = $1", [session]);
       expect(row.n).toBe(1);
     } finally {
+      await db.su("delete from public.notifications where booking_id in (select id from public.bookings where session_id = $1)", [session]);
       await db.su("delete from public.bookings where session_id = $1", [session]);
       await db.su("delete from public.sessions where id = $1", [session]);
       await db.su("delete from public.customers where id = any($1)", [[a.customerId, b.customerId]]);
