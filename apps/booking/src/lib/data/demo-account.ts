@@ -1,151 +1,105 @@
 import "server-only";
-// DEMO ACCOUNTS for local development and automated tests only (DEMO_DATA=1, no Supabase configured).
-// Kept in memory; the code is always 123456. An email containing "+pack" starts with a 10-class pack.
-// The real rules live in the database and are tested in supabase/tests; this only mimics them for the screens.
+// DEMO ACCOUNTS for local development and automated tests only (see demo-store.ts).
+// The login code is always 123456. An email containing "+pack" starts with a 10-class pack.
+// manager@village.test and instructor@village.test log in to the staff app.
 import { randomUUID } from "node:crypto";
 import { cookies } from "next/headers";
-import { addDays, vnDateKey } from "@/lib/time";
-import { demoData } from "./demo";
-import { ActionError, type Account, type Me, type MyBooking, type MyPack } from "./types";
+import { book, cancel, customerByEmail, kindOf, packTypes, staff, store, type DemoCustomer } from "./demo-store";
+import { ActionError, type Account, type Me, type MyBooking } from "./types";
 
 const COOKIE = "demo_user";
 const DEMO_CODE = "123456";
 
-type Person = { id: string; email: string; me: Me | null; packs: MyPack[]; bookings: MyBooking[] };
-const people = new Map<string, Person>();
-
-function person(email: string): Person {
-  const key = email.toLowerCase();
-  let p = people.get(key);
-  if (!p) {
-    p = { id: randomUUID(), email: key, me: null, packs: [], bookings: [] };
-    if (key.includes("+pack")) {
-      const today = vnDateKey(new Date());
-      p.packs.push({
-        id: randomUUID(), name: "10-class pack", credits: 10, remaining: 10, reserved: 0, used: 0,
-        validFrom: today, lastDay: addDays(today, 90), pausedDays: 0, sessionTypeIds: ["demo-class"],
-      });
-    }
-    people.set(key, p);
-  }
-  return p;
+export async function demoEmail(): Promise<string | null> {
+  return (await cookies()).get(COOKIE)?.value ?? null;
 }
 
-async function current(): Promise<Person | null> {
-  const email = (await cookies()).get(COOKIE)?.value;
-  return email ? person(email) : null;
+async function current(): Promise<DemoCustomer | null> {
+  const email = await demoEmail();
+  return email && !staff[email] ? customerByEmail(email) ?? null : null;
 }
 
-async function required(): Promise<Person> {
-  const p = await current();
-  if (!p) throw new ActionError("not_logged_in");
-  return p;
+async function required(): Promise<DemoCustomer> {
+  const c = await current();
+  if (!c || !c.fullName) throw new ActionError("not_logged_in");
+  return c;
 }
 
-function cutoff(startsAt: string) {
-  return new Date(`${addDays(vnDateKey(startsAt), -1)}T20:00:00+07:00`);
-}
-
-async function makeBooking(p: Person, sessionId: string, childIds: string[], parents: number, guest = false): Promise<string> {
-  const s = await demoData.session(sessionId, "en");
-  if (!s) throw new ActionError("session_not_bookable");
-  if (s.isFull) throw new ActionError("session_full");
-  if (new Date(s.startsAt).getTime() - 3600_000 < Date.now()) throw new ActionError("too_late_to_book");
-  if (p.bookings.some((b) => b.session.id === sessionId && b.status === "booked")) throw new ActionError("already_booked");
-  if (guest && p.bookings.some((b) => b.unpaid && b.status === "booked" && new Date(b.session.endsAt) > new Date())) {
-    throw new ActionError("guest_unpaid_limit");
-  }
-  const children = childIds.length;
-  if (children > 2) throw new ActionError("too_many_children");
-  if (s.kind === "open_play" && children < 1) throw new ActionError("open_play_needs_a_child");
-  const needed = s.kind === "open_play" ? children : 1;
-  const pack = p.packs.find((k) => k.sessionTypeIds.includes(s.sessionTypeId) && k.remaining >= needed && vnDateKey(s.startsAt) <= k.lastDay);
-  if (pack) {
-    pack.remaining -= needed;
-    pack.reserved += needed;
-  }
-  const id = randomUUID();
-  p.bookings.unshift({
-    id,
-    status: "booked",
-    session: { id: s.id, title: s.title, kind: s.kind, startsAt: s.startsAt, endsAt: s.endsAt, sessionTypeId: s.sessionTypeId },
-    parents,
-    children,
-    childNames: (p.me?.children ?? []).filter((c) => childIds.includes(c.id)).map((c) => c.name),
-    credits: pack ? needed : 0,
-    packName: pack?.name ?? null,
-    unpaid: !pack,
-    amountDueVnd: pack ? 0 : (s.priceVnd ?? 0) * (s.kind === "open_play" ? children : 1),
-    freeTrial: false,
-  });
-  return id;
+function toMe(c: DemoCustomer): Me | null {
+  return c.fullName ? { customerId: c.id, fullName: c.fullName, phone: c.phone, email: c.email, preferredContact: c.preferredContact, children: c.children } : null;
 }
 
 export const demoAccount: Account = {
   async user() {
-    const p = await current();
-    return p ? { id: p.id, email: p.email } : null;
+    const email = await demoEmail();
+    if (!email) return null;
+    return { id: staff[email]?.userId ?? customerByEmail(email)!.id, email };
   },
   async sendCode() {},
   async verifyCode(email, code) {
     if (code !== DEMO_CODE) throw new ActionError("wrong_code");
-    person(email);
     (await cookies()).set(COOKIE, email.toLowerCase(), { path: "/", httpOnly: true, sameSite: "lax" });
   },
   async signOut() {
     (await cookies()).delete(COOKIE);
   },
   async me() {
-    return (await current())?.me ?? null;
+    const c = await current();
+    return c ? toMe(c) : null;
   },
   async saveDetails(d) {
-    const p = await required();
-    p.me = { customerId: p.id, fullName: d.fullName, phone: d.phone, email: p.email, preferredContact: d.preferredContact, children: p.me?.children ?? [] };
+    const c = await current();
+    if (!c) throw new ActionError("not_logged_in");
+    Object.assign(c, { fullName: d.fullName, phone: d.phone, preferredContact: d.preferredContact });
   },
   async addChild(name, birthMonth) {
-    const p = await required();
-    if (!p.me) throw new ActionError("not_logged_in");
+    const c = await required();
     const id = randomUUID();
-    p.me.children.push({ id, name, birthMonth });
+    c.children.push({ id, name, birthMonth });
     return id;
   },
   async myPacks() {
     return (await current())?.packs ?? [];
   },
   async myBookings() {
-    return (await current())?.bookings ?? [];
+    const c = await current();
+    if (!c) return [];
+    return store.bookings.filter((b) => b.customerId === c.id).map((b): MyBooking => {
+      const s = store.sessions.find((x) => x.id === b.sessionId)!;
+      return {
+        id: b.id,
+        status: b.status,
+        session: { id: s.id, title: s.title, kind: kindOf(s), startsAt: s.startsAt, endsAt: s.endsAt, sessionTypeId: s.sessionTypeId },
+        parents: b.parents,
+        children: b.childIds.length + b.unnamedChildren,
+        childNames: c.children.filter((k) => b.childIds.includes(k.id)).map((k) => k.name),
+        credits: b.credits,
+        packName: c.packs.find((p) => p.id === b.packId)?.name ?? null,
+        unpaid: b.unpaid && !b.paid,
+        amountDueVnd: b.amountDueVnd,
+        freeTrial: b.freeTrial,
+      };
+    }).reverse();
   },
   async book(sessionId, childIds, parents) {
-    return makeBooking(await required(), sessionId, childIds, parents);
+    return book({ sessionId, customer: await required(), childIds, parents, source: "online" });
   },
   async cancel(bookingId) {
-    const p = await required();
-    const b = p.bookings.find((x) => x.id === bookingId);
-    if (!b) throw new ActionError("booking_not_found");
-    if (b.status !== "booked") throw new ActionError("booking_not_active");
-    if (Date.now() >= cutoff(b.session.startsAt).getTime()) throw new ActionError("cutoff_passed");
-    b.status = "cancelled";
-    const pack = p.packs.find((k) => k.name === b.packName);
-    if (pack && b.credits) {
-      pack.remaining += b.credits;
-      pack.reserved -= b.credits;
-    }
-    return "cancelled";
+    const c = await required();
+    if (!store.bookings.some((b) => b.id === bookingId && b.customerId === c.id)) throw new ActionError("booking_not_found");
+    return cancel(bookingId, false);
   },
   async guestBook(d) {
-    const p = person(d.email);
-    if (!p.me) p.me = { customerId: p.id, fullName: d.fullName, phone: d.phone, email: p.email, preferredContact: d.preferredContact, children: [] };
-    const ids = d.children.map((c) => {
+    const c = customerByEmail(d.email)!;
+    if (!c.fullName) Object.assign(c, { fullName: d.fullName, phone: d.phone, preferredContact: d.preferredContact });
+    const ids = d.children.map((k) => {
       const id = randomUUID();
-      p.me!.children.push({ id, name: c.name, birthMonth: c.birthMonth });
+      c.children.push({ id, name: k.name, birthMonth: k.birthMonth });
       return id;
     });
-    return makeBooking(p, d.sessionId, ids, 1, true);
+    return book({ sessionId: d.sessionId, customer: c, childIds: ids, parents: 1, source: "guest" });
   },
   async packsOnSale() {
-    return [
-      { id: "demo-10", name: "10-class pack", credits: 10, priceVnd: 4000000, validityMonths: 3, validityDays: null, isIntro: false },
-      { id: "demo-20", name: "20-class pack", credits: 20, priceVnd: 7200000, validityMonths: 7, validityDays: null, isIntro: false },
-    ];
+    return packTypes.filter((p) => p.onSale).map((p) => ({ id: p.id, name: p.name, credits: p.credits, priceVnd: p.priceVnd, validityMonths: p.validityMonths, validityDays: p.validityDays, isIntro: p.isIntro }));
   },
 };

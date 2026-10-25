@@ -14,9 +14,10 @@ test("language button switches to Vietnamese and back", async ({ page }) => {
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
 });
 
-test("staff app is served under /staff on previews", async ({ page }) => {
+test("staff app is served under /staff on previews (login first)", async ({ page }) => {
   await page.goto("/staff");
-  await expect(page.getByRole("heading", { name: "staff" })).toBeVisible();
+  await expect(page).toHaveURL(/\/staff\/login/);
+  await expect(page.getByRole("heading", { name: "staff login" })).toBeVisible();
 });
 
 test("health check responds", async ({ request }) => {

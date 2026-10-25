@@ -30,6 +30,8 @@ export async function verifyCodeAction(_: FormState, form: FormData): Promise<Fo
   } catch (e) {
     return { error: e instanceof ActionError ? e.code : "wrong_code" };
   }
+  // Staff go straight to the staff app (it checks their role); customers fill in their details once.
+  if (next.startsWith("/staff")) redirect(next);
   const me = await account().me();
   redirect(me ? next : `/welcome?next=${encodeURIComponent(next)}`);
 }
