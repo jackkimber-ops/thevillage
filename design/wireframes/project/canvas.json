@@ -125,7 +125,7 @@
     "Main.dc.html": {
       "h": 844,
       "is_interactive": true,
-      "title": "C1 · Log in or book as a guest",
+      "title": "C1 · Log in or book as a guest (opens from Book)",
       "w": 390,
       "x": 0,
       "y": 0
@@ -289,6 +289,30 @@
       "w": 1280,
       "x": 0,
       "y": 6332
+    },
+    "C00-Home.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "C0 · Home (before logging in)",
+      "w": 390,
+      "x": -470,
+      "y": 0
+    },
+    "C02b-YourDetails.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "C2b · Your details (first login only)",
+      "w": 390,
+      "x": 3830,
+      "y": 1244
+    },
+    "C06b-AddChild.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "C6b · Add a child (opened)",
+      "w": 390,
+      "x": 4300,
+      "y": 1244
     }
   },
   "createdOnFiles": {
@@ -304,7 +328,7 @@
       "fill": "gray",
       "maxH": 560,
       "size": 24,
-      "text": "DESIGNS v3 · FULL VISUAL STYLE (22 OCT)\n\nEvery screen is now designed in the approved visual style: logo, rounded cards on linen, coloured session pictures, brand fonts.\n\nAmber tag = waiting on you (wording, pictures).\nPurple tag = +1 month release.\n\nNames and numbers are examples. Session pictures are placeholders until the illustrations are ready.",
+      "text": "DESIGNS v3 · FULL VISUAL STYLE (22 OCT)\n\nEvery screen is now designed in the approved visual style: logo, rounded cards on linen, coloured session pictures, brand fonts.\n\nAmber tag = waiting on you (wording, pictures).\nPurple tag = +1 month release.\nDashed box = note for the team, not shown to customers.\n\nTags and notes are for us; customers never see them.\n\nNames and numbers are examples. Session pictures are placeholders until the illustrations are ready.",
       "w": 420,
       "x": 3330,
       "y": 0
@@ -313,7 +337,7 @@
       "fill": "green",
       "maxH": 620,
       "size": 24,
-      "text": "DECISIONS BUILT IN (21–22 OCT)\n\n• Timetable: List (default), Week and Month views\n• Free cancellation until 20:00 the evening before; after that, Cancel becomes Message us\n• 1 parent + up to 2 children per booking\n• Open play: 1 credit or 150,000 VND per child, parents free\n• Several dates are picked one by one; nothing repeats\n• No 'Pay now' line, no waitlist",
+      "text": "DECISIONS BUILT IN (21–22 OCT)\n\n• Timetable: List (default), Week and Month views\n• Free cancellation until 20:00 the evening before; after that, Cancel becomes Message us\n• 1 parent + up to 2 children per booking\n• Open play: 1 credit or 150,000 VND per child, parents free\n• Several dates are picked one by one; nothing repeats\n• No 'Pay now' line; waitlist comes after launch",
       "w": 420,
       "x": 3330,
       "y": 1244
@@ -376,7 +400,7 @@
       "fill": "teal",
       "maxH": 560,
       "size": 24,
-      "text": "TRY IT ON YOUR PHONE\n\nOpen 'C1 · Log in' and press Play. Tap through like a parent:\n\nSend me a code → Log in → Book a class → Confirm → See my bookings → Cancel.\n\nAlso try: Book as a guest, Open Play, Pick dates, Packages, the menu and Hire the studio.\n\nOnly the main buttons work; filters and language switch are for show.",
+      "text": "TRY IT ON YOUR PHONE\n\nOpen 'C0 · Home' and press Play. Tap through like a parent:\n\nBook → Send me a code → Log in → Your details → Book a class → Confirm → See my bookings → Cancel.\n\nAlso try: Book as a guest, Open Play, Pick dates, Packages, the menu and Hire the studio.\n\nOnly the main buttons work; filters and language switch are for show.",
       "w": 420,
       "x": 3330,
       "y": 620
@@ -395,7 +419,7 @@
       "maxW": 3210,
       "text": "Customer booking site · booking",
       "w": 240,
-      "x": 0,
+      "x": -470,
       "y": -260
     },
     "tB": {
@@ -437,17 +461,29 @@
       "w": 240,
       "x": 0,
       "y": 8672
+    },
+    "nN": {
+      "fill": "orange",
+      "maxH": 620,
+      "size": 24,
+      "text": "NEW 25 OCT · TEAM COMMENTS\n\n• C0 Home: first page before logging in (coming up + find us). Log in opens when you tap Book.\n• C2b Your details: first login only.\n• C6b Add a child: the form that opens.\n• Menu button and a clearer language button on every customer screen.\n• 'Credits remaining' instead of 'free'.\n• Reports: Attendance tab.\n• Dashboard: 'Get in touch to confirm' (message or call).",
+      "w": 420,
+      "x": 4770,
+      "y": 1244
     }
   },
   "order": [
+    "C00-Home.dc.html",
     "Main.dc.html",
     "C02-EmailCode.dc.html",
+    "C02b-YourDetails.dc.html",
     "C03-Guest.dc.html",
     "C04-Timetable.dc.html",
     "C04b-TimetableWeek.dc.html",
     "C04c-TimetableMonth.dc.html",
     "C05-Session.dc.html",
     "C06-ConfirmClass.dc.html",
+    "C06b-AddChild.dc.html",
     "C07-ConfirmOpenPlay.dc.html",
     "C08-PickDates.dc.html",
     "C09-Booked.dc.html",

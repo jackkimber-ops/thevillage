@@ -42,13 +42,16 @@ input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16
 .check{display:flex;align-items:center;gap:12px;min-height:44px;font-size:15.5px}
 .check input{width:22px;height:22px;min-height:0;margin:0;padding:0;accent-color:#5E5B3B;flex:none}
 .seg a{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:18px;text-decoration:none;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.langbtn{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border-radius:18px;border:0;background:#E8E3C5;color:#3B3A2A;font:600 14px "Work Sans",sans-serif;white-space:nowrap}
+.menubtn{width:44px;height:44px;border-radius:22px;background:#FFF4E6;display:flex;align-items:center;justify-content:center;color:#5E5B3B;flex:none}
+.teamnote{border:1.5px dashed #9A9578;border-radius:14px;padding:8px 12px;font-size:12.5px;line-height:1.4;color:#66624A}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6;position:relative;overflow:hidden">
   <div style="position:absolute;right:-70px;top:120px;width:180px;height:180px;border-radius:50%;background:#FFBEA1;opacity:.5" aria-hidden="true"></div>
   <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;position:relative">
-    <a class="back" href="Main.dc.html" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
-    <span class="lang"><strong>EN</strong> · VI</span>
+    <a class="back" href="Main.dc.html" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></a>
+    <div style="display:flex;align-items:center;gap:4px"><button class="langbtn" type="button" aria-label="Language: English. Tap for Tiếng Việt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"></path></svg>EN</button><a class="iconbtn" href="C14-Menu.dc.html" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></a></div>
   </div>
   <div style="flex:1;padding:20px 22px 22px;display:flex;flex-direction:column;gap:20px;position:relative">
     <div>
@@ -65,9 +68,9 @@ input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16
         <input class="digit" inputmode="numeric" aria-label="Digit 5">
         <input class="digit" inputmode="numeric" aria-label="Digit 6">
       </div>
-      <a class="btn" href="C04-Timetable.dc.html">Log in</a>
+      <a class="btn" href="C02b-YourDetails.dc.html">Log in</a>
     </form>
-    <div style="background:#E8E3C5;border-radius:18px;padding:12px 14px;font-size:14px;line-height:1.45">On iPhone the code can fill in by itself from the Mail app. WhatsApp and Zalo codes: tap <em>Copy code</em> in the message, then paste here.</div>
+    <div class="teamnote"><strong>Note for the team, not shown to customers:</strong> on iPhone the code can fill in by itself from the Mail app. The first time someone logs in, <em>your details</em> (C2b) opens next; after that, Log in goes straight to Classes.</div>
     <div style="display:flex;flex-direction:column;gap:6px;margin-top:auto">
       <button class="btn2" type="button">Send a new code</button>
       <a href="Main.dc.html" style="text-align:center;font-size:15px;padding:12px;font-weight:500">Use a different email</a>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Add a child</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:"Work Sans",system-ui,sans-serif;color:#3B3A2A}
+a{color:#5E5B3B}a:hover{color:#3B3A2A}
+.h{font-family:"Lexend Deca",system-ui,sans-serif;text-transform:lowercase;letter-spacing:.02em;font-weight:500;color:#5E5B3B;margin:0}
+.lbl{font-family:"Lexend Deca",sans-serif;font-size:13px;text-transform:lowercase;letter-spacing:.06em;color:#66624A;margin:6px 0 0}
+.muted{color:#66624A}
+.card{background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 1px 0 #E8E3C5}
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:0;background:#5E5B3B;color:#FFF4E6;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.btn:hover{color:#FFF4E6;background:#4E4B30}
+.btn2{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #5E5B3B;background:transparent;color:#5E5B3B;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.danger{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:26px;border:1.5px solid #A44A2C;background:#fff;color:#A44A2C;font:600 16px "Work Sans",sans-serif;text-decoration:none;box-sizing:border-box}
+.pill{font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px}
+.iconbtn{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:#5E5B3B;border-radius:22px}
+.back{width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;color:#5E5B3B;box-shadow:0 1px 0 #E8E3C5;flex:none}
+.tag{display:inline-block;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#3B3A2A}
+.pay{background:#fff;color:#A44A2C;box-shadow:inset 0 0 0 1.5px #A44A2C}
+.ok{background:#C3BF94;color:#3B3A2A}
+.new{background:#E8E3C5;color:#3B3A2A}
+.todo{background:#FFF1D6;color:#7A4E00}
+.later{background:#ECE6F5;color:#4B3A80}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:#66624A;text-decoration:none}
+.tab.on{color:#5E5B3B;font-weight:600}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
+.seg button{min-height:40px;border:0;border-radius:18px;background:transparent;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.seg .on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:14px;font-weight:600}
+input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16px;font:16px "Work Sans",sans-serif;background:#fff;color:#3B3A2A;box-sizing:border-box;width:100%}
+.lang{font-size:13px;background:#E8E3C5;border-radius:14px;padding:6px 12px;color:#3B3A2A}
+.check{display:flex;align-items:center;gap:12px;min-height:44px;font-size:15.5px}
+.check input{width:22px;height:22px;min-height:0;margin:0;padding:0;accent-color:#5E5B3B;flex:none}
+.seg a{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:18px;text-decoration:none;font:500 15px "Work Sans",sans-serif;color:#3B3A2A}
+.langbtn{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border-radius:18px;border:0;background:#E8E3C5;color:#3B3A2A;font:600 14px "Work Sans",sans-serif;white-space:nowrap}
+.menubtn{width:44px;height:44px;border-radius:22px;background:#FFF4E6;display:flex;align-items:center;justify-content:center;color:#5E5B3B;flex:none}
+.teamnote{border:1.5px dashed #9A9578;border-radius:14px;padding:8px 12px;font-size:12.5px;line-height:1.4;color:#66624A}
+select{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 12px;font:16px "Work Sans",sans-serif;background:#fff;color:#3B3A2A;box-sizing:border-box;width:100%}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
+  <div style="height:150px;background:#C3BF94;position:relative;overflow:hidden;flex:none">
+    <div style="position:absolute;right:-40px;top:-50px;width:180px;height:180px;border-radius:50%;background:#FFBEA1;opacity:.7" aria-hidden="true"></div>
+    <img src="/_blob/fdd3f188eae36e810c987e6015355517" alt="" style="position:absolute;right:28px;top:58px;width:80px;height:80px">
+    <a class="back" href="C06-ConfirmClass.dc.html" aria-label="Back" style="position:absolute;left:14px;top:14px;background:#FFF4E6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></a>
+    <div style="position:absolute;right:14px;top:14px;display:flex;align-items:center;gap:8px"><button class="langbtn" type="button" style="background:#FFF4E6" aria-label="Language: English. Tap for Tiếng Việt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"></path></svg>EN</button><a class="menubtn" href="C14-Menu.dc.html" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></a></div>
+    <div style="position:absolute;left:18px;bottom:14px">
+      <div class="h" style="font-size:28px;color:#3B3A2A">pilates flow</div>
+      <div style="font-size:14px">Mon 2 Nov · 9:00–10:00 · 4 places left</div>
+    </div>
+  </div>
+  <div style="flex:1;padding:14px 18px 8px;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+    <div class="card" style="padding:10px 16px 16px">
+      <p class="lbl">who's coming</p>
+      <div class="check"><input type="checkbox" checked="" disabled="" id="p"><label for="p">You (Lan)</label></div>
+      <div class="check"><input type="checkbox" checked="" id="k1"><label for="k1">Bao · 9 months</label></div>
+      <div style="border-top:1px solid #EFE9D6;margin-top:6px;padding-top:12px;display:flex;flex-direction:column;gap:10px">
+        <strong style="font-size:15px">Add a child</strong>
+        <div class="field"><label for="c1">Child's name</label><input id="c1" placeholder="e.g. Mi"></div>
+        <div class="field"><span style="font-size:14px;font-weight:600" id="c2">Month and year of birth</span>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px" role="group" aria-labelledby="c2">
+            <select aria-label="Month"><option>October</option></select>
+            <select aria-label="Year"><option>2023</option></select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+          <a class="btn2" href="C06-ConfirmClass.dc.html" style="min-height:46px">Cancel</a>
+          <a class="btn" href="C06-ConfirmClass.dc.html" style="min-height:46px">Add child</a>
+        </div>
+        <span class="muted" style="font-size:13px">Saved to your details for next time. Up to 2 children per booking, free with you.</span>
+      </div>
+    </div>
+    <div class="card" style="background:#E8E3C5;display:flex;align-items:center;gap:14px;box-shadow:none">
+      <div style="width:46px;height:46px;border-radius:23px;background:#5E5B3B;color:#FFF4E6;display:flex;align-items:center;justify-content:center;font:600 20px 'Lexend Deca',sans-serif;flex:none">1</div>
+      <div><div style="font-weight:600">credit from your 10-class pack</div><div style="font-size:13.5px;color:#66624A">6 left now · 5 after this · expires 20 Jan 2027</div></div>
+    </div>
+  </div>
+  <div style="padding:10px 18px 20px">
+    <a class="btn" href="C09-Booked.dc.html">Confirm booking</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

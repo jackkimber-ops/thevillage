@@ -58,8 +58,21 @@ The requirements win on *what* to build, so I'll follow the answer in **bold** u
 
 - **24 Oct: open play hides "places left"** for customers (owners); classes keep it.
 
+- **25 Oct: team comments on the canvas** (Robva, sent by the owners):
+  - New **C0 Home**: the first page before logging in (coming-up sessions and a "find us" map). Login (C1) opens when someone taps Book or Log in.
+  - New **C2b Your details**: name, mobile, preferred contact, children. Shown once, after a first login with a new email.
+  - New **C6b Add a child**: the name and month/year form that opens under "who's coming" (the same fields as the guest form).
+  - Menu button and a clearer language button (globe + EN) on every customer screen.
+  - "Credits remaining" instead of "credits free". The pause example moved to the 20-class pack (the intro pack can't be paused).
+  - C3: "We'll get in touch before your first visit" (message or call). S1: "Get in touch to confirm", with WhatsApp, Zalo and Call buttons, the customer's preferred contact, and "Contacted ✓".
+  - C5: "Questions about this class? Message us" link.
+  - S8 Reports: new Attendance tab (+1 month release).
+
 ## Ideas noted for later
 
+- **Push notifications (Robva, 24 Oct):** reminders the evening before and/or the morning of the class. Needs the app saved to the home screen; after launch. Launch uses the 18:00 reminder email.
+- **WhatsApp/Zalo booking confirmations (Robva, 24 Oct):** automatic message after booking. Possible once Meta/Zalo approve (after business registration); launch uses email.
+- **Waitlist (Robva, 24 Oct):** owners recommend about a week after launch.
 - **Holiday freeze (owners, 21 Oct):** many expat families are away at Christmas and in summer, so members will want to freeze their pack. Pausing one customer's pack (M2) is already in the +1 month release; a studio-wide or self-service freeze can come after. Not needed now.
 
 ## D. Owner tasks still open (from the requirements doc)

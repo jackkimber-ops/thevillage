@@ -52,13 +52,16 @@ input{border:1.5px solid #C3BF94;border-radius:16px;min-height:52px;padding:0 16
 .seg3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:#E8E3C5;border-radius:22px;padding:4px}
 .seg3 a{display:flex;align-items:center;justify-content:center;min-height:36px;border-radius:18px;text-decoration:none;font:500 14px "Work Sans",sans-serif;color:#3B3A2A}
 .seg3 a.on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(59,58,42,.15)}
+.langbtn{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border-radius:18px;border:0;background:#E8E3C5;color:#3B3A2A;font:600 14px "Work Sans",sans-serif;white-space:nowrap}
+.menubtn{width:44px;height:44px;border-radius:22px;background:#FFF4E6;display:flex;align-items:center;justify-content:center;color:#5E5B3B;flex:none}
+.teamnote{border:1.5px dashed #9A9578;border-radius:14px;padding:8px 12px;font-size:12.5px;line-height:1.4;color:#66624A}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:#FFF4E6">
   <div style="display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 8px 0 18px">
     <img src="/_blob/c1b0089e9a52d0be853b1cd83c2c00bb" alt="the village." style="height:34px;width:auto">
     <div style="display:flex;align-items:center;gap:2px">
-      <span class="lang"><strong>EN</strong> · VI</span>
+      <button class="langbtn" type="button" aria-label="Language: English. Tap for Tiếng Việt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"></path></svg>EN</button>
       <a class="iconbtn" href="C14-Menu.dc.html" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></a>
     </div>
   </div>

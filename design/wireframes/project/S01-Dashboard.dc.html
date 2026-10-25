@@ -75,7 +75,7 @@ tbody tr:last-child td{border-bottom:0}
     <div style="display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start">
       <section class="card" style="flex:3 1 420px;display:flex;flex-direction:column;gap:12px;box-shadow:inset 0 0 0 2px #FFBEA1">
         <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px">
-          <h2 class="h sec" style="margin:0">call to confirm</h2><span class="muted" style="font-size:14px">3 to call · also emailed to managers</span>
+          <h2 class="h sec" style="margin:0">get in touch to confirm</h2><span class="muted" style="font-size:14px">3 to contact · also emailed to managers</span>
         </div>
         <sc-for list="{{calls}}" as="c" hint-placeholder-count="3">
           <div class="call">
@@ -86,12 +86,13 @@ tbody tr:last-child td{border-bottom:0}
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap">
               <a class="btn2" href="https://wa.me/84901234567">WhatsApp</a>
+              <a class="btn2" href="https://zalo.me/84901234567">Zalo</a>
               <a class="btn2" href="tel:+84">Call</a>
-              <button class="btn" type="button">Called ✓</button>
+              <button class="btn" type="button">Contacted ✓</button>
             </div>
           </div>
         </sc-for>
-        <span class="muted" style="font-size:13px">Bookings stand straight away. Tick Called once you've spoken, or cancel the booking from the session.</span>
+        <span class="muted" style="font-size:13px">Bookings stand straight away. Message or call them the way they prefer, then tick Contacted. Or cancel the booking from the session.</span>
       </section>
       <section class="card" style="flex:2 1 300px;display:flex;flex-direction:column;gap:10px">
         <h2 class="h sec" style="margin:0 0 4px">today</h2>
@@ -109,9 +110,9 @@ class Component extends DCLogic {
   renderVals() {
     return {
       calls: [
-        { name: 'Linh Tran', why: 'New · guest', cls: 'new', what: 'Pilates Flow · Mon 9:00 · pay on the day', phone: '+84 90 123 4567' },
-        { name: 'Sarah Jones', why: 'Unpaid drop-in', cls: 'pay', what: 'Open Play · Mon 10:30 · 1 child · 150,000 ₫', phone: '+84 93 222 0101' },
-        { name: 'Hoa Le', why: 'New · added by staff', cls: 'new', what: 'Mum & Baby Yoga · Tue 9:30 · free trial', phone: '+84 91 777 8888' }
+        { name: 'Linh Tran', why: 'New · guest', cls: 'new', what: 'Pilates Flow · Mon 9:00 · pay on the day', phone: '+84 90 123 4567 · prefers WhatsApp' },
+        { name: 'Sarah Jones', why: 'Unpaid drop-in', cls: 'pay', what: 'Open Play · Mon 10:30 · 1 child · 150,000 ₫', phone: '+84 93 222 0101 · prefers Zalo' },
+        { name: 'Hoa Le', why: 'New · added by staff', cls: 'new', what: 'Mum & Baby Yoga · Tue 9:30 · free trial', phone: '+84 91 777 8888 · prefers a call' }
       ]
     };
   }
