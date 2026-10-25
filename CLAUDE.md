@@ -11,11 +11,11 @@ The brief lives in `docs/requirements/`:
 Progress, next steps and what's waiting on the owners: `PROGRESS.md`.
 Open questions for the owners: `docs/open-questions.md`.
 
-## Current phase: DESIGN
+## Current phase: BUILD (designs signed off 25 Oct 2026)
 
-Nothing is coded until the owners have approved the wireframes and visuals.
-**Do not** write app code, create database tables or set up paid services before written owner sign-off
-(record the sign-off date in `PROGRESS.md`).
+Designs are frozen as of 25 Oct (canvas version 70). Any design change now goes in `docs/change-list.md` and is agreed before it's built.
+Build plan, stages and estimates: `docs/build-plan.md`. One stage at a time, each a pull request with a preview link, owner approves before merge.
+Paid services are set up only with the owners' go-ahead and in their name (see `docs/owner-checklist.md`).
 
 ## Working rules
 

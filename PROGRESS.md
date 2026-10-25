@@ -12,10 +12,8 @@
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
 ## Next
-- Owners review the wireframes and leave comments on the preview.
-- Owners review designs v2 and comment on the canvas.
-- Owners try the prototype on their phones, then formal sign-off (target 28 Oct, earlier is better).
-- Then a clickable prototype for phones.
+- Stage 2 (owners): buy the domain and open the paid accounts, see `docs/owner-checklist.md` and `docs/build-plan.md`.
+- Stage 3 (Claude): foundations on a branch, pull request with preview link.
 - At build start: branch protection on `main`, pull-request checks and Dependabot (needs repo admin settings).
 
 - 22 Oct: **designs v3**: all 29 screens redesigned to the full visual style (logo, rounded cards, coloured session pictures, brand fonts), not just recoloured.
@@ -23,9 +21,13 @@
 - 22 Oct: customer timetable gets **Week** and **Month** views (owner request), screens C4b and C4c.
 - 22 Oct: all open questions in sections A–C answered (see `docs/open-questions.md`).
 
+- 24 Oct: second release moved to +1 month; C6 wording; open play hides places left (owner comments).
+- 25 Oct: team comments (Robva) answered on the canvas: new C0 Home, C2b Your details, C6b Add a child; menu and language button on every customer screen; attendance report; "get in touch" list. All threads replied to.
+- 25 Oct: **designs signed off.** Build plan in `docs/build-plan.md`.
+
 ## Waiting on the owners
 - Caroline's login email, instructor names and emails, and whether +84 933 834 068 is the studio's WhatsApp and Zalo number. (Address and opening hours received 21 Oct.)
 - SVGs of the full-colour wordmark and badges (later).
 
 ## Sign-off log
-- Designs: target **28 Oct**, not yet signed off. **No app code, database tables or paid services until they are.**
+- **Designs signed off 25 Oct 2026** in the Claude session by Jack (jack@savian.ai.vn) for the owners ("consider #1 signed off"). Frozen at canvas version 70 (https://claude.ai/artifact/Lc55EEnJbQhBEtzfheUhCF). Build may start; changes now go through `docs/change-list.md`.
