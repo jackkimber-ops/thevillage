@@ -23,7 +23,7 @@
      - Auth on both: 6-digit code, 10 min, `login-code.html` as both the Magic Link and Confirm signup template. Production site URL `https://book.thevillagesaigon.com`, redirects allowed for `book.` and `staff.`.
      - **Still to do:** staging site URL + redirect list (needs the Vercel preview URL, step 5); `app_config` app_url + cron_secret on both (step 5, same secret goes into Vercel as `CRON_SECRET`); custom SMTP via Resend (after step 4; until then Auth uses Supabase's built-in email, max 2 emails/hour).
      - Keep "Automatically expose new tables" **on**: migrations rely on default table grants. To switch it off later, first add a migration with explicit grants.
-  3. Staff: Phuong (ph.nguyen4787@gmail.com) and Caroline (yousun.nam@gmail.com) as managers in `staff_roles` after their auth users exist.
+  3. ~~Staff~~ **Done 26 Oct** on staging and production: auth users for Phuong (ph.nguyen4787@gmail.com) and Caroline (yousun.nam@gmail.com) created pre-confirmed (no email sent), both `manager` in `staff_roles`; checked `is_manager()` is true for Phuong on staging. Note: this session's proxy blocks `*.supabase.co`, so the users were made via SQL through the Management API (auth.users + auth.identities), not the Auth admin API.
   4. Resend: add `thevillagesaigon.com`, set DNS records at Namecheap (SPF/DKIM/DMARC) together with the Private Email records; `EMAIL_FROM`.
   5. Vercel: two projects from the repo, root `apps/booking` (domains book. + staff.) and `apps/website` (apex + www), functions in sin1; env vars per `.env.example` (preview → staging keys only).
   6. Open one PR per stage (3 → 9) with preview links for the owners.
