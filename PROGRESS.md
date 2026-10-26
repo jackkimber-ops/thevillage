@@ -13,6 +13,8 @@
 
 ## Handover (26 Oct, end of day): start here in a new session
 
+**Go-live items left:** (1) a fixed address for staging's email jobs, then staging `APP_URL` in Vercel and staging `app_config`; (2) tighten DMARC at Namecheap from `p=none` to `p=quarantine` once real booking emails are seen arriving in inboxes.
+
 **Where things stand:** all build stages (3–10) are **merged to `main` (26 Oct, merge commit `bba1a93`)**, with CI green on `main`. Production on Vercel serves `main`: `book.` and `staff.thevillagesaigon.com` (booking) and `thevillagesaigon.com` (website). The production database holds only the two manager accounts (no customers, sessions or bookings yet). Every service is set up (Supabase, Resend, Vercel, domains, BotID, Sentry, UptimeRobot). The stage branches were deleted on merge; new work goes on a new branch with its own PR.
 
 **Approved by the owners (Jack, 26 Oct):**
@@ -24,7 +26,7 @@
 2. **Go-live jobs (not done yet):**
    - ~~Production `app_config`~~ **Done 26 Oct:** `app_url` = `https://book.thevillagesaigon.com`, `cron_secret` = Vercel production `CRON_SECRET` (fingerprints checked). Tested from the production DB via `pg_net`: `/api/jobs/send-emails` returns 200 `{"sent":0,"failed":0}` with the secret and 401 without; `/api/health` returns `"database":"ok"`; `book.` and the website return 200. Booking confirmations and reminders now send in production. Staging `app_config` still waits for a fixed staging URL (next point).
    - Staging email jobs need a fixed URL (previews have per-branch URLs): decide on one, set staging `APP_URL` in Vercel and staging `app_config`.
-   - Switch on the 3 UptimeRobot monitors (created paused): **owner resumes them in UptimeRobot** (26 Oct; not reachable from the session).
+   - ~~UptimeRobot monitors~~ **Done 26 Oct:** the 3 monitors were recreated from scratch by Jack and are running (all green, every 5 minutes). Alerts go only to jack.kimber@gmail.com (extra alert contacts need a paid plan).
    - Tighten DMARC at Namecheap from `p=none` to `p=quarantine` once confirmations and login emails are seen landing in inboxes.
 3. **Stage 10 in the build plan (testing and go-live):** owner testing on staging, real timetable, instructor accounts, policy wording, go-live checklist. Needs the items under "Waiting on the owners".
 4. **Later (needs repo admin):** branch protection on `main`, required checks, Dependabot.
@@ -40,7 +42,7 @@
 - **Vercel:** `thevillage-booking` (root `apps/booking`, `book.` + `staff.`) and `thevillage-website` (root `apps/website`, apex + `www` → apex), linked to GitHub, production branch `main`, functions `sin1`, Node 22, previews open to anyone with the link. Env: production → production Supabase, preview → staging Supabase; `CRON_SECRET` per environment; `EMAIL_FROM`; booking production `APP_URL`; `RESEND_API_KEY` (`booking-app-staging` → preview, `booking-app-production` → production); Sentry vars (below). DNS at Namecheap confirmed (apex A 216.150.1.1 + 216.150.16.1; `www` CNAME ce021a7f00869806.vercel-dns-016.com; `book` + `staff` CNAME acbf00b5c9e17dba.vercel-dns-016.com). Watch out: Vercel made the very first build of each new project a production build of a stage branch; both were cancelled.
 - **CI:** first runs exposed two problems, fixed on stages 3/4 and merged forward: runners pinned to `ubuntu-24.04` (Ubuntu 26 breaks Playwright `--with-deps`); `typescript` added to `supabase/tests`. The "Vercel – thevillage-website" check fails on #1–#5 because `apps/website` only exists from stage 9 (noted in those PRs).
 - **Stage 10 (`build/stage-10-ops`, #7):** Vercel BotID instead of Turnstile on login (customer and staff) and guest booking (Vercel only; basic mode, Deep Analysis is paid and off; if BotID errors the request goes through). Sentry, errors only, customer data collection off (Sentry v11 defaults would send user info, cookies, headers, form bodies, query strings); EU region, org `thevillage`, project `thevillage-booking`; source maps uploaded to `https://de.sentry.io/` with Organization token `vercel-thevillage-booking-3`, then deleted; a failed upload only warns. `/api/health` checks the database (503 if not).
-- **UptimeRobot (paused until go-live):** keyword `https://book.thevillagesaigon.com/api/health` contains `"database":"ok"`; HTTP(s) `https://book.thevillagesaigon.com`; HTTP(s) `https://thevillagesaigon.com`. 5 min, alerts to the owner's login email + hello@thevillagesaigon.com.
+- **UptimeRobot (running since 26 Oct, free plan):** `https://book.thevillagesaigon.com/api/health` (shows `"database":"ok"`; returns 503 if the database is down), `https://book.thevillagesaigon.com`, `https://thevillagesaigon.com`. Every 5 minutes. Alerts only to jack.kimber@gmail.com (extra contacts need a paid plan). Not reachable from the cloud session; the owner manages it.
 
 ## Next
 - Stage 2 (owners): buy the domain and open the paid accounts, see `docs/owner-checklist.md` and `docs/build-plan.md`.
