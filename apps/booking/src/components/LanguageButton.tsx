@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { LOCALE_COOKIE } from "@/i18n/locales";
+import { setLocaleCookie } from "@/i18n/set-locale";
 
 export function LanguageButton() {
   const t = useTranslations("language");
@@ -11,7 +11,7 @@ export function LanguageButton() {
 
   function toggle() {
     const next = locale === "vi" ? "en" : "vi";
-    document.cookie = `${LOCALE_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`;
+    setLocaleCookie(next);
     router.refresh();
   }
 

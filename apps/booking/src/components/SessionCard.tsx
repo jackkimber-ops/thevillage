@@ -1,0 +1,38 @@
+import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
+import type { TimetableEntry } from "@/lib/data";
+import { formatVnd } from "@/lib/money";
+import { formatDayShort, formatTime, formatTimeRange, vnDateKey } from "@/lib/time";
+
+/** One session in a list: picture, title, time, places (classes) or price (open play), and Book. */
+export async function SessionCard({ s, showDay = false }: { s: TimetableEntry; showDay?: boolean }) {
+  const t = await getTranslations("session");
+  const locale = await getLocale();
+  const when = showDay
+    ? `${formatDayShort(vnDateKey(s.startsAt), locale)} · ${formatTime(s.startsAt, locale)}`
+    : formatTimeRange(s.startsAt, s.endsAt, locale);
+  const line =
+    s.kind === "open_play"
+      ? s.priceVnd !== null ? t("perChild", { price: formatVnd(s.priceVnd, locale) }) : null
+      : s.isFull ? null : s.placesLeft !== null && s.capacity !== null ? t("placesLeft", { left: s.placesLeft, capacity: s.capacity }) : null;
+  return (
+    <div className="session-card">
+      <div className={`session-pic kind-${s.kind}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/brand/icon-house-linen-badge.png" alt="" />
+      </div>
+      <div className="session-info">
+        <div className="session-title">{s.title}</div>
+        <div className="session-meta">{s.instructorName ? `${when} · ${s.instructorName}` : when}</div>
+        {line && <div className="session-left">{line}</div>}
+      </div>
+      {s.isFull ? (
+        <span className="full-label">{t("full")}</span>
+      ) : (
+        <Link className="btn-small" href={`/classes/${s.id}`} aria-label={`${t("book")}: ${s.title}, ${when}`}>
+          {t("book")}
+        </Link>
+      )}
+    </div>
+  );
+}
