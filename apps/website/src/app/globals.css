@@ -1,0 +1,49 @@
+/* Brand tokens: see design/brand/README.md (brand guide values are the master). */
+:root {
+  --linen: #fff4e6; --sky: #e8e3c5; --sage: #c3bf94; --forrest: #868259; --rose: #ffbea1; --coral: #e88d6d;
+  --ink: #3b3a2a; --muted: #66624a; --forrest-deep: #5e5b3b; --coral-deep: #a44a2c;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--linen); color: var(--ink); font-family: var(--font-body), system-ui, sans-serif; }
+a { color: var(--forrest-deep); }
+.h { font-family: var(--font-heading), system-ui, sans-serif; font-weight: 500; text-transform: lowercase; letter-spacing: .02em; color: var(--forrest-deep); margin: 0; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.muted { color: var(--muted); }
+.btn, .btn2 { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 26px; border-radius: 25px; font: 600 16px var(--font-body), sans-serif; text-decoration: none; }
+.btn { background: var(--forrest-deep); color: var(--linen); }
+.btn:hover { background: #4e4b30; color: var(--linen); }
+.btn2 { border: 1.5px solid var(--forrest-deep); color: var(--forrest-deep); }
+.buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+.header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; min-height: 88px; }
+.logo { height: 48px; width: auto; }
+.header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.social, .lang { min-width: 42px; height: 42px; padding: 0 10px; border-radius: 21px; background: var(--sky); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--ink); text-decoration: none; }
+.hero { display: flex; flex-wrap: wrap; gap: 36px; align-items: center; padding-top: 12px; padding-bottom: 56px; }
+.hero-text { flex: 1 1 420px; display: flex; flex-direction: column; gap: 20px; }
+.hero-text h1 { font-size: clamp(38px, 5vw, 60px); line-height: 1.05; }
+.lead { margin: 0; font-size: 19px; color: var(--muted); }
+.hero-pic { flex: 1 1 420px; position: relative; min-height: 420px; }
+.arch { position: absolute; inset: 0 0 0 30px; border-radius: 200px 200px 32px 32px; background: var(--sage); display: flex; align-items: center; justify-content: center; }
+.blob { position: absolute; right: -10px; top: -10px; width: 90px; height: 90px; border-radius: 50%; background: var(--rose); }
+.band { background: #fff; padding: 64px 0; }
+.band:first-of-type { border-radius: 40px 40px 0 0; }
+.band + .band { padding-top: 0; }
+.band h2, .visit h2 { font-size: 34px; margin-bottom: 14px; }
+.strong { font-size: 18px; font-weight: 600; margin: 0 0 8px; }
+.body { font-size: 17px; line-height: 1.6; margin: 0 0 30px; max-width: 760px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 22px; margin-bottom: 18px; }
+.pillar { border-radius: 26px; padding: 26px; }
+.pillar h3 { font-size: 24px; color: var(--ink); margin-bottom: 8px; }
+.pillar p { margin: 0; line-height: 1.5; }
+.pillar-0 { background: var(--sage); } .pillar-1 { background: var(--rose); } .pillar-2 { background: var(--sky); }
+.whats-card { border-radius: 26px; padding: 26px; background: var(--linen); text-decoration: none; color: var(--ink); display: flex; flex-direction: column; gap: 8px; }
+.whats-card strong { font-size: 19px; margin-top: 6px; }
+.whats-pic { height: 140px; border-radius: 18px; display: flex; align-items: center; justify-content: center; }
+.sage { background: var(--sage); } .rose { background: var(--rose); } .sky { background: var(--sky); }
+.visit { display: flex; flex-wrap: wrap; gap: 32px; align-items: center; padding-top: 56px; padding-bottom: 56px; }
+.visit > div { flex: 1 1 380px; }
+.map { flex: 1 1 380px; min-height: 260px; border-radius: 26px; background: repeating-linear-gradient(45deg, var(--sky) 0 16px, #efe9d6 16px 32px); display: flex; align-items: center; justify-content: center; font-weight: 600; text-decoration: none; }
+.footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 24px; padding-bottom: 32px; border-top: 1px solid var(--sage); font-size: 14px; }
+.footer-links { display: flex; gap: 16px; }
+@media (max-width: 600px) { .hero-pic { min-height: 280px; } .band, .visit { padding-top: 40px; padding-bottom: 40px; } }

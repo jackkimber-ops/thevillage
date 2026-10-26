@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "title": "The Village - Family Club · Pilates and movement for parents in Saigon",
+    "description": "Pilates, yoga, strength, fitness and dance for parents, with your little ones close by. Open play and private hire too. An Khánh, Hồ Chí Minh."
+  },
+  "site": {
+    "bookNow": "Book now",
+    "heroTitle": "pilates and movement for mums and little ones",
+    "heroLead": "Move. Connect. Belong. Bring your children along.",
+    "bookClass": "Book a class",
+    "seeTimetable": "See the timetable",
+    "villageTitle": "it takes a village to raise a child",
+    "villageStrong": "Parents shouldn't have to choose between looking after themselves and their children.",
+    "villageBody": "So we built exercise around parenthood: proper classes, with your little ones playing, exploring or simply close by. Not a gym, not a play centre. A place designed with you in mind.",
+    "move": { "title": "move", "body": "Pilates, yoga, strength, fitness and dance, worth doing in their own right." },
+    "connect": { "title": "connect", "body": "Children stay close. Meet parents at your stage over coffee, workshops and events." },
+    "belong": { "title": "belong", "body": "Made for this stage of life. Arrive with your baby, no awkwardness. You belong here." },
+    "welcomeAll": "Made with mums and young children in mind. Dads, expectant parents and families are welcome too.",
+    "whatsOn": "what's on",
+    "classes": { "title": "Classes", "body": "Pilates, yoga, strength, fitness, dance." },
+    "openPlay": { "title": "Open play", "body": "Play time for parents and kids." },
+    "hire": { "title": "Private hire", "body": "Hire the whole studio: message us on WhatsApp or Zalo." },
+    "comingSoon": "Coming soon: workshops on parenting and baby health and safety, and events for the whole family.",
+    "visitTitle": "visit us",
+    "maps": "Find us on Google Maps",
+    "map": "Map",
+    "messageUs": "Message us:",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  }
+}

@@ -15,7 +15,7 @@ Times are Claude's build-and-test time, assuming owner replies within an hour or
 | 6 | Customer booking site | Home, timetable (List/Week/Month), session, confirm (class and open play), booked, my bookings, cancel, packages, menu, hire the studio | 5–8 h | Tap through on your phone | Built 25 Oct (same branch): 18 browser tests on demo data |
 | 7 | Staff app | Dashboard and get-in-touch list, calendar with drag to move, session editor, customers and profile, sell pack and record payment, catalog, instructor phone screens (today, check-in, book someone in, new customer) | 6–10 h | Try the main tasks | Built 25 Oct (branch `build/stage-7-staff-app`): 61 database tests, 25 browser tests |
 | 8 | Emails and calendar | Confirmation, 18:00 reminder, session moved, calendar feeds (.ics) | 2–3 h | Check the emails you get | Built 26 Oct (branch `build/stage-8-emails`): email outbox, 4 customer emails EN/VI + login code, sender route, calendar feed backend; previews in `docs/email-previews/`. Sends once Resend + domain are set up |
-| 9 | Website | One-page `thevillagesaigon.com` | 1–2 h | Look it over | |
+| 9 | Website | One-page `thevillagesaigon.com` | 1–2 h | Look it over | Built 26 Oct (branch `build/stage-9-website`, `apps/website`): EN at /, VI at /vi, 6 browser tests |
 | 10 | Testing and go-live | Owner testing on staging, fixes, real timetable, staff accounts, policy and Vietnamese wording, go-live checklist, switch to production | 1–2 days | Real-world testing | |
 | 11 | Opening day | Live 14 Nov; fixes in the first days | — | — | |
 | 12 | Second release (+1 month) | Pick dates, pausing packs, delete my data, reports (with attendance), staff page, studio settings page | to plan | — | |
