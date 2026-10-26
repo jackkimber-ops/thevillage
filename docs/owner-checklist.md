@@ -10,7 +10,7 @@ Nothing here is needed until the designs are signed off, **except** Meta/Zalo ve
 - [ ] **Zalo:** create a Zalo Official Account at oa.zalo.me and start verification (business licence). Verified tiers are paid. Ask me before buying one.
 - [ ] **SMS sender name (after registration, optional):** register a text-message sender name (up to 11 characters, e.g. "TheVillage") with an SMS provider. Vietnam blocks business texts from unregistered senders, and registration needs the stamped business registration certificate. Approval can take days to months, and every text costs money. Only needed if we want SMS login codes or reminders as well as email/Zalo/WhatsApp. Ask me before signing up.
 - [ ] **Google Business Profile** (W2), as soon as the address is final.
-- [ ] **GitHub:** create a GitHub organisation (free) for The Village, or tell me whose account should own the repo, then invite the developer.
+- [x] **GitHub:** decided 25 Oct: the repo stays under `jackkimber-ops` (no organisation needed).
 
 ## After design sign-off (paid, about $76–87/month in total)
 
