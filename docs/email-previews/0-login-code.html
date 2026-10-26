@@ -1,0 +1,15 @@
+<!-- Supabase Auth "Magic Link" email template, sent through Resend (custom SMTP).
+     Subject: "Your code for The Village: {{ .Token }} / Mã của bạn: {{ .Token }}"
+     English and Vietnamese together: at login we don't yet know the person's language.
+     The Vietnamese is a DRAFT to be checked before launch. Set in Supabase (Auth > Email templates) at setup. -->
+<div style="background:#FFF4E6;padding:24px 18px;font-family:'Work Sans',Helvetica,Arial,sans-serif;color:#3B3A2A">
+  <div style="max-width:480px;margin:0 auto">
+    <img src="{{ .SiteURL }}/brand/wordmark-full-colour.png" alt="the village." width="110" height="51">
+    <h1 style="font-family:'Lexend Deca',Helvetica,Arial,sans-serif;font-weight:500;color:#5E5B3B;font-size:24px;margin:22px 0 6px">your code</h1>
+    <p style="font-size:15px;margin:0 0 14px">Type this code in the app. It works for 10 minutes.<br><span style="color:#66624A">Nhập mã này vào ứng dụng. Mã có hiệu lực trong 10 phút.</span></p>
+    <p style="font-family:'Lexend Deca',Helvetica,Arial,sans-serif;font-size:34px;letter-spacing:8px;font-weight:600;background:#ffffff;border-radius:20px;padding:16px;text-align:center;margin:0">{{ .Token }}</p>
+    <p style="font-size:14px;margin:18px 0 0">Or tap to log in on this phone · Hoặc chạm để đăng nhập trên điện thoại này:<br>
+      <a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email" style="color:#5E5B3B">Log in to The Village · Đăng nhập</a></p>
+    <p style="font-size:12px;color:#66624A;margin:22px 0 0">Didn't ask for this? You can ignore this email. · Nếu bạn không yêu cầu, hãy bỏ qua email này.</p>
+  </div>
+</div>
