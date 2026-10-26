@@ -7,7 +7,7 @@ on:
 
 jobs:
   booking:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: apps/booking
@@ -27,7 +27,7 @@ jobs:
       - run: npm run test:e2e
 
   database:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     services:
       postgres:
         image: postgres:17
