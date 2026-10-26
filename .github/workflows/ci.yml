@@ -53,7 +53,7 @@ jobs:
       - run: npm test
 
   website:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: apps/website
