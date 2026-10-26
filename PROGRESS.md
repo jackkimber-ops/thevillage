@@ -11,6 +11,19 @@
 - 21 Oct: **visual style v1**: a style sheet plus 5 key screens in the brand (login, timetable, confirm a class, staff dashboard, website top), as a new row at the bottom of the preview canvas.
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
+## Handover (26 Oct): start here in a new session
+
+- **All build work is on stacked branches**, each built on the one before: `build/stage-3-foundations` → `build/stage-4-database` → `build/stage-5-6-customer-site` → `build/stage-7-staff-app` → `build/stage-8-emails` → `build/stage-9-website`. **The newest branch (`build/stage-9-website`) contains everything.** Nothing is merged to `main` yet (owners approve each PR first).
+- **Stage 2 done by the owners (26 Oct):** domain + Namecheap mailbox, Supabase organisation (Pro, no projects yet), Vercel team (Pro), Resend (Pro). Keys are in the environment as `VERCEL_TOKEN`, `SUPABASE_ACCESS_TOKEN`, `RESEND_API_KEY`; allowed domains api.vercel.com, api.supabase.com, *.supabase.co, api.resend.com.
+- **Next steps, in order (tell the owner before each one that creates something):**
+  1. Check each key works (read-only calls).
+  2. Create Supabase projects in Singapore: staging (Micro) and production; apply `supabase/migrations`, `supabase/seed.sql`; set Auth (email OTP 6 digits/10 min, custom SMTP via Resend, `supabase/templates/login-code.html`, site URL); set `app_config` (app_url, cron_secret) per environment.
+  3. Staff: Phuong (ph.nguyen4787@gmail.com) and Caroline (yousun.nam@gmail.com) as managers in `staff_roles` after their auth users exist.
+  4. Resend: add `thevillagesaigon.com`, set DNS records at Namecheap (SPF/DKIM/DMARC) together with the Private Email records; `EMAIL_FROM`.
+  5. Vercel: two projects from the repo, root `apps/booking` (domains book. + staff.) and `apps/website` (apex + www), functions in sin1; env vars per `.env.example` (preview → staging keys only).
+  6. Open one PR per stage (3 → 9) with preview links for the owners.
+  7. Later: Turnstile, Sentry, uptime monitor (free; ask first).
+
 ## Next
 - Stage 2 (owners): buy the domain and open the paid accounts, see `docs/owner-checklist.md` and `docs/build-plan.md`.
 - Stage 3 (Claude): foundations on a branch, pull request with preview link.
