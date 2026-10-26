@@ -22,9 +22,9 @@
 **Next steps, in order (tell the owner before each one that creates something or changes production):**
 1. ~~Merge the PRs in order (#1 → #7).~~ **Done 26 Oct** with merge commits (not squash, to keep the stacked branches intact). Note: between 16:44 and 16:48 UTC six "Redeploy" builds of the old stage 9 commit were made from the Vercel dashboard (during the Sentry settings edits) and went live on `book.`/`staff.` until the merge replaced them; the production database showed no activity. **Don't use Vercel's Redeploy button on old deployments**: it can put an old build live.
 2. **Go-live jobs (not done yet):**
-   - Set `app_config` on both databases (`app_url` and `cron_secret`; the secret must match `CRON_SECRET` in Vercel for that environment). Production `app_url` = `https://book.thevillagesaigon.com`. Until this is set, booking confirmations and reminders don't send (login codes do).
+   - ~~Production `app_config`~~ **Done 26 Oct:** `app_url` = `https://book.thevillagesaigon.com`, `cron_secret` = Vercel production `CRON_SECRET` (fingerprints checked). Tested from the production DB via `pg_net`: `/api/jobs/send-emails` returns 200 `{"sent":0,"failed":0}` with the secret and 401 without; `/api/health` returns `"database":"ok"`; `book.` and the website return 200. Booking confirmations and reminders now send in production. Staging `app_config` still waits for a fixed staging URL (next point).
    - Staging email jobs need a fixed URL (previews have per-branch URLs): decide on one, set staging `APP_URL` in Vercel and staging `app_config`.
-   - Switch on the 3 UptimeRobot monitors (created paused).
+   - Switch on the 3 UptimeRobot monitors (created paused): **owner resumes them in UptimeRobot** (26 Oct; not reachable from the session).
    - Tighten DMARC at Namecheap from `p=none` to `p=quarantine` once confirmations and login emails are seen landing in inboxes.
 3. **Stage 10 in the build plan (testing and go-live):** owner testing on staging, real timetable, instructor accounts, policy wording, go-live checklist. Needs the items under "Waiting on the owners".
 4. **Later (needs repo admin):** branch protection on `main`, required checks, Dependabot.
