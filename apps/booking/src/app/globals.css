@@ -1,0 +1,48 @@
+/* Brand tokens: see design/brand/README.md (brand guide values are the master). */
+:root {
+  --linen: #fff4e6;
+  --sky: #e8e3c5;
+  --sage: #c3bf94;
+  --forrest: #868259;
+  --rose: #ffbea1;
+  --coral: #e88d6d;
+  --ink: #3b3a2a;
+  --muted: #66624a;
+  --forrest-deep: #5e5b3b;
+  --coral-deep: #a44a2c;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; }
+
+body {
+  background: var(--linen);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+a { color: var(--forrest-deep); }
+
+.heading {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 500;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  color: var(--forrest-deep);
+  margin: 0;
+}
+
+.lang-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--sky);
+  color: var(--ink);
+  font: 600 14px var(--font-body), sans-serif;
+  cursor: pointer;
+}
