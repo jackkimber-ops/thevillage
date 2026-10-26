@@ -13,15 +13,15 @@
 
 ## Handover (26 Oct, end of day): start here in a new session
 
-**Where things stand:** all build stages (3–10) are done and open as stacked PRs, all checks green. Every service is set up (Supabase, Resend, Vercel, domains, BotID, Sentry, UptimeRobot). **Nothing is merged to `main` yet**, so the live addresses show Vercel's "not found" page.
+**Where things stand:** all build stages (3–10) are **merged to `main` (26 Oct, merge commit `bba1a93`)**, with CI green on `main`. Production on Vercel serves `main`: `book.` and `staff.thevillagesaigon.com` (booking) and `thevillagesaigon.com` (website). The production database holds only the two manager accounts (no customers, sessions or bookings yet). Every service is set up (Supabase, Resend, Vercel, domains, BotID, Sentry, UptimeRobot). The stage branches were deleted on merge; new work goes on a new branch with its own PR.
 
 **Approved by the owners (Jack, 26 Oct):**
 - All 7 PRs, to be merged in order: jackkimber-ops/thevillage#1 stage 3 → `main`, #2 stage 4, #3 stages 5–6, #4 stage 7, #5 stage 8, #6 stage 9, #7 stage 10 (each PR is based on the one before; the newest branch `build/stage-10-ops` contains everything). "Automatically delete head branches" is on, so after each merge GitHub moves the next PR onto `main`.
 - The Vietnamese wording: stage 8 emails and the stage 10 bot-check message.
 
 **Next steps, in order (tell the owner before each one that creates something or changes production):**
-1. **Merge the PRs in order (#1 → #7).** Wait for checks to go green on each before merging the next. The first merge to `main` makes Vercel deploy production for both projects; check that production builds come from `main` only.
-2. **After the merge, at go-live:**
+1. ~~Merge the PRs in order (#1 → #7).~~ **Done 26 Oct** with merge commits (not squash, to keep the stacked branches intact). Note: between 16:44 and 16:48 UTC six "Redeploy" builds of the old stage 9 commit were made from the Vercel dashboard (during the Sentry settings edits) and went live on `book.`/`staff.` until the merge replaced them; the production database showed no activity. **Don't use Vercel's Redeploy button on old deployments**: it can put an old build live.
+2. **Go-live jobs (not done yet):**
    - Set `app_config` on both databases (`app_url` and `cron_secret`; the secret must match `CRON_SECRET` in Vercel for that environment). Production `app_url` = `https://book.thevillagesaigon.com`. Until this is set, booking confirmations and reminders don't send (login codes do).
    - Staging email jobs need a fixed URL (previews have per-branch URLs): decide on one, set staging `APP_URL` in Vercel and staging `app_config`.
    - Switch on the 3 UptimeRobot monitors (created paused).
