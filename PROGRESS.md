@@ -31,7 +31,7 @@
      - **Bot protection: Vercel BotID instead of Cloudflare Turnstile** (owners agreed 26 Oct; included in Vercel Pro, no extra account or keys). Protects email-code login (customer and staff) and guest booking. Only runs on Vercel; off Vercel (local, CI) the check is skipped, and if BotID itself errors the request is let through and logged. Basic mode only: "Deep Analysis" in the Vercel Firewall is paid per check, not turned on.
      - **Sentry** wired in (errors only, no tracing). Customer data collection switched off explicitly (Sentry v11 defaults collect user info, cookies, headers, form bodies and query strings). Off until `NEXT_PUBLIC_SENTRY_DSN` is set in Vercel. **Waiting on owners:** free sentry.io account, Next.js project `thevillage-booking`, send the DSN.
      - **Health route** `/api/health` now reads studio settings from the database; returns 503 if it can't.
-     - **Waiting on owners:** free UptimeRobot account; then monitors for `book.` home, `book.`/api/health and the website.
+     - **UptimeRobot** account created by Jack (26 Oct). Monitors (5 min, alerts to the owner's login email + hello@thevillagesaigon.com): 1. Keyword `https://book.thevillagesaigon.com/api/health` must contain `"database":"ok"`; 2. HTTP(s) `https://book.thevillagesaigon.com`; 3. HTTP(s) `https://thevillagesaigon.com`. **Created paused: switch them on at go-live** (the domains show Vercel 404 until `main` is merged; monitor 1 needs stage 10 merged).
 
 ## Next
 - Stage 2 (owners): buy the domain and open the paid accounts, see `docs/owner-checklist.md` and `docs/build-plan.md`.
