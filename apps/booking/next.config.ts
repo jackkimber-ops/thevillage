@@ -14,6 +14,8 @@ export default withSentryConfig(withBotId(withNextIntl(nextConfig)), {
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
   authToken: process.env.SENTRY_AUTH_TOKEN,
+  // The studio's Sentry account is in the EU region (the DSN host is ingest.de.sentry.io).
+  sentryUrl: "https://de.sentry.io/",
   sourcemaps: { disable: !process.env.SENTRY_AUTH_TOKEN },
   telemetry: false,
   silent: !process.env.CI && !process.env.VERCEL,
