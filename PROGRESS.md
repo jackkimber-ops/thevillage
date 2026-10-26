@@ -16,8 +16,13 @@
 - **All build work is on stacked branches**, each built on the one before: `build/stage-3-foundations` → `build/stage-4-database` → `build/stage-5-6-customer-site` → `build/stage-7-staff-app` → `build/stage-8-emails` → `build/stage-9-website`. **The newest branch (`build/stage-9-website`) contains everything.** Nothing is merged to `main` yet (owners approve each PR first).
 - **Stage 2 done by the owners (26 Oct):** domain + Namecheap mailbox, Supabase organisation (Pro, no projects yet), Vercel team (Pro), Resend (Pro). Keys are in the environment as `VERCEL_TOKEN`, `SUPABASE_ACCESS_TOKEN`, `RESEND_API_KEY`; allowed domains api.vercel.com, api.supabase.com, *.supabase.co, api.resend.com.
 - **Next steps, in order (tell the owner before each one that creates something):**
-  1. Check each key works (read-only calls).
-  2. Create Supabase projects in Singapore: staging (Micro) and production; apply `supabase/migrations`, `supabase/seed.sql`; set Auth (email OTP 6 digits/10 min, custom SMTP via Resend, `supabase/templates/login-code.html`, site URL); set `app_config` (app_url, cron_secret) per environment.
+  1. ~~Check each key works (read-only calls).~~ **Done 26 Oct**: all three keys work. Vercel team "The Village" (Pro, `team_nLf9YIAx50eRAXjapeiTiLY1`), Supabase org "The Village" (Pro), Resend.
+  2. ~~Create Supabase projects~~ **Done 26 Oct** (projects created by Jack in the dashboard; DB passwords are with the owners, not in the repo):
+     - `thevillage-staging` ref `rtpgifqvgcaoslhkbrpe`, `thevillage-production` ref `mehfqyfinxjiknsvupop`; both Micro, ap-southeast-1.
+     - All 7 migrations + `seed.sql` applied to both (recorded in `supabase_migrations.schema_migrations`); 20 tables, RLS on all; 3 cron jobs scheduled.
+     - Auth on both: 6-digit code, 10 min, `login-code.html` as both the Magic Link and Confirm signup template. Production site URL `https://book.thevillagesaigon.com`, redirects allowed for `book.` and `staff.`.
+     - **Still to do:** staging site URL + redirect list (needs the Vercel preview URL, step 5); `app_config` app_url + cron_secret on both (step 5, same secret goes into Vercel as `CRON_SECRET`); custom SMTP via Resend (after step 4; until then Auth uses Supabase's built-in email, max 2 emails/hour).
+     - Keep "Automatically expose new tables" **on**: migrations rely on default table grants. To switch it off later, first add a migration with explicit grants.
   3. Staff: Phuong (ph.nguyen4787@gmail.com) and Caroline (yousun.nam@gmail.com) as managers in `staff_roles` after their auth users exist.
   4. Resend: add `thevillagesaigon.com`, set DNS records at Namecheap (SPF/DKIM/DMARC) together with the Private Email records; `EMAIL_FROM`.
   5. Vercel: two projects from the repo, root `apps/booking` (domains book. + staff.) and `apps/website` (apex + www), functions in sin1; env vars per `.env.example` (preview → staging keys only).
