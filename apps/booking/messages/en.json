@@ -262,6 +262,7 @@
     "name_required": "Please add your name.",
     "invalid_contact": "Please choose how we should reach you.",
     "code_not_sent": "We couldn't send the code. Please try again.",
+    "bot_check_failed": "We couldn't check this was sent by a person. Please reload the page and try again, or message us.",
     "too_many_codes": "Too many codes sent. Please wait a few minutes.",
     "wrong_code": "That code didn't work. Check it, or send a new one.",
     "not_saved": "We couldn't save that. Please try again.",

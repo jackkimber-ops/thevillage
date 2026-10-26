@@ -23,5 +23,5 @@ test("staff app is served under /staff on previews (login first)", async ({ page
 test("health check responds", async ({ request }) => {
   const res = await request.get("/api/health");
   expect(res.ok()).toBeTruthy();
-  expect((await res.json()).status).toBe("ok");
+  expect(await res.json()).toMatchObject({ status: "ok", database: "ok" });
 });
