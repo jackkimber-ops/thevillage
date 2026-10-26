@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { getLocale } from "next-intl/server";
+import { isBot } from "@/lib/bot-check";
 import { account, ActionError, type ContactMethod } from "@/lib/data";
 import { isEmail, toE164 } from "@/lib/phone";
 import { safeNext } from "@/lib/safe-next";
@@ -12,6 +13,7 @@ export async function sendCodeAction(_: FormState, form: FormData): Promise<Form
   const email = String(form.get("email") ?? "").trim().toLowerCase();
   const next = safeNext(form.get("next"));
   if (!isEmail(email)) return { error: "invalid_email" };
+  if (await isBot()) return { error: "bot_check_failed" };
   try {
     await account().sendCode(email, next);
   } catch (e) {

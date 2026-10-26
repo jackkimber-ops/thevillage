@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { getLocale } from "next-intl/server";
+import { isBot } from "@/lib/bot-check";
 import { account, ActionError, type ContactMethod } from "@/lib/data";
 import { isEmail, toE164 } from "@/lib/phone";
 
@@ -55,7 +56,7 @@ export async function guestBookAction(_: FormState, form: FormData): Promise<For
   if (!fullName) return { error: "name_required" };
   if (!phone) return { error: "invalid_phone" };
   if (!isEmail(email)) return { error: "invalid_email" };
-  // Bot check (Cloudflare Turnstile) is added when the keys exist (stage 2 accounts).
+  if (await isBot()) return { error: "bot_check_failed" };
   const children: Array<{ name: string; birthMonth: string }> = [];
   for (const i of [1, 2]) {
     const name = String(form.get(`child${i}Name`) ?? "").trim();

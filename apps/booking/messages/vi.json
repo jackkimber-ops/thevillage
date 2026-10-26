@@ -263,6 +263,7 @@
     "name_required": "Vui lòng nhập họ tên.",
     "invalid_contact": "Vui lòng chọn cách liên lạc.",
     "code_not_sent": "Không gửi được mã. Vui lòng thử lại.",
+    "bot_check_failed": "Chúng tôi chưa xác nhận được yêu cầu này. Vui lòng tải lại trang và thử lại, hoặc nhắn cho chúng tôi.",
     "too_many_codes": "Đã gửi quá nhiều mã. Vui lòng đợi vài phút.",
     "wrong_code": "Mã không đúng. Kiểm tra lại hoặc gửi mã mới.",
     "not_saved": "Không lưu được. Vui lòng thử lại.",
