@@ -72,11 +72,16 @@ export async function customerLogin(page: Page, email: string, next = "/classes"
 }
 
 export async function staffLogin(page: Page, email = QA_MANAGER) {
-  const code = loginCode(email);
-  await page.goto(`/staff/login/code?email=${encodeURIComponent(email)}&next=%2Fstaff`);
-  await page.getByLabel("your code").fill(code);
-  await page.getByRole("button", { name: "Log in" }).click();
-  await expect(page.getByRole("navigation", { name: "Staff menu" }).or(page.getByRole("navigation", { name: "Staff sections" })).first()).toBeAttached();
+  const nav = page.getByRole("navigation", { name: "Staff menu" }).or(page.getByRole("navigation", { name: "Staff sections" })).first();
+  // The phone and computer runs share this login, and a new code cancels the last one; if they collide, try once more.
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const code = loginCode(email);
+    await page.goto(`/staff/login/code?email=${encodeURIComponent(email)}&next=%2Fstaff`);
+    await page.getByLabel("your code").fill(code);
+    await page.getByRole("button", { name: "Log in" }).click();
+    if (await nav.waitFor({ state: "attached", timeout: 10_000 }).then(() => true, () => false)) return;
+  }
+  await expect(nav).toBeAttached();
 }
 
 export async function fillDetails(page: Page, name: string, phone = qaPhone()) {
