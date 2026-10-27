@@ -71,7 +71,7 @@ test("a filter picked in List doesn't hide Open Play in Week or Month", async ({
 
 test("session details", async ({ page }) => {
   await page.goto("/classes?filter=classes");
-  await page.locator(".session-card", { hasNotText: "Full" }).first().getByRole("link").click();
+  await page.locator(".session-card", { hasNot: page.locator(".full-label") }).first().getByRole("link").click(); // not Full or Closed
   await expect(page.getByRole("link", { name: "Book this class" })).toBeVisible();
   await expect(page.getByText("1 class credit, or 450,000 ₫ on the day")).toBeVisible();
   await expect(page.getByRole("link", { name: /Questions about this class/ })).toBeVisible();
