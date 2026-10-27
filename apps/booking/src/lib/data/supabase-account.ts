@@ -18,6 +18,18 @@ async function origin() {
   return `${proto}://${host}`;
 }
 
+type Client = Awaited<ReturnType<typeof createClient>>;
+
+// The signed-in person's own customer id. Lists below filter on it rather than relying on RLS alone,
+// because a staff member's RLS lets them read every customer's rows (a manager who also books classes
+// would otherwise see everyone's bookings under "My bookings").
+async function myCustomerId(supabase: Client): Promise<string | null> {
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth.user) return null;
+  const { data } = await supabase.from("customers").select("id").eq("user_id", auth.user.id).maybeSingle();
+  return data?.id ?? null;
+}
+
 export const supabaseAccount: Account = {
   async user() {
     const supabase = await createClient();
@@ -82,11 +94,13 @@ export const supabaseAccount: Account = {
 
   async myPacks(): Promise<MyPack[]> {
     const supabase = await createClient();
+    const me = await myCustomerId(supabase);
+    if (!me) return [];
     const [{ data: packs, error }, { data: covers }, { data: ledger }, { data: held }] = await Promise.all([
-      supabase.from("customer_packs").select("id, name, credits, valid_from, valid_to, paused_days, pack_type_id").order("valid_to"),
+      supabase.from("customer_packs").select("id, name, credits, valid_from, valid_to, paused_days, pack_type_id").eq("customer_id", me).order("valid_to"),
       supabase.from("pack_type_covers").select("pack_type_id, session_type_id"),
-      supabase.from("credit_ledger").select("customer_pack_id, kind, amount"),
-      supabase.from("bookings").select("customer_pack_id, credits").eq("status", "booked").not("customer_pack_id", "is", null),
+      supabase.from("credit_ledger").select("customer_pack_id, kind, amount").eq("customer_id", me),
+      supabase.from("bookings").select("customer_pack_id, credits").eq("customer_id", me).eq("status", "booked").not("customer_pack_id", "is", null),
     ]);
     check(error);
     return (packs ?? []).map((p) => {
@@ -113,11 +127,14 @@ export const supabaseAccount: Account = {
 
   async myBookings(): Promise<MyBooking[]> {
     const supabase = await createClient();
+    const me = await myCustomerId(supabase);
+    if (!me) return [];
     const { data, error } = await supabase
       .from("bookings")
       .select(`id, status, parents, children, credits, unpaid, amount_due_vnd, free_trial,
                sessions!inner(id, title, starts_at, ends_at, session_type_id, session_types(kind)),
                customer_packs(name), booking_children(customer_children(name))`)
+      .eq("customer_id", me)
       .order("created_at", { ascending: false });
     check(error);
     type Row = {

@@ -230,7 +230,17 @@ export async function saveSessionTypeAction(_: StaffFormState, form: FormData): 
 }
 
 export async function findCustomersAction(q: string) {
-  return staffApi().searchCustomers(q);
+  const api = staffApi();
+  const hits = await api.searchCustomers(q);
+  if (hits.length > 0) return hits;
+  // Nothing for the whole text (say "Rob, rob@example.com"): try each word on its own.
+  const words = [...new Set(q.split(/[\s,;]+/).filter((w) => w.length >= 2))];
+  if (words.length < 2) return hits;
+  const found = new Map<string, (typeof hits)[number]>();
+  for (const list of await Promise.all(words.map((w) => api.searchCustomers(w)))) {
+    for (const h of list) found.set(h.customerId, h);
+  }
+  return [...found.values()].slice(0, 20);
 }
 
 export async function customerChildrenAction(id: string) {
