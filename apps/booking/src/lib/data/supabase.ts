@@ -14,6 +14,9 @@ type TimetableRow = {
   capacity: number | null;
   places_left: number | null;
   is_full: boolean;
+  type_name: string;
+  type_colour: string;
+  type_picture_url: string | null;
 };
 
 const toEntry = (r: TimetableRow): TimetableEntry => ({
@@ -28,6 +31,9 @@ const toEntry = (r: TimetableRow): TimetableEntry => ({
   capacity: r.capacity,
   placesLeft: r.places_left,
   isFull: r.is_full,
+  typeName: r.type_name,
+  colour: r.type_colour,
+  pictureUrl: r.type_picture_url,
 });
 
 function intervalDays(interval: string): number {
@@ -90,7 +96,7 @@ export const supabaseData: DataSource = {
     if (!row) return null;
     const { data: type } = await supabase
       .from("session_types")
-      .select("description, description_vi, suits, suits_vi, bring, bring_vi, colour, picture_url")
+      .select("description, description_vi, suits, suits_vi, bring, bring_vi")
       .eq("id", s.session_type_id)
       .single();
     return {
@@ -98,8 +104,6 @@ export const supabaseData: DataSource = {
       description: (locale === "vi" ? type?.description_vi : null) ?? type?.description ?? null,
       suits: (locale === "vi" ? type?.suits_vi : null) ?? type?.suits ?? null,
       bring: (locale === "vi" ? type?.bring_vi : null) ?? type?.bring ?? null,
-      colour: type?.colour ?? "#C3BF94",
-      pictureUrl: type?.picture_url ?? null,
     };
   },
 };

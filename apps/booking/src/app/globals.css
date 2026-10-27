@@ -93,6 +93,11 @@ a { color: var(--forrest-deep); }
 .session-card { background: #fff; border-radius: 20px; padding: 10px; display: flex; gap: 12px; align-items: center; box-shadow: 0 1px 0 var(--sky); color: var(--ink); text-decoration: none; }
 .session-pic { width: 60px; height: 60px; border-radius: 16px; flex: none; display: flex; align-items: center; justify-content: center; }
 .session-pic img { width: 40px; height: 40px; opacity: .8; }
+/* Change list #5: the class type's own badge fills the picture square. */
+.session-pic.has-badge img { width: 60px; height: 60px; opacity: 1; }
+.mini-badge { width: 12px; height: 12px; display: inline-block; vertical-align: -2px; flex: none; }
+.week-block .mini-badge { width: 11px; height: 11px; margin-right: 2px; vertical-align: -1px; }
+.legend .mini-badge { width: 14px; height: 14px; }
 .session-info { flex: 1; min-width: 0; }
 .session-title { font-weight: 600; font-size: 15.5px; }
 .session-meta { font-size: 13.5px; color: var(--muted); }
@@ -133,10 +138,11 @@ a { color: var(--forrest-deep); }
 .week-block.booked { box-shadow: inset 0 0 0 2px var(--forrest-deep); }
 .month-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; background: #fff; border-radius: 20px; padding: 10px 8px; box-shadow: 0 1px 0 var(--sky); }
 .month-dow { text-align: center; font-size: 11.5px; color: var(--muted); padding-bottom: 4px; }
-.month-cell { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; height: 40px; border-radius: 12px; text-decoration: none; color: var(--ink); font: 500 14px var(--font-heading), sans-serif; }
+.month-cell { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; height: 46px; border-radius: 12px; text-decoration: none; color: var(--ink); font: 500 14px var(--font-heading), sans-serif; }
 .month-cell.selected { background: var(--forrest-deep); color: var(--linen); }
+.month-cell.selected .mini-badge { filter: drop-shadow(0 0 1px var(--linen)) drop-shadow(0 0 1px var(--linen)); }
 .month-cell.later { color: #9c987e; }
-.dots { display: flex; gap: 3px; height: 6px; }
+.dots { display: flex; gap: 3px; height: 12px; align-items: center; }
 .dot { width: 6px; height: 6px; border-radius: 3px; display: inline-block; }
 .dot-class { background: var(--forrest); }
 .dot-open_play { background: var(--coral-deep); }
@@ -148,6 +154,9 @@ a { color: var(--forrest-deep); }
 .session-hero .topbar { position: relative; z-index: 1; padding-top: 8px; }
 .session-hero .back-button, .session-hero .lang-button, .session-hero .icon-button { background: var(--linen); }
 .session-hero-pic { position: absolute; right: 30px; top: 70px; width: 120px; height: 120px; }
+.session-hero.has-badge { background: var(--sky); }
+.session-hero.has-badge::before { display: none; }
+.session-hero.has-badge .session-hero-pic { width: 140px; height: 140px; top: 62px; }
 .details { margin: 4px 0 0; padding: 4px 16px; }
 .details-row { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #efe9d6; font-size: 15px; }
 .details-row:last-child { border-bottom: 0; }

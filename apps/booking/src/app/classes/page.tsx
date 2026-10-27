@@ -71,7 +71,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
         />
         <MonthGrid start={start} sessions={sessions} today={today} lastBookable={lastBookable} selected={selected}
           dayHref={(d) => href({ view: "month", date: start === monthStart(today) ? undefined : start, day: d })} locale={locale} />
-        <Legend kind="month" />
+        <Legend kind="month" types={typesOf(sessions)} />
         <h2 className="day-label">{formatDayLong(selected, locale)}</h2>
         {sessions.filter((s) => vnDateKey(s.startsAt) === selected).map((s) => <SessionCard key={s.id} s={s} bookingId={booked.get(s.id)} />)}
         {selected > lastBookable && <p className="empty">{t("opensLater")}</p>}
@@ -156,13 +156,40 @@ function Stepper({ label, prev, next, prevLabel, nextLabel }: { label: string; p
   );
 }
 
-async function Legend({ kind }: { kind: "week" | "month" }) {
+type TypeLook = { id: string; name: string; kind: TimetableEntry["kind"]; pictureUrl: string | null };
+
+/** The class types in a list of sessions, once each, in timetable order. */
+function typesOf(sessions: TimetableEntry[]): TypeLook[] {
+  const seen = new Map<string, TypeLook>();
+  for (const s of sessions) {
+    if (!seen.has(s.sessionTypeId)) seen.set(s.sessionTypeId, { id: s.sessionTypeId, name: s.typeName, kind: s.kind, pictureUrl: s.pictureUrl });
+  }
+  return [...seen.values()];
+}
+
+/** A class type's badge (change list #5), or the old coloured dot for a type without one. */
+function TypeMark({ type }: { type: TypeLook }) {
+  return type.pictureUrl
+    // eslint-disable-next-line @next/next/no-img-element
+    ? <img className="mini-badge" src={type.pictureUrl} alt="" />
+    : <span className={`dot dot-${type.kind}`} />;
+}
+
+async function Legend({ kind, types = [] }: { kind: "week" | "month"; types?: TypeLook[] }) {
   const t = await getTranslations("timetable.legend");
+  if (kind === "month") {
+    return (
+      <div className="legend">
+        {types.filter((x) => x.kind !== "private_hire").map((x) => <span key={x.id}><TypeMark type={x} />{x.name}</span>)}
+        <span className="muted">{t("greyLater")}</span>
+      </div>
+    );
+  }
   return (
     <div className="legend">
-      <span><span className={kind === "week" ? "swatch kind-class" : "dot dot-class"} />{t("class")}</span>
-      <span><span className={kind === "week" ? "swatch kind-open_play" : "dot dot-open_play"} />{t("openPlay")}</span>
-      {kind === "week" ? <span><span className="swatch swatch-full" />{t("full")}</span> : <span className="muted">{t("greyLater")}</span>}
+      <span><span className="swatch kind-class" />{t("class")}</span>
+      <span><span className="swatch kind-open_play" />{t("openPlay")}</span>
+      <span><span className="swatch swatch-full" />{t("full")}</span>
     </div>
   );
 }
@@ -210,7 +237,11 @@ async function WeekGrid({ monday, today, sessions, booked, locale }: {
               <div key={s.id} className="week-block swatch-full" style={style} aria-label={label}><b>{s.title}</b>{time}</div>
             ) : (
               <Link key={s.id} className={`week-block kind-${s.kind}${isBooked ? " booked" : ""}`} style={style} href={`/classes/${s.id}`} aria-label={label}>
-                <b>{isBooked && "✓ "}{s.title}</b>{time}
+                <b>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  {s.pictureUrl && <img className="mini-badge" src={s.pictureUrl} alt="" />}
+                  {isBooked && "✓ "}{s.title}
+                </b>{time}
               </Link>
             );
           })}
@@ -234,7 +265,7 @@ async function MonthGrid({ start, sessions, today, lastBookable, selected, dayHr
       {Array.from({ length: lead }, (_, i) => <span key={`b${i}`} aria-hidden="true" />)}
       {Array.from({ length: daysInMonth }, (_, i) => {
         const d = addDays(start, i);
-        const kinds = new Set(sessions.filter((s) => vnDateKey(s.startsAt) === d).map((s) => s.kind));
+        const types = typesOf(sessions.filter((s) => vnDateKey(s.startsAt) === d)).filter((x) => x.kind !== "private_hire");
         const later = d > lastBookable;
         const past = d < today;
         const cls = `month-cell${d === selected ? " selected" : ""}${later || past ? " later" : ""}`;
@@ -243,7 +274,7 @@ async function MonthGrid({ start, sessions, today, lastBookable, selected, dayHr
           <Link key={d} className={cls} href={dayHref(d)} aria-label={aria} aria-current={d === selected ? "date" : undefined}>
             <span>{i + 1}</span>
             <span className="dots">
-              {!later && !past && [...kinds].filter((k) => k === "class" || k === "open_play").map((k) => <span key={k} className={`dot dot-${k}`} />)}
+              {!later && !past && types.slice(0, 3).map((x) => <TypeMark key={x.id} type={x} />)}
             </span>
           </Link>
         );

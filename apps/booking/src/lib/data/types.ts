@@ -28,14 +28,15 @@ export interface TimetableEntry {
   capacity: number | null;
   placesLeft: number | null; // null for open play (customers only see "Full")
   isFull: boolean;
+  typeName: string;
+  colour: string;
+  pictureUrl: string | null; // the class type's badge (change list #5)
 }
 
 export interface SessionDetail extends TimetableEntry {
   description: string | null;
   suits: string | null;
   bring: string | null;
-  colour: string;
-  pictureUrl: string | null;
 }
 
 export interface DataSource {

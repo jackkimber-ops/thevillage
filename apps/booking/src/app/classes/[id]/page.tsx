@@ -29,7 +29,7 @@ export default async function SessionPage({ params }: PageProps<"/classes/[id]">
 
   return (
     <div className="page">
-      <div className={`session-hero kind-${s.kind}`}>
+      <div className={`session-hero ${s.pictureUrl ? "has-badge" : `kind-${s.kind}`}`}>
         <TopBar back="/classes" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="session-hero-pic" src={s.pictureUrl ?? "/brand/icon-house-linen-badge.png"} alt="" />
