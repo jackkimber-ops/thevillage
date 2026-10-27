@@ -110,8 +110,12 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                 .map(([label, href], i) => <span key={label}>{i > 0 && " · "}<a href={href}>{label}</a></span>)}
             </p>
           </div>
-          {/* Map picture placeholder; the Google Maps button above is the way in. */}
-          <div className="map" aria-hidden="true"><span>{t("map")}</span></div>
+          {/* Change list #7: a picture of the map (owners' Google Maps screenshot); tapping opens Google Maps. */}
+          <a className="map" href={s.mapsUrl ?? undefined} target="_blank" rel="noopener noreferrer" aria-label={t("mapAlt")}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/map-the-village.jpg" alt="" width={960} height={400} />
+            <span className="map-credit">Map data © Google</span>
+          </a>
         </section>
       </main>
 
