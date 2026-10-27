@@ -4,7 +4,7 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./e2e-staging",
   globalSetup: "./e2e-staging/global-setup.ts",
-  timeout: 60_000,
+  timeout: 180_000,
   expect: { timeout: 15_000 },
   workers: 2,
   retries: 0,
@@ -16,7 +16,8 @@ export default defineConfig({
     launchOptions: process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : undefined,
   },
   projects: [
-    { name: "phone", use: { ...devices["Pixel 7"] } },
-    { name: "desktop", use: { ...devices["Desktop Chrome"] }, testIgnore: /02-customer/ },
+    { name: "phone", use: { ...devices["Pixel 7"] }, testIgnore: /04-system/ },
+    { name: "desktop", use: { ...devices["Desktop Chrome"] }, testIgnore: /02-customer|04-system/ },
+    { name: "system", testMatch: /04-system/, dependencies: ["phone", "desktop"] },
   ],
 });

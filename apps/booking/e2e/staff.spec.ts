@@ -105,6 +105,7 @@ test("add a customer, sell a pack, book them in and check them in", async ({ pag
   await expect(page.getByText("Customer added.")).toBeVisible();
 
   await page.getByText("Sell a pack").click();
+  await page.getByLabel("Pack", { exact: true }).selectOption({ index: 1 });
   await page.getByRole("button", { name: "Sell and record payment" }).click();
   await expect(page.getByText("Pack sold and payment recorded.")).toBeVisible();
   const packs = page.locator("section", { has: page.getByRole("heading", { name: "packs" }) });
@@ -149,6 +150,7 @@ test("managers extend a customer's pack", async ({ page }) => {
   await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
   await page.getByRole("button", { name: "Save customer" }).click();
   await page.getByText("Sell a pack").click();
+  await page.getByLabel("Pack", { exact: true }).selectOption({ index: 1 });
   await page.getByRole("button", { name: "Sell and record payment" }).click();
   const row = page.locator("section", { has: page.getByRole("heading", { name: "packs" }) }).locator(".list-row", { hasText: "10-class pack" });
   const before = await row.locator(".muted.small").first().textContent();

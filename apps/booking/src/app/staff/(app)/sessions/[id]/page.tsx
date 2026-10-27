@@ -19,7 +19,7 @@ export default async function SessionPage({ params, searchParams }: PageProps<"/
   const roster = await api.roster(id);
   const canEdit = me.role === "manager" || s.instructorId === me.userId;
   const active = roster.filter((r) => ["booked", "attended", "no_show"].includes(r.status));
-  const ok = sp.created ? `Created ${sp.created} session${sp.created === "1" ? "" : "s"}.` : sp.saved ? "Saved." : null;
+  const ok = sp.created ? `Created ${sp.created} session${sp.created === "1" ? "" : "s"}.` : sp.saved ? "Saved." : sp.booked ? "Booked in." : null;
 
   return (
     <>

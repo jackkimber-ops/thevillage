@@ -15,7 +15,8 @@ export function SellPackForm({ customerId, packs, today }: { customerId: string;
       <input type="hidden" name="customerId" value={customerId} />
       <div className="field">
         <label htmlFor="pack">Pack</label>
-        <select id="pack" name="packTypeId" required>
+        <select id="pack" name="packTypeId" required defaultValue="">
+          <option value="" disabled>Choose a pack…</option>
           {onSale.map((p) => (
             <option key={p.id} value={p.id}>
               {p.name} · {formatVnd(p.priceVnd, "en")} · {p.validityMonths ? `${p.validityMonths} months` : `${p.validityDays} days`}

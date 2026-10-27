@@ -125,3 +125,12 @@ export async function pageIsHealthy(page: Page) {
   expect(overflow, "page scrolls sideways").toBeLessThanOrEqual(1);
   await expect(page.getByText(/Application error|Internal Server Error|This page could not be found/)).toHaveCount(0);
 }
+
+/** Staff "Sell a pack": choose the 10-class pack and record the payment. */
+export async function sellTenPack(page: Page) {
+  await page.getByText("Sell a pack").click();
+  const value = await page.getByLabel("Pack", { exact: true }).locator("option", { hasText: "10-class pack" }).getAttribute("value");
+  await page.getByLabel("Pack", { exact: true }).selectOption(value!);
+  await page.getByRole("button", { name: "Sell and record payment" }).click();
+  await expect(page.getByText("Pack sold and payment recorded.")).toBeVisible();
+}

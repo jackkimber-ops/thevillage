@@ -1,5 +1,5 @@
 import type { Browser, Page } from "@playwright/test";
-import { customerLogin, expect, test, fillDetails, pageIsHealthy, qaEmail, qaPhone, qaSession, shot, sql, staffLogin, uid, vnDate } from "./helpers";
+import { customerLogin, expect, test, fillDetails, pageIsHealthy, qaEmail, qaPhone, qaSession, shot, sql, staffLogin, uid, vnDate, sellTenPack } from "./helpers";
 
 // Customer journeys on a phone (the desktop project skips this file), against the real staging database.
 test.describe.configure({ mode: "serial" });
@@ -173,11 +173,10 @@ async function sellPack(browser: Browser, customerName: string) {
   const staff = await (await browser.newContext()).newPage();
   await staffLogin(staff);
   await staff.goto("/staff/customers");
-  await staff.getByRole("searchbox").or(staff.getByLabel(/Search|name, phone or email/i)).first().fill(customerName);
+  await staff.getByLabel("Name, phone or email").fill(customerName);
+  await staff.getByLabel("Name, phone or email").press("Enter");
   await staff.getByRole("link", { name: customerName }).first().click();
-  await staff.getByText("Sell a pack").click();
-  await staff.getByRole("button", { name: "Sell and record payment" }).click();
-  await expect(staff.getByText("Pack sold and payment recorded.")).toBeVisible();
+  await sellTenPack(staff);
   await staff.close();
 }
 

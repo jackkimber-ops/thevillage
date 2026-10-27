@@ -1,5 +1,5 @@
 import type { Page, TestInfo } from "@playwright/test";
-import { expect, pageIsHealthy, qaEmail, qaPhone, qaSession, QA_INSTRUCTOR, shot, sql, staffLogin, test, uid, vnDate } from "./helpers";
+import { expect, pageIsHealthy, qaEmail, qaPhone, qaSession, QA_INSTRUCTOR, shot, sql, staffLogin, test, uid, vnDate, sellTenPack } from "./helpers";
 
 // The staff app as a manager and as an instructor, on a phone and a computer, against staging.
 test.describe.configure({ mode: "serial" });
@@ -113,9 +113,7 @@ test("manager: add a customer with a child, find them by local phone, sell a pac
   await expect(page.getByRole("link", { name })).toBeVisible();
 
   await page.goto(`/staff/customers/${id}`);
-  await page.getByText("Sell a pack").click();
-  await page.getByRole("button", { name: "Sell and record payment" }).click();
-  await expect(page.getByText("Pack sold and payment recorded.")).toBeVisible();
+  await sellTenPack(page);
 
   const session = qaSession({ title: `QA Book In ${uid()}`, start: `${vnDate(dayOffset(info) + 1)} 07:00` });
   await bookIn(page, session, name);
@@ -135,9 +133,7 @@ test("manager: unpaid drop-in is paid at check-in; a no-show credit can be resto
   await addCustomer(page, { name: payer, phone: qaPhone() });
   const regular = `QA Regular ${uid()}`;
   await addCustomer(page, { name: regular, phone: qaPhone() });
-  await page.getByText("Sell a pack").click();
-  await page.getByRole("button", { name: "Sell and record payment" }).click();
-  await expect(page.getByText("Pack sold and payment recorded.")).toBeVisible();
+  await sellTenPack(page);
 
   const session = qaSession({ title: `QA Pay ${uid()}`, start: `${vnDate(dayOffset(info) + 1)} 08:00` });
   await bookIn(page, session, payer);
@@ -170,8 +166,7 @@ test("manager: free trial, extend a pack, catalog shows prices", async ({ page }
   expect(b.free_trial).toBe(true);
 
   await page.goto(`/staff/customers/${id}`);
-  await page.getByText("Sell a pack").click();
-  await page.getByRole("button", { name: "Sell and record payment" }).click();
+  await sellTenPack(page);
   const row = page.locator("section", { has: page.getByRole("heading", { name: "packs" }) }).locator(".list-row").first();
   await row.getByText("Extend", { exact: true }).click();
   await row.getByLabel("Reason for extending").fill("QA check");
@@ -188,8 +183,7 @@ test("manager: moving or cancelling a session with bookings emails everyone and 
   await staffLogin(page);
   const name = `QA Cancelled ${uid()}`;
   await addCustomer(page, { name, phone: qaPhone(), email: qaEmail("cancelled") });
-  await page.getByText("Sell a pack").click();
-  await page.getByRole("button", { name: "Sell and record payment" }).click();
+  await sellTenPack(page);
   const session = qaSession({ title: `QA To Cancel ${uid()}`, start: `${vnDate(dayOffset(info) + 2)} 07:00` });
   await bookIn(page, session, name);
 

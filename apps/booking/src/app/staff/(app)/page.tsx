@@ -42,7 +42,7 @@ export default async function Dashboard({ searchParams }: PageProps<"/staff">) {
           {me.role === "manager" && <Link className="sbtn2" href="/staff/customers?sell=1">Sell a pack</Link>}
         </div>
       </div>
-      <Notice error={sp.error} ok={sp.managers_only ? "That page is for managers only." : null} />
+      <Notice error={sp.error} ok={sp.managers_only ? "That page is for managers only." : sp.booked ? "Booked in." : null} />
       <div className="grid-2">
         <section className="card" style={{ flex: "3 1 420px", display: "flex", flexDirection: "column", gap: 12, boxShadow: "inset 0 0 0 2px var(--rose)" }}>
           <div className="staff-head">
