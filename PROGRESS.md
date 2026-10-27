@@ -11,6 +11,41 @@
 - 21 Oct: **visual style v1**: a style sheet plus 5 key screens in the brand (login, timetable, confirm a class, staff dashboard, website top), as a new row at the bottom of the preview canvas.
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
+## Update (27 Oct, evening): first team test, full check, missing features
+
+All merged to `main` and live; staging matches `main`.
+
+- **Team test on staging** (Phuong, Caroline, Rob). Staff now on staging **and** production as managers: Phuong, Caroline, **Rob** (vanalphenrob@gmail.com), **Jack** (jack.kimber@gmail.com). Test logins on staging only: `delivered+qa-manager@resend.dev`, `delivered+qa-instructor@resend.dev`.
+- **First fixes** (#24): clearer "Book someone in", iPhone dragging, "My bookings/packs" filtered to the customer (staff who also book saw everyone's). Vercel Toolbar switched off on the booking project.
+- **Full check on staging** (#25): a repeatable check, `apps/booking/e2e-staging` (`npm run check:staging`, see its README; keys from the environment, never the repo), 71 checks against the real staging site, database, emails and jobs, phone and computer. It found and fixed:
+  - forms that wiped what was typed on any error
+  - guests not linked to their bookings when they later log in
+  - staff one-tap login link going to the customer page
+  - local phone format (0772…) not found in search
+  - instructors adding a customer landing on "page not found"
+  - "Book someone in" dropping staff on the dashboard
+  - "Book" shown less than 1 hour before a session (now "Closed", change #10)
+  - Intro pack pre-selected when selling (change #11)
+  - "0/null children" on the staff calendar
+- **Missing opening-day requirements built** (#26, change #12): cancellation email (C8); welcome email for customers added by staff and staff editing customers, plus managers deactivating them (S22); children on profiles (S21); studio alert email for a new customer's first booking or an unpaid drop-in (S25), sent to `studio_settings.alert_email` (empty in production, so it goes to the contact email; set to Resend's test inbox on staging); private hire payments (S14).
+- **Team feedback** (#27, change #13):
+  - dragged sessions stay visible
+  - a child must have a birth month
+  - full customer list with credits left, plus total credits and extension history on profiles
+  - check-in shows "Cancel booking" before the cutoff
+  - no past sessions
+  - Back keeps the week
+- **"Group class" type switched off** on staging and production (`supabase/data/20261027-group-class-off.sql`).
+- **Migrations applied to staging and production:**
+  - `20261027000002` (local phone search)
+  - `…03` (link guest at login)
+  - `…04` (instructors see customers they add)
+  - `…05` (opening-day gaps)
+  - `…06` (customer list)
+- **Staging-only Vercel variable** `QA_BYPASS_TOKEN` (branch `staging`) lets the check past BotID; never in production.
+- **Running the check:** it creates "QA …" data on staging and removes it before and after each run. Warn testers, or run it when they aren't testing (a "QA" session deleted while open shows "page not found").
+- **Security note for the owners:** the WhatsApp group's pinned message shows the Gmail/Instagram password.
+
 ## Handover (27 Oct, end of day): start here in a new session
 
 **Where things stand:** everything below is merged to `main` and live (production serves `main`). The build is ahead of the plan; what's left is owner content, the minimum sign-ups feature, and final go-live checks. Opening day is **14 Nov**; the first sessions are on **16 Nov**.
@@ -43,7 +78,8 @@
 2. Load content as it arrives.
 3. Final check on production (booking, cancellation, pack sale, check-in, every email, with test accounts, then clean up) and a go-live checklist.
 4. DMARC to `p=quarantine` at Namecheap (owner) once an email sent from hello@ is confirmed to land in the inbox.
-5. Remove the 28 Oct test class and booking from staging.
+5. ~~Remove the 28 Oct test class and booking from staging.~~ Done 27 Oct.
+6. Before each owner/team test round: run `npm run check:staging` and look over its screenshots.
 
 ## Handover (26 Oct, end of day)
 
