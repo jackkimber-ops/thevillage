@@ -19,7 +19,7 @@ type TimetableRow = {
   type_picture_url: string | null;
 };
 
-const toEntry = (r: TimetableRow): TimetableEntry => ({
+const toEntry = (r: TimetableRow, latestBookingMs: number): TimetableEntry => ({
   id: r.session_id,
   sessionTypeId: r.session_type_id,
   kind: r.kind,
@@ -31,6 +31,7 @@ const toEntry = (r: TimetableRow): TimetableEntry => ({
   capacity: r.capacity,
   placesLeft: r.places_left,
   isFull: r.is_full,
+  bookingClosed: new Date(r.starts_at).getTime() - latestBookingMs < Date.now(),
   typeName: r.type_name,
   colour: r.type_colour,
   pictureUrl: r.type_picture_url,
@@ -41,6 +42,19 @@ function intervalDays(interval: string): number {
   const months = /(\d+) mon/.exec(interval);
   const days = /(\d+) day/.exec(interval);
   return (months ? Number(months[1]) * 31 : 0) + (days ? Number(days[1]) : 0) || 31;
+}
+
+/** Postgres interval text such as "01:00:00" or "1 day 02:00:00", in milliseconds. */
+function intervalMs(interval: string): number {
+  const days = /(\d+) day/.exec(interval);
+  const hms = /(\d+):(\d+):(\d+)/.exec(interval);
+  return ((days ? Number(days[1]) * 24 : 0) * 3600 + (hms ? Number(hms[1]) * 3600 + Number(hms[2]) * 60 + Number(hms[3]) : 0)) * 1000;
+}
+
+/** How long before the start online booking closes (studio settings, 1 hour at launch). */
+async function latestBookingMs(supabase: Awaited<ReturnType<typeof createClient>>): Promise<number> {
+  const { data } = await supabase.from("studio_settings").select("latest_booking").single();
+  return data ? intervalMs(String(data.latest_booking)) : 3600_000;
 }
 
 export const supabaseData: DataSource = {
@@ -77,9 +91,12 @@ export const supabaseData: DataSource = {
 
   async timetable(from, to) {
     const supabase = await createClient();
-    const { data, error } = await supabase.rpc("timetable", { p_from: from.toISOString(), p_to: to.toISOString() });
+    const [{ data, error }, latest] = await Promise.all([
+      supabase.rpc("timetable", { p_from: from.toISOString(), p_to: to.toISOString() }),
+      latestBookingMs(supabase),
+    ]);
     if (error) throw error;
-    return (data as TimetableRow[]).map(toEntry);
+    return (data as TimetableRow[]).map((r) => toEntry(r, latest));
   },
 
   async session(id, locale): Promise<SessionDetail | null> {
@@ -100,7 +117,7 @@ export const supabaseData: DataSource = {
       .eq("id", s.session_type_id)
       .single();
     return {
-      ...toEntry(row),
+      ...toEntry(row, await latestBookingMs(supabase)),
       description: (locale === "vi" ? type?.description_vi : null) ?? type?.description ?? null,
       suits: (locale === "vi" ? type?.suits_vi : null) ?? type?.suits ?? null,
       bring: (locale === "vi" ? type?.bring_vi : null) ?? type?.bring ?? null,

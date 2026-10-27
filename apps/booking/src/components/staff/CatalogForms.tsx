@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { savePackTypeAction, saveSessionTypeAction } from "@/lib/actions/staff";
 import type { PackType, SessionType } from "@/lib/data/staff-types";
 import { StaffFormError } from "./StaffFormError";
+import { keepValues } from "@/lib/keep-values";
 
 const KINDS = [
   { v: "class", l: "Group class" },
@@ -15,7 +16,7 @@ export function PackTypeForm({ pack, types }: { pack: PackType | null; types: Se
   const [state, action, pending] = useActionState(savePackTypeAction, undefined);
   const unit = pack?.validityDays ? "days" : "months";
   return (
-    <form action={action} className="card" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+    <form onSubmit={keepValues(action)} className="card" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <input type="hidden" name="id" value={pack?.id ?? ""} />
       <div className="form-grid">
         <div className="field"><label>Name<input name="name" defaultValue={pack?.name ?? ""} required /></label></div>
@@ -46,7 +47,7 @@ export function PackTypeForm({ pack, types }: { pack: PackType | null; types: Se
 export function SessionTypeForm({ type }: { type: SessionType | null }) {
   const [state, action, pending] = useActionState(saveSessionTypeAction, undefined);
   return (
-    <form action={action} className="card" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+    <form onSubmit={keepValues(action)} className="card" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <input type="hidden" name="id" value={type?.id ?? ""} />
       <div className="form-grid">
         <div className="field"><label>Name<input name="name" defaultValue={type?.name ?? ""} required /></label></div>

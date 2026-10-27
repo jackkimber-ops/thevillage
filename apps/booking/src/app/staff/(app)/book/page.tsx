@@ -15,7 +15,11 @@ export default async function BookSomeone({ searchParams }: PageProps<"/staff/bo
     .filter((s) => s.kind !== "private_hire" && s.status === "scheduled");
   const customerId = typeof sp.customer === "string" ? sp.customer : null;
   const customer = customerId ? await api.customer(customerId) : null;
-  const back = typeof sp.back === "string" && sp.back.startsWith("/staff") ? sp.back : customer ? `/staff/customers/${customer.customerId}` : "/staff";
+  const sessionId = typeof sp.session === "string" ? sp.session : null;
+  // Back to where they came from: the customer, else that session's check-in list, else the dashboard.
+  const back = typeof sp.back === "string" && sp.back.startsWith("/staff") ? sp.back
+    : customer ? `/staff/customers/${customer.customerId}`
+    : sessionId ? `/staff/sessions/${sessionId}/check-in` : "/staff";
   return (
     <>
       <Link href={back} className="small-link">← Back</Link>

@@ -30,6 +30,12 @@ async function myCustomerId(supabase: Client): Promise<string | null> {
   return data?.id ?? null;
 }
 
+/** A guest who booked with this email sees those bookings as soon as they log in (C15). */
+export async function linkGuestRecord(supabase: Client) {
+  const { error } = await supabase.rpc("link_my_customer");
+  if (error) console.error("Couldn't link the guest's customer record", error.message);
+}
+
 export const supabaseAccount: Account = {
   async user() {
     const supabase = await createClient();
@@ -50,6 +56,7 @@ export const supabaseAccount: Account = {
     const supabase = await createClient();
     const { error } = await supabase.auth.verifyOtp({ email, token: code, type: "email" });
     if (error) throw new ActionError("wrong_code");
+    await linkGuestRecord(supabase);
   },
 
   async signOut() {

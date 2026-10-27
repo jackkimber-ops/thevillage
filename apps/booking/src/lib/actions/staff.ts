@@ -181,7 +181,8 @@ export async function staffBookAction(_: StaffFormState, form: FormData): Promis
   } catch (e) {
     return { error: code(e) };
   }
-  redirect(back(form, `/staff/sessions/${sessionId}/check-in`) + "?booked=1");
+  const to = back(form, `/staff/sessions/${sessionId}/check-in`);
+  redirect(`${to}${to.includes("?") ? "&" : "?"}booked=1`);
 }
 
 export async function sellPackAction(_: StaffFormState, form: FormData): Promise<StaffFormState> {

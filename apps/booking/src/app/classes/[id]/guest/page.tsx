@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { TopBar } from "@/components/TopBar";
 import { GuestForm } from "@/components/forms/GuestForm";
@@ -13,6 +13,7 @@ export default async function GuestPage({ params }: PageProps<"/classes/[id]/gue
   const t = await getTranslations("guest");
   const [s, settings] = await Promise.all([data().session(id, locale), data().settings()]);
   if (!s) notFound();
+  if (s.bookingClosed) redirect(`/classes/${id}`); // explains that booking has closed
   return (
     <div className="page">
       <TopBar back={`/login?next=${encodeURIComponent(`/classes/${id}/book`)}`} />

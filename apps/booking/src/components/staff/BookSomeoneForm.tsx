@@ -5,6 +5,7 @@ import { useActionState, useEffect, useState, useTransition } from "react";
 import { customerChildrenAction, findCustomersAction, staffBookAction } from "@/lib/actions/staff";
 import type { CustomerHit } from "@/lib/data/staff-types";
 import { StaffFormError } from "./StaffFormError";
+import { keepValues } from "@/lib/keep-values";
 
 type SessionOption = { id: string; label: string; kind: string };
 
@@ -45,7 +46,7 @@ export function BookSomeoneForm(p: {
   const newCustomerHref = `/staff/customers/new?next=${encodeURIComponent(`/staff/book?session=${sessionId}&back=${encodeURIComponent(p.back)}`)}`;
 
   return (
-    <form action={action} className="card" style={{ display: "flex", flexDirection: "column", gap: 14, maxWidth: 560 }}>
+    <form onSubmit={keepValues(action)} className="card" style={{ display: "flex", flexDirection: "column", gap: 14, maxWidth: 560 }}>
       <input type="hidden" name="back" value={p.back} />
       <div className="field">
         <label htmlFor="session">Session</label>

@@ -5,16 +5,18 @@ import { sellPackAction } from "@/lib/actions/staff";
 import type { PackType } from "@/lib/data/staff-types";
 import { formatVnd } from "@/lib/money";
 import { StaffFormError } from "./StaffFormError";
+import { keepValues } from "@/lib/keep-values";
 
 export function SellPackForm({ customerId, packs, today }: { customerId: string; packs: PackType[]; today: string }) {
   const [state, action, pending] = useActionState(sellPackAction, undefined);
   const onSale = packs.filter((p) => p.onSale);
   return (
-    <form action={action} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+    <form onSubmit={keepValues(action)} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <input type="hidden" name="customerId" value={customerId} />
       <div className="field">
         <label htmlFor="pack">Pack</label>
-        <select id="pack" name="packTypeId" required>
+        <select id="pack" name="packTypeId" required defaultValue="">
+          <option value="" disabled>Choose a pack…</option>
           {onSale.map((p) => (
             <option key={p.id} value={p.id}>
               {p.name} · {formatVnd(p.priceVnd, "en")} · {p.validityMonths ? `${p.validityMonths} months` : `${p.validityDays} days`}

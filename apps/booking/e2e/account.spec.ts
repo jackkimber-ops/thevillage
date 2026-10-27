@@ -160,4 +160,7 @@ test("book as a guest: one pay-on-the-day booking at a time", async ({ page }) =
   await page.getByLabel("Email").fill(email);
   await page.getByRole("button", { name: "Book, pay on the day" }).click();
   await expect(page.locator(".error-text")).toContainText("You already have a booking to pay on the day");
+  // An error never wipes what was typed.
+  await expect(page.getByLabel("Your name")).toHaveValue("Linh Tran");
+  await expect(page.getByLabel("Email")).toHaveValue(email);
 });

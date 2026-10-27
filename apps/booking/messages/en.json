@@ -84,7 +84,9 @@
     "bookClass": "Book this class",
     "bookOpenPlay": "Book open play",
     "fullMessage": "This session is full.",
-    "questions": "Questions about this class? Message us"
+    "questions": "Questions about this class? Message us",
+    "closed": "Closed",
+    "closedMessage": "Booking has closed for this session (up to 1 hour before). Message us if you'd like to come."
   },
   "menu": {
     "title": "menu",

@@ -28,6 +28,8 @@ export interface TimetableEntry {
   capacity: number | null;
   placesLeft: number | null; // null for open play (customers only see "Full")
   isFull: boolean;
+  /** Too close to the start to book online (the studio's latest-booking setting, 1 hour at launch). */
+  bookingClosed: boolean;
   typeName: string;
   colour: string;
   pictureUrl: string | null; // the class type's badge (change list #5)

@@ -32,10 +32,13 @@ describe("customers", () => {
     inTx(async (db) => {
       const instructor = await db.staff("instructor");
       const c = await db.customer({ name: "Hoa Le", phone: "+84917778888", email: "hoa@example.com" });
-      for (const q of ["hoa", "7778", "hoa@ex"]) {
+      // The local way of writing a Vietnamese number (0917…) finds +84917… too.
+      for (const q of ["hoa", "7778", "hoa@ex", "0917778888", "091 777", "+84 917 778 888"]) {
         const rows = await db.as(instructor, "select customer_id from public.search_customers($1)", [q]);
         expect(rows.map((r) => r.customer_id), q).toContain(c.customerId);
       }
+      const none = await db.as(instructor, "select customer_id from public.search_customers('0017778888')");
+      expect(none.map((r) => r.customer_id)).not.toContain(c.customerId);
       expect(await db.fails(c.user!, "select * from public.search_customers('hoa')")).toBe("staff_only");
     }));
 
@@ -49,6 +52,15 @@ describe("customers", () => {
       expect(k).toEqual({ name: "An", birth_month: "2024-05-01" });
       expect(await db.fails(instructor, "select public.staff_add_customer('X', '+84912340000', null, 'call')")).toBe("phone_exists");
       expect(await db.fails(instructor, "select public.staff_add_customer('X', '+84912349999', 'minh@example.com', 'call')")).toBe("email_exists");
+    }));
+
+  it("an instructor can open a customer they just added, but not other people's", () =>
+    inTx(async (db) => {
+      const instructor = await db.staff("instructor");
+      const other = await db.staff("instructor");
+      const [r] = await db.as(instructor, "select public.staff_add_customer('Thu Ha', '+84912345678', null, 'zalo') as id");
+      expect(await db.as(instructor, "select id from public.customers where id = $1", [r.id])).toHaveLength(1);
+      expect(await db.as(other, "select id from public.customers where id = $1", [r.id])).toHaveLength(0);
     }));
 });
 

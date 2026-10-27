@@ -4,12 +4,13 @@ import { useActionState, useState } from "react";
 import { ContactChoice } from "@/components/forms/ContactChoice";
 import { addCustomerAction } from "@/lib/actions/staff";
 import { StaffFormError } from "./StaffFormError";
+import { keepValues } from "@/lib/keep-values";
 
 export function CustomerForm({ next }: { next: string }) {
   const [state, action, pending] = useActionState(addCustomerAction, undefined);
   const [kids, setKids] = useState(0);
   return (
-    <form action={action} className="card" style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 520 }}>
+    <form onSubmit={keepValues(action)} className="card" style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 520 }}>
       <input type="hidden" name="next" value={next} />
       <div className="field"><label htmlFor="n">Name</label><input id="n" name="fullName" required /></div>
       <div className="field"><label htmlFor="p">Mobile number</label><input id="p" name="phone" type="tel" placeholder="090 123 4567" required /></div>

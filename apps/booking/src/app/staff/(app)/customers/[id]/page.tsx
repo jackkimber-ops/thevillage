@@ -24,7 +24,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
   const back = `/staff/customers/${id}`;
   const upcoming = c.bookings.filter((b) => b.status === "booked" && new Date(b.startsAt) > new Date());
   const history = c.bookings.filter((b) => !upcoming.includes(b)).slice(0, 15);
-  const ok = sp.added ? "Customer added." : sp.sold ? "Pack sold and payment recorded." : sp.extended ? "Pack extended." : null;
+  const ok = sp.added ? "Customer added." : sp.sold ? "Pack sold and payment recorded." : sp.extended ? "Pack extended." : sp.booked ? "Booked in." : null;
   const monthYear = (d: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", month: "short", year: "numeric" }).format(new Date(`${d}T00:00:00Z`));
 
   return (
