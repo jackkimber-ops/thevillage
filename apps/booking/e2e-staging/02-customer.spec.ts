@@ -201,6 +201,7 @@ test("with a pack: unpaid bookings switch to credits, packages page adds up, can
   await page.locator(".booking-row", { hasText: "QA Class" }).getByRole("link", { name: "Cancel" }).click();
   await expect(page.getByText(/Your credit goes back to your 10-class pack/)).toBeVisible();
   await page.getByRole("button", { name: "Yes, cancel it" }).click();
+  await expect(page.getByText("Booking cancelled.")).toBeVisible();
   await page.goto("/packages");
   await expect(page.locator(".big-number").first()).toHaveText("10");
 });

@@ -104,7 +104,7 @@ test("manager: add a customer with a child, find them by local phone, sell a pac
   const name = `QA Walk In ${uid()}`;
   const phone = qaPhone();
   const id = await addCustomer(page, { name, phone, email: qaEmail("walkin"), child: "Bao" });
-  await expect(page.getByText("Bao")).toBeVisible();
+  await expect(page.getByText("Bao", { exact: true })).toBeVisible();
   await shot(page, "staff-customer-profile");
 
   await page.goto("/staff/customers");
@@ -216,7 +216,7 @@ test("manager: edit details and children, deactivate and reactivate, private hir
   await expect(page.getByText("born Mar 2025")).toBeVisible();
   await page.getByRole("button", { name: "Deactivate customer" }).click();
   await expect(page.getByText(/Customer deactivated/)).toBeVisible();
-  const session = qaSession({ title: `QA Deactivated ${uid()}`, start: `${vnDate(dayOffset(info) + 3)} 07:00` });
+  const session = qaSession({ title: `QA Deactivated ${uid()}`, start: `${vnDate(dayOffset(info) + 3)} 16:00` }); // clear of the other device's weekly 07:00 series
   await page.goto(`/staff/book?session=${session}`);
   await page.getByLabel("Customer: name, phone or email").fill(`${name} Le`);
   await expect(page.getByText("No customer found.", { exact: false })).toBeVisible(); // deactivated people aren't offered
