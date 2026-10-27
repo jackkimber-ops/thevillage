@@ -41,7 +41,7 @@ export default async function Home() {
           {/* Change list #7: a picture of the map (owners' Google Maps screenshot); tapping opens Google Maps. */}
           <a className="map-picture" href={settings.mapsUrl ?? undefined} target="_blank" rel="noopener noreferrer" aria-label={t("mapAlt")}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/map-the-village.jpg" alt="" width={960} height={400} />
+            <img src="/brand/map-the-village.jpg" alt="" width={1000} height={475} />
             <span className="map-credit">Map data © Google</span>
           </a>
           <div style={{ padding: "0 4px" }}>
