@@ -267,6 +267,10 @@ a { color: var(--forrest-deep); }
 .grid-2 > * { flex: 1 1 380px; min-width: 0; }
 .list-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #efe9d6; font-size: 14px; flex-wrap: wrap; }
 .list-row:last-child { border-bottom: 0; }
+.extend-pack summary { list-style: none; cursor: pointer; display: inline-flex; }
+.extend-pack summary::-webkit-details-marker { display: none; }
+.extend-pack[open] { flex-basis: 100%; }
+.extend-pack[open] form { margin-top: 8px; align-items: center; }
 .contact-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 18px; background: var(--linen); }
 .sess-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px; text-decoration: none; color: var(--ink); }
 .sess-row strong { width: 50px; flex: none; }

@@ -29,6 +29,8 @@ const MESSAGES: Record<string, string> = {
   choose_session: "Choose a session.",
   choose_customer: "Choose a customer.",
   repeat_too_long: "A repeat can run for up to a year.",
+  must_extend: "The new end date must be later than the pack's current end date.",
+  pack_not_found: "That pack wasn't found.",
 };
 
 export function staffError(code: string): string {
