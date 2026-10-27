@@ -53,6 +53,15 @@ describe("customers", () => {
       expect(await db.fails(instructor, "select public.staff_add_customer('X', '+84912340000', null, 'call')")).toBe("phone_exists");
       expect(await db.fails(instructor, "select public.staff_add_customer('X', '+84912349999', 'minh@example.com', 'call')")).toBe("email_exists");
     }));
+
+  it("an instructor can open a customer they just added, but not other people's", () =>
+    inTx(async (db) => {
+      const instructor = await db.staff("instructor");
+      const other = await db.staff("instructor");
+      const [r] = await db.as(instructor, "select public.staff_add_customer('Thu Ha', '+84912345678', null, 'zalo') as id");
+      expect(await db.as(instructor, "select id from public.customers where id = $1", [r.id])).toHaveLength(1);
+      expect(await db.as(other, "select id from public.customers where id = $1", [r.id])).toHaveLength(0);
+    }));
 });
 
 describe("sessions", () => {
