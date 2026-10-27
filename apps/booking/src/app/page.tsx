@@ -4,15 +4,17 @@ import { SessionCard } from "@/components/SessionCard";
 import { TopBar } from "@/components/TopBar";
 import { PinIcon } from "@/components/Icons";
 import { data } from "@/lib/data";
+import { myBookedSessions } from "@/lib/my-booked";
 
 // C0 Home: the first page before logging in.
 export default async function Home() {
   const t = await getTranslations("home");
   const db = data();
   const now = new Date();
-  const [settings, upcoming] = await Promise.all([
+  const [settings, upcoming, booked] = await Promise.all([
     db.settings(),
     db.timetable(now, new Date(now.getTime() + 14 * 86400000)),
+    myBookedSessions(),
   ]);
   const next = upcoming.filter((s) => new Date(s.startsAt).getTime() > now.getTime() + 3600000).slice(0, 3);
 
@@ -31,7 +33,7 @@ export default async function Home() {
           <h2 className="day-label" style={{ margin: 0 }}>{t("comingUp")}</h2>
           <Link href="/classes" style={{ fontSize: 14, fontWeight: 600 }}>{t("seeAll")}</Link>
         </div>
-        {next.length === 0 ? <p className="empty">{t("nothingSoon")}</p> : next.map((s) => <SessionCard key={s.id} s={s} showDay />)}
+        {next.length === 0 ? <p className="empty">{t("nothingSoon")}</p> : next.map((s) => <SessionCard key={s.id} s={s} showDay bookingId={booked.get(s.id)} />)}
         <p className="muted" style={{ margin: 0, fontSize: 13, textAlign: "center" }}>{t("firstClass")}</p>
 
         <section className="card" style={{ display: "flex", flexDirection: "column", gap: 10, padding: 12 }}>

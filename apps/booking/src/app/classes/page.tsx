@@ -5,6 +5,7 @@ import { SessionCard } from "@/components/SessionCard";
 import { TabBar } from "@/components/TabBar";
 import { TopBar } from "@/components/TopBar";
 import { account, data, type TimetableEntry } from "@/lib/data";
+import { myBookedSessions } from "@/lib/my-booked";
 import {
   addDays, addMonths, formatDayLong, formatMonth, formatRange, formatTime, formatWeekRange, isDateKey, monthStart,
   vnDateKey, vnDayStart, weekStart,
@@ -23,7 +24,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
   const t = await getTranslations("timetable");
   const locale = await getLocale();
   const db = data();
-  const [settings, me] = await Promise.all([db.settings(), account().me()]);
+  const [settings, me, booked] = await Promise.all([db.settings(), account().me(), myBookedSessions()]);
 
   const view: View = ["week", "month"].includes(first(sp.view) ?? "") ? (first(sp.view) as View) : "list";
   const filter: Filter = ["classes", "open-play"].includes(first(sp.filter) ?? "") ? (first(sp.filter) as Filter) : "all";
@@ -72,7 +73,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
           dayHref={(d) => href({ view: "month", date: start === monthStart(today) ? undefined : start, day: d })} locale={locale} />
         <Legend kind="month" />
         <h2 className="day-label">{formatDayLong(selected, locale)}</h2>
-        {sessions.filter((s) => vnDateKey(s.startsAt) === selected).map((s) => <SessionCard key={s.id} s={s} />)}
+        {sessions.filter((s) => vnDateKey(s.startsAt) === selected).map((s) => <SessionCard key={s.id} s={s} bookingId={booked.get(s.id)} />)}
         {selected > lastBookable && <p className="empty">{t("opensLater")}</p>}
         {selected <= lastBookable && !sessions.some((s) => vnDateKey(s.startsAt) === selected) && <p className="empty">{t("nothingThisDay")}</p>}
       </>
@@ -89,7 +90,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
           prevLabel={t("prevWeek")}
           nextLabel={t("nextWeek")}
         />
-        <WeekGrid monday={monday} today={today} sessions={sessions} locale={locale} />
+        <WeekGrid monday={monday} today={today} sessions={sessions} booked={booked} locale={locale} />
         <Legend kind="week" />
       </>
     );
@@ -121,7 +122,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
         {days.map(({ d, items }) => (
           <section key={d} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <h2 className="day-label">{formatDayLong(d, locale)}</h2>
-            {items.map((s) => <SessionCard key={s.id} s={s} />)}
+            {items.map((s) => <SessionCard key={s.id} s={s} bookingId={booked.get(s.id)} />)}
           </section>
         ))}
       </>
@@ -162,7 +163,9 @@ async function Legend({ kind }: { kind: "week" | "month" }) {
   );
 }
 
-async function WeekGrid({ monday, today, sessions, locale }: { monday: string; today: string; sessions: TimetableEntry[]; locale: string }) {
+async function WeekGrid({ monday, today, sessions, booked, locale }: {
+  monday: string; today: string; sessions: TimetableEntry[]; booked: Map<string, string>; locale: string;
+}) {
   const t = await getTranslations("session");
   const PX = 44; // per hour
   const hourOf = (iso: string) => {
@@ -195,13 +198,16 @@ async function WeekGrid({ monday, today, sessions, locale }: { monday: string; t
             const top = (hourOf(s.startsAt) - startHour) * PX + 2;
             const h = (hourOf(s.endsAt) - hourOf(s.startsAt)) * PX - 4;
             const time = formatTime(s.startsAt, locale);
-            const label = `${s.title}, ${time}${s.isFull ? `, ${t("full")}` : ""}`;
+            const isBooked = booked.has(s.id);
+            const label = `${s.title}, ${time}${isBooked ? `, ${t("booked")}` : s.isFull ? `, ${t("full")}` : ""}`;
             const style = { top, height: h };
-            const closed = s.isFull || new Date(s.startsAt) <= new Date();
+            const closed = !isBooked && (s.isFull || new Date(s.startsAt) <= new Date());
             return closed ? (
               <div key={s.id} className="week-block swatch-full" style={style} aria-label={label}><b>{s.title}</b>{time}</div>
             ) : (
-              <Link key={s.id} className={`week-block kind-${s.kind}`} style={style} href={`/classes/${s.id}`} aria-label={label}><b>{s.title}</b>{time}</Link>
+              <Link key={s.id} className={`week-block kind-${s.kind}${isBooked ? " booked" : ""}`} style={style} href={`/classes/${s.id}`} aria-label={label}>
+                <b>{isBooked && "✓ "}{s.title}</b>{time}
+              </Link>
             );
           })}
         </div>

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { TopBar } from "@/components/TopBar";
 import { data } from "@/lib/data";
+import { myBookedSessions } from "@/lib/my-booked";
 import { formatVnd } from "@/lib/money";
 import { formatDayShort, formatTimeRange, minutesBetween, vnDateKey } from "@/lib/time";
 
@@ -11,8 +12,9 @@ export default async function SessionPage({ params }: PageProps<"/classes/[id]">
   const { id } = await params;
   const t = await getTranslations("session");
   const locale = await getLocale();
-  const s = await data().session(id, locale);
+  const [s, booked] = await Promise.all([data().session(id, locale), myBookedSessions()]);
   if (!s) notFound();
+  const bookingId = booked.get(s.id);
 
   const when = `${formatDayShort(vnDateKey(s.startsAt), locale)} · ${formatTimeRange(s.startsAt, s.endsAt, locale)} (${t("minutes", { n: minutesBetween(s.startsAt, s.endsAt) })})`;
   const price = s.priceVnd === null ? null : formatVnd(s.priceVnd, locale);
@@ -42,7 +44,12 @@ export default async function SessionPage({ params }: PageProps<"/classes/[id]">
           ))}
         </dl>
         <div style={{ marginTop: "auto", paddingTop: 10 }}>
-          {s.isFull ? (
+          {bookingId ? (
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <p className="ok-box" role="status">✓ {t("youreBooked")}</p>
+              <Link className="btn" href={`/bookings#booking-${bookingId}`}>{t("seeBooking")}</Link>
+            </div>
+          ) : s.isFull ? (
             <p className="empty">{t("fullMessage")}</p>
           ) : (
             <Link className="btn" href={`/classes/${s.id}/book`}>{s.kind === "open_play" ? t("bookOpenPlay") : t("bookClass")}</Link>

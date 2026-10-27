@@ -98,6 +98,8 @@ a { color: var(--forrest-deep); }
 .session-meta { font-size: 13.5px; color: var(--muted); }
 .session-left { font-size: 13.5px; margin-top: 2px; }
 .full-label { font-size: 14px; font-weight: 600; color: var(--muted); padding: 0 10px; }
+/* Change list #3: already booked. Light cream with dark olive text, so it reads as done, not as an action. */
+.booked-pill { min-height: 40px; min-width: 74px; padding: 0 14px; border-radius: 20px; background: var(--sky); color: var(--forrest-deep); font: 600 15px var(--font-body), sans-serif; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; }
 
 .kind-class { background: var(--sage); }
 .kind-open_play { background: var(--rose); }
@@ -128,6 +130,7 @@ a { color: var(--forrest-deep); }
 .week-hour { position: absolute; right: 2px; font-size: 9.5px; color: var(--muted); }
 .week-block { position: absolute; left: 2px; right: 2px; border-radius: 8px; padding: 3px; font-size: 10px; line-height: 1.2; color: var(--ink); text-decoration: none; overflow: hidden; }
 .week-block b { display: block; font-size: 10.5px; }
+.week-block.booked { box-shadow: inset 0 0 0 2px var(--forrest-deep); }
 .month-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; background: #fff; border-radius: 20px; padding: 10px 8px; box-shadow: 0 1px 0 var(--sky); }
 .month-dow { text-align: center; font-size: 11.5px; color: var(--muted); padding-bottom: 4px; }
 .month-cell { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; height: 40px; border-radius: 12px; text-decoration: none; color: var(--ink); font: 500 14px var(--font-heading), sans-serif; }
@@ -201,7 +204,8 @@ a { color: var(--forrest-deep); }
 .hero-caption { position: absolute; left: 18px; bottom: 14px; z-index: 1; }
 .summary { border-radius: 20px; padding: 10px 14px; }
 .tick { width: 64px; height: 64px; border-radius: 32px; background: var(--sage); display: flex; align-items: center; justify-content: center; font-size: 30px; color: var(--forrest-deep); }
-.booking-row { background: #fff; border-radius: 20px; padding: 10px; display: flex; gap: 12px; align-items: center; box-shadow: 0 1px 0 var(--sky); }
+.booking-row { background: #fff; border-radius: 20px; padding: 10px; display: flex; gap: 12px; align-items: center; box-shadow: 0 1px 0 var(--sky); scroll-margin-top: 80px; }
+.booking-row:target { box-shadow: 0 0 0 2px var(--forrest); }
 .date-box { width: 58px; height: 66px; border-radius: 16px; flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; line-height: 1.15; }
 .date-box strong { font: 500 22px var(--font-heading), sans-serif; }
 .small-link { font-size: 14px; font-weight: 600; padding: 8px 4px; white-space: nowrap; }
