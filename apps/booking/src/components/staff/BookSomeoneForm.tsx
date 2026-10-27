@@ -21,6 +21,7 @@ export function BookSomeoneForm(p: {
   const [customer, setCustomer] = useState(p.customer);
   const [q, setQ] = useState("");
   const [hits, setHits] = useState<CustomerHit[]>([]);
+  const [searched, setSearched] = useState(""); // the text the current hits are for
   const [info, setInfo] = useState<{ children: Array<{ id: string; name: string }>; hadFreeTrial: boolean } | null>(null);
   const [, start] = useTransition();
   const kind = p.sessions.find((s) => s.id === sessionId)?.kind;
@@ -34,8 +35,11 @@ export function BookSomeoneForm(p: {
 
   function search(value: string) {
     setQ(value);
-    if (value.trim().length < 2) { setHits([]); return; }
-    start(async () => setHits(await findCustomersAction(value)));
+    if (value.trim().length < 2) { setHits([]); setSearched(""); return; }
+    start(async () => {
+      setHits(await findCustomersAction(value));
+      setSearched(value);
+    });
   }
 
   const newCustomerHref = `/staff/customers/new?next=${encodeURIComponent(`/staff/book?session=${sessionId}&back=${encodeURIComponent(p.back)}`)}`;
@@ -66,6 +70,10 @@ export function BookSomeoneForm(p: {
               <span>{h.fullName}</span><span className="muted small">{h.phone}</span>
             </button>
           ))}
+          {hits.length > 0 && <p className="muted small" style={{ margin: 0 }}>Tap the customer to choose them.</p>}
+          {hits.length === 0 && searched === q && q.trim().length >= 2 && (
+            <p className="muted small" style={{ margin: 0 }}>No customer found. Try just a name or phone number, or add a new customer.</p>
+          )}
           <Link href={newCustomerHref} className="small-link">+ Add a new customer</Link>
         </div>
       )}
@@ -87,6 +95,11 @@ export function BookSomeoneForm(p: {
       )}
       <StaffFormError code={state?.error} />
       <button className="sbtn" type="submit" disabled={pending || !customer || !sessionId} style={{ alignSelf: "flex-start" }}>Book</button>
+      {(!customer || !sessionId) && (
+        <p className="muted small" style={{ margin: 0 }} role="status">
+          {!sessionId && !customer ? "Choose a session and a customer to book." : !sessionId ? "Choose a session to book." : "Choose a customer from the list to book."}
+        </p>
+      )}
       <p className="muted small" style={{ margin: 0 }}>Uses the customer&apos;s pack if they have one; otherwise it&apos;s pay on the day. They get the confirmation email.</p>
     </form>
   );

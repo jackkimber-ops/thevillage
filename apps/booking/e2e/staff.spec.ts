@@ -175,3 +175,48 @@ test("instructors don't see Extend", async ({ page }) => {
   await page.goto("/staff/customers");
   await expect(page.getByText("Extend", { exact: true })).toHaveCount(0);
 });
+
+test("book someone in: 'name, email' still finds the customer, and the greyed Book says why", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  const name = `Search Me ${uid()}`;
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name").fill(name);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Customer added.")).toBeVisible();
+
+  await page.goto("/staff/book");
+  await expect(page.getByText("Choose a session and a customer to book.")).toBeVisible();
+  await page.getByLabel("Customer: name, phone or email").fill(`nobody${uid()}`);
+  await expect(page.getByText("No customer found.", { exact: false })).toBeVisible();
+  await page.getByLabel("Customer: name, phone or email").fill(`${name}, someone${uid()}@example.com`);
+  await page.getByRole("button", { name }).click();
+  await expect(page.getByText("Choose a session to book.")).toBeVisible();
+});
+
+test.describe("on a phone", () => {
+  test.use({ hasTouch: true, isMobile: true, viewport: { width: 412, height: 839 } });
+
+  test("drag a session with a finger to move it", async ({ page }) => {
+    await staffLogin(page, "manager@village.test");
+    const d = new Date(Date.now() + 10 * 86400000).toISOString().slice(0, 10);
+    await page.goto(`/staff/sessions/new?date=${d}`);
+    const title = `Touch me ${uid()}`;
+    await page.getByLabel("Title").fill(title);
+    await page.getByLabel("Start").fill("07:00");
+    await page.getByLabel("Length (minutes)").fill("30");
+    await page.getByRole("button", { name: "Create" }).click();
+    await page.goto(`/staff/calendar?view=day&date=${d}`);
+    const block = page.locator(".staff-block", { hasText: title });
+    await block.scrollIntoViewIfNeeded();
+    const box = (await block.boundingBox())!;
+    page.once("dialog", (dialog) => dialog.accept());
+    // Real touch events (Playwright's touchscreen can only tap).
+    const cdp = await page.context().newCDPSession(page);
+    const x = box.x + 20, y = box.y + 8;
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y }] });
+    for (let i = 1; i <= 7; i++) await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x, y: y + i * 4 }] });
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await expect(page.locator(".staff-block", { hasText: title })).toContainText("7:30");
+  });
+});
