@@ -27,7 +27,9 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
   const [settings, me, booked] = await Promise.all([db.settings(), account().me(), myBookedSessions()]);
 
   const view: View = ["week", "month"].includes(first(sp.view) ?? "") ? (first(sp.view) as View) : "list";
-  const filter: Filter = ["classes", "open-play"].includes(first(sp.filter) ?? "") ? (first(sp.filter) as Filter) : "all";
+  // The All / Classes / Open play pills are on the List view only, so Week and Month always show everything
+  // (a filter picked in List mustn't silently hide Open Play there).
+  const filter: Filter = view === "list" && ["classes", "open-play"].includes(first(sp.filter) ?? "") ? (first(sp.filter) as Filter) : "all";
   const today = vnDateKey(new Date());
   const lastBookable = addDays(today, settings.bookingWindowDays);
   const requested = first(sp.date);

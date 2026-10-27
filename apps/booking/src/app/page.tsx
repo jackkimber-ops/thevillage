@@ -13,10 +13,12 @@ export default async function Home() {
   const now = new Date();
   const [settings, upcoming, booked] = await Promise.all([
     db.settings(),
-    db.timetable(now, new Date(now.getTime() + 14 * 86400000)),
+    // The whole booking window, so "coming up" still shows something when the next class is weeks away.
+    db.timetable(now, new Date(now.getTime() + 31 * 86400000)),
     myBookedSessions(),
   ]);
-  const next = upcoming.filter((s) => new Date(s.startsAt).getTime() > now.getTime() + 3600000).slice(0, 3);
+  // The next 3 sessions people can still book: more than 1 hour away and not full.
+  const next = upcoming.filter((s) => new Date(s.startsAt).getTime() > now.getTime() + 3600000 && !s.isFull).slice(0, 3);
 
   return (
     <div className="page">
