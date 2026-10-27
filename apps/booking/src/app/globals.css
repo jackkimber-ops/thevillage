@@ -51,7 +51,7 @@ a { color: var(--forrest-deep); }
 .page { max-width: 480px; margin: 0 auto; min-height: 100dvh; display: flex; flex-direction: column; }
 /* Change list #8: on a computer, the phone-width page sits on a brand-colour backdrop instead of floating in cream. */
 @media (min-width: 560px) {
-  body:has(.page) { background: var(--backdrop, var(--sky)); }
+  body:has(.page) { background: var(--sage); }
   .page { background: var(--linen); box-shadow: 0 0 0 1px rgba(94, 91, 59, .06), 0 12px 48px rgba(94, 91, 59, .14); }
 }
 .page-body { flex: 1; padding: 6px 16px 24px; display: flex; flex-direction: column; gap: 12px; }
