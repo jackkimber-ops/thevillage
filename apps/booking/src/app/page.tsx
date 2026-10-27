@@ -2,7 +2,6 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { SessionCard } from "@/components/SessionCard";
 import { TopBar } from "@/components/TopBar";
-import { PinIcon } from "@/components/Icons";
 import { data } from "@/lib/data";
 import { myBookedSessions } from "@/lib/my-booked";
 
@@ -39,7 +38,12 @@ export default async function Home() {
         <p className="muted" style={{ margin: 0, fontSize: 13, textAlign: "center" }}>{t("firstClass")}</p>
 
         <section className="card" style={{ display: "flex", flexDirection: "column", gap: 10, padding: 12 }}>
-          <div className="map-placeholder"><PinIcon /><span>{t("map")}</span></div>
+          {/* Change list #7: a picture of the map (owners' Google Maps screenshot); tapping opens Google Maps. */}
+          <a className="map-picture" href={settings.mapsUrl ?? undefined} target="_blank" rel="noopener noreferrer" aria-label={t("mapAlt")}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/map-the-village.jpg" alt="" width={960} height={400} />
+            <span className="map-credit">Map data © Google</span>
+          </a>
           <div style={{ padding: "0 4px" }}>
             <h2 className="heading" style={{ fontSize: 18 }}>{t("findUs")}</h2>
             <p style={{ margin: "2px 0 0", fontSize: 14, lineHeight: 1.45 }}>
