@@ -1,6 +1,6 @@
 import type { SessionKind, StudioSettings } from "@/lib/data/types";
 
-export type EmailKind = "booking_confirmation" | "reminder" | "session_moved" | "session_cancelled";
+export type EmailKind = "booking_confirmation" | "reminder" | "session_moved" | "session_cancelled" | "booking_cancelled" | "welcome";
 
 /** Everything one customer email needs, read from the database when it is sent. */
 export interface EmailData {
@@ -21,6 +21,8 @@ export interface EmailData {
   cancelCutoff: string;
   oldStartsAt: string | null;
   reason: string | null;
+  late?: boolean; // booking_cancelled: after the free cancellation time
+  creditBack?: boolean; // booking_cancelled: the credit went back to the pack
   appUrl: string; // https://book.thevillagesaigon.com
   settings: StudioSettings;
 }

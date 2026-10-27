@@ -39,6 +39,8 @@ function overlaps(start: Date, end: Date, ignore?: string) {
   return store.sessions.find((s) => s.status !== "cancelled" && s.id !== ignore && new Date(s.startsAt) < end && new Date(s.endsAt) > start);
 }
 
+const demoPayments: Record<string, Array<{ amountVnd: number; method: "qr" | "transfer" | "cash"; note: string | null; recordedAt: string }>> = {};
+
 export const demoStaff: StaffApi = {
   me,
   async instructors() {
@@ -180,7 +182,7 @@ export const demoStaff: StaffApi = {
           || (digits.length >= 3 && (phone.includes(digits) || (vn !== null && phone.startsWith(vn)))));
       })
       .slice(0, 20)
-      .map((c) => ({ customerId: c.id, fullName: c.fullName!, phone: c.phone, email: c.email }));
+      .map((c) => ({ customerId: c.id, fullName: c.fullName!, phone: c.phone, email: c.email, deactivated: Boolean(c.deactivated) }));
   },
   async customer(id) {
     await requireStaff();
@@ -189,7 +191,7 @@ export const demoStaff: StaffApi = {
     const packName = (pid: string | null) => c.packs.find((p) => p.id === pid)?.name ?? null;
     return {
       customerId: c.id, fullName: c.fullName, phone: c.phone, email: c.email, preferredContact: c.preferredContact,
-      needsReview: false, createdAt: c.createdAt, children: c.children,
+      language: c.language ?? "en", deactivated: Boolean(c.deactivated), needsReview: false, createdAt: c.createdAt, children: c.children,
       packs: c.packs.map((p) => ({ id: p.id, name: p.name, credits: p.credits, remaining: p.remaining, validFrom: p.validFrom, lastDay: p.lastDay })),
       bookings: store.bookings.filter((b) => b.customerId === id).map((b) => {
         const s = store.sessions.find((x) => x.id === b.sessionId)!;
@@ -245,6 +247,40 @@ export const demoStaff: StaffApi = {
     await requireManager();
     const b = d.bookingId ? store.bookings.find((x) => x.id === d.bookingId) : undefined;
     if (b) b.paid = true;
+    if (d.sessionId) (demoPayments[d.sessionId] ??= []).push({ amountVnd: d.amountVnd, method: d.method, note: d.note, recordedAt: new Date().toISOString() });
+  },
+  async sessionPayments(sessionId) {
+    await requireManager();
+    return demoPayments[sessionId] ?? [];
+  },
+  async updateCustomer(id, d) {
+    await requireStaff();
+    const c = store.customers.get(id);
+    if (!c) throw new ActionError("customer_not_found");
+    const others = [...store.customers.values()].filter((x) => x.id !== id);
+    if (others.some((x) => x.phone === d.phone)) throw new ActionError("phone_exists");
+    if (d.email && others.some((x) => x.email === d.email)) throw new ActionError("email_exists");
+    Object.assign(c, { fullName: d.fullName, phone: d.phone, email: d.email, preferredContact: d.preferredContact, language: d.language });
+  },
+  async setCustomerActive(id, active) {
+    await requireManager();
+    const c = store.customers.get(id);
+    if (!c) throw new ActionError("customer_not_found");
+    c.deactivated = !active;
+  },
+  async saveChild(customerId, childId, name, birthMonth) {
+    await requireStaff();
+    const c = store.customers.get(customerId);
+    if (!c) throw new ActionError("customer_not_found");
+    const month = `${birthMonth.slice(0, 7)}-01`;
+    const k = childId ? c.children.find((x) => x.id === childId) : undefined;
+    if (childId && !k) throw new ActionError("child_not_found");
+    if (k) Object.assign(k, { name, birthMonth: month });
+    else c.children.push({ id: randomUUID(), name, birthMonth: month });
+  },
+  async removeChild(childId) {
+    await requireStaff();
+    for (const c of store.customers.values()) c.children = c.children.filter((k) => k.id !== childId);
   },
   async savePackType(p) {
     await requireManager();

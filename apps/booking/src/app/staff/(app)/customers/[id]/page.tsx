@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Notice } from "@/components/staff/Notice";
+import { EditCustomerForm } from "@/components/staff/EditCustomerForm";
 import { SellPackForm } from "@/components/staff/SellPackForm";
 import { staffApi } from "@/lib/data";
-import { extendPackAction, restoreCreditAction, staffCancelBookingAction } from "@/lib/actions/staff";
+import { extendPackAction, removeChildAction, restoreCreditAction, saveChildAction, setCustomerActiveAction, staffCancelBookingAction } from "@/lib/actions/staff";
 import { formatVnd } from "@/lib/money";
 import { requireStaff } from "@/lib/staff-guard";
 import { addDays, formatDayShort, formatTime, vnDateKey } from "@/lib/time";
@@ -24,7 +25,8 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
   const back = `/staff/customers/${id}`;
   const upcoming = c.bookings.filter((b) => b.status === "booked" && new Date(b.startsAt) > new Date());
   const history = c.bookings.filter((b) => !upcoming.includes(b)).slice(0, 15);
-  const ok = sp.added ? "Customer added." : sp.sold ? "Pack sold and payment recorded." : sp.extended ? "Pack extended." : sp.booked ? "Booked in." : null;
+  const ok = sp.added ? "Customer added." : sp.sold ? "Pack sold and payment recorded." : sp.extended ? "Pack extended." : sp.booked ? "Booked in." : sp.updated ? "Details saved." : sp.child ? "Child saved." : sp.child_removed ? "Child removed."
+    : sp.deactivated ? "Customer deactivated: they can't be booked in until reactivated." : sp.reactivated ? "Customer reactivated." : null;
   const monthYear = (d: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", month: "short", year: "numeric" }).format(new Date(`${d}T00:00:00Z`));
 
   return (
@@ -32,14 +34,16 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
       <Link href="/staff/customers" className="small-link">← Customers</Link>
       <div className="staff-head">
         <div>
-          <h1 className="heading">{c.fullName}</h1>
+          <h1 className="heading">{c.fullName}{c.deactivated && <span className="tag tag-warn" style={{ marginLeft: 8, verticalAlign: "middle" }}>Deactivated</span>}</h1>
           <div className="muted small">{[c.phone, c.email, `prefers ${CONTACT[c.preferredContact]}`].filter(Boolean).join(" · ")}</div>
           {c.needsReview && <p className="notice notice-error" style={{ marginTop: 8 }}>Check this customer: a guest booking matched them by email, but the phone matches someone else.</p>}
         </div>
-        <div className="staff-actions">
-          <Link className="sbtn" href={`/staff/book?customer=${c.customerId}`}>Book in</Link>
-          {me.role === "manager" && !c.hadFreeTrial && <Link className="sbtn2" href={`/staff/book?customer=${c.customerId}&trial=1`}>Give free trial</Link>}
-        </div>
+        {!c.deactivated && (
+          <div className="staff-actions">
+            <Link className="sbtn" href={`/staff/book?customer=${c.customerId}`}>Book in</Link>
+            {me.role === "manager" && !c.hadFreeTrial && <Link className="sbtn2" href={`/staff/book?customer=${c.customerId}&trial=1`}>Give free trial</Link>}
+          </div>
+        )}
       </div>
       <Notice error={sp.error} ok={ok} />
       <div className="grid-2">
@@ -78,7 +82,54 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
           <section className="card">
             <h2 className="heading sec">children</h2>
             {c.children.length === 0 && <p className="muted" style={{ margin: 0 }}>None added.</p>}
-            {c.children.map((k) => <div key={k.id} className="list-row"><span>{k.name}</span><span className="muted small">born {monthYear(k.birthMonth)}</span></div>)}
+            {c.children.map((k) => (
+              <div key={k.id} className="list-row">
+                <span>{k.name}</span>
+                <span className="muted small">born {monthYear(k.birthMonth)}</span>
+                <details className="extend-pack">
+                  <summary className="sbtn2 sbtn-sm">Change</summary>
+                  <form action={saveChildAction} className="staff-actions">
+                    <input type="hidden" name="customerId" value={c.customerId} />
+                    <input type="hidden" name="childId" value={k.id} />
+                    <input name="name" defaultValue={k.name} required className="small-input" aria-label={`Name of ${k.name}`} />
+                    <input name="birthMonth" type="month" defaultValue={k.birthMonth.slice(0, 7)} required className="small-input" aria-label={`Month and year of birth of ${k.name}`} />
+                    <button className="sbtn sbtn-sm" type="submit">Save</button>
+                  </form>
+                  <form action={removeChildAction} className="staff-actions">
+                    <input type="hidden" name="customerId" value={c.customerId} />
+                    <input type="hidden" name="childId" value={k.id} />
+                    <button className="sbtn2 sbtn-sm" type="submit">Remove {k.name}</button>
+                  </form>
+                </details>
+              </div>
+            ))}
+            {c.children.length < 3 && (
+              <details style={{ marginTop: 12 }}>
+                <summary className="sbtn2" style={{ display: "inline-flex", listStyle: "none" }}>+ Add a child</summary>
+                <form action={saveChildAction} className="staff-actions" style={{ marginTop: 10 }}>
+                  <input type="hidden" name="customerId" value={c.customerId} />
+                  <input name="name" placeholder="Child's name" required className="small-input" aria-label="Child's name" />
+                  <input name="birthMonth" type="month" required className="small-input" aria-label="Month and year of birth" />
+                  <button className="sbtn sbtn-sm" type="submit">Add child</button>
+                </form>
+              </details>
+            )}
+          </section>
+          <section className="card">
+            <details>
+              <summary className="sbtn2" style={{ display: "inline-flex", listStyle: "none" }}>Edit details</summary>
+              <EditCustomerForm c={c} />
+            </details>
+            {me.role === "manager" && (
+              <form action={setCustomerActiveAction} style={{ marginTop: 14 }}>
+                <input type="hidden" name="customerId" value={c.customerId} />
+                <input type="hidden" name="active" value={c.deactivated ? "1" : "0"} />
+                <button className={c.deactivated ? "sbtn" : "sbtn2"} type="submit">{c.deactivated ? "Reactivate customer" : "Deactivate customer"}</button>
+                <p className="muted small" style={{ margin: "6px 0 0" }}>
+                  {c.deactivated ? "They can be booked in again once reactivated." : "Stops new bookings (online and by staff). Their history and packs are kept."}
+                </p>
+              </form>
+            )}
           </section>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>

@@ -167,8 +167,8 @@ export const supabaseStaff: StaffApi = {
   async searchCustomers(q) {
     const { data, error } = await (await createClient()).rpc("search_customers", { p_query: q });
     check(error);
-    return (data as Array<{ customer_id: string; full_name: string; phone: string | null; email: string | null }>).map((r) => ({
-      customerId: r.customer_id, fullName: r.full_name, phone: r.phone, email: r.email,
+    return (data as Array<{ customer_id: string; full_name: string; phone: string | null; email: string | null; deactivated: boolean }>).map((r) => ({
+      customerId: r.customer_id, fullName: r.full_name, phone: r.phone, email: r.email, deactivated: r.deactivated,
     }));
   },
 
@@ -176,7 +176,7 @@ export const supabaseStaff: StaffApi = {
     const supabase = await createClient();
     const { data: c } = await supabase
       .from("customers")
-      .select("id, full_name, phone, email, preferred_contact, needs_review, created_at, customer_children(id, name, birth_month)")
+      .select("id, full_name, phone, email, preferred_contact, language, deactivated_at, needs_review, created_at, customer_children(id, name, birth_month)")
       .eq("id", id)
       .maybeSingle();
     if (!c) return null;
@@ -195,7 +195,7 @@ export const supabaseStaff: StaffApi = {
     const rows = (bookings ?? []) as unknown as B[];
     return {
       customerId: c.id, fullName: c.full_name, phone: c.phone, email: c.email, preferredContact: c.preferred_contact,
-      needsReview: c.needs_review, createdAt: c.created_at,
+      language: c.language, deactivated: c.deactivated_at !== null, needsReview: c.needs_review, createdAt: c.created_at,
       children: (c.customer_children ?? []).map((k: { id: string; name: string; birth_month: string }) => ({ id: k.id, name: k.name, birthMonth: k.birth_month })),
       packs: (packs ?? []).map((p) => {
         const last = new Date(`${p.valid_to}T00:00:00Z`);
@@ -239,8 +239,35 @@ export const supabaseStaff: StaffApi = {
   async recordPayment(d) {
     const { error } = await (await createClient()).rpc("record_payment", {
       p_customer_id: d.customerId, p_amount_vnd: d.amountVnd, p_method: d.method, p_paid_for: d.paidFor,
-      p_booking_id: d.bookingId, p_note: d.note,
+      p_booking_id: d.bookingId, p_session_id: d.sessionId ?? null, p_note: d.note,
     });
+    check(error);
+  },
+  async sessionPayments(sessionId) {
+    const { data, error } = await (await createClient())
+      .from("payments").select("amount_vnd, method, note, recorded_at").eq("session_id", sessionId).order("recorded_at");
+    check(error);
+    return (data ?? []).map((p) => ({ amountVnd: Number(p.amount_vnd), method: p.method, note: p.note, recordedAt: p.recorded_at }));
+  },
+
+  async updateCustomer(id, d) {
+    const { error } = await (await createClient()).rpc("staff_update_customer", {
+      p_customer_id: id, p_full_name: d.fullName, p_phone: d.phone, p_email: d.email, p_preferred_contact: d.preferredContact, p_language: d.language,
+    });
+    check(error);
+  },
+  async setCustomerActive(id, active) {
+    const { error } = await (await createClient()).rpc("set_customer_active", { p_customer_id: id, p_active: active });
+    check(error);
+  },
+  async saveChild(customerId, childId, name, birthMonth) {
+    const { error } = await (await createClient()).rpc("staff_save_child", {
+      p_customer_id: customerId, p_child_id: childId, p_name: name, p_birth_month: birthMonth,
+    });
+    check(error);
+  },
+  async removeChild(childId) {
+    const { error } = await (await createClient()).rpc("staff_remove_child", { p_child_id: childId });
     check(error);
   },
 

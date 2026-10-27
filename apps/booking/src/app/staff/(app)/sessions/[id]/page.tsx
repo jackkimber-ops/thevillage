@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { Notice } from "@/components/staff/Notice";
 import { SessionForm } from "@/components/staff/SessionForm";
 import { staffApi } from "@/lib/data";
-import { cancelSessionAction } from "@/lib/actions/staff";
+import { cancelSessionAction, recordPaymentAction } from "@/lib/actions/staff";
+import { formatVnd } from "@/lib/money";
 import { requireStaff } from "@/lib/staff-guard";
 import { sessionLine } from "@/lib/staff-format";
 import { formatDayLong, formatTime, minutesBetween, vnDateKey } from "@/lib/time";
@@ -19,7 +20,9 @@ export default async function SessionPage({ params, searchParams }: PageProps<"/
   const roster = await api.roster(id);
   const canEdit = me.role === "manager" || s.instructorId === me.userId;
   const active = roster.filter((r) => ["booked", "attended", "no_show"].includes(r.status));
-  const ok = sp.created ? `Created ${sp.created} session${sp.created === "1" ? "" : "s"}.` : sp.saved ? "Saved." : sp.booked ? "Booked in." : null;
+  const ok = sp.created ? `Created ${sp.created} session${sp.created === "1" ? "" : "s"}.` : sp.saved ? "Saved." : sp.booked ? "Booked in." : sp.paid ? "Payment recorded." : null;
+  // S14: private hire is priced and paid in person; managers record what was paid here.
+  const hirePayments = s.kind === "private_hire" && me.role === "manager" ? await api.sessionPayments(id) : null;
 
   return (
     <>
@@ -54,6 +57,26 @@ export default async function SessionPage({ params, searchParams }: PageProps<"/
             <Link className="sbtn" href={`/staff/sessions/${s.id}/check-in`}>Check-in list</Link>
             {s.kind !== "private_hire" && <Link className="sbtn2" href={`/staff/book?session=${s.id}`}>Book someone in</Link>}
           </div>
+          {hirePayments && (
+            <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+              <h2 className="heading sec" style={{ margin: 0 }}>payment</h2>
+              {hirePayments.length === 0 && <p className="muted small" style={{ margin: 0 }}>Nothing recorded yet.</p>}
+              {hirePayments.map((p, i) => (
+                <div key={i} className="list-row"><span>{formatVnd(p.amountVnd, "en")} · {p.method.toUpperCase()}{p.note ? ` · ${p.note}` : ""}</span><span className="muted small">{formatTime(p.recordedAt, "en")}</span></div>
+              ))}
+              <form action={recordPaymentAction} className="staff-actions">
+                <input type="hidden" name="paidFor" value="private_hire" />
+                <input type="hidden" name="sessionId" value={s.id} />
+                <input type="hidden" name="back" value={`/staff/sessions/${s.id}`} />
+                <input name="amount" inputMode="numeric" placeholder="Amount (VND)" required className="small-input" aria-label="Amount paid (VND)" />
+                <select name="method" aria-label="Payment method" className="small-select">
+                  <option value="qr">QR</option><option value="transfer">Transfer</option><option value="cash">Cash</option>
+                </select>
+                <input name="note" placeholder="Note (optional)" className="small-input" aria-label="Payment note" />
+                <button className="sbtn sbtn-sm" type="submit">Record payment</button>
+              </form>
+            </div>
+          )}
           {me.role === "manager" && s.status === "scheduled" && (
             <details style={{ marginTop: 10 }}>
               <summary className="small" style={{ cursor: "pointer", color: "var(--coral-deep)", fontWeight: 600 }}>Cancel session for everyone</summary>

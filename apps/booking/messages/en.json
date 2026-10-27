@@ -289,6 +289,7 @@
     "guest_unpaid_limit": "You already have a booking to pay on the day. Log in to book more dates, or message us.",
     "cutoff_passed": "It's too late to cancel online. Please message us.",
     "booking_not_found": "We couldn't find that booking.",
-    "booking_not_active": "This booking is already cancelled or finished."
+    "booking_not_active": "This booking is already cancelled or finished.",
+    "customer_deactivated": "Your account is paused, so we can't take new bookings. Please message us."
   }
 }

@@ -81,6 +81,8 @@ export type DemoCustomer = {
   fullName: string | null; // null until "your details" are saved
   phone: string | null;
   preferredContact: ContactMethod;
+  language?: "en" | "vi";
+  deactivated?: boolean;
   children: Array<{ id: string; name: string; birthMonth: string }>;
   packs: Array<MyPack & { packTypeId: string }>;
   ledger: Array<{ at: string; kind: string; amount: number; reason: string; packId: string }>;
@@ -181,6 +183,7 @@ export function book(d: {
   if (!s || s.status !== "scheduled") throw new ActionError("session_not_bookable");
   const kind = kindOf(s);
   if (kind === "private_hire") throw new ActionError("session_not_bookable");
+  if (d.customer.deactivated) throw new ActionError("customer_deactivated");
   if (!d.override && new Date(s.startsAt).getTime() - 3600_000 < Date.now()) throw new ActionError("too_late_to_book");
   const children = d.childIds.length + (d.unnamedChildren ?? 0);
   if (children > 2) throw new ActionError("too_many_children");

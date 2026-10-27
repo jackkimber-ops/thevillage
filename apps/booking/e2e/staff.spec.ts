@@ -222,3 +222,56 @@ test.describe("on a phone", () => {
     await expect(page.locator(".staff-block", { hasText: title })).toContainText("7:30");
   });
 });
+
+test("edit a customer's details and children; deactivate stops bookings until reactivated (S21, S22)", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  const name = `Edit Me ${uid()}`;
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name", { exact: true }).fill(name);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Customer added.")).toBeVisible();
+
+  await page.getByText("Edit details").click();
+  await page.getByLabel("Name", { exact: true }).fill(`${name} Le`);
+  await page.getByLabel("Email (their login)").fill(`edit${uid()}@example.com`);
+  await page.getByRole("button", { name: "Save details" }).click();
+  await expect(page.getByText("Details saved.")).toBeVisible();
+  await expect(page.getByRole("heading", { name: `${name} Le` })).toBeVisible();
+
+  await page.getByText("+ Add a child").click();
+  await page.getByLabel("Child's name").fill("Bao");
+  await page.getByLabel("Month and year of birth").fill("2025-03");
+  await page.getByRole("button", { name: "Add child" }).click();
+  await expect(page.getByText("Child saved.")).toBeVisible();
+  await expect(page.getByText("born Mar 2025")).toBeVisible();
+  await page.getByText("Change", { exact: true }).click();
+  await page.getByLabel("Name of Bao").fill("Bảo");
+  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await expect(page.locator(".list-row", { hasText: "Bảo" })).toBeVisible();
+  await page.getByText("Change", { exact: true }).click();
+  await page.getByRole("button", { name: "Remove Bảo" }).click();
+  await expect(page.getByText("Child removed.")).toBeVisible();
+
+  await page.getByRole("button", { name: "Deactivate customer" }).click();
+  await expect(page.getByText(/Customer deactivated/)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Book in" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Reactivate customer" }).click();
+  await expect(page.getByRole("link", { name: "Book in" })).toBeVisible();
+});
+
+test("managers record a private hire payment (S14)", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  const d = new Date(Date.now() + 12 * 86400000).toISOString().slice(0, 10);
+  await page.goto(`/staff/sessions/new?date=${d}`);
+  await page.getByLabel("Session type").selectOption({ label: "Private hire" });
+  await page.getByLabel("Title").fill(`Birthday ${uid()}`);
+  await page.getByLabel("Start").fill("13:00");
+  await page.getByRole("button", { name: "Create" }).click();
+  await expect(page.getByText(/Created 1 session/)).toBeVisible();
+  await page.getByLabel("Amount paid (VND)").fill("1500000");
+  await page.getByLabel("Payment method").selectOption("transfer");
+  await page.getByRole("button", { name: "Record payment" }).click();
+  await expect(page.getByText("Payment recorded.")).toBeVisible();
+  await expect(page.getByText("1,500,000 ₫ · TRANSFER")).toBeVisible();
+});

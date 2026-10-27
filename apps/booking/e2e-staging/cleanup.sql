@@ -11,7 +11,7 @@ create temp table qa_b on commit drop as
 create temp table qa_u on commit drop as
   select id from auth.users
   where email like 'delivered+qa-%@resend.dev' and email not in ('delivered+qa-manager@resend.dev', 'delivered+qa-instructor@resend.dev');
-delete from public.notifications where booking_id in (select id from qa_b);
+delete from public.notifications where booking_id in (select id from qa_b) or customer_id in (select id from qa_c);
 delete from public.payments where booking_id in (select id from qa_b) or customer_id in (select id from qa_c) or session_id in (select id from qa_s);
 delete from public.credit_ledger where booking_id in (select id from qa_b) or customer_id in (select id from qa_c);
 delete from public.bookings where id in (select id from qa_b);

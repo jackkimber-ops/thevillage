@@ -34,7 +34,7 @@ export default async function Customers({ searchParams }: PageProps<"/staff/cust
             <tbody>
               {hits.map((h) => (
                 <tr key={h.customerId}>
-                  <td><Link href={`/staff/customers/${h.customerId}`}>{h.fullName}</Link></td>
+                  <td><Link href={`/staff/customers/${h.customerId}`}>{h.fullName}</Link>{h.deactivated && <span className="tag tag-warn" style={{ marginLeft: 6 }}>Deactivated</span>}</td>
                   <td>{h.phone}</td>
                   <td>{h.email}</td>
                 </tr>

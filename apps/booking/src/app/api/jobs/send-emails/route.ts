@@ -1,6 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
 import { Resend } from "resend";
 import { renderEmail } from "@/emails/render";
+import { renderStaffAlert, staffUrlFor } from "@/emails/StaffAlertEmail";
 import type { EmailData, EmailKind } from "@/emails/types";
 import type { SessionKind, StudioSettings } from "@/lib/data/types";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -15,7 +16,8 @@ function authorised(request: Request) {
 }
 
 type Claimed = {
-  id: number; kind: EmailKind; payload: { old_starts_at?: string; reason?: string }; email: string; language: "en" | "vi";
+  id: number; kind: EmailKind | "staff_alert"; payload: { old_starts_at?: string; reason?: string; late?: boolean; credit_back?: boolean; first?: boolean };
+  email: string | null; language: "en" | "vi"; full_name: string; phone: string | null; preferred_contact: "whatsapp" | "zalo" | "call";
   first_name: string; session_title: string; session_kind: SessionKind; starts_at: string; ends_at: string; child_names: string[];
   parents: number; credits: number; pack_name: string | null; unpaid: boolean; amount_due_vnd: number; free_trial: boolean; cancel_cutoff: string;
 };
@@ -42,17 +44,38 @@ export async function POST(request: Request) {
   let sent = 0;
   let failed = 0;
 
+  // S25 alerts go to the studio (alert address in studio settings, else the contact email).
+  const alertTo = (s.alert_email as string | null) || settings.contactEmail;
+
   for (const n of data as Claimed[]) {
+    if (n.kind === "staff_alert") {
+      try {
+        const email = await renderStaffAlert({
+          first: Boolean(n.payload?.first), fullName: n.full_name, phone: n.phone, preferredContact: n.preferred_contact, email: n.email,
+          title: n.session_title, startsAt: n.starts_at, unpaid: n.unpaid, amountDueVnd: Number(n.amount_due_vnd), credits: n.credits,
+          packName: n.pack_name, staffUrl: staffUrlFor(appUrl),
+        });
+        const res = await resend.emails.send({ from, to: alertTo, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
+        if (res.error) throw new Error(res.error.message);
+        await db.rpc("finish_notification", { p_id: n.id, p_ok: true, p_provider_id: res.data?.id ?? null });
+        sent++;
+      } catch (e) {
+        await db.rpc("finish_notification", { p_id: n.id, p_ok: false, p_error: (e as Error).message });
+        failed++;
+      }
+      continue;
+    }
     const d: EmailData = {
       kind: n.kind, lang: n.language, firstName: n.first_name, title: n.session_title, sessionKind: n.session_kind,
       startsAt: n.starts_at, endsAt: n.ends_at, childNames: n.child_names ?? [], parents: n.parents, credits: n.credits,
       packName: n.pack_name, unpaid: n.unpaid, amountDueVnd: Number(n.amount_due_vnd), freeTrial: n.free_trial,
-      cancelCutoff: n.cancel_cutoff, oldStartsAt: n.payload?.old_starts_at ?? null, reason: n.payload?.reason ?? null, appUrl, settings,
+      cancelCutoff: n.cancel_cutoff, oldStartsAt: n.payload?.old_starts_at ?? null, reason: n.payload?.reason ?? null,
+      late: Boolean(n.payload?.late), creditBack: Boolean(n.payload?.credit_back), appUrl, settings,
     };
     try {
       const email = await renderEmail(d);
       const res = await resend.emails.send(
-        { from, to: n.email, replyTo: settings.contactEmail, subject: email.subject, html: email.html, text: email.text },
+        { from, to: n.email!, replyTo: settings.contactEmail, subject: email.subject, html: email.html, text: email.text },
         { idempotencyKey: `notification-${n.id}` },
       );
       if (res.error) throw new Error(res.error.message);

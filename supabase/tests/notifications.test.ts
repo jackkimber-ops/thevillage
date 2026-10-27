@@ -7,7 +7,7 @@ describe("email outbox", () => {
     inTx(async (db) => {
       const c = await db.customer();
       const id = await db.book(c.user!, await db.session());
-      const rows = await db.su("select kind, status from public.notifications where booking_id = $1", [id]);
+      const rows = await db.su("select kind, status from public.notifications where booking_id = $1 and kind = 'booking_confirmation'", [id]);
       expect(rows).toEqual([{ kind: "booking_confirmation", status: "pending" }]);
     }));
 
@@ -60,7 +60,7 @@ describe("email outbox", () => {
       const kid = await db.child(c.customerId, "Bao");
       const id = await db.book(c.user!, await db.session(), { childIds: [kid] });
       const rows = await db.as("service", "select * from public.claim_notifications(50)");
-      const mine = rows.find((r) => r.booking_id === id);
+      const mine = rows.find((r) => r.booking_id === id && r.kind === "booking_confirmation");
       expect(mine).toMatchObject({ kind: "booking_confirmation", email: c.email, first_name: "Lan", child_names: ["Bao"], credits: 1, pack_name: "10-class pack", unpaid: false });
       // Claimed rows aren't handed out again while sending.
       const again = await db.as("service", "select id from public.claim_notifications(50)");
@@ -78,13 +78,63 @@ describe("email outbox", () => {
       const c = await db.customer();
       const b2 = await db.book(c.user!, await db.session());
       for (let i = 0; i < 5; i++) {
-        const claimed = await db.as("service", "select id, booking_id from public.claim_notifications(50)");
-        const mine = claimed.find((r) => r.booking_id === b2);
+        const claimed = await db.as("service", "select id, booking_id, kind from public.claim_notifications(50)");
+        const mine = claimed.find((r) => r.booking_id === b2 && r.kind === "booking_confirmation");
         if (mine) await db.as("service", "select public.finish_notification($1, false, null, 'timeout')", [mine.id]);
       }
-      const rows = await db.su("select booking_id, status, attempts from public.notifications where booking_id = any($1)", [[b1, b2]]);
+      const rows = await db.su("select booking_id, status, attempts from public.notifications where booking_id = any($1) and kind = 'booking_confirmation'", [[b1, b2]]);
       expect(rows.find((r) => r.booking_id === b1)).toMatchObject({ status: "skipped" });
       expect(rows.find((r) => r.booking_id === b2)).toMatchObject({ status: "failed", attempts: 5 });
+    }));
+
+  it("C8: a cancelled booking gets its own email, saying whether the credit came back", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer();
+      await db.sellPack(manager, c.customerId);
+      const id = await db.book(c.user!, await db.session({ startsIn: "5 days" }));
+      await db.as(c.user!, "select public.cancel_booking($1)", [id]);
+      await db.su("set constraints all immediate"); // what happens at commit
+      const [n] = await db.su("select payload from public.notifications where booking_id = $1 and kind = 'booking_cancelled'", [id]);
+      expect(n.payload).toEqual({ late: false, credit_back: true });
+    }));
+
+  it("C8: cancelling a whole session sends only the 'session cancelled' email", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer();
+      const s = await db.session();
+      const id = await db.book(c.user!, s);
+      await db.as(manager, "select public.cancel_session($1, 'Flooding')", [s]);
+      await db.su("set constraints all immediate"); // what happens at commit
+      const kinds = await db.su("select kind from public.notifications where booking_id = $1 and kind::text like '%cancelled' order by kind", [id]);
+      expect(kinds).toEqual([{ kind: "session_cancelled" }]);
+    }));
+
+  it("S25: the studio hears about a new customer's first booking and unpaid drop-ins, not staff bookings", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer({ name: "Lan Pham" });
+      const first = await db.book(c.user!, await db.session());
+      const second = await db.book(c.user!, await db.session({ startsIn: "4 days" }));
+      const [byStaff] = await db.as(manager, "select public.staff_add_customer('Walk In', '+84911112222', null, 'call') as id");
+      const staffBooking = await db.book(manager, await db.session({ startsIn: "5 days" }), { customerId: byStaff.id });
+      const alerts = await db.su("select booking_id, payload->>'first' as first from public.notifications where kind = 'staff_alert' order by created_at");
+      expect(alerts).toEqual([{ booking_id: first, first: "true" }, { booking_id: second, first: "false" }]);
+      void staffBooking;
+      const claimed = await db.as("service", "select kind, full_name, phone from public.claim_notifications(50) where kind = 'staff_alert'");
+      expect(claimed[0]).toMatchObject({ full_name: "Lan Pham" });
+    }));
+
+  it("S22: a customer added by staff with an email gets a welcome email", () =>
+    inTx(async (db) => {
+      const staffer = await db.staff("instructor");
+      const [withEmail] = await db.as(staffer, "select public.staff_add_customer('Mi Vo', '+84911113333', 'mi@example.com', 'zalo', 'vi') as id");
+      await db.as(staffer, "select public.staff_add_customer('No Mail', '+84911114444', null, 'call')");
+      const rows = await db.su("select customer_id from public.notifications where kind = 'welcome'");
+      expect(rows).toEqual([{ customer_id: withEmail.id }]);
+      const [w] = await db.as("service", "select email, language, first_name, booking_id from public.claim_notifications(50) where kind = 'welcome'");
+      expect(w).toEqual({ email: "mi@example.com", language: "vi", first_name: "Mi", booking_id: null });
     }));
 
   it("isn't readable or callable by customers", () =>

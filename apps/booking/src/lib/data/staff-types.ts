@@ -66,10 +66,12 @@ export interface CustomerHit {
   fullName: string;
   phone: string | null;
   email: string | null;
+  deactivated: boolean;
 }
 
 export interface CustomerProfile extends CustomerHit {
   preferredContact: ContactMethod;
+  language: "en" | "vi";
   needsReview: boolean;
   createdAt: string;
   children: Array<{ id: string; name: string; birthMonth: string }>;
@@ -142,7 +144,15 @@ export interface StaffApi {
   addCustomer(d: { fullName: string; phone: string; email: string | null; preferredContact: ContactMethod; children: Array<{ name: string; birthMonth: string }> }): Promise<string>;
   bookCustomer(d: { sessionId: string; customerId: string; childIds: string[]; unnamedChildren: number; parents: number; freeTrial: boolean; override: boolean }): Promise<string>;
   sellPack(d: { customerId: string; packTypeId: string; method: "qr" | "transfer" | "cash"; validFrom: string | null }): Promise<string>;
-  recordPayment(d: { customerId: string; amountVnd: number; method: "qr" | "transfer" | "cash"; paidFor: "drop_in" | "private_hire" | "workshop" | "other"; bookingId: string | null; note: string | null }): Promise<void>;
+  recordPayment(d: { customerId: string | null; amountVnd: number; method: "qr" | "transfer" | "cash"; paidFor: "drop_in" | "private_hire" | "workshop" | "other"; bookingId: string | null; sessionId?: string | null; note: string | null }): Promise<void>;
+  /** Payments recorded against a session (private hire). Managers only. */
+  sessionPayments(sessionId: string): Promise<Array<{ amountVnd: number; method: "qr" | "transfer" | "cash"; note: string | null; recordedAt: string }>>;
+
+  // S21/S22: change a customer's details and children; managers deactivate (no new bookings) and reactivate.
+  updateCustomer(id: string, d: { fullName: string; phone: string; email: string | null; preferredContact: ContactMethod; language: "en" | "vi" }): Promise<void>;
+  setCustomerActive(id: string, active: boolean): Promise<void>;
+  saveChild(customerId: string, childId: string | null, name: string, birthMonth: string): Promise<void>;
+  removeChild(childId: string): Promise<void>;
 
   savePackType(p: Omit<PackType, "id"> & { id: string | null }): Promise<void>;
   saveSessionType(t: Omit<SessionType, "id"> & { id: string | null }): Promise<void>;

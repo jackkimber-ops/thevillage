@@ -290,6 +290,7 @@
     "guest_unpaid_limit": "Bạn đã có một chỗ trả tại studio. Đăng nhập để đặt thêm ngày, hoặc nhắn cho chúng tôi.",
     "cutoff_passed": "Đã quá hạn huỷ trực tuyến. Vui lòng nhắn cho chúng tôi.",
     "booking_not_found": "Không tìm thấy chỗ đã đặt.",
-    "booking_not_active": "Chỗ này đã huỷ hoặc đã kết thúc."
+    "booking_not_active": "Chỗ này đã huỷ hoặc đã kết thúc.",
+    "customer_deactivated": "Tài khoản của bạn đang tạm dừng nên chưa thể đặt chỗ mới. Hãy nhắn cho chúng tôi."
   }
 }

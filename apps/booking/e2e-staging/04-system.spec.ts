@@ -19,6 +19,14 @@ test("every email the check queued was sent (none failed or stuck)", async () =>
   expect(by.sent ?? 0).toBeGreaterThan(0);
 });
 
+test("the new emails went out: cancellation, welcome, and studio alerts (to the alert address)", () => {
+  const kinds = sql<{ kind: string; status: string }>(`select kind::text, status::text from notifications
+    where created_at > now() - interval '3 hours' and kind in ('booking_cancelled', 'welcome', 'staff_alert') group by 1, 2`);
+  for (const k of ["booking_cancelled", "welcome", "staff_alert"]) {
+    expect(kinds.filter((r) => r.kind === k).map((r) => r.status), k).toContain("sent");
+  }
+});
+
 test("scheduled jobs: attendance every 15 min, emails every minute, reminders at 18:00 Vietnam time", () => {
   const jobs = sql<{ jobname: string; schedule: string; active: boolean }>("select jobname, schedule, active from cron.job order by 1");
   expect(jobs).toEqual([
