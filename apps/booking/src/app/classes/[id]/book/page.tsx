@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { TopBar } from "@/components/TopBar";
 import { BookForm } from "@/components/forms/BookForm";
@@ -17,6 +17,7 @@ export default async function BookPage({ params }: PageProps<"/classes/[id]/book
   const db = data();
   const [s, settings, packs] = await Promise.all([db.session(id, locale), db.settings(), account().myPacks()]);
   if (!s) notFound();
+  if (s.bookingClosed) redirect(`/classes/${id}`); // explains that booking has closed
 
   const cutoff = cancelCutoff(s.startsAt, settings.cancelCutoffTime);
   const day = vnDateKey(s.startsAt);

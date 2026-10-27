@@ -51,6 +51,8 @@ export default async function SessionPage({ params }: PageProps<"/classes/[id]">
             </div>
           ) : s.isFull ? (
             <p className="empty">{t("fullMessage")}</p>
+          ) : s.bookingClosed ? (
+            <p className="empty">{t("closedMessage")}</p>
           ) : (
             <Link className="btn" href={`/classes/${s.id}/book`}>{s.kind === "open_play" ? t("bookOpenPlay") : t("bookClass")}</Link>
           )}

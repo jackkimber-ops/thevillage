@@ -1,8 +1,7 @@
 import type { Browser, Page } from "@playwright/test";
 import { customerLogin, expect, test, fillDetails, pageIsHealthy, qaEmail, qaPhone, qaSession, shot, sql, staffLogin, uid, vnDate } from "./helpers";
 
-// Customer journeys on a phone, against the real staging database.
-test.skip(({ isMobile }) => !isMobile, "customer journeys run on the phone only");
+// Customer journeys on a phone (the desktop project skips this file), against the real staging database.
 test.describe.configure({ mode: "serial" });
 
 const OPEN_PLAY = "00000000-0000-4000-8000-000000000002";
@@ -163,6 +162,11 @@ test("less than an hour before the start, it can't be booked online", async ({ p
   await page.goto(`/classes/${verySoon}`);
   await shot(page, "very-soon");
   await expect(page.getByRole("link", { name: "Book this class" })).toHaveCount(0);
+  await expect(page.getByText(/Booking has closed for this session/)).toBeVisible();
+  await page.goto(`/classes/${verySoon}/book`);
+  await expect(page).toHaveURL(new RegExp(`/classes/${verySoon}$`));
+  await page.goto(`/classes?date=${vnDate(0)}`);
+  await expect(page.locator(".session-card", { hasText: "QA Very Soon" })).toContainText("Closed");
 });
 
 async function sellPack(browser: Browser, customerName: string) {

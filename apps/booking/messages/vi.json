@@ -85,7 +85,9 @@
     "bookClass": "Đặt lớp này",
     "bookOpenPlay": "Đặt giờ chơi",
     "fullMessage": "Buổi này đã hết chỗ.",
-    "questions": "Có câu hỏi về lớp này? Nhắn cho chúng tôi"
+    "questions": "Có câu hỏi về lớp này? Nhắn cho chúng tôi",
+    "closed": "Đã đóng",
+    "closedMessage": "Đã hết thời gian đặt chỗ cho buổi này (đặt trước ít nhất 1 giờ). Nhắn cho chúng tôi nếu bạn muốn tham gia."
   },
   "menu": {
     "title": "menu",

@@ -234,7 +234,7 @@ async function WeekGrid({ monday, today, sessions, booked, locale }: {
             const isBooked = booked.has(s.id);
             const label = `${s.title}, ${time}${isBooked ? `, ${t("booked")}` : s.isFull ? `, ${t("full")}` : ""}`;
             const style = { top, height: h };
-            const closed = !isBooked && (s.isFull || new Date(s.startsAt) <= new Date());
+            const closed = !isBooked && (s.isFull || s.bookingClosed);
             return closed ? (
               <div key={s.id} className="week-block swatch-full" style={style} aria-label={label}><b>{s.title}</b>{time}</div>
             ) : (

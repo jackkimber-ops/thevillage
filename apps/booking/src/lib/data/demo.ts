@@ -25,6 +25,7 @@ function entry(s: DemoSession): TimetableEntry {
     capacity: s.capacity,
     placesLeft: kind === "open_play" || s.capacity === null ? null : Math.max(s.capacity - t, 0),
     isFull: s.capacity !== null && t >= s.capacity,
+    bookingClosed: new Date(s.startsAt).getTime() - 3600_000 < Date.now(),
     typeName: typeOf(s).name,
     ...look,
   };

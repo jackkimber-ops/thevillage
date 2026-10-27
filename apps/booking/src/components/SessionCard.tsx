@@ -42,6 +42,8 @@ export async function SessionCard({ s, showDay = false, bookingId }: { s: Timeta
         </Link>
       ) : s.isFull ? (
         <span className="full-label">{t("full")}</span>
+      ) : s.bookingClosed ? (
+        <span className="full-label">{t("closed")}</span>
       ) : (
         <Link className="btn-small" href={`/classes/${s.id}`} aria-label={`${t("book")}: ${s.title}, ${when}`}>
           {t("book")}

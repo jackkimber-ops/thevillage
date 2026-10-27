@@ -17,7 +17,7 @@ export default async function Home() {
     myBookedSessions(),
   ]);
   // The next 3 sessions people can still book: more than 1 hour away and not full.
-  const next = upcoming.filter((s) => new Date(s.startsAt).getTime() > now.getTime() + 3600000 && !s.isFull).slice(0, 3);
+  const next = upcoming.filter((s) => !s.bookingClosed && !s.isFull).slice(0, 3);
 
   return (
     <div className="page">
