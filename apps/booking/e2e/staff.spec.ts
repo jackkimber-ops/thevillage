@@ -141,3 +141,37 @@ test("managers change prices in the catalog", async ({ page }) => {
   await form.getByRole("button", { name: "Save" }).click();
   await expect(form.getByText("Saved. Price changes apply to new sales only.")).toBeVisible();
 });
+
+test("managers extend a customer's pack", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name").fill(`Extend Me ${uid()}`);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await page.getByText("Sell a pack").click();
+  await page.getByRole("button", { name: "Sell and record payment" }).click();
+  const row = page.locator("section", { has: page.getByRole("heading", { name: "packs" }) }).locator(".list-row", { hasText: "10-class pack" });
+  const before = await row.locator(".muted.small").first().textContent();
+
+  // An end date that isn't later is refused with a plain message.
+  await row.getByText("Extend", { exact: true }).click();
+  await row.getByLabel("New last day").fill("2020-01-01");
+  await row.getByLabel("New last day").evaluate((el) => el.removeAttribute("min"));
+  await row.getByLabel("Reason for extending").fill("Test");
+  await row.getByRole("button", { name: "Extend pack" }).click();
+  await expect(page.getByText("The new end date must be later than the pack's current end date.")).toBeVisible();
+
+  // The suggested date (30 days later) works.
+  const row2 = page.locator("section", { has: page.getByRole("heading", { name: "packs" }) }).locator(".list-row", { hasText: "10-class pack" });
+  await row2.getByText("Extend", { exact: true }).click();
+  await row2.getByLabel("Reason for extending").fill("Away for a month");
+  await row2.getByRole("button", { name: "Extend pack" }).click();
+  await expect(page.getByText("Pack extended.")).toBeVisible();
+  await expect(row2.locator(".muted.small").first()).not.toHaveText(before!);
+});
+
+test("instructors don't see Extend", async ({ page }) => {
+  await staffLogin(page, "instructor@village.test");
+  await page.goto("/staff/customers");
+  await expect(page.getByText("Extend", { exact: true })).toHaveCount(0);
+});

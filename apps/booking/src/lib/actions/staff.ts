@@ -46,6 +46,15 @@ export async function restoreCreditAction(form: FormData) {
   revalidatePath(back(form, "/staff"));
 }
 
+export async function extendPackAction(form: FormData) {
+  try {
+    await staffApi().extendPack(str(form, "packId"), str(form, "newLastDay"), str(form, "reason"));
+  } catch (e) {
+    redirect(`${back(form, "/staff")}?error=${code(e)}`);
+  }
+  redirect(`${back(form, "/staff")}?extended=1`);
+}
+
 export async function recordPaymentAction(form: FormData) {
   try {
     await staffApi().recordPayment({

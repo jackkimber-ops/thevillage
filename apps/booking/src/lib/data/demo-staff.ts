@@ -115,6 +115,14 @@ export const demoStaff: StaffApi = {
     p.remaining += b.credits;
     p.used -= b.credits;
   },
+  async extendPack(id, newLastDay, reason) {
+    await requireManager();
+    if (!reason.trim()) throw new ActionError("reason_required");
+    const p = [...store.customers.values()].flatMap((c) => c.packs).find((x) => x.id === id);
+    if (!p) throw new ActionError("pack_not_found");
+    if (newLastDay <= p.lastDay) throw new ActionError("must_extend");
+    p.lastDay = newLastDay;
+  },
   async createSessions(n) {
     const m = await requireStaff();
     if (m.role !== "manager" && n.instructorId !== m.userId) throw new ActionError("not_allowed");

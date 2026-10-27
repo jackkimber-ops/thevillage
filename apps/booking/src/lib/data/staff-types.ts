@@ -130,6 +130,8 @@ export interface StaffApi {
   markAttendance(bookingId: string, status: "booked" | "attended" | "no_show"): Promise<void>;
   cancelBooking(bookingId: string, reason: string | null): Promise<BookingStatus>;
   restoreCredit(bookingId: string, reason: string): Promise<void>;
+  /** Managers: move a customer's pack end date later (agreed rule: an expired pack can't be used; staff can extend). */
+  extendPack(customerPackId: string, newLastDay: string, reason: string): Promise<void>;
 
   createSessions(s: NewSession): Promise<string[]>;
   updateSession(id: string, s: Omit<NewSession, "sessionTypeId" | "repeatUntil">): Promise<void>;

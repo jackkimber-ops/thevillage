@@ -3,10 +3,10 @@ import { notFound } from "next/navigation";
 import { Notice } from "@/components/staff/Notice";
 import { SellPackForm } from "@/components/staff/SellPackForm";
 import { staffApi } from "@/lib/data";
-import { restoreCreditAction, staffCancelBookingAction } from "@/lib/actions/staff";
+import { extendPackAction, restoreCreditAction, staffCancelBookingAction } from "@/lib/actions/staff";
 import { formatVnd } from "@/lib/money";
 import { requireStaff } from "@/lib/staff-guard";
-import { formatDayShort, formatTime, vnDateKey } from "@/lib/time";
+import { addDays, formatDayShort, formatTime, vnDateKey } from "@/lib/time";
 
 const CONTACT = { whatsapp: "WhatsApp", zalo: "Zalo", call: "Call" } as const;
 const STATUS: Record<string, string> = { booked: "Booked", attended: "Attended", no_show: "No-show", cancelled: "Cancelled", late_cancelled: "Late cancellation" };
@@ -24,7 +24,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
   const back = `/staff/customers/${id}`;
   const upcoming = c.bookings.filter((b) => b.status === "booked" && new Date(b.startsAt) > new Date());
   const history = c.bookings.filter((b) => !upcoming.includes(b)).slice(0, 15);
-  const ok = sp.added ? "Customer added." : sp.sold ? "Pack sold and payment recorded." : null;
+  const ok = sp.added ? "Customer added." : sp.sold ? "Pack sold and payment recorded." : sp.extended ? "Pack extended." : null;
   const monthYear = (d: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", month: "short", year: "numeric" }).format(new Date(`${d}T00:00:00Z`));
 
   return (
@@ -51,6 +51,21 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
               <div key={p.id} className="list-row">
                 <span><strong>{p.name}</strong><br /><span className="muted small">{p.lastDay < today ? "Expired" : "Expires"} {formatDayShort(p.lastDay, "en")} {p.lastDay.slice(0, 4)}</span></span>
                 <span><strong style={{ fontSize: 20 }}>{p.remaining}</strong> <span className="small">of {p.credits} left</span></span>
+                {me.role === "manager" && (
+                  <details className="extend-pack">
+                    <summary className="sbtn2 sbtn-sm">Extend</summary>
+                    <form action={extendPackAction} className="staff-actions">
+                      <input type="hidden" name="packId" value={p.id} />
+                      <input type="hidden" name="back" value={back} />
+                      <label className="small">New last day{" "}
+                        <input type="date" name="newLastDay" required className="small-input"
+                          min={addDays(p.lastDay, 1)} defaultValue={addDays(p.lastDay < today ? today : p.lastDay, 30)} />
+                      </label>
+                      <input name="reason" placeholder="Reason" required className="small-input" aria-label="Reason for extending" />
+                      <button className="sbtn sbtn-sm" type="submit">Extend pack</button>
+                    </form>
+                  </details>
+                )}
               </div>
             ))}
             {me.role === "manager" && (
