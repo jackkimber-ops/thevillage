@@ -7,7 +7,7 @@ import { TopBar } from "@/components/TopBar";
 import { account, data, type TimetableEntry } from "@/lib/data";
 import { myBookedSessions } from "@/lib/my-booked";
 import {
-  addDays, addMonths, formatDayLong, formatMonth, formatRange, formatTime, formatWeekRange, isDateKey, monthStart,
+  addDays, addMonths, formatDayLong, formatMonth, formatTime, formatWeekRange, isDateKey, monthStart,
   vnDateKey, vnDayStart, weekStart,
 } from "@/lib/time";
 
@@ -95,19 +95,22 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
       </>
     );
   } else {
-    // List: the 7 days from the chosen date (today by default), so it's never empty late in the week.
-    const end = addDays(anchor, 7);
-    const sessions = (await db.timetable(vnDayStart(anchor), vnDayStart(end))).filter(keep);
-    const days = Array.from({ length: 7 }, (_, i) => addDays(anchor, i))
+    // List: one calendar week, Monday to Sunday (change list #4). Sessions already over are left out,
+    // so this week starts from today; "See next week" at the bottom moves on.
+    const monday = weekStart(anchor);
+    const end = addDays(monday, 7);
+    const sessions = (await db.timetable(vnDayStart(monday), vnDayStart(end))).filter(keep);
+    const days = Array.from({ length: 7 }, (_, i) => addDays(monday, i))
       .map((d) => ({ d, items: sessions.filter((s) => vnDateKey(s.startsAt) === d && new Date(s.endsAt) > new Date()) }))
       .filter((x) => x.items.length > 0);
-    const prevDate = addDays(anchor, -7) <= today ? undefined : addDays(anchor, -7);
+    const weekHref = (m: string) => href({ date: m <= today ? undefined : m });
+    const nextHref = end <= lastBookable ? weekHref(end) : null;
     body = (
       <>
         <Stepper
-          label={formatRange(anchor, addDays(anchor, 6), locale)}
-          prev={anchor > today ? href({ date: prevDate }) : null}
-          next={end <= lastBookable ? href({ date: end }) : null}
+          label={formatWeekRange(monday, locale)}
+          prev={monday > weekStart(today) ? weekHref(addDays(monday, -7)) : null}
+          next={nextHref}
           prevLabel={t("prevWeek")}
           nextLabel={t("nextWeek")}
         />
@@ -125,6 +128,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
             {items.map((s) => <SessionCard key={s.id} s={s} bookingId={booked.get(s.id)} />)}
           </section>
         ))}
+        {nextHref && <Link className="btn-secondary" href={nextHref}>{t("seeNextWeek")}</Link>}
       </>
     );
   }

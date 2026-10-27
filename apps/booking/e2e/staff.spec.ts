@@ -29,7 +29,7 @@ test("dashboard: a guest booking shows in the get-in-touch list until Contacted"
   await guest.goto("/classes?filter=classes");
   // Wait for the week to really change, or this can pick a class today inside the 1-hour cut-off.
   const thisWeek = await guest.locator(".stepper strong").textContent();
-  await guest.getByRole("link", { name: "Next week" }).click();
+  await guest.getByRole("link", { name: "Next week", exact: true }).click();
   await expect(guest.locator(".stepper strong")).not.toHaveText(thisWeek!);
   await guest.locator(".session-card", { hasNot: guest.locator(".full-label") }).first().getByRole("link").click();
   await guest.getByRole("link", { name: "Book this class" }).click();
