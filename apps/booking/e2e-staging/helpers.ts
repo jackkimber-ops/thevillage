@@ -12,9 +12,9 @@ const PROJECT_REF = process.env.STAGING_PROJECT_REF!;
 
 /** Every test page carries the staging-only pass for the bot check (see src/lib/bot-check.ts). */
 export const test = base.extend({
-  context: async ({ context, baseURL }, use) => {
+  context: async ({ context, baseURL }, provide) => {
     if (process.env.QA_BYPASS_TOKEN) await context.addCookies([{ name: "qa-bypass", value: process.env.QA_BYPASS_TOKEN, url: baseURL! }]);
-    await use(context);
+    await provide(context);
   },
 });
 export { expect };
