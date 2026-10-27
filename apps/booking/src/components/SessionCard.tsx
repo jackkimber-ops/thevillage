@@ -20,10 +20,17 @@ export async function SessionCard({ s, showDay = false, bookingId }: { s: Timeta
       : s.isFull ? null : s.placesLeft !== null && s.capacity !== null ? t("placesLeft", { left: s.placesLeft, capacity: s.capacity }) : null;
   return (
     <div className="session-card">
-      <div className={`session-pic kind-${s.kind}`}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/icon-house-linen-badge.png" alt="" />
-      </div>
+      {s.pictureUrl ? (
+        <div className="session-pic has-badge">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={s.pictureUrl} alt="" />
+        </div>
+      ) : (
+        <div className={`session-pic kind-${s.kind}`}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/icon-house-linen-badge.png" alt="" />
+        </div>
+      )}
       <div className="session-info">
         <div className="session-title">{s.title}</div>
         <div className="session-meta">{s.instructorName ? `${when} · ${s.instructorName}` : when}</div>

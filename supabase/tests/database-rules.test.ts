@@ -140,6 +140,27 @@ describe("timetable", () => {
       expect(byId[cls]).toMatchObject({ places_left: 1, is_full: false });
       expect(byId[op]).toMatchObject({ places_left: null, is_full: true });
     }));
+
+  it("gives each session its class type's name and badge (change list #5)", () =>
+    inTx(async (db) => {
+      const core = await db.session({ type: "00000000-0000-4000-8000-000000000004", title: "Core & Cuddle" });
+      const op = await db.session({ type: TYPES.openPlay });
+      const rows = await db.as("anon", "select session_id, type_name, type_picture_url from public.timetable(now(), now() + interval '30 days')");
+      const byId = Object.fromEntries(rows.map((r) => [r.session_id, r]));
+      expect(byId[core]).toMatchObject({ type_name: "Core & Cuddle", type_picture_url: "/brand/badges/core-cuddle.png" });
+      expect(byId[op]).toMatchObject({ type_name: "Open Play", type_picture_url: "/brand/badges/open-play.png" });
+    }));
+
+  it("lets class packs pay for the new class types", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer();
+      const pack = await db.sellPack(manager, c.customerId, PACKS.ten);
+      for (const type of ["00000000-0000-4000-8000-000000000004", "00000000-0000-4000-8000-000000000005", "00000000-0000-4000-8000-000000000006"]) {
+        const id = await db.book(c.user!, await db.session({ type }));
+        expect((await db.booking(id)).customer_pack_id).toBe(pack);
+      }
+    }));
 });
 
 describe("row-level security", () => {
