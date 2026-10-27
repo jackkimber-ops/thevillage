@@ -49,12 +49,24 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
       <div className="grid-2">
         <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
           <section className="card">
-            <h2 className="heading sec">packs</h2>
+            <div className="staff-head" style={{ alignItems: "baseline" }}>
+              <h2 className="heading sec" style={{ margin: 0 }}>packs</h2>
+              {c.packs.length > 0 && (
+                <span><strong style={{ fontSize: 20 }}>{c.packs.filter((p) => p.lastDay >= today).reduce((n, p) => n + p.remaining, 0)}</strong> <span className="small">credits left in total</span></span>
+              )}
+            </div>
             {c.packs.length === 0 && <p className="muted" style={{ marginTop: 0 }}>No packs.</p>}
             {c.packs.map((p) => (
               <div key={p.id} className="list-row">
                 <span><strong>{p.name}</strong><br /><span className="muted small">{p.lastDay < today ? "Expired" : "Expires"} {formatDayShort(p.lastDay, "en")} {p.lastDay.slice(0, 4)}</span></span>
                 <span><strong style={{ fontSize: 20 }}>{p.remaining}</strong> <span className="small">of {p.credits} left</span></span>
+                {p.extensions.length > 0 && (
+                  <div className="muted small" style={{ flexBasis: "100%" }}>
+                    {p.extensions.map((e, i) => (
+                      <div key={i}>Extended {formatDayShort(vnDateKey(e.at), "en")}{e.by ? ` by ${e.by}` : ""}: {formatDayShort(e.from, "en")} → {formatDayShort(e.to, "en")}{e.reason ? ` (${e.reason})` : ""}</div>
+                    ))}
+                  </div>
+                )}
                 {me.role === "manager" && (
                   <details className="extend-pack">
                     <summary className="sbtn2 sbtn-sm">Extend</summary>

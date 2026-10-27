@@ -18,6 +18,8 @@ insert into public.studio_settings (
   'https://maps.app.goo.gl/shhU5KCEVMMrX4cd8'
 );
 
+-- "Group class" is switched off on staging and production (supabase/data/20261027-group-class-off.sql);
+-- it stays on here because the database tests use it as their example class.
 insert into public.session_types (id, kind, name, description, colour, default_minutes, default_capacity, drop_in_price_vnd) values
   ('00000000-0000-4000-8000-000000000001', 'class', 'Group class',
    '[PLACEHOLDER: class names and descriptions come with the first month''s timetable]', '#C3BF94', 60, 10, 450000),

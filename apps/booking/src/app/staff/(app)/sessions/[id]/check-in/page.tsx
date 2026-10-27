@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Notice } from "@/components/staff/Notice";
-import { staffApi } from "@/lib/data";
+import { cancelCutoff } from "@/lib/cutoff";
+import { data, staffApi } from "@/lib/data";
 import { attendanceAction, recordPaymentAction, restoreCreditAction, staffCancelBookingAction } from "@/lib/actions/staff";
 import { formatVnd } from "@/lib/money";
 import { requireStaff } from "@/lib/staff-guard";
@@ -20,6 +21,8 @@ export default async function CheckIn({ params, searchParams }: PageProps<"/staf
   const here = roster.filter((r) => r.status === "attended").length;
   const back = `/staff/sessions/${id}/check-in`;
   const closed = s.status !== "scheduled";
+  // Before the free-cancellation cutoff a cancel gives the credit back; after it, it's a late cancellation.
+  const late = new Date() >= cancelCutoff(s.startsAt, (await data().settings()).cancelCutoffTime);
 
   return (
     <>
@@ -62,7 +65,7 @@ export default async function CheckIn({ params, searchParams }: PageProps<"/staf
                   <form action={staffCancelBookingAction}>
                     <input type="hidden" name="bookingId" value={r.bookingId} />
                     <input type="hidden" name="back" value={back} />
-                    <button className="sbtn2 sbtn-sm" type="submit">Late cancel</button>
+                    <button className="sbtn2 sbtn-sm" type="submit">{late ? "Late cancel" : "Cancel booking"}</button>
                   </form>
                 )}
               </div>

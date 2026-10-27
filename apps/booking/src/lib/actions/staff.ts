@@ -26,6 +26,7 @@ export async function attendanceAction(form: FormData) {
     redirect(`${back(form, "/staff")}?error=${code(e)}`);
   }
   revalidatePath(back(form, "/staff"));
+  redirect(back(form, "/staff")); // fresh page: drops an old "Booked in." note
 }
 
 export async function staffCancelBookingAction(form: FormData) {
@@ -35,6 +36,7 @@ export async function staffCancelBookingAction(form: FormData) {
     redirect(`${back(form, "/staff")}?error=${code(e)}`);
   }
   revalidatePath(back(form, "/staff"));
+  redirect(back(form, "/staff")); // fresh page: drops an old "Booked in." note
 }
 
 export async function restoreCreditAction(form: FormData) {
@@ -44,6 +46,7 @@ export async function restoreCreditAction(form: FormData) {
     redirect(`${back(form, "/staff")}?error=${code(e)}`);
   }
   revalidatePath(back(form, "/staff"));
+  redirect(back(form, "/staff")); // fresh page: drops an old "Booked in." note
 }
 
 export async function extendPackAction(form: FormData) {
@@ -155,6 +158,8 @@ export async function saveSessionAction(_: StaffFormState, form: FormData): Prom
       notes: str(form, "notes") || null,
     };
     if (!common.title) return { error: "title_required" };
+    // A new session in the past can't be booked or checked in, so don't create one by mistake.
+    if (!id && new Date(common.startsAt).getTime() + common.minutes * 60000 <= Date.now()) return { error: "session_in_past" };
     if (id) {
       await staffApi().updateSession(id, common);
       target = `/staff/sessions/${id}?saved=1`;
@@ -207,7 +212,8 @@ export async function addCustomerAction(_: StaffFormState, form: FormData): Prom
   for (const i of [1, 2, 3]) {
     const name = str(form, `child${i}Name`);
     const month = str(form, `child${i}Month`);
-    if (name && /^\d{4}-\d{2}$/.test(month)) children.push({ name, birthMonth: `${month}-01` });
+    if (name && !/^\d{4}-\d{2}$/.test(month)) return { error: "child_needs_birth_month" }; // never drop a child silently
+    if (name) children.push({ name, birthMonth: `${month}-01` });
   }
   let id: string;
   try {

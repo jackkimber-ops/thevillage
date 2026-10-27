@@ -75,13 +75,22 @@ export interface CustomerProfile extends CustomerHit {
   needsReview: boolean;
   createdAt: string;
   children: Array<{ id: string; name: string; birthMonth: string }>;
-  packs: Array<{ id: string; name: string; credits: number; remaining: number; validFrom: string; lastDay: string }>;
+  packs: Array<{
+    id: string; name: string; credits: number; remaining: number; validFrom: string; lastDay: string;
+    /** Each time a manager moved the end date (from the audit log; managers only). */
+    extensions: Array<{ at: string; from: string; to: string; reason: string; by: string | null }>;
+  }>;
   bookings: Array<{
     id: string; sessionId: string; title: string; startsAt: string; status: BookingStatus; unpaid: boolean; paid: boolean;
     amountDueVnd: number; credits: number; packName: string | null; freeTrial: boolean; childNames: string[];
   }>;
   ledger: Array<{ at: string; kind: string; amount: number; reason: string; packName: string }>;
   hadFreeTrial: boolean;
+}
+
+export interface CustomerListRow extends CustomerHit {
+  creditsLeft: number; // on packs that haven't ended
+  createdAt: string;
 }
 
 export interface SessionType {
@@ -140,6 +149,8 @@ export interface StaffApi {
   cancelSession(id: string, reason: string): Promise<number>;
 
   searchCustomers(q: string): Promise<CustomerHit[]>;
+  /** Everyone this staff member may see, A–Z, a page at a time. */
+  listCustomers(limit: number, offset: number): Promise<{ rows: CustomerListRow[]; total: number }>;
   customer(id: string): Promise<CustomerProfile | null>;
   addCustomer(d: { fullName: string; phone: string; email: string | null; preferredContact: ContactMethod; children: Array<{ name: string; birthMonth: string }> }): Promise<string>;
   bookCustomer(d: { sessionId: string; customerId: string; childIds: string[]; unnamedChildren: number; parents: number; freeTrial: boolean; override: boolean }): Promise<string>;

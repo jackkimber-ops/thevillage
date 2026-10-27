@@ -91,6 +91,7 @@ test("drag a session on the calendar to move it", async ({ page }) => {
   await page.mouse.move(box.x + 20, box.y + 8);
   await page.mouse.down();
   await page.mouse.move(box.x + 20, box.y + 8 + 28, { steps: 5 }); // half an hour lower (56px per hour)
+  await expect(page.locator(".staff-col.dragging")).toHaveCount(1); // stays visible, even over another day
   await page.mouse.up();
   await expect(page.locator(".staff-block", { hasText: title })).toContainText("7:30");
 });
@@ -274,4 +275,35 @@ test("managers record a private hire payment (S14)", async ({ page }) => {
   await page.getByRole("button", { name: "Record payment" }).click();
   await expect(page.getByText("Payment recorded.")).toBeVisible();
   await expect(page.getByText("1,500,000 ₫ · TRANSFER")).toBeVisible();
+});
+
+test("team feedback 27 Oct: child needs a birth month, full customer list with credits, totals and extension history", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  const name = `Feedback ${uid()}`;
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name", { exact: true }).fill(name);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "+ Add a child" }).click();
+  await page.getByLabel("Child 1 name").fill("Mi");
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Add the month and year of birth for each child")).toBeVisible();
+  await expect(page.getByLabel("Child 1 name")).toHaveValue("Mi"); // nothing lost
+  await page.getByLabel("Month and year of birth").fill("2025-06");
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Customer added.")).toBeVisible();
+  await expect(page.getByText("born Jun 2025")).toBeVisible();
+
+  await page.getByText("Sell a pack").click();
+  await page.getByLabel("Pack", { exact: true }).selectOption({ index: 1 });
+  await page.getByRole("button", { name: "Sell and record payment" }).click();
+  await expect(page.getByText("credits left in total")).toBeVisible();
+  const row = page.locator("section", { has: page.getByRole("heading", { name: "packs" }) }).locator(".list-row").first();
+  await row.getByText("Extend", { exact: true }).click();
+  await row.getByLabel("Reason for extending").fill("Travelling");
+  await row.getByRole("button", { name: "Extend pack" }).click();
+  await expect(page.getByText(/Extended .* by Phuong: .* \(Travelling\)/)).toBeVisible();
+
+  await page.goto("/staff/customers");
+  await expect(page.getByText(/customers?, A–Z/)).toBeVisible();
+  await expect(page.locator("tr", { hasText: name })).toContainText("10");
 });

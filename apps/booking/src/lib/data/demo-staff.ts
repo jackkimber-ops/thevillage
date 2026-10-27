@@ -39,6 +39,7 @@ function overlaps(start: Date, end: Date, ignore?: string) {
   return store.sessions.find((s) => s.status !== "cancelled" && s.id !== ignore && new Date(s.startsAt) < end && new Date(s.endsAt) > start);
 }
 
+const demoExtensions: Record<string, Array<{ at: string; from: string; to: string; reason: string; by: string | null }>> = {};
 const demoPayments: Record<string, Array<{ amountVnd: number; method: "qr" | "transfer" | "cash"; note: string | null; recordedAt: string }>> = {};
 
 export const demoStaff: StaffApi = {
@@ -123,6 +124,7 @@ export const demoStaff: StaffApi = {
     const p = [...store.customers.values()].flatMap((c) => c.packs).find((x) => x.id === id);
     if (!p) throw new ActionError("pack_not_found");
     if (newLastDay <= p.lastDay) throw new ActionError("must_extend");
+    (demoExtensions[id] ??= []).push({ at: new Date().toISOString(), from: p.lastDay, to: newLastDay, reason, by: (await requireManager()).name });
     p.lastDay = newLastDay;
   },
   async createSessions(n) {
@@ -184,6 +186,19 @@ export const demoStaff: StaffApi = {
       .slice(0, 20)
       .map((c) => ({ customerId: c.id, fullName: c.fullName!, phone: c.phone, email: c.email, deactivated: Boolean(c.deactivated) }));
   },
+  async listCustomers(limit, offset) {
+    await requireStaff();
+    const today = vnDateKey(new Date());
+    const all = [...store.customers.values()].filter((c) => c.fullName)
+      .sort((a, b) => Number(Boolean(a.deactivated)) - Number(Boolean(b.deactivated)) || a.fullName!.toLowerCase().localeCompare(b.fullName!.toLowerCase()));
+    return {
+      total: all.length,
+      rows: all.slice(offset, offset + limit).map((c) => ({
+        customerId: c.id, fullName: c.fullName!, phone: c.phone, email: c.email, deactivated: Boolean(c.deactivated), createdAt: c.createdAt,
+        creditsLeft: c.packs.filter((p) => p.lastDay >= today).reduce((n, p) => n + p.remaining, 0),
+      })),
+    };
+  },
   async customer(id) {
     await requireStaff();
     const c = store.customers.get(id);
@@ -192,7 +207,7 @@ export const demoStaff: StaffApi = {
     return {
       customerId: c.id, fullName: c.fullName, phone: c.phone, email: c.email, preferredContact: c.preferredContact,
       language: c.language ?? "en", deactivated: Boolean(c.deactivated), needsReview: false, createdAt: c.createdAt, children: c.children,
-      packs: c.packs.map((p) => ({ id: p.id, name: p.name, credits: p.credits, remaining: p.remaining, validFrom: p.validFrom, lastDay: p.lastDay })),
+      packs: c.packs.map((p) => ({ id: p.id, name: p.name, credits: p.credits, remaining: p.remaining, validFrom: p.validFrom, lastDay: p.lastDay, extensions: demoExtensions[p.id] ?? [] })),
       bookings: store.bookings.filter((b) => b.customerId === id).map((b) => {
         const s = store.sessions.find((x) => x.id === b.sessionId)!;
         return { id: b.id, sessionId: s.id, title: s.title, startsAt: s.startsAt, status: b.status, unpaid: b.unpaid, paid: b.paid,
