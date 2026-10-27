@@ -58,6 +58,9 @@
   "session": {
     "book": "Book",
     "full": "Full",
+    "booked": "Booked",
+    "seeBooking": "See my booking",
+    "youreBooked": "You're booked into this session.",
     "placesLeft": "{left} of {capacity} places left",
     "placesShort": "{left} of {capacity} left",
     "perChild": "{price} per child",

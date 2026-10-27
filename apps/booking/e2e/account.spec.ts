@@ -79,6 +79,23 @@ test("book a class with a pack, then cancel it and get the credit back", async (
   await page.getByRole("link", { name: "See my bookings" }).click();
 
   await expect(page.locator(".booking-row")).toHaveCount(1);
+
+  // Change list #3: the timetable shows "Booked" for it, leading to the booking, not to a second booking.
+  await page.goto("/classes?filter=classes");
+  await nextWeek(page);
+  const bookedCard = page.locator(".session-card", { has: page.locator(".booked-pill") });
+  await expect(bookedCard).toHaveCount(1);
+  await expect(bookedCard.locator(".booked-pill")).toHaveText("✓ Booked");
+  await expect(bookedCard.getByRole("link", { name: "Book", exact: true })).toHaveCount(0);
+  await bookedCard.locator(".booked-pill").click();
+  await expect(page).toHaveURL(/\/bookings#booking-/);
+  await page.goto("/classes?view=week");
+  await nextWeek(page);
+  await page.locator(".week-block.booked").click();
+  await expect(page.getByText("You're booked into this session.")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Book this class" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "See my booking" })).toHaveAttribute("href", /\/bookings#booking-/);
+
   await page.goto("/packages");
   await expect(page.locator(".big-number")).toHaveText("9");
   await page.goto("/bookings");
@@ -87,6 +104,9 @@ test("book a class with a pack, then cancel it and get the credit back", async (
   await page.getByRole("button", { name: "Yes, cancel it" }).click();
   await expect(page.getByText("Booking cancelled.")).toBeVisible();
   await expect(page.getByText("No upcoming bookings.")).toBeVisible();
+  await page.goto("/classes?filter=classes");
+  await nextWeek(page);
+  await expect(page.locator(".booked-pill")).toHaveCount(0);
   await page.goto("/packages");
   await expect(page.locator(".big-number")).toHaveText("10");
 });

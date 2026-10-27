@@ -59,6 +59,9 @@
   "session": {
     "book": "Đặt",
     "full": "Hết chỗ",
+    "booked": "Đã đặt",
+    "seeBooking": "Xem lịch đã đặt",
+    "youreBooked": "Bạn đã đặt chỗ buổi này.",
     "placesLeft": "Còn {left}/{capacity} chỗ",
     "placesShort": "Còn {left}/{capacity}",
     "perChild": "{price} mỗi bé",

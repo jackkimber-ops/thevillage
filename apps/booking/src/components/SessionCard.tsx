@@ -4,8 +4,11 @@ import type { TimetableEntry } from "@/lib/data";
 import { formatVnd } from "@/lib/money";
 import { formatDayShort, formatTime, formatTimeRange, vnDateKey } from "@/lib/time";
 
-/** One session in a list: picture, title, time, places (classes) or price (open play), and Book. */
-export async function SessionCard({ s, showDay = false }: { s: TimetableEntry; showDay?: boolean }) {
+/**
+ * One session in a list: picture, title, time, places (classes) or price (open play), and Book.
+ * When the customer is already booked in (bookingId), Book becomes "✓ Booked" and opens that booking.
+ */
+export async function SessionCard({ s, showDay = false, bookingId }: { s: TimetableEntry; showDay?: boolean; bookingId?: string }) {
   const t = await getTranslations("session");
   const locale = await getLocale();
   const when = showDay
@@ -26,7 +29,11 @@ export async function SessionCard({ s, showDay = false }: { s: TimetableEntry; s
         <div className="session-meta">{s.instructorName ? `${when} · ${s.instructorName}` : when}</div>
         {line && <div className="session-left">{line}</div>}
       </div>
-      {s.isFull ? (
+      {bookingId ? (
+        <Link className="booked-pill" href={`/bookings#booking-${bookingId}`} aria-label={`${t("booked")}: ${s.title}, ${when}. ${t("seeBooking")}`}>
+          ✓ {t("booked")}
+        </Link>
+      ) : s.isFull ? (
         <span className="full-label">{t("full")}</span>
       ) : (
         <Link className="btn-small" href={`/classes/${s.id}`} aria-label={`${t("book")}: ${s.title}, ${when}`}>

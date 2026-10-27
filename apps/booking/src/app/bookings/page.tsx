@@ -32,7 +32,7 @@ export default async function BookingsPage({ searchParams }: PageProps<"/booking
     const canCancel = upcomingRow && now < cancelCutoff(b.session.startsAt, settings.cancelCutoffTime).getTime();
     const who = [t("you"), ...b.childNames].join(" + ");
     return (
-      <div className="booking-row">
+      <div className="booking-row" id={`booking-${b.id}`}>
         <div className={`date-box kind-${b.session.kind}`} aria-hidden="true">
           <span>{fmt(day, { weekday: "short" })}</span>
           <strong>{Number(day.slice(8))}</strong>
