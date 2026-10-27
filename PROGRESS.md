@@ -11,7 +11,41 @@
 - 21 Oct: **visual style v1**: a style sheet plus 5 key screens in the brand (login, timetable, confirm a class, staff dashboard, website top), as a new row at the bottom of the preview canvas.
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
-## Handover (26 Oct, end of day): start here in a new session
+## Handover (27 Oct, end of day): start here in a new session
+
+**Where things stand:** everything below is merged to `main` and live (production serves `main`). The build is ahead of the plan; what's left is owner content, the minimum sign-ups feature, and final go-live checks. Opening day is **14 Nov**; the first sessions are on **16 Nov**.
+
+**Done 27 Oct:**
+- **Changes #1–#8 agreed** (see `docs/change-list.md`) and built: #3 "✓ Booked" instead of Book (jackkimber-ops/thevillage#12); #4 List view Monday–Sunday with "See next week" (#13); #5 a badge per class type, one session type per class (#14); #6 "Coming up" shows the next 3 bookable sessions in the booking window (#15); #7 map picture on the home page and website (#16); #8 sage backdrop around the booking app on computers (#18).
+- **Fixes:** Open Play was hidden in Week/Month when a List filter was on (#15); a staff browser test failed depending on the time of day (#12); website Classes card listed old placeholder classes (#17).
+- **Extend pack** button for managers on a customer's page (#19): the agreed rule existed in the database but had no button.
+- **Database:** migration `20261027000001_timetable_type_pictures` and `supabase/data/20261027-class-types.sql` (Core & Cuddle, Mum & Bub Yoga, Wiggle & Wonder types with badges; packs cover them) applied to **staging and production**.
+- **November timetable loaded in production** (and staging): 16–30 Nov, 28 sessions. Classes 9:00–10:00, 10 places: Core & Cuddle Mon/Fri/Sat (Phuong), Mum & Bub Yoga Tue/Thu, Wiggle & Wonder Sun (Ánh and Oanh not linked yet: no emails). Open Play 10:00–12:00 every day, no limit (capacity empty). The SQL is idempotent (skips a start time that already has a session).
+- **Staging test:** a test class on 28 Oct and Jack's booking; the confirmation email landed in the inbox.
+- **Docs for the owners** (Claude Docs, private until Jack shares them; comment notifications to this session could not be set up, so ask Jack whether there are comments):
+  - [Minimum sign-ups per class](https://claude.ai/artifact/SHe66tv5shTfwmMbvrD5hg): proposal + 5 decisions with dropdowns, decide by 5 Nov.
+  - [Cancellation and privacy policies (draft)](https://claude.ai/artifact/8BAB2uwwbf1u5eKkfEhRM9): both pages, [Proposed] / [Pending] / [PLACEHOLDER] marks, questions for the owners and a legal advisor.
+  - [Staff guide](https://claude.ai/artifact/YDQqSL7FqrPNEqdwkQKaZT): logging in, a normal day, how-tos, the automatic rules.
+- **Reminder** scheduled into this session for **23 Nov 09:00 Saigon** to confirm the December timetable (and chase descriptions, instructor emails, opening weekend).
+
+**Waiting on the owners (launch blockers first):**
+1. Privacy policy and cancellation terms agreed (the app pages still show a placeholder) and checked by a Vietnamese legal advisor.
+2. Opening weekend (14–15 Nov) schedule: nothing is bookable before 16 Nov.
+3. Minimum sign-ups decisions (by about 5 Nov).
+4. Class descriptions, "suits" and "bring" for each class (managers can type descriptions in Catalog; suits/bring via Claude for now).
+5. Oanh's and Ánh's emails (instructor accounts, then link their sessions).
+6. Vietnamese wording check (all screens and emails are drafts).
+7. A neighbourhood map screenshot **as a file** (Jack wants a wider Thảo Điền map instead of the street close-up; the chat image wasn't available as a file).
+8. Studio photo; WhatsApp/Zalo number; whether the contact email switches to hello@thevillagesaigon.com; website title/hero copy still says "Pilates and movement"; December timetable.
+
+**Next for Claude:**
+1. Minimum sign-ups (about half a day) once decided; it becomes the next change-list number.
+2. Load content as it arrives; swap in the neighbourhood map.
+3. Final check on production (booking, cancellation, pack sale, check-in, every email, with test accounts, then clean up) and a go-live checklist.
+4. DMARC to `p=quarantine` at Namecheap (owner) once an email sent from hello@ is confirmed to land in the inbox.
+5. Remove the 28 Oct test class and booking from staging.
+
+## Handover (26 Oct, end of day)
 
 **Go-live item left:** tighten DMARC at Namecheap from `p=none` to `p=quarantine` once real booking emails are seen arriving in inboxes.
 
