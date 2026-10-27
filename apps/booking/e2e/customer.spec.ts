@@ -6,6 +6,8 @@ test("home shows upcoming sessions and where to find us", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "coming up" })).toBeVisible();
   await expect(page.getByRole("link", { name: /^Book:/ }).first()).toBeVisible();
+  await expect(page.locator(".session-card")).toHaveCount(3);
+  await expect(page.locator(".session-card .full-label")).toHaveCount(0); // only sessions people can still book
   await expect(page.getByRole("link", { name: "Open in Google Maps" })).toHaveAttribute("href", /maps/);
 });
 
@@ -54,6 +56,17 @@ test("week and month views", async ({ page }) => {
   await page.getByRole("link", { name: "Month" }).click();
   await expect(page.locator(".month-cell").first()).toBeVisible();
   await expect(page.locator(".month-cell.later").first()).toBeVisible();
+});
+
+test("a filter picked in List doesn't hide Open Play in Week or Month", async ({ page }) => {
+  await page.goto("/classes");
+  const pills = page.locator(".pills");
+  await pills.getByRole("link", { name: "Classes", exact: true }).click();
+  await expect(pills.getByRole("link", { name: "Classes", exact: true })).toHaveAttribute("aria-current", "page");
+  await page.getByRole("link", { name: "Month" }).click();
+  await expect(page.locator(".legend")).toContainText("Open Play");
+  await page.getByRole("link", { name: "Week" }).click();
+  await expect(page.locator(".week-block.kind-open_play, .week-block.swatch-full", { hasText: "Open Play" }).first()).toBeVisible();
 });
 
 test("session details", async ({ page }) => {
