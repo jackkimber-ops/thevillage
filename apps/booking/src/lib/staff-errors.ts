@@ -31,6 +31,11 @@ const MESSAGES: Record<string, string> = {
   repeat_too_long: "A repeat can run for up to a year.",
   must_extend: "The new end date must be later than the pack's current end date.",
   pack_not_found: "That pack wasn't found.",
+  customer_deactivated: "This customer is deactivated. A manager can reactivate them on their profile.",
+  customer_not_found: "That customer wasn't found.",
+  child_not_found: "That child wasn't found.",
+  invalid_birth_month: "Choose the month and year of birth.",
+  invalid_amount: "Enter the amount in VND.",
 };
 
 export function staffError(code: string): string {

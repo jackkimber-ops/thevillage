@@ -64,6 +64,52 @@ describe("customers", () => {
     }));
 });
 
+describe("editing customers (S21, S22)", () => {
+  it("staff change details; a new email unlinks the old login; duplicates are refused", () =>
+    inTx(async (db) => {
+      const instructor = await db.staff("instructor");
+      const [r] = await db.as(instructor, "select public.staff_add_customer('Thu Ha', '+84912345678', 'ha@example.com', 'zalo') as id");
+      const other = await db.customer({ phone: "+84919999999", email: "taken@example.com" });
+      const login = "44444444-4444-4444-8444-444444444444";
+      await db.su("insert into auth.users (id, email) values ($1, 'ha@example.com')", [login]);
+      await db.su("update public.customers set user_id = $1 where id = $2", [login, r.id]);
+      await db.as(instructor, "select public.staff_update_customer($1, 'Thu Ha Le', '+84912345679', 'Ha.Le@Example.com', 'call', 'vi')", [r.id]);
+      const [c] = await db.su("select full_name, phone, email, preferred_contact, language, user_id from public.customers where id = $1", [r.id]);
+      expect(c).toEqual({ full_name: "Thu Ha Le", phone: "+84912345679", email: "ha.le@example.com", preferred_contact: "call", language: "vi", user_id: null });
+      expect(await db.fails(instructor, "select public.staff_update_customer($1, 'X', '+84919999999', null, 'call', 'en')", [r.id])).toBe("phone_exists");
+      expect(await db.fails(instructor, "select public.staff_update_customer($1, 'X', '+84912345679', 'taken@example.com', 'call', 'en')", [r.id])).toBe("email_exists");
+      // Another instructor can't edit someone they can't see.
+      const stranger = await db.staff("instructor");
+      expect(await db.fails(stranger, "select public.staff_update_customer($1, 'X', '+84910000001', null, 'call', 'en')", [r.id])).toBe("staff_only");
+    }));
+
+  it("managers deactivate a customer: no new bookings, still findable, and can reactivate", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const instructor = await db.staff("instructor");
+      const c = await db.customer({ name: "Paused Person" });
+      expect(await db.fails(instructor, "select public.set_customer_active($1, false)", [c.customerId])).toBe("managers_only");
+      await db.as(manager, "select public.set_customer_active($1, false)", [c.customerId]);
+      expect(await db.fails(c.user!, "select public.book_session($1)", [await db.session()])).toBe("customer_deactivated");
+      const [hit] = await db.as(manager, "select deactivated from public.search_customers('paused')");
+      expect(hit.deactivated).toBe(true);
+      await db.as(manager, "select public.set_customer_active($1, true)", [c.customerId]);
+      expect(await db.book(c.user!, await db.session({ startsIn: "4 days" }))).toBeTruthy();
+    }));
+
+  it("staff add, change and remove a child on a profile", () =>
+    inTx(async (db) => {
+      const instructor = await db.staff("instructor");
+      const [r] = await db.as(instructor, "select public.staff_add_customer('Kid Parent', '+84912340001', null, 'zalo') as id");
+      const [k] = await db.as(instructor, "select public.staff_save_child($1, null, 'Bao', '2025-03-15') as id", [r.id]);
+      await db.as(instructor, "select public.staff_save_child($1, $2, 'Bảo', '2025-04-01')", [r.id, k.id]);
+      const [row] = await db.su("select name, birth_month::text from public.customer_children where id = $1", [k.id]);
+      expect(row).toEqual({ name: "Bảo", birth_month: "2025-04-01" });
+      await db.as(instructor, "select public.staff_remove_child($1)", [k.id]);
+      expect(await db.su("select id from public.customer_children where customer_id = $1", [r.id])).toEqual([]);
+    }));
+});
+
 describe("sessions", () => {
   it("creates a weekly series, all or nothing", () =>
     inTx(async (db) => {

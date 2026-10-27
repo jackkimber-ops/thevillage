@@ -19,6 +19,7 @@ export function when(d: EmailData, iso: string) {
 
 export function subjectFor(d: EmailData): string {
   const s = strings(d.lang);
+  if (d.kind === "welcome") return fill(s.subject.welcome, { studio: d.settings.name });
   return fill(s.subject[d.kind], { title: d.title, when: when(d, d.startsAt), time: formatTime(d.startsAt, d.lang) });
 }
 
@@ -40,21 +41,25 @@ export function lines(d: EmailData) {
   const note =
     d.kind === "session_moved" ? [fill(s.movedFrom, { old: when(d, d.oldStartsAt ?? d.startsAt) }), s.movedNote]
     : d.kind === "session_cancelled" ? [d.reason ? fill(s.cancelledReason, { reason: d.reason }) : null, d.credits > 0 && d.packName ? fill(s.creditBack, { pack: d.packName }) : s.nothingToPay]
+    : d.kind === "booking_cancelled" ? [d.creditBack && d.packName ? fill(s.creditBack, { pack: d.packName }) : d.late && d.credits > 0 ? s.lateCreditUsed : s.nothingToPay]
     : [d.unpaid ? s.payHow : null, cancelLine];
   return {
     heading: fill(s.heading[d.kind], { name: d.firstName }),
     title: d.title,
     time: `${formatDayLong(vnDateKey(d.startsAt), d.lang)} · ${formatTimeRange(d.startsAt, d.endsAt, d.lang)}`,
     who,
-    pay: d.kind === "session_cancelled" ? null : pay,
+    pay: d.kind === "session_cancelled" || d.kind === "booking_cancelled" ? null : pay,
     notes: note.filter((x): x is string => Boolean(x)),
   };
 }
 
+const cancelled = (d: EmailData) => d.kind === "session_cancelled" || d.kind === "booking_cancelled";
+
 export function CustomerEmail(d: EmailData) {
   const s = strings(d.lang);
-  const l = lines(d);
   const st = d.settings;
+  const welcome = d.kind === "welcome";
+  const l = welcome ? null : lines(d);
   const messages = [
     st.zaloUrl && { label: "Zalo", href: st.zaloUrl },
     st.whatsappUrl && { label: "WhatsApp", href: st.whatsappUrl },
@@ -64,22 +69,31 @@ export function CustomerEmail(d: EmailData) {
   return (
     <Html lang={d.lang}>
       <Head />
-      <Preview>{`${l.title} · ${l.time}`}</Preview>
+      <Preview>{l ? `${l.title} · ${l.time}` : fill(s.welcomeIntro, { studio: st.name })}</Preview>
       <Body style={{ margin: 0, background: C.linen, fontFamily: font, color: C.ink }}>
         <Container style={{ maxWidth: 520, margin: "0 auto", padding: "24px 18px" }}>
           <Img src={`${d.appUrl}/brand/wordmark-full-colour.png`} alt="the village." width="110" height="51" />
           <Heading as="h1" style={{ fontFamily: heading, fontWeight: 500, textTransform: "lowercase", color: C.deep, fontSize: 26, margin: "22px 0 14px" }}>
-            {l.heading}
+            {l ? l.heading : fill(s.heading.welcome, { name: d.firstName })}
           </Heading>
-          <Section style={{ background: "#ffffff", borderRadius: 20, padding: "16px 18px" }}>
-            <Text style={{ margin: 0, fontSize: 17, fontWeight: 600, textDecoration: d.kind === "session_cancelled" ? "line-through" : "none" }}>{l.title}</Text>
-            <Text style={{ margin: "2px 0 0", fontSize: 15, color: C.muted }}>{l.time}</Text>
-            <Text style={{ margin: "8px 0 0", fontSize: 15 }}>{l.who}</Text>
-            {l.pay && <Text style={{ margin: "6px 0 0", fontSize: 14, color: d.unpaid ? C.coralDeep : C.muted, fontWeight: d.unpaid ? 600 : 400 }}>{l.pay}</Text>}
-          </Section>
-          {l.notes.map((n, i) => <Text key={i} style={{ fontSize: 14, lineHeight: "21px", margin: "12px 0 0" }}>{n}</Text>)}
-          <Button href={`${d.appUrl}/bookings`} style={{ background: C.deep, color: C.linen, borderRadius: 26, padding: "14px 24px", fontWeight: 600, fontSize: 15, marginTop: 18 }}>
-            {s.seeBookings}
+          {l ? (
+            <>
+              <Section style={{ background: "#ffffff", borderRadius: 20, padding: "16px 18px" }}>
+                <Text style={{ margin: 0, fontSize: 17, fontWeight: 600, textDecoration: cancelled(d) ? "line-through" : "none" }}>{l.title}</Text>
+                <Text style={{ margin: "2px 0 0", fontSize: 15, color: C.muted }}>{l.time}</Text>
+                <Text style={{ margin: "8px 0 0", fontSize: 15 }}>{l.who}</Text>
+                {l.pay && <Text style={{ margin: "6px 0 0", fontSize: 14, color: d.unpaid ? C.coralDeep : C.muted, fontWeight: d.unpaid ? 600 : 400 }}>{l.pay}</Text>}
+              </Section>
+              {l.notes.map((n, i) => <Text key={i} style={{ fontSize: 14, lineHeight: "21px", margin: "12px 0 0" }}>{n}</Text>)}
+            </>
+          ) : (
+            <>
+              <Text style={{ fontSize: 15, lineHeight: "22px", margin: 0 }}>{fill(s.welcomeIntro, { studio: st.name })}</Text>
+              <Text style={{ fontSize: 15, lineHeight: "22px", margin: "10px 0 0" }}>{s.welcomeHow}</Text>
+            </>
+          )}
+          <Button href={welcome ? `${d.appUrl}/login` : `${d.appUrl}/bookings`} style={{ background: C.deep, color: C.linen, borderRadius: 26, padding: "14px 24px", fontWeight: 600, fontSize: 15, marginTop: 18 }}>
+            {welcome ? s.openBooking : s.seeBookings}
           </Button>
           <Hr style={{ borderColor: C.sage, margin: "26px 0 14px" }} />
           <Text style={{ fontSize: 14, margin: 0, fontWeight: 600 }}>{s.findUs}</Text>
@@ -91,7 +105,7 @@ export function CustomerEmail(d: EmailData) {
               <span key={m.label}>{i > 0 && " · "}<Link href={m.href} style={{ color: C.deep }}>{m.label}</Link></span>
             ))}
           </Text>
-          <Text style={{ fontSize: 12, color: C.muted, margin: "22px 0 0" }}>{fill(s.footer, { studio: st.name })}</Text>
+          <Text style={{ fontSize: 12, color: C.muted, margin: "22px 0 0" }}>{fill(welcome ? s.footerAdded : s.footer, { studio: st.name })}</Text>
         </Container>
       </Body>
     </Html>
@@ -100,6 +114,12 @@ export function CustomerEmail(d: EmailData) {
 
 export function plainText(d: EmailData): string {
   const s = strings(d.lang);
+  if (d.kind === "welcome") {
+    return [
+      fill(s.heading.welcome, { name: d.firstName }), "", fill(s.welcomeIntro, { studio: d.settings.name }), s.welcomeHow, "",
+      `${s.openBooking}: ${d.appUrl}/login`, "", `${d.settings.address} · ${d.settings.openingHours}`, `${s.messageUs} ${d.settings.contactEmail}`,
+    ].join("\n");
+  }
   const l = lines(d);
   return [
     l.heading, "", l.title, l.time, l.who, l.pay ?? "", "", ...l.notes, "",

@@ -56,19 +56,77 @@ export async function extendPackAction(form: FormData) {
 }
 
 export async function recordPaymentAction(form: FormData) {
+  if (!(Number(str(form, "amount").replace(/\D/g, "")) > 0)) redirect(`${back(form, "/staff")}?error=invalid_amount`);
   try {
     await staffApi().recordPayment({
-      customerId: str(form, "customerId"),
+      customerId: str(form, "customerId") || null,
       amountVnd: Number(str(form, "amount").replace(/\D/g, "")),
       method: str(form, "method") as "qr",
       paidFor: (str(form, "paidFor") || "drop_in") as "drop_in",
       bookingId: str(form, "bookingId") || null,
+      sessionId: str(form, "sessionId") || null,
       note: str(form, "note") || null,
     });
   } catch (e) {
     redirect(`${back(form, "/staff")}?error=${code(e)}`);
   }
+  if (str(form, "paidFor") === "private_hire") redirect(`${back(form, "/staff")}?paid=1`);
   revalidatePath(back(form, "/staff"));
+}
+
+// S22: change a customer's details (email is their login: a new one moves the login to that address).
+export async function updateCustomerAction(_: StaffFormState, form: FormData): Promise<StaffFormState> {
+  const id = str(form, "customerId");
+  const phone = toE164(str(form, "phone"));
+  const email = str(form, "email").toLowerCase();
+  if (!str(form, "fullName")) return { error: "name_required" };
+  if (!phone) return { error: "invalid_phone" };
+  if (email && !isEmail(email)) return { error: "invalid_email" };
+  try {
+    await staffApi().updateCustomer(id, {
+      fullName: str(form, "fullName"), phone, email: email || null,
+      preferredContact: (str(form, "contact") || "whatsapp") as ContactMethod,
+      language: str(form, "language") === "vi" ? "vi" : "en",
+    });
+  } catch (e) {
+    return { error: code(e) };
+  }
+  redirect(`/staff/customers/${id}?updated=1`);
+}
+
+export async function setCustomerActiveAction(form: FormData) {
+  const id = str(form, "customerId");
+  const active = str(form, "active") === "1";
+  try {
+    await staffApi().setCustomerActive(id, active);
+  } catch (e) {
+    redirect(`/staff/customers/${id}?error=${code(e)}`);
+  }
+  redirect(`/staff/customers/${id}?${active ? "reactivated" : "deactivated"}=1`);
+}
+
+// S21: add or change a child (name and month/year of birth), or remove one.
+export async function saveChildAction(form: FormData) {
+  const id = str(form, "customerId");
+  const month = str(form, "birthMonth");
+  if (!str(form, "name")) redirect(`/staff/customers/${id}?error=name_required`);
+  if (!/^\d{4}-\d{2}$/.test(month)) redirect(`/staff/customers/${id}?error=invalid_birth_month`);
+  try {
+    await staffApi().saveChild(id, str(form, "childId") || null, str(form, "name"), `${month}-01`);
+  } catch (e) {
+    redirect(`/staff/customers/${id}?error=${code(e)}`);
+  }
+  redirect(`/staff/customers/${id}?child=1`);
+}
+
+export async function removeChildAction(form: FormData) {
+  const id = str(form, "customerId");
+  try {
+    await staffApi().removeChild(str(form, "childId"));
+  } catch (e) {
+    redirect(`/staff/customers/${id}?error=${code(e)}`);
+  }
+  redirect(`/staff/customers/${id}?child_removed=1`);
 }
 
 /** Studio-local date + time from the form, as an instant (Saigon, UTC+7). */

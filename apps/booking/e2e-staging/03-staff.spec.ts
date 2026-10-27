@@ -200,6 +200,42 @@ test("manager: moving or cancelling a session with bookings emails everyone and 
   expect(r).toEqual({ status: "cancelled", bal: 10, emails: 1 });
 });
 
+test("manager: edit details and children, deactivate and reactivate, private hire payment", async ({ page }, info) => {
+  await staffLogin(page);
+  const name = `QA Edit ${uid()}`;
+  const id = await addCustomer(page, { name, phone: qaPhone(), email: qaEmail("edit") });
+  await page.getByText("Edit details").click();
+  await page.getByLabel("Name", { exact: true }).fill(`${name} Le`);
+  await page.getByLabel("Email language").selectOption("vi");
+  await page.getByRole("button", { name: "Save details" }).click();
+  await expect(page.getByText("Details saved.")).toBeVisible();
+  await page.getByText("+ Add a child").click();
+  await page.getByLabel("Child's name").fill("Bao");
+  await page.getByLabel("Month and year of birth").fill("2025-03");
+  await page.getByRole("button", { name: "Add child" }).click();
+  await expect(page.getByText("born Mar 2025")).toBeVisible();
+  await page.getByRole("button", { name: "Deactivate customer" }).click();
+  await expect(page.getByText(/Customer deactivated/)).toBeVisible();
+  const session = qaSession({ title: `QA Deactivated ${uid()}`, start: `${vnDate(dayOffset(info) + 3)} 07:00` });
+  await page.goto(`/staff/book?session=${session}`);
+  await page.getByLabel("Customer: name, phone or email").fill(`${name} Le`);
+  await expect(page.getByText("No customer found.", { exact: false })).toBeVisible(); // deactivated people aren't offered
+  await page.goto(`/staff/customers/${id}`);
+  await page.getByRole("button", { name: "Reactivate customer" }).click();
+  await expect(page.getByRole("link", { name: "Book in" })).toBeVisible();
+  const [c] = sql<{ language: string; kids: number }>(`select language::text, (select count(*)::int from customer_children where customer_id = c.id) as kids from customers c where id = '${id}'`);
+  expect(c).toEqual({ language: "vi", kids: 1 });
+
+  const hire = qaSession({ title: `QA Hire ${uid()}`, start: `${vnDate(dayOffset(info) + 3)} 13:00`, typeId: "00000000-0000-4000-8000-000000000003", capacity: null, minutes: 120 });
+  await page.goto(`/staff/sessions/${hire}`);
+  await page.getByLabel("Amount paid (VND)").fill("1500000");
+  await page.getByLabel("Payment method").selectOption("transfer");
+  await page.getByRole("button", { name: "Record payment" }).click();
+  await expect(page.getByText("Payment recorded.")).toBeVisible();
+  const [p] = sql<{ paid_for: string; amount_vnd: string }>(`select paid_for::text, amount_vnd::text from payments where session_id = '${hire}'`);
+  expect(p).toEqual({ paid_for: "private_hire", amount_vnd: "1500000" });
+});
+
 function instructorOwnSession(info: TestInfo) {
   const [ins] = sql<{ id: string }>(`select id from auth.users where email = '${QA_INSTRUCTOR}'`);
   const id = qaSession({ title: `QA Instructor Class ${uid()}`, start: `${vnDate(dayOffset(info) + 2)} 09:00` });

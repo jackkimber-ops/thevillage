@@ -38,7 +38,7 @@ export function BookSomeoneForm(p: {
     setQ(value);
     if (value.trim().length < 2) { setHits([]); setSearched(""); return; }
     start(async () => {
-      setHits(await findCustomersAction(value));
+      setHits((await findCustomersAction(value)).filter((h) => !h.deactivated)); // deactivated people can't be booked
       setSearched(value);
     });
   }
