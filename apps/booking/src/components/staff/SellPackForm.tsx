@@ -5,12 +5,13 @@ import { sellPackAction } from "@/lib/actions/staff";
 import type { PackType } from "@/lib/data/staff-types";
 import { formatVnd } from "@/lib/money";
 import { StaffFormError } from "./StaffFormError";
+import { keepValues } from "@/lib/keep-values";
 
 export function SellPackForm({ customerId, packs, today }: { customerId: string; packs: PackType[]; today: string }) {
   const [state, action, pending] = useActionState(sellPackAction, undefined);
   const onSale = packs.filter((p) => p.onSale);
   return (
-    <form action={action} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+    <form onSubmit={keepValues(action)} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <input type="hidden" name="customerId" value={customerId} />
       <div className="field">
         <label htmlFor="pack">Pack</label>

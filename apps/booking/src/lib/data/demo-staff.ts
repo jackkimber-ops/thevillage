@@ -172,7 +172,13 @@ export const demoStaff: StaffApi = {
     const query = q.trim().toLowerCase();
     if (query.length < 2) return [];
     return [...store.customers.values()]
-      .filter((c) => c.fullName && (c.fullName.toLowerCase().includes(query) || c.email?.includes(query) || (c.phone ?? "").includes(query.replace(/\D/g, "") || "~")))
+      .filter((c) => {
+        const digits = query.replace(/\D/g, "");
+        const vn = digits.startsWith("0") ? `+84${digits.slice(1)}` : null; // 0917… is +84917…
+        const phone = c.phone ?? "";
+        return c.fullName && (c.fullName.toLowerCase().includes(query) || c.email?.includes(query)
+          || (digits.length >= 3 && (phone.includes(digits) || (vn !== null && phone.startsWith(vn)))));
+      })
       .slice(0, 20)
       .map((c) => ({ customerId: c.id, fullName: c.fullName!, phone: c.phone, email: c.email }));
   },

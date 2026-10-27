@@ -4,12 +4,13 @@ import { useActionState } from "react";
 import { useTranslations } from "next-intl";
 import { sendCodeAction } from "@/lib/actions/auth";
 import { ErrorText } from "./ErrorText";
+import { keepValues } from "@/lib/keep-values";
 
 export function LoginForm({ next }: { next: string }) {
   const t = useTranslations("login");
   const [state, action, pending] = useActionState(sendCodeAction, undefined);
   return (
-    <form action={action} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+    <form onSubmit={keepValues(action)} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <input type="hidden" name="next" value={next} />
       <div className="field">
         <label htmlFor="email">{t("email")}</label>

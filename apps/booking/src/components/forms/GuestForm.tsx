@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { guestBookAction } from "@/lib/actions/booking";
 import { ContactChoice } from "./ContactChoice";
 import { ErrorText } from "./ErrorText";
+import { keepValues } from "@/lib/keep-values";
 
 export function GuestForm({ sessionId, needsChild, cutoffTime }: { sessionId: string; needsChild: boolean; cutoffTime: string }) {
   const t = useTranslations("guest");
@@ -13,7 +14,7 @@ export function GuestForm({ sessionId, needsChild, cutoffTime }: { sessionId: st
   const [state, action, pending] = useActionState(guestBookAction, undefined);
   const [kids, setKids] = useState(needsChild ? 1 : 0);
   return (
-    <form action={action} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+    <form onSubmit={keepValues(action)} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
       <input type="hidden" name="sessionId" value={sessionId} />
       <div className="field"><label htmlFor="g-name">{d("name")}</label><input id="g-name" name="fullName" autoComplete="name" required /></div>
       <div className="field"><label htmlFor="g-phone">{d("mobile")}</label><input id="g-phone" name="phone" type="tel" autoComplete="tel" placeholder="090 123 4567" required /></div>

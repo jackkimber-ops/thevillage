@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import { saveSessionAction } from "@/lib/actions/staff";
 import type { SessionType } from "@/lib/data/staff-types";
 import { StaffFormError } from "./StaffFormError";
+import { keepValues } from "@/lib/keep-values";
 
 type Initial = {
   id?: string;
@@ -43,7 +44,7 @@ export function SessionForm({ initial, types, instructors, lockInstructor }: {
   }
 
   return (
-    <form action={action} className="card" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+    <form onSubmit={keepValues(action)} className="card" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       {initial.id && <input type="hidden" name="id" value={initial.id} />}
       {isNew ? (
         <div className="field">

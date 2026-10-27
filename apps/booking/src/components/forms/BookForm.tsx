@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { addChildAction, bookAction } from "@/lib/actions/booking";
 import { formatVnd } from "@/lib/money";
 import { ErrorText } from "./ErrorText";
+import { keepValues } from "@/lib/keep-values";
 
 type Props = {
   sessionId: string;
@@ -41,7 +42,7 @@ export function BookForm(p: Props) {
 
   return (
     <main className="page-body" style={{ paddingTop: 14 }}>
-      <form id="book" action={action} />
+      <form id="book" onSubmit={keepValues(action)} />
       <input form="book" type="hidden" name="sessionId" value={p.sessionId} />
       <div className="card" style={{ padding: "10px 16px" }}>
         <p className="label">{t("whosComing")}</p>
@@ -57,7 +58,7 @@ export function BookForm(p: Props) {
           </label>
         ))}
         {adding ? (
-          <form action={childAction} className="add-child">
+          <form onSubmit={keepValues(childAction)} className="add-child">
             <input type="hidden" name="back" value={p.back} />
             <strong>{t("addChild")}</strong>
             <div className="field"><label htmlFor="childName">{t("childName")}</label><input id="childName" name="childName" placeholder={t("childNameExample")} /></div>
