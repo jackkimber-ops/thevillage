@@ -85,6 +85,7 @@ export async function fillDetails(page: Page, name: string, phone = qaPhone()) {
   await page.getByLabel("Mobile number").fill(phone);
   await page.getByRole("button", { name: "Zalo" }).click();
   await page.getByRole("button", { name: /^Save/ }).click();
+  await expect(page).not.toHaveURL(/\/welcome/);
 }
 
 /** Vietnam date (YYYY-MM-DD) `days` from today. */

@@ -213,6 +213,7 @@ test("menu: details, message us, log out", async ({ page }) => {
   await pageIsHealthy(page);
   await shot(page, "menu-logged-in");
   await page.getByRole("button", { name: "Log out" }).click();
+  await expect(page).toHaveURL(/\/$/);
   await page.goto("/bookings");
   await expect(page).toHaveURL(/\/login/);
 });
