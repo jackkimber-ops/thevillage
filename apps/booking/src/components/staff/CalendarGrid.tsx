@@ -86,7 +86,7 @@ export function CalendarGrid({ days, today, sessions, meId, isManager }: Props) 
           {hours.map((h) => <span key={h} className="week-hour" style={{ top: (h - startHour) * PX - 6 }}>{h}:00</span>)}
         </div>
         {days.map((d) => (
-          <div key={d} className="week-col staff-col" style={{ height }}>
+          <div key={d} className={`week-col staff-col${drag && sessions.some((x) => x.id === drag.id && vnDateKey(x.startsAt) === d) ? " dragging" : ""}`} style={{ height }}>
             {hours.map((h) => <span key={h} className="hour-line" style={{ top: (h - startHour) * PX }} />)}
             {sessions.filter((s) => vnDateKey(s.startsAt) === d).map((s) => {
               const top = (hourOf(s.startsAt) - startHour) * PX + 1;

@@ -95,3 +95,12 @@ test("hire the studio writes the WhatsApp message", async ({ page }) => {
   await page.getByLabel("Group size").fill("12");
   await expect(send).toHaveAttribute("href", /text=.*2026-12-05.*13%3A00.*2%20hours.*12/);
 });
+
+test("Back from a class returns to the week you were looking at", async ({ page }) => {
+  await page.goto("/classes");
+  await page.getByRole("link", { name: "See next week" }).click();
+  const week = await page.locator(".stepper strong").textContent();
+  await page.locator(".session-card", { hasNot: page.locator(".full-label") }).first().getByRole("link").click();
+  await page.getByRole("link", { name: "Back" }).click();
+  await expect(page.locator(".stepper strong")).toHaveText(week!);
+});

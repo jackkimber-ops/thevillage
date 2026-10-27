@@ -172,3 +172,20 @@ describe("sessions", () => {
       expect(await db.balance(pack)).toBe(10);
     }));
 });
+
+describe("customer list (team feedback 27 Oct)", () => {
+  it("lists customers with credits left on packs that haven't ended; instructors see only their own", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const instructor = await db.staff("instructor");
+      const c = await db.customer({ name: "Aaa List Person" });
+      await db.sellPack(manager, c.customerId);
+      await db.book(c.user!, await db.session());
+      const rows = await db.as(manager, "select full_name, credits_left, total from public.customer_list(200, 0)");
+      const mine = rows.find((r) => r.full_name === "Aaa List Person");
+      expect(mine.credits_left).toBe(9); // 10 bought, 1 reserved by the booking
+      expect(Number(mine.total)).toBeGreaterThanOrEqual(1);
+      const theirs = await db.as(instructor, "select full_name from public.customer_list(200, 0)");
+      expect(theirs.map((r) => r.full_name)).not.toContain("Aaa List Person");
+    }));
+});

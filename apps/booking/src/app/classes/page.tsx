@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { BackIcon, NextIcon } from "@/components/Icons";
-import { SessionCard } from "@/components/SessionCard";
+import { SessionCard, sessionHref } from "@/components/SessionCard";
 import { TabBar } from "@/components/TabBar";
 import { TopBar } from "@/components/TopBar";
 import { account, data, type TimetableEntry } from "@/lib/data";
@@ -43,6 +43,9 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
     return s ? `/classes?${s}` : "/classes";
   };
 
+  // This exact view (week, month day, filter), for the class page's Back button.
+  const here = href({ date: anchor === today ? undefined : anchor, day: view === "month" && isDateKey(first(sp.day)) ? first(sp.day) : undefined });
+
   const keep = (s: TimetableEntry) =>
     filter === "all" || (filter === "classes" ? s.kind === "class" || s.kind === "workshop" : s.kind === "open_play");
 
@@ -75,7 +78,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
           dayHref={(d) => href({ view: "month", date: start === monthStart(today) ? undefined : start, day: d })} locale={locale} />
         <Legend kind="month" types={typesOf(sessions)} />
         <h2 className="day-label">{formatDayLong(selected, locale)}</h2>
-        {sessions.filter((s) => vnDateKey(s.startsAt) === selected).map((s) => <SessionCard key={s.id} s={s} bookingId={booked.get(s.id)} />)}
+        {sessions.filter((s) => vnDateKey(s.startsAt) === selected).map((s) => <SessionCard key={s.id} s={s} bookingId={booked.get(s.id)} from={here} />)}
         {selected > lastBookable && <p className="empty">{t("opensLater")}</p>}
         {selected <= lastBookable && !sessions.some((s) => vnDateKey(s.startsAt) === selected) && <p className="empty">{t("nothingThisDay")}</p>}
       </>
@@ -92,7 +95,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
           prevLabel={t("prevWeek")}
           nextLabel={t("nextWeek")}
         />
-        <WeekGrid monday={monday} today={today} sessions={sessions} booked={booked} locale={locale} />
+        <WeekGrid monday={monday} today={today} sessions={sessions} booked={booked} locale={locale} from={here} />
         <Legend kind="week" />
       </>
     );
@@ -127,7 +130,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
         {days.map(({ d, items }) => (
           <section key={d} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <h2 className="day-label">{formatDayLong(d, locale)}</h2>
-            {items.map((s) => <SessionCard key={s.id} s={s} bookingId={booked.get(s.id)} />)}
+            {items.map((s) => <SessionCard key={s.id} s={s} bookingId={booked.get(s.id)} from={here} />)}
           </section>
         ))}
         {nextHref && <Link className="btn-secondary" href={nextHref}>{t("seeNextWeek")}</Link>}
@@ -196,8 +199,8 @@ async function Legend({ kind, types = [] }: { kind: "week" | "month"; types?: Ty
   );
 }
 
-async function WeekGrid({ monday, today, sessions, booked, locale }: {
-  monday: string; today: string; sessions: TimetableEntry[]; booked: Map<string, string>; locale: string;
+async function WeekGrid({ monday, today, sessions, booked, locale, from }: {
+  monday: string; today: string; sessions: TimetableEntry[]; booked: Map<string, string>; locale: string; from: string;
 }) {
   const t = await getTranslations("session");
   const PX = 44; // per hour
@@ -238,7 +241,7 @@ async function WeekGrid({ monday, today, sessions, booked, locale }: {
             return closed ? (
               <div key={s.id} className="week-block swatch-full" style={style} aria-label={label}><b>{s.title}</b>{time}</div>
             ) : (
-              <Link key={s.id} className={`week-block kind-${s.kind}${isBooked ? " booked" : ""}`} style={style} href={`/classes/${s.id}`} aria-label={label}>
+              <Link key={s.id} className={`week-block kind-${s.kind}${isBooked ? " booked" : ""}`} style={style} href={sessionHref(s.id, from)} aria-label={label}>
                 <b>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   {s.pictureUrl && <img className="mini-badge" src={s.pictureUrl} alt="" />}

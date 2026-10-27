@@ -5,12 +5,14 @@ import { BookForm } from "@/components/forms/BookForm";
 import { account, data } from "@/lib/data";
 import { cancelCutoff } from "@/lib/cutoff";
 import { requireCustomer } from "@/lib/guard";
+import { safeNext } from "@/lib/safe-next";
 import { formatVnd } from "@/lib/money";
 import { formatDayShort, formatTime, formatTimeRange, vnDateKey, nowMs } from "@/lib/time";
 
 // C6 Confirm a class / C7 Confirm open play (and C6b: add a child opens inside the form).
-export default async function BookPage({ params }: PageProps<"/classes/[id]/book">) {
+export default async function BookPage({ params, searchParams }: PageProps<"/classes/[id]/book">) {
   const { id } = await params;
+  const from = (await searchParams).from;
   const me = await requireCustomer(`/classes/${id}/book`);
   const locale = await getLocale();
   const t = await getTranslations("book");
@@ -29,7 +31,7 @@ export default async function BookPage({ params }: PageProps<"/classes/[id]/book
   return (
     <div className="page">
       <div className={`session-hero kind-${s.kind}`} style={{ height: 150 }}>
-        <TopBar back={`/classes/${s.id}`} />
+        <TopBar back={`/classes/${s.id}${typeof from === "string" ? `?from=${encodeURIComponent(safeNext(from))}` : ""}`} />
         <div className="hero-caption">
           <h1 className="heading" style={{ fontSize: 28, color: "var(--ink)" }}>{s.title}</h1>
           <div style={{ fontSize: 14 }}>

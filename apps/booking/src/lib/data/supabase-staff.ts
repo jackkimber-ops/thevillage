@@ -172,6 +172,17 @@ export const supabaseStaff: StaffApi = {
     }));
   },
 
+  async listCustomers(limit, offset) {
+    const { data, error } = await (await createClient()).rpc("customer_list", { p_limit: limit, p_offset: offset });
+    check(error);
+    type Row = { customer_id: string; full_name: string; phone: string | null; email: string | null; deactivated: boolean; credits_left: number; created_at: string; total: number };
+    const rows = (data ?? []) as Row[];
+    return {
+      total: rows.length ? Number(rows[0].total) : 0,
+      rows: rows.map((r) => ({ customerId: r.customer_id, fullName: r.full_name, phone: r.phone, email: r.email, deactivated: r.deactivated, creditsLeft: r.credits_left, createdAt: r.created_at })),
+    };
+  },
+
   async customer(id): Promise<CustomerProfile | null> {
     const supabase = await createClient();
     const { data: c } = await supabase
@@ -188,6 +199,13 @@ export const supabaseStaff: StaffApi = {
         .eq("customer_id", id),
     ]);
     const bal = balances(ledger ?? []);
+    // Pack extensions from the audit log (only managers can read it; others just see none).
+    const packIds = (packs ?? []).map((p) => p.id);
+    const { data: ext } = packIds.length
+      ? await supabase.from("audit_log").select("entity_id, before, after, created_at, actor").eq("action", "extend_pack").in("entity_id", packIds).order("created_at")
+      : { data: [] };
+    const { data: staffNames } = await supabase.from("staff_roles").select("user_id, display_name");
+    const nameOf = (uid: string | null) => (staffNames ?? []).find((s) => s.user_id === uid)?.display_name ?? null;
     const packName = (pid: string | null) => (packs ?? []).find((p) => p.id === pid)?.name ?? null;
     type B = { id: string; status: BookingStatus; unpaid: boolean; paid_at: string | null; amount_due_vnd: number; credits: number;
       free_trial: boolean; customer_pack_id: string | null; sessions: { id: string; title: string; starts_at: string };
@@ -200,7 +218,12 @@ export const supabaseStaff: StaffApi = {
       packs: (packs ?? []).map((p) => {
         const last = new Date(`${p.valid_to}T00:00:00Z`);
         last.setUTCDate(last.getUTCDate() + p.paused_days);
-        return { id: p.id, name: p.name, credits: p.credits, remaining: bal[p.id] ?? 0, validFrom: p.valid_from, lastDay: last.toISOString().slice(0, 10) };
+        return {
+          id: p.id, name: p.name, credits: p.credits, remaining: bal[p.id] ?? 0, validFrom: p.valid_from, lastDay: last.toISOString().slice(0, 10),
+          extensions: (ext ?? []).filter((e) => e.entity_id === p.id).map((e) => ({
+            at: e.created_at, from: e.before?.valid_to, to: e.after?.valid_to, reason: e.after?.reason ?? "", by: nameOf(e.actor),
+          })),
+        };
       }),
       bookings: rows.map((b) => ({
         id: b.id, sessionId: b.sessions.id, title: b.sessions.title, startsAt: b.sessions.starts_at, status: b.status,

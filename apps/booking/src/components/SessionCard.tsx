@@ -8,7 +8,7 @@ import { formatDayShort, formatTime, formatTimeRange, vnDateKey } from "@/lib/ti
  * One session in a list: picture, title, time, places (classes) or price (open play), and Book.
  * When the customer is already booked in (bookingId), Book becomes "✓ Booked" and opens that booking.
  */
-export async function SessionCard({ s, showDay = false, bookingId }: { s: TimetableEntry; showDay?: boolean; bookingId?: string }) {
+export async function SessionCard({ s, showDay = false, bookingId, from }: { s: TimetableEntry; showDay?: boolean; bookingId?: string; from?: string }) {
   const t = await getTranslations("session");
   const locale = await getLocale();
   const when = showDay
@@ -45,10 +45,15 @@ export async function SessionCard({ s, showDay = false, bookingId }: { s: Timeta
       ) : s.bookingClosed ? (
         <span className="full-label">{t("closed")}</span>
       ) : (
-        <Link className="btn-small" href={`/classes/${s.id}`} aria-label={`${t("book")}: ${s.title}, ${when}`}>
+        <Link className="btn-small" href={sessionHref(s.id, from)} aria-label={`${t("book")}: ${s.title}, ${when}`}>
           {t("book")}
         </Link>
       )}
     </div>
   );
+}
+
+/** A class page link that remembers the timetable view it came from, so Back returns to the same week. */
+export function sessionHref(id: string, from?: string) {
+  return from ? `/classes/${id}?from=${encodeURIComponent(from)}` : `/classes/${id}`;
 }
