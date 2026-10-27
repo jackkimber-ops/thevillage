@@ -27,13 +27,24 @@ test("timetable can't go back before this week or beyond the booking window", as
   await page.goto("/classes");
   await expect(page.getByRole("link", { name: "Previous week" })).toHaveCount(0);
   for (let i = 0; i < 6; i++) {
-    const next = page.getByRole("link", { name: "Next week" });
+    const next = page.getByRole("link", { name: "Next week", exact: true });
     if ((await next.count()) === 0) break;
     const label = await page.locator(".stepper strong").textContent();
     await next.click();
     await expect(page.locator(".stepper strong")).not.toHaveText(label!);
   }
-  await expect(page.getByRole("link", { name: "Next week" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Next week", exact: true })).toHaveCount(0);
+});
+
+test("list shows one calendar week, with See next week at the bottom", async ({ page }) => {
+  await page.goto("/classes");
+  const thisWeek = await page.locator(".stepper strong").textContent();
+  await page.getByRole("link", { name: "See next week" }).click();
+  await expect(page.locator(".stepper strong")).not.toHaveText(thisWeek!);
+  const date = new URL(page.url()).searchParams.get("date")!;
+  expect(new Date(`${date}T00:00:00Z`).getUTCDay()).toBe(1); // a Monday
+  await expect(page.locator(".day-label").first()).toHaveText(/^\w+ \d+ \w+$/);
+  await expect(page.getByRole("link", { name: "Previous week" })).toHaveCount(1);
 });
 
 test("week and month views", async ({ page }) => {

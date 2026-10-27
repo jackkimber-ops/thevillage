@@ -25,7 +25,7 @@ async function fillDetails(page: Page, name = "Lan Pham") {
 
 async function nextWeek(page: Page) {
   const label = await page.locator(".stepper strong").textContent();
-  await page.getByRole("link", { name: "Next week" }).click();
+  await page.getByRole("link", { name: "Next week", exact: true }).click();
   await expect(page.locator(".stepper strong")).not.toHaveText(label!);
 }
 
