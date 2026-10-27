@@ -16,7 +16,7 @@
 **Where things stand:** everything below is merged to `main` and live (production serves `main`). The build is ahead of the plan; what's left is owner content, the minimum sign-ups feature, and final go-live checks. Opening day is **14 Nov**; the first sessions are on **16 Nov**.
 
 **Done 27 Oct:**
-- **Changes #1–#8 agreed** (see `docs/change-list.md`) and built: #3 "✓ Booked" instead of Book (jackkimber-ops/thevillage#12); #4 List view Monday–Sunday with "See next week" (#13); #5 a badge per class type, one session type per class (#14); #6 "Coming up" shows the next 3 bookable sessions in the booking window (#15); #7 map picture on the home page and website (#16); #8 sage backdrop around the booking app on computers (#18).
+- **Changes #1–#8 agreed** (see `docs/change-list.md`) and built: #3 "✓ Booked" instead of Book (jackkimber-ops/thevillage#12); #4 List view Monday–Sunday with "See next week" (#13); #5 a badge per class type, one session type per class (#14); #6 "Coming up" shows the next 3 bookable sessions in the booking window (#15); #7 map picture on the home page and website (#16), then #7b a closer Thảo Điền crop (#21) and finally **#7c Jack's zoomed-out Google Maps view** (#22: The Village centred, river both sides, Xuân Thủy, Ga Thảo Điền, Cầu Sài Gòn, MM Mega Market; image `brand/map-the-village.jpg` in both apps, 741×372, "Map data © Google" credit, opens Google Maps). An illustrated map was tried (Claude Design canvas and a hand-drawn SVG) and dropped: it didn't work; the canvas was deleted; #8 sage backdrop around the booking app on computers (#18).
 - **Fixes:** Open Play was hidden in Week/Month when a List filter was on (#15); a staff browser test failed depending on the time of day (#12); website Classes card listed old placeholder classes (#17).
 - **Extend pack** button for managers on a customer's page (#19): the agreed rule existed in the database but had no button.
 - **Database:** migration `20261027000001_timetable_type_pictures` and `supabase/data/20261027-class-types.sql` (Core & Cuddle, Mum & Bub Yoga, Wiggle & Wonder types with badges; packs cover them) applied to **staging and production**.
@@ -35,12 +35,12 @@
 4. Class descriptions, "suits" and "bring" for each class (managers can type descriptions in Catalog; suits/bring via Claude for now).
 5. Oanh's and Ánh's emails (instructor accounts, then link their sessions).
 6. Vietnamese wording check (all screens and emails are drafts).
-7. A neighbourhood map screenshot **as a file** (Jack wants a wider Thảo Điền map instead of the street close-up; the chat image wasn't available as a file).
+7. Optional: the same zoomed-out map captured larger (the current screenshot is 741 px wide, so it can look slightly soft on sharp laptop screens). Send it as a file: images pasted into the chat aren't always available as files.
 8. Studio photo; WhatsApp/Zalo number; whether the contact email switches to hello@thevillagesaigon.com; website title/hero copy still says "Pilates and movement"; December timetable.
 
 **Next for Claude:**
 1. Minimum sign-ups (about half a day) once decided; it becomes the next change-list number.
-2. Load content as it arrives; swap in the neighbourhood map.
+2. Load content as it arrives.
 3. Final check on production (booking, cancellation, pack sale, check-in, every email, with test accounts, then clean up) and a go-live checklist.
 4. DMARC to `p=quarantine` at Namecheap (owner) once an email sent from hello@ is confirmed to land in the inbox.
 5. Remove the 28 Oct test class and booking from staging.
