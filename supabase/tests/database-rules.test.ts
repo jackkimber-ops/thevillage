@@ -62,6 +62,22 @@ describe("customers", () => {
       expect(c).toEqual({ user_id: userId, preferred_contact: "zalo", phone: "+84905556666" });
     }));
 
+  it("logging in links a guest's customer record by email straight away (not by phone)", () =>
+    inTx(async (db) => {
+      const guest = await db.customer({ login: false, email: "linh@example.com", phone: "+84907778888" });
+      const userId = "22222222-2222-4222-8222-222222222222";
+      await db.su("insert into auth.users (id, email) values ($1, 'linh@example.com')", [userId]);
+      const [r] = await db.as({ id: userId, email: "Linh@Example.com" }, "select public.link_my_customer() as id");
+      expect(r.id).toBe(guest.customerId);
+      const [again] = await db.as({ id: userId, email: "linh@example.com" }, "select public.link_my_customer() as id");
+      expect(again.id).toBe(guest.customerId);
+      // Someone else with only the same phone is not linked.
+      const other = "33333333-3333-4333-8333-333333333333";
+      await db.su("insert into auth.users (id, email) values ($1, 'other@example.com')", [other]);
+      const [none] = await db.as({ id: other, email: "other@example.com" }, "select public.link_my_customer() as id");
+      expect(none.id).toBeNull();
+    }));
+
   it("anonymising keeps bookings, ledger and payments but clears the person", () =>
     inTx(async (db) => {
       const manager = await db.staff("manager");

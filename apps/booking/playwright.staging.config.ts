@@ -3,6 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 // The full check against staging: npm run check:staging (see e2e-staging/README.md).
 export default defineConfig({
   testDir: "./e2e-staging",
+  globalSetup: "./e2e-staging/global-setup.ts",
   timeout: 60_000,
   expect: { timeout: 15_000 },
   workers: 2,

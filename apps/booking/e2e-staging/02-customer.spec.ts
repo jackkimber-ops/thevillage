@@ -34,7 +34,7 @@ async function guestForm(page: Page, sessionId: string, o: { name: string; phone
   await page.getByRole("button", { name: "WhatsApp" }).click();
   await page.getByLabel("Email").fill(o.email);
   if (o.child) {
-    await page.getByText(/Add your child/).click();
+    if ((await page.getByLabel("Child's name").count()) === 0) await page.getByText(/Add your child/).click();
     await page.getByLabel("Child's name").first().fill(o.child);
     await page.getByLabel(/Month and year of birth/).first().fill("2025-03");
   }
@@ -59,9 +59,10 @@ test("guest books a class with a child: confirmed straight away, pay on the day"
 });
 
 test("a guest can't hold a second unpaid booking (same email, or same phone)", async ({ page }) => {
-  await guestForm(page, openPlay, guest);
+  await guestForm(page, openPlay, { ...guest, child: "Mi" });
   await expect(page.locator(".error-text")).toContainText("You already have a booking to pay on the day");
-  await guestForm(page, openPlay, { ...guest, email: qaEmail("guest2") });
+  await expect(page.getByLabel("Your name")).toHaveValue(guest.name); // nothing typed is lost
+  await guestForm(page, openPlay, { ...guest, email: qaEmail("guest2"), child: "Mi" });
   await expect(page.locator(".error-text")).toContainText("You already have a booking to pay on the day");
   await shot(page, "guest-second-refused");
 });
