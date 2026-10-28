@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { Notice } from "@/components/staff/Notice";
 import { EditCustomerForm } from "@/components/staff/EditCustomerForm";
 import { SellPackForm } from "@/components/staff/SellPackForm";
-import { staffApi } from "@/lib/data";
-import { extendPackAction, removeChildAction, restoreCreditAction, saveChildAction, setCustomerActiveAction, staffCancelBookingAction } from "@/lib/actions/staff";
+import { data, staffApi } from "@/lib/data";
+import { extendPackAction, recordPaymentAction, removeChildAction, restoreCreditAction, saveChildAction, setCustomerActiveAction, staffCancelBookingAction } from "@/lib/actions/staff";
 import { formatVnd } from "@/lib/money";
 import { requireStaff } from "@/lib/staff-guard";
 import { addDays, formatDayShort, formatTime, vnDateKey } from "@/lib/time";
@@ -20,7 +20,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
   const api = staffApi();
   const c = await api.customer(id);
   if (!c) notFound();
-  const packs = me.role === "manager" ? await api.packTypes() : [];
+  const [packs, prices] = await Promise.all([me.role === "manager" ? api.packTypes() : Promise.resolve([]), data().dropInPrices()]);
   const today = vnDateKey(new Date());
   const back = `/staff/customers/${id}`;
   const upcoming = c.bookings.filter((b) => b.status === "booked" && new Date(b.startsAt) > new Date());
@@ -84,6 +84,12 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
                 )}
               </div>
             ))}
+            {!c.deactivated && (
+              <p className="muted small" style={{ margin: "10px 0 0" }}>
+                Coming for one class? Use <strong>Book in</strong>: it&apos;s pay on the day
+                {prices.classVnd ? ` (${formatVnd(prices.classVnd, "en")})` : ""}, and you record the payment at check-in, or below if they pay before.
+              </p>
+            )}
             {me.role === "manager" && (
               <details open={Boolean(sp.sell)} style={{ marginTop: 12 }}>
                 <summary className="sbtn2" style={{ display: "inline-flex", listStyle: "none" }}>Sell a pack</summary>
@@ -154,13 +160,29 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
                   <Link href={`/staff/sessions/${b.sessionId}`}><strong>{b.title}</strong></Link> · {formatDayShort(vnDateKey(b.startsAt), "en")} {formatTime(b.startsAt, "en")}
                   {b.childNames.length > 0 && ` · + ${b.childNames.join(", ")}`}
                   <br />
-                  {b.freeTrial ? <span className="tag tag-new">Free trial</span> : b.unpaid && !b.paid ? <span className="tag tag-pay">Pay on the day · {formatVnd(b.amountDueVnd, "en")}</span> : <span className="muted small">{b.credits} credit · {b.packName}</span>}
+                  {b.freeTrial ? <span className="tag tag-new">Free trial</span> : b.unpaid && !b.paid ? <span className="tag tag-pay">Pay on the day · {formatVnd(b.amountDueVnd, "en")}</span> : b.unpaid && b.paid ? <span className="tag tag-ok">Paid · {formatVnd(b.amountDueVnd, "en")}</span> : <span className="muted small">{b.credits} credit · {b.packName}</span>}
                 </span>
-                <form action={staffCancelBookingAction}>
-                  <input type="hidden" name="bookingId" value={b.id} />
-                  <input type="hidden" name="back" value={back} />
-                  <button className="sbtn2 sbtn-sm" type="submit">Cancel</button>
-                </form>
+                <div className="staff-actions">
+                  {/* Paid before the day (e.g. by transfer): managers record it here instead of at check-in. */}
+                  {me.role === "manager" && b.unpaid && !b.paid && !b.freeTrial && (
+                    <form action={recordPaymentAction} className="staff-actions">
+                      <input type="hidden" name="customerId" value={c.customerId} />
+                      <input type="hidden" name="bookingId" value={b.id} />
+                      <input type="hidden" name="amount" value={b.amountDueVnd} />
+                      <input type="hidden" name="paidFor" value="drop_in" />
+                      <input type="hidden" name="back" value={back} />
+                      <select name="method" aria-label={`Payment method for ${b.title}`} className="small-select">
+                        <option value="qr">QR</option><option value="transfer">Transfer</option><option value="cash">Cash</option>
+                      </select>
+                      <button className="sbtn sbtn-sm" type="submit">Record {formatVnd(b.amountDueVnd, "en")}</button>
+                    </form>
+                  )}
+                  <form action={staffCancelBookingAction}>
+                    <input type="hidden" name="bookingId" value={b.id} />
+                    <input type="hidden" name="back" value={back} />
+                    <button className="sbtn2 sbtn-sm" type="submit">Cancel</button>
+                  </form>
+                </div>
               </div>
             ))}
           </section>
