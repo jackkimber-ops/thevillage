@@ -86,8 +86,9 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
             ))}
             {!c.deactivated && (
               <p className="muted small" style={{ margin: "10px 0 0" }}>
-                Coming for one class? Use <strong>Book in</strong>: it&apos;s pay on the day
-                {prices.classVnd ? ` (${formatVnd(prices.classVnd, "en")})` : ""}, and you record the payment at check-in, or below if they pay before.
+                Coming for one class? There&apos;s no pack to sell: tap <strong>Book in</strong> and pick the class. It&apos;s pay on the day
+                {prices.classVnd ? ` (${formatVnd(prices.classVnd, "en")})` : ""}. Record the payment at check-in, or, if they pay before the day,
+                with <strong>Record</strong> next to the booking under Upcoming bookings.
               </p>
             )}
             {me.role === "manager" && (

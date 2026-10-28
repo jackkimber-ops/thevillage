@@ -4,6 +4,8 @@ const PORT = 3100;
 
 export default defineConfig({
   testDir: "./e2e",
+  // On GitHub, failures also show as annotations on the check (readable without opening the logs).
+  reporter: process.env.CI ? [["github"], ["list"]] : "list",
   use: { baseURL: `http://localhost:${PORT}` },
   projects: [
     { name: "phone", use: { ...devices["Pixel 7"] }, testIgnore: /staff\.spec/ },
