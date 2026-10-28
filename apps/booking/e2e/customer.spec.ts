@@ -98,7 +98,9 @@ test("hire the studio writes the WhatsApp message", async ({ page }) => {
 
 test("Back from a class returns to the week you were looking at", async ({ page }) => {
   await page.goto("/classes");
+  const thisWeek = await page.locator(".stepper strong").textContent();
   await page.getByRole("link", { name: "See next week" }).click();
+  await expect(page.locator(".stepper strong")).not.toHaveText(thisWeek!); // wait for next week to load
   const week = await page.locator(".stepper strong").textContent();
   await page.locator(".session-card", { hasNot: page.locator(".full-label") }).first().getByRole("link").click();
   await page.getByRole("link", { name: "Back" }).click();
