@@ -26,4 +26,4 @@ What it does:
 - **04 system**: every email sent, scheduled jobs healthy, the credit ledger adds up, private tables closed to logged-out visitors.
 
 Test people use Resend's test inbox (`delivered+qa-…@resend.dev`), so nobody real is emailed.
-Everything it creates is called "QA …" and is removed before and after each run (`cleanup.sql`). While it runs, studio alert emails go to Resend's test inbox; afterwards they go back to the studio mailbox (`alert_email` empty).
+Everything it creates is called "QA …" and is removed before and after each run (`cleanup.sql`). While it runs, studio alert emails go to Resend's test inbox; afterwards the address in use before the run is put back (`hello@thevillagesaigon.com` since 28 Oct).
