@@ -315,7 +315,7 @@ test("a one-class drop-in: Book in from the profile, then record a payment made 
   await page.getByLabel("Name", { exact: true }).fill(name);
   await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
   await page.getByRole("button", { name: "Save customer" }).click();
-  await expect(page.getByText("Coming for one class? Use Book in: it's pay on the day (450,000 ₫)")).toBeVisible();
+  await expect(page.getByText("Coming for one class? There's no pack to sell: tap Book in and pick the class. It's pay on the day (450,000 ₫)")).toBeVisible();
   await page.getByRole("link", { name: "Book in", exact: true }).click();
   const session = page.getByLabel("Session");
   await session.selectOption((await session.locator("option", { hasText: /Pilates Flow/ }).nth(4).getAttribute("value"))!);
