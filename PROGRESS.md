@@ -22,7 +22,7 @@
   - 71 of 71 checks pass on the current code
 - **Team retest:** staging is clean. Message drafted for Jack to send to Phuong, Caroline and Rob (fixes from their feedback, plus new features to try).
 - **Company mailbox on phones:** Namecheap Private Email works in iPhone Mail, Gmail or Outlook (IMAP `mail.privateemail.com` 993 SSL, SMTP 465 SSL), or webmail at privateemail.com. It's one shared login, so share the password privately.
-- **Watch:** one GitHub check run of the booking browser tests failed once and passed on re-run (PR #30, test-only change). CI logs can't be read from this session, so it's unknown which test flickered. If it recurs, ask Jack for the log.
+- **Flaky CI test fixed** (#32): "Back returns to the week" read the week label before the next week had loaded, so on GitHub's slower runners it sometimes failed (seen on #30 and #32). It now waits. CI also reports browser test failures as GitHub annotations, which can be read through the API: CI logs themselves can't be opened from this session.
 
 ## Update (27 Oct, evening): first team test, full check, missing features
 
