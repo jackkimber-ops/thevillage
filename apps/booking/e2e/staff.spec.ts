@@ -307,3 +307,23 @@ test("team feedback 27 Oct: child needs a birth month, full customer list with c
   await expect(page.getByText(/customers?, A–Z/)).toBeVisible();
   await expect(page.locator("tr", { hasText: name })).toContainText("10");
 });
+
+test("a one-class drop-in: Book in from the profile, then record a payment made before the day (change #14)", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  const name = `Drop In ${uid()}`;
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name", { exact: true }).fill(name);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Coming for one class? Use Book in: it's pay on the day (450,000 ₫)")).toBeVisible();
+  await page.getByRole("link", { name: "Book in", exact: true }).click();
+  const session = page.getByLabel("Session");
+  await session.selectOption((await session.locator("option", { hasText: /Pilates Flow/ }).nth(4).getAttribute("value"))!);
+  await page.getByRole("button", { name: "Book", exact: true }).click();
+  await expect(page.getByText("Booked in.")).toBeVisible();
+  const row = page.locator("section", { has: page.getByRole("heading", { name: "upcoming bookings" }) }).locator(".list-row").first();
+  await expect(row).toContainText("Pay on the day · 450,000 ₫");
+  await row.getByLabel(/Payment method/).selectOption("transfer");
+  await row.getByRole("button", { name: "Record 450,000 ₫" }).click();
+  await expect(page.locator("section", { has: page.getByRole("heading", { name: "upcoming bookings" }) }).locator(".list-row").first()).toContainText("Paid · 450,000 ₫");
+});
