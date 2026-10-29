@@ -119,10 +119,28 @@ test("add a customer, sell a pack, book them in and check them in", async ({ pag
   await page.getByRole("button", { name: "Book", exact: true }).click();
   await expect(packs.locator(".list-row", { hasText: "10-class pack" })).toContainText("9 of 10 left");
 
+  // Before the day: only Cancel booking (team feedback 29 Oct), and the credits show when choosing the customer.
   await page.goto(`/staff/sessions/${option}/check-in`);
-  const row = page.locator(".checkin-row", { hasText: name });
-  await row.getByRole("button", { name: "Here" }).click();
-  await expect(page.locator(".checkin-row", { hasText: name }).getByRole("button", { name: "Here" })).toHaveAttribute("aria-pressed", "true");
+  const future = page.locator(".checkin-row", { hasText: name });
+  await expect(future.getByRole("button", { name: "Cancel booking" })).toBeVisible();
+  await expect(future.getByRole("button", { name: /Here|No-show/ })).toHaveCount(0);
+  await expect(page.getByText("Here and No-show appear on the day of the session.")).toBeVisible();
+
+  // On the day: the class going on now.
+  await page.goto(`/staff/book?session=demo-now`);
+  await page.getByLabel("Customer: name, phone or email").fill(name);
+  await page.getByRole("button", { name }).click();
+  await expect(page.getByText(/10-class pack: 9 credits left/)).toBeVisible();
+  await page.getByLabel(/Override booking times/).check();
+  await page.getByRole("button", { name: "Book", exact: true }).click();
+  await expect(page.getByText("Booked in.")).toBeVisible();
+  const row = () => page.locator(".checkin-row", { hasText: name });
+  await row().getByRole("button", { name: "Here" }).click();
+  await expect(row().getByRole("button", { name: /Here/ })).toHaveAttribute("aria-pressed", "true");
+  await expect(row().getByRole("button", { name: /Here/ })).toHaveText("Here ✓ · undo");
+  await row().getByRole("button", { name: /Here/ }).click(); // undo
+  await expect(row().getByRole("button", { name: "Here" })).toHaveAttribute("aria-pressed", "false");
+  await expect(row().getByRole("button", { name: /Late cancel|Cancel booking/ })).toBeVisible();
 });
 
 test("instructors: their sessions, no catalog, can't sell packs", async ({ page }) => {
@@ -326,4 +344,41 @@ test("a one-class drop-in: Book in from the profile, then record a payment made 
   await row.getByLabel(/Payment method/).selectOption("transfer");
   await row.getByRole("button", { name: "Record 450,000 ₫" }).click();
   await expect(page.locator("section", { has: page.getByRole("heading", { name: "upcoming bookings" }) }).locator(".list-row").first()).toContainText("Paid · 450,000 ₫");
+});
+
+test("team feedback 29 Oct: amounts like 500k, private hire balance, credits in search, cancel returns to the week", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  const d = new Date(Date.now() + 15 * 86400000).toISOString().slice(0, 10);
+  await page.goto(`/staff/sessions/new?date=${d}`);
+  await page.getByLabel("Session type").selectOption({ label: "Private hire" });
+  await page.getByLabel("Title").fill(`Party ${uid()}`);
+  await page.getByLabel("Start").fill("14:00");
+  await page.getByRole("button", { name: "Create" }).click();
+  await page.getByLabel("Agreed price (VND)").fill("500k");
+  await page.getByRole("button", { name: "Save price" }).click();
+  await expect(page.getByText("Agreed price saved.")).toBeVisible();
+  await page.getByLabel("Amount paid (VND)").fill("-20");
+  await page.getByRole("button", { name: "Record payment" }).click();
+  await expect(page.getByText(/Enter the amount in VND/)).toBeVisible();
+  await page.getByLabel("Amount paid (VND)").fill("400k");
+  await page.getByRole("button", { name: "Record payment" }).click();
+  await expect(page.getByText(/Agreed 500,000 ₫ · paid 400,000 ₫ · still to pay 100,000 ₫/)).toBeVisible();
+
+  // Cancelling a session goes back to that session's week, not today.
+  await page.getByText("Cancel session for everyone").click();
+  await page.getByLabel("Reason").fill("Test");
+  await page.getByRole("button", { name: "Cancel this session" }).click();
+  await expect(page).toHaveURL(new RegExp(`date=${d}`));
+
+  const name = `Credit Search ${uid()}`;
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name", { exact: true }).fill(name);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await page.getByText("Sell a pack").click();
+  await page.getByLabel("Pack", { exact: true }).selectOption({ index: 2 });
+  await page.getByRole("button", { name: "Sell and record payment" }).click();
+  await page.goto(`/staff/customers?q=${encodeURIComponent(name)}`);
+  await expect(page.locator("thead")).toContainText("Credits left");
+  await expect(page.locator("tr", { hasText: name })).toContainText("20"); // the 20-class pack
 });

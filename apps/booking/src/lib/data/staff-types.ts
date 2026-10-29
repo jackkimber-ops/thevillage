@@ -67,9 +67,10 @@ export interface CustomerHit {
   phone: string | null;
   email: string | null;
   deactivated: boolean;
+  creditsLeft: number | null; // on packs that haven't ended; null when this staff member can't see their packs
 }
 
-export interface CustomerProfile extends CustomerHit {
+export interface CustomerProfile extends Omit<CustomerHit, "creditsLeft"> {
   preferredContact: ContactMethod;
   language: "en" | "vi";
   needsReview: boolean;
@@ -89,7 +90,6 @@ export interface CustomerProfile extends CustomerHit {
 }
 
 export interface CustomerListRow extends CustomerHit {
-  creditsLeft: number; // on packs that haven't ended
   createdAt: string;
 }
 
@@ -156,8 +156,9 @@ export interface StaffApi {
   bookCustomer(d: { sessionId: string; customerId: string; childIds: string[]; unnamedChildren: number; parents: number; freeTrial: boolean; override: boolean }): Promise<string>;
   sellPack(d: { customerId: string; packTypeId: string; method: "qr" | "transfer" | "cash"; validFrom: string | null }): Promise<string>;
   recordPayment(d: { customerId: string | null; amountVnd: number; method: "qr" | "transfer" | "cash"; paidFor: "drop_in" | "private_hire" | "workshop" | "other"; bookingId: string | null; sessionId?: string | null; note: string | null }): Promise<void>;
-  /** Payments recorded against a session (private hire). Managers only. */
-  sessionPayments(sessionId: string): Promise<Array<{ amountVnd: number; method: "qr" | "transfer" | "cash"; note: string | null; recordedAt: string }>>;
+  /** A private hire's agreed price and the payments recorded against it. Managers only. */
+  hirePayments(sessionId: string): Promise<{ agreedVnd: number | null; payments: Array<{ amountVnd: number; method: "qr" | "transfer" | "cash"; note: string | null; recordedAt: string }> }>;
+  setHirePrice(sessionId: string, priceVnd: number | null): Promise<void>;
 
   // S21/S22: change a customer's details and children; managers deactivate (no new bookings) and reactivate.
   updateCustomer(id: string, d: { fullName: string; phone: string; email: string | null; preferredContact: ContactMethod; language: "en" | "vi" }): Promise<void>;

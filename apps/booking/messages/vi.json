@@ -108,7 +108,8 @@
     "terms": "Điều khoản đặt chỗ và huỷ",
     "myDetails": "thông tin của tôi",
     "children": "Con",
-    "logOut": "Đăng xuất"
+    "logOut": "Đăng xuất",
+    "editDetails": "Sửa thông tin của tôi"
   },
   "policies": {
     "privacyTitle": "chính sách bảo mật",
@@ -166,7 +167,11 @@
     "optional": "không bắt buộc",
     "addChildHint": "Tên và tháng/năm sinh",
     "save": "Lưu và xem lớp học",
-    "changeLater": "Bạn có thể thay đổi bất cứ lúc nào trong menu."
+    "changeLater": "Bạn có thể thay đổi bất cứ lúc nào trong menu.",
+    "editTitle": "thông tin của tôi",
+    "editIntro": "Email là thông tin đăng nhập của bạn: để đổi email, hãy nhắn cho chúng tôi.",
+    "saveChanges": "Lưu thay đổi",
+    "saved": "Đã lưu thông tin."
   },
   "book": {
     "placesLeft": "còn {n} chỗ",

@@ -7,16 +7,21 @@ import { ErrorText } from "./ErrorText";
 import { ContactChoice } from "./ContactChoice";
 import { keepValues } from "@/lib/keep-values";
 
-export function DetailsForm({ email, next }: { email: string; next: string }) {
+export function DetailsForm({ email, next, initial }: {
+  email: string;
+  next: string;
+  /** Editing from the menu: their current details, filled in. */
+  initial?: { fullName: string; phone: string | null; preferredContact: "whatsapp" | "zalo" | "call" };
+}) {
   const t = useTranslations("details");
   const [state, action, pending] = useActionState(saveDetailsAction, undefined);
   const [addChild, setAddChild] = useState(false);
   return (
     <form onSubmit={keepValues(action)} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <input type="hidden" name="next" value={next} />
-      <div className="field"><label htmlFor="fullName">{t("name")}</label><input id="fullName" name="fullName" autoComplete="name" required /></div>
-      <div className="field"><label htmlFor="phone">{t("mobile")}</label><input id="phone" name="phone" type="tel" autoComplete="tel" placeholder="090 123 4567" required /></div>
-      <ContactChoice />
+      <div className="field"><label htmlFor="fullName">{t("name")}</label><input id="fullName" name="fullName" autoComplete="name" defaultValue={initial?.fullName} required /></div>
+      <div className="field"><label htmlFor="phone">{t("mobile")}</label><input id="phone" name="phone" type="tel" autoComplete="tel" placeholder="090 123 4567" defaultValue={initial?.phone ?? undefined} required /></div>
+      <ContactChoice initial={initial?.preferredContact} />
       <div className="field"><label htmlFor="em">{t("email")}</label><input id="em" value={email} readOnly className="readonly" /></div>
       {addChild ? (
         <fieldset className="card child-fields">
@@ -31,8 +36,8 @@ export function DetailsForm({ email, next }: { email: string; next: string }) {
         </button>
       )}
       <ErrorText code={state?.error} />
-      <button className="btn" type="submit" disabled={pending}>{t("save")}</button>
-      <p className="muted small" style={{ textAlign: "center", margin: 0 }}>{t("changeLater")}</p>
+      <button className="btn" type="submit" disabled={pending}>{initial ? t("saveChanges") : t("save")}</button>
+      {!initial && <p className="muted small" style={{ textAlign: "center", margin: 0 }}>{t("changeLater")}</p>}
     </form>
   );
 }

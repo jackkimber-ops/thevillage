@@ -189,3 +189,27 @@ describe("customer list (team feedback 27 Oct)", () => {
       expect(theirs.map((r) => r.full_name)).not.toContain("Aaa List Person");
     }));
 });
+
+describe("team feedback 29 Oct", () => {
+  it("managers set a private hire's agreed price; others can't, and only on private hire", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const instructor = await db.staff("instructor");
+      const hire = await db.session({ type: TYPES.privateHire, title: "Birthday" });
+      await db.as(manager, "select public.set_hire_price($1, 500000)", [hire]);
+      const [s] = await db.su("select price_vnd::int from public.sessions where id = $1", [hire]);
+      expect(s.price_vnd).toBe(500000);
+      expect(await db.fails(instructor, "select public.set_hire_price($1, 400000)", [hire])).toBe("managers_only");
+      expect(await db.fails(manager, "select public.set_hire_price($1, -5)", [hire])).toBe("invalid_amount");
+      expect(await db.fails(manager, "select public.set_hire_price($1, 400000)", [await db.session()])).toBe("session_not_found");
+    }));
+
+  it("search shows credits left", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer({ name: "Zed Searchable" });
+      await db.sellPack(manager, c.customerId);
+      const [hit] = await db.as(manager, "select credits_left from public.search_customers('zed search')");
+      expect(hit.credits_left).toBe(10);
+    }));
+});

@@ -62,13 +62,14 @@ export default async function Customers({ searchParams }: PageProps<"/staff/cust
       {hits.length > 0 && (
         <div className="card" style={{ overflowX: "auto" }}>
           <table>
-            <thead><tr><th>Name</th><th>Phone</th><th>Email</th></tr></thead>
+            <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th style={{ textAlign: "right" }}>Credits left</th></tr></thead>
             <tbody>
               {hits.map((h) => (
                 <tr key={h.customerId}>
                   <td><Link href={`/staff/customers/${h.customerId}`}>{h.fullName}</Link>{h.deactivated && <span className="tag tag-warn" style={{ marginLeft: 6 }}>Deactivated</span>}</td>
                   <td>{h.phone}</td>
                   <td>{h.email}</td>
+                  <td style={{ textAlign: "right" }}>{h.creditsLeft || "–"}</td>
                 </tr>
               ))}
             </tbody>

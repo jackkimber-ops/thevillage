@@ -1,5 +1,5 @@
 import type { Page, TestInfo } from "@playwright/test";
-import { expect, pageIsHealthy, qaEmail, qaPhone, qaSession, QA_INSTRUCTOR, shot, sql, staffLogin, test, uid, vnDate, sellTenPack } from "./helpers";
+import { expect, pageIsHealthy, qaEmail, qaPhone, qaSession, qaTodaySession, QA_INSTRUCTOR, shot, sql, staffLogin, test, uid, vnDate, sellTenPack } from "./helpers";
 
 // The staff app as a manager and as an instructor, on a phone and a computer, against staging.
 test.describe.configure({ mode: "serial" });
@@ -27,6 +27,7 @@ async function bookIn(page: Page, sessionId: string, customerName: string, o: { 
   await page.getByLabel("Customer: name, phone or email").fill(customerName);
   await page.getByRole("button", { name: customerName }).click();
   if (o.freeTrial) await page.getByLabel("Free trial (one per customer)").check();
+  await page.getByLabel(/Override booking times/).check(); // "QA Today" may be within the hour
   await page.getByRole("button", { name: "Book", exact: true }).click();
   await expect(page.getByText(/Booked in\./)).toBeVisible();
 }
@@ -115,19 +116,26 @@ test("manager: add a customer with a child, find them by local phone, sell a pac
   await page.goto(`/staff/customers/${id}`);
   await sellTenPack(page);
 
-  const session = qaSession({ title: `QA Book In ${uid()}`, start: `${vnDate(dayOffset(info) + 1)} 07:00` });
-  await bookIn(page, session, name);
-  const [b] = sql<{ credits: number; unpaid: boolean }>(`select credits, unpaid from bookings where session_id = '${session}' and status = 'booked'`);
+  const future = qaSession({ title: `QA Book In ${uid()}`, start: `${vnDate(dayOffset(info) + 1)} 07:00` });
+  await bookIn(page, future, name);
+  const [b] = sql<{ credits: number; unpaid: boolean }>(`select credits, unpaid from bookings where session_id = '${future}' and status = 'booked'`);
   expect(b).toEqual({ credits: 1, unpaid: false });
 
+  // Weeks ahead: no Here / No-show, only Cancel booking.
+  await page.goto(`/staff/sessions/${future}/check-in`);
+  await expect(page.locator(".checkin-row", { hasText: name }).getByRole("button", { name: /Here|No-show/ })).toHaveCount(0);
+  await expect(page.locator(".checkin-row", { hasText: name }).getByRole("button", { name: "Cancel booking" })).toBeVisible();
+  // On the day: check in.
+  const session = qaTodaySession();
+  await bookIn(page, session, name);
   await page.goto(`/staff/sessions/${session}/check-in`);
   const row = page.locator(".checkin-row", { hasText: name });
   await row.getByRole("button", { name: "Here" }).click();
-  await expect(page.locator(".checkin-row", { hasText: name }).getByRole("button", { name: "Here" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator(".checkin-row", { hasText: name }).getByRole("button", { name: /Here/ })).toHaveAttribute("aria-pressed", "true");
   await shot(page, "staff-check-in");
 });
 
-test("manager: unpaid drop-in is paid at check-in; a no-show credit can be restored", async ({ page }, info) => {
+test("manager: unpaid drop-in is paid at check-in; a no-show credit can be restored", async ({ page }) => {
   await staffLogin(page);
   const payer = `QA Payer ${uid()}`;
   await addCustomer(page, { name: payer, phone: qaPhone() });
@@ -135,7 +143,7 @@ test("manager: unpaid drop-in is paid at check-in; a no-show credit can be resto
   await addCustomer(page, { name: regular, phone: qaPhone() });
   await sellTenPack(page);
 
-  const session = qaSession({ title: `QA Pay ${uid()}`, start: `${vnDate(dayOffset(info) + 1)} 08:00` });
+  const session = qaTodaySession();
   await bookIn(page, session, payer);
   await bookIn(page, session, regular);
   await page.goto(`/staff/sessions/${session}/check-in`);
@@ -236,15 +244,8 @@ test("manager: edit details and children, deactivate and reactivate, private hir
   expect(p).toEqual({ paid_for: "private_hire", amount_vnd: "1500000" });
 });
 
-function instructorOwnSession(info: TestInfo) {
-  const [ins] = sql<{ id: string }>(`select id from auth.users where email = '${QA_INSTRUCTOR}'`);
-  const id = qaSession({ title: `QA Instructor Class ${uid()}`, start: `${vnDate(dayOffset(info) + 2)} 09:00` });
-  sql(`update sessions set instructor_id = '${ins.id}' where id = '${id}'`);
-  return id;
-}
-
-test("instructor: own sessions, check-in and book someone in; no catalog, packs, payments or restores", async ({ page }, info) => {
-  const session = instructorOwnSession(info);
+test("instructor: own sessions, check-in and book someone in; no catalog, packs, payments or restores", async ({ page }) => {
+  const session = qaTodaySession(); // taught by the QA instructor
   await staffLogin(page, QA_INSTRUCTOR);
   await page.goto("/staff/today");
   await pageIsHealthy(page);
@@ -262,7 +263,7 @@ test("instructor: own sessions, check-in and book someone in; no catalog, packs,
   await expect(row).toContainText("Pay on the day");
   await expect(row.getByRole("button", { name: /^Record/ })).toHaveCount(0);
   await row.getByRole("button", { name: "Here" }).click();
-  await expect(page.locator(".checkin-row", { hasText: name }).getByRole("button", { name: "Here" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator(".checkin-row", { hasText: name }).getByRole("button", { name: /Here/ })).toHaveAttribute("aria-pressed", "true");
 });
 
 test("instructor can't change someone else's session (database refuses, not just the screen)", async ({ page }, info) => {

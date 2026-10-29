@@ -167,8 +167,8 @@ export const supabaseStaff: StaffApi = {
   async searchCustomers(q) {
     const { data, error } = await (await createClient()).rpc("search_customers", { p_query: q });
     check(error);
-    return (data as Array<{ customer_id: string; full_name: string; phone: string | null; email: string | null; deactivated: boolean }>).map((r) => ({
-      customerId: r.customer_id, fullName: r.full_name, phone: r.phone, email: r.email, deactivated: r.deactivated,
+    return (data as Array<{ customer_id: string; full_name: string; phone: string | null; email: string | null; deactivated: boolean; credits_left: number | null }>).map((r) => ({
+      customerId: r.customer_id, fullName: r.full_name, phone: r.phone, email: r.email, deactivated: r.deactivated, creditsLeft: r.credits_left,
     }));
   },
 
@@ -266,11 +266,21 @@ export const supabaseStaff: StaffApi = {
     });
     check(error);
   },
-  async sessionPayments(sessionId) {
-    const { data, error } = await (await createClient())
-      .from("payments").select("amount_vnd, method, note, recorded_at").eq("session_id", sessionId).order("recorded_at");
+  async hirePayments(sessionId) {
+    const supabase = await createClient();
+    const [{ data, error }, { data: s }] = await Promise.all([
+      supabase.from("payments").select("amount_vnd, method, note, recorded_at").eq("session_id", sessionId).order("recorded_at"),
+      supabase.from("sessions").select("price_vnd").eq("id", sessionId).maybeSingle(),
+    ]);
     check(error);
-    return (data ?? []).map((p) => ({ amountVnd: Number(p.amount_vnd), method: p.method, note: p.note, recordedAt: p.recorded_at }));
+    return {
+      agreedVnd: s?.price_vnd == null ? null : Number(s.price_vnd),
+      payments: (data ?? []).map((p) => ({ amountVnd: Number(p.amount_vnd), method: p.method, note: p.note, recordedAt: p.recorded_at })),
+    };
+  },
+  async setHirePrice(sessionId, priceVnd) {
+    const { error } = await (await createClient()).rpc("set_hire_price", { p_session_id: sessionId, p_price_vnd: priceVnd });
+    check(error);
   },
 
   async updateCustomer(id, d) {

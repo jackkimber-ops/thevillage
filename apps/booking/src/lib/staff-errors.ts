@@ -38,7 +38,7 @@ const MESSAGES: Record<string, string> = {
   session_in_past: "That time has already passed. Pick a date and time that's still to come.",
   session_finished: "That session has already finished, so nobody can be booked into it.",
   child_needs_birth_month: "Add the month and year of birth for each child (or clear the child's name).",
-  invalid_amount: "Enter the amount in VND.",
+  invalid_amount: "Enter the amount in VND, e.g. 450000, 450,000 or 450k (1.5m for millions).",
 };
 
 export function staffError(code: string): string {

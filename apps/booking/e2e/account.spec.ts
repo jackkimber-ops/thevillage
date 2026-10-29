@@ -164,3 +164,33 @@ test("book as a guest: one pay-on-the-day booking at a time", async ({ page }) =
   await expect(page.getByLabel("Your name")).toHaveValue("Linh Tran");
   await expect(page.getByLabel("Email")).toHaveValue(email);
 });
+
+test("customers edit their own details from the menu (email stays with staff)", async ({ page }) => {
+  await logIn(page, uniqueEmail(), "/menu");
+  await fillDetails(page);
+  await page.goto("/menu");
+  await page.getByRole("link", { name: "Edit my details" }).click();
+  await expect(page.getByLabel("Your name")).toHaveValue("Lan Pham");
+  await expect(page.getByLabel("Email")).toHaveAttribute("readonly", "");
+  await page.getByLabel("Your name").fill("Lan Pham Nguyen");
+  await page.getByRole("button", { name: "Call" }).click();
+  await page.getByRole("button", { name: "Save changes" }).click();
+  await expect(page.getByText("Details saved.")).toBeVisible();
+  await expect(page.getByText("Lan Pham Nguyen")).toBeVisible();
+});
+
+test("the menu's back button and the Classes tab return to where you were", async ({ page }) => {
+  await logIn(page, uniqueEmail(), "/packages");
+  await fillDetails(page);
+  await page.goto("/packages");
+  await page.getByRole("link", { name: "Menu" }).click();
+  await page.getByRole("link", { name: "Close menu" }).click();
+  await expect(page).toHaveURL(/\/packages$/);
+
+  await page.goto("/classes");
+  await nextWeek(page);
+  const week = await page.locator(".stepper strong").textContent();
+  await page.getByRole("navigation", { name: "Main sections" }).getByRole("link", { name: "Bookings" }).click();
+  await page.getByRole("navigation", { name: "Main sections" }).getByRole("link", { name: "Classes" }).click();
+  await expect(page.locator(".stepper strong")).toHaveText(week!);
+});

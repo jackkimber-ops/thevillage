@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { BackIcon, NextIcon } from "@/components/Icons";
+import { RememberClassesView } from "@/components/RememberPlace";
 import { SessionCard, sessionHref } from "@/components/SessionCard";
 import { TabBar } from "@/components/TabBar";
 import { TopBar } from "@/components/TopBar";
@@ -147,6 +148,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
         {body}
       </main>
       <TabBar current="classes" />
+      <RememberClassesView url={here} />
     </div>
   );
 }

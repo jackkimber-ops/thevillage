@@ -23,6 +23,8 @@ export default async function CheckIn({ params, searchParams }: PageProps<"/staf
   const closed = s.status !== "scheduled";
   // Before the free-cancellation cutoff a cancel gives the credit back; after it, it's a late cancellation.
   const late = new Date() >= cancelCutoff(s.startsAt, (await data().settings()).cancelCutoffTime);
+  // Here / No-show only from the day of the session, so they can't be tapped by accident weeks ahead.
+  const onTheDay = vnDateKey(new Date()) >= vnDateKey(s.startsAt);
 
   return (
     <>
@@ -51,13 +53,13 @@ export default async function CheckIn({ params, searchParams }: PageProps<"/staf
             </div>
             {!closed && ["booked", "attended", "no_show"].includes(r.status) && (
               <div className="staff-actions">
-                {(["attended", "no_show"] as const).map((st) => (
+                {onTheDay && (["attended", "no_show"] as const).map((st) => (
                   <form key={st} action={attendanceAction}>
                     <input type="hidden" name="bookingId" value={r.bookingId} />
                     <input type="hidden" name="status" value={r.status === st ? "booked" : st} />
                     <input type="hidden" name="back" value={back} />
                     <button className={r.status === st ? "sbtn sbtn-sm" : "sbtn2 sbtn-sm"} type="submit" aria-pressed={r.status === st}>
-                      {st === "attended" ? "Here" : "No-show"}
+                      {st === "attended" ? "Here" : "No-show"}{r.status === st ? " ✓ · undo" : ""}
                     </button>
                   </form>
                 ))}
@@ -94,7 +96,9 @@ export default async function CheckIn({ params, searchParams }: PageProps<"/staf
           </div>
         ))}
       </div>
-      <p className="muted small" style={{ margin: 0 }}>Anyone not marked is set to attended automatically after the class.</p>
+      <p className="muted small" style={{ margin: 0 }}>
+        {!onTheDay && !closed && "Here and No-show appear on the day of the session. "}Anyone not marked is set to attended automatically after the class.
+      </p>
       {!closed && s.kind !== "private_hire" && <Link className="sbtn2" style={{ alignSelf: "flex-start" }} href={`/staff/book?session=${id}&back=${encodeURIComponent(back)}`}>+ Book someone in</Link>}
     </>
   );

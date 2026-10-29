@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Notice } from "@/components/staff/Notice";
 import { SessionForm } from "@/components/staff/SessionForm";
 import { staffApi } from "@/lib/data";
-import { cancelSessionAction, recordPaymentAction } from "@/lib/actions/staff";
+import { cancelSessionAction, recordPaymentAction, setHirePriceAction } from "@/lib/actions/staff";
 import { formatVnd } from "@/lib/money";
 import { requireStaff } from "@/lib/staff-guard";
 import { sessionLine } from "@/lib/staff-format";
@@ -20,9 +20,10 @@ export default async function SessionPage({ params, searchParams }: PageProps<"/
   const roster = await api.roster(id);
   const canEdit = me.role === "manager" || s.instructorId === me.userId;
   const active = roster.filter((r) => ["booked", "attended", "no_show"].includes(r.status));
-  const ok = sp.created ? `Created ${sp.created} session${sp.created === "1" ? "" : "s"}.` : sp.saved ? "Saved." : sp.booked ? "Booked in." : sp.paid ? "Payment recorded." : null;
+  const ok = sp.created ? `Created ${sp.created} session${sp.created === "1" ? "" : "s"}.` : sp.saved ? "Saved." : sp.booked ? "Booked in." : sp.paid ? "Payment recorded." : sp.price ? "Agreed price saved." : null;
   // S14: private hire is priced and paid in person; managers record what was paid here.
-  const hirePayments = s.kind === "private_hire" && me.role === "manager" ? await api.sessionPayments(id) : null;
+  const hirePayments = s.kind === "private_hire" && me.role === "manager" ? await api.hirePayments(id) : null;
+  const paidSoFar = hirePayments?.payments.reduce((n, p) => n + p.amountVnd, 0) ?? 0;
 
   return (
     <>
@@ -60,15 +61,30 @@ export default async function SessionPage({ params, searchParams }: PageProps<"/
           {hirePayments && (
             <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
               <h2 className="heading sec" style={{ margin: 0 }}>payment</h2>
-              {hirePayments.length === 0 && <p className="muted small" style={{ margin: 0 }}>Nothing recorded yet.</p>}
-              {hirePayments.map((p, i) => (
+              <form action={setHirePriceAction} className="staff-actions">
+                <input type="hidden" name="sessionId" value={s.id} />
+                <label className="small">Agreed price{" "}
+                  <input name="price" defaultValue={hirePayments.agreedVnd ?? ""} placeholder="e.g. 1.5m" className="small-input" aria-label="Agreed price (VND)" />
+                </label>
+                <button className="sbtn2 sbtn-sm" type="submit">Save price</button>
+              </form>
+              {hirePayments.agreedVnd !== null && (
+                <p style={{ margin: 0 }} className={paidSoFar >= hirePayments.agreedVnd ? "notice notice-ok" : "notice"} role="status">
+                  Agreed {formatVnd(hirePayments.agreedVnd, "en")} · paid {formatVnd(paidSoFar, "en")} ·{" "}
+                  {paidSoFar >= hirePayments.agreedVnd
+                    ? paidSoFar > hirePayments.agreedVnd ? `${formatVnd(paidSoFar - hirePayments.agreedVnd, "en")} more than agreed` : "paid in full"
+                    : <strong>still to pay {formatVnd(hirePayments.agreedVnd - paidSoFar, "en")}</strong>}
+                </p>
+              )}
+              {hirePayments.payments.length === 0 && <p className="muted small" style={{ margin: 0 }}>No payments recorded yet.</p>}
+              {hirePayments.payments.map((p, i) => (
                 <div key={i} className="list-row"><span>{formatVnd(p.amountVnd, "en")} · {p.method.toUpperCase()}{p.note ? ` · ${p.note}` : ""}</span><span className="muted small">{formatTime(p.recordedAt, "en")}</span></div>
               ))}
               <form action={recordPaymentAction} className="staff-actions">
                 <input type="hidden" name="paidFor" value="private_hire" />
                 <input type="hidden" name="sessionId" value={s.id} />
                 <input type="hidden" name="back" value={`/staff/sessions/${s.id}`} />
-                <input name="amount" inputMode="numeric" placeholder="Amount (VND)" required className="small-input" aria-label="Amount paid (VND)" />
+                <input name="amount" placeholder="Amount, e.g. 400k" required className="small-input" aria-label="Amount paid (VND)" />
                 <select name="method" aria-label="Payment method" className="small-select">
                   <option value="qr">QR</option><option value="transfer">Transfer</option><option value="cash">Cash</option>
                 </select>
@@ -82,6 +98,7 @@ export default async function SessionPage({ params, searchParams }: PageProps<"/
               <summary className="small" style={{ cursor: "pointer", color: "var(--coral-deep)", fontWeight: 600 }}>Cancel session for everyone</summary>
               <form action={cancelSessionAction} style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 8 }}>
                 <input type="hidden" name="id" value={s.id} />
+                <input type="hidden" name="date" value={vnDateKey(s.startsAt)} />
                 <p className="small" style={{ margin: 0 }}>Cancels all {active.length} booking{active.length === 1 ? "" : "s"} and returns credits (illness, floods…).</p>
                 <div className="field"><label htmlFor="reason">Reason</label><input id="reason" name="reason" required /></div>
                 <button className="sbtn-danger" type="submit">Cancel this session</button>

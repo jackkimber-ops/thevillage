@@ -128,6 +128,13 @@ function seedSessions(): DemoSession[] {
       });
     }
   }
+  // A class going on right now, so check-in (Here / No-show, shown on the day only) can be tried any time.
+  const now = Math.floor(Date.now() / 900000) * 900000;
+  out.push({
+    id: "demo-now", sessionTypeId: "demo-class", title: "Practice class (on now)",
+    startsAt: new Date(now - 30 * 60000).toISOString(), endsAt: new Date(now + 90 * 60000).toISOString(),
+    instructorId: "demo-mai", capacity: 10, baseTaken: 2, status: "scheduled", notes: null,
+  });
   return out;
 }
 

@@ -107,7 +107,8 @@
     "terms": "Booking and cancellation terms",
     "myDetails": "my details",
     "children": "Children",
-    "logOut": "Log out"
+    "logOut": "Log out",
+    "editDetails": "Edit my details"
   },
   "policies": {
     "privacyTitle": "privacy policy",
@@ -165,7 +166,11 @@
     "optional": "optional",
     "addChildHint": "Name and month/year of birth",
     "save": "Save and see classes",
-    "changeLater": "You can change these any time in the menu."
+    "changeLater": "You can change these any time in the menu.",
+    "editTitle": "my details",
+    "editIntro": "Your email is your login: to change it, message us.",
+    "saveChanges": "Save changes",
+    "saved": "Details saved."
   },
   "book": {
     "placesLeft": "{n} places left",
