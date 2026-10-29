@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { LanguageButton } from "./LanguageButton";
 import { BackIcon, MenuIcon } from "./Icons";
+import { MenuLink } from "./RememberPlace";
 
 /** Customer header: logo (or a back button), the language button and the menu. */
 export async function TopBar({ back, extra }: { back?: string; extra?: React.ReactNode }) {
@@ -21,9 +22,9 @@ export async function TopBar({ back, extra }: { back?: string; extra?: React.Rea
       <div className="topbar-actions">
         {extra}
         <LanguageButton />
-        <Link className="icon-button" href="/menu" aria-label={t("menu")}>
+        <MenuLink className="icon-button" aria-label={t("menu")}>
           <MenuIcon />
-        </Link>
+        </MenuLink>
       </div>
     </header>
   );

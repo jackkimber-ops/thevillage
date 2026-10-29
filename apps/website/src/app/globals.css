@@ -17,7 +17,11 @@ a { color: var(--forrest-deep); }
 .buttons { display: flex; gap: 12px; flex-wrap: wrap; }
 .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; min-height: 88px; }
 .logo { height: 48px; width: auto; }
-.header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.header { flex-wrap: nowrap; }
+.header-actions { display: flex; align-items: center; gap: 10px; }
+/* On phones the header is just the logo and language; Book now sits under the headline. */
+@media (max-width: 640px) { .header-book { display: none; } }
+.socials { display: flex; gap: 10px; flex-wrap: wrap; }
 .social, .lang { min-width: 42px; height: 42px; padding: 0 10px; border-radius: 21px; background: var(--sky); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--ink); text-decoration: none; }
 .hero { display: flex; flex-wrap: wrap; gap: 36px; align-items: center; padding-top: 12px; padding-bottom: 56px; }
 .hero-text { flex: 1 1 420px; display: flex; flex-direction: column; gap: 20px; }

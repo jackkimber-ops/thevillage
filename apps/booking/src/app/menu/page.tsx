@@ -2,11 +2,14 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { BackIcon } from "@/components/Icons";
 import { LanguageChoice } from "@/components/LanguageChoice";
+import { MenuCloseLink } from "@/components/RememberPlace";
 import { account, data } from "@/lib/data";
 import { signOutAction } from "@/lib/actions/auth";
 
 // C14 Menu: message us, hire the studio, language, studio details. (My details come with login, stage 5.)
-export default async function MenuPage() {
+export default async function MenuPage({ searchParams }: PageProps<"/menu">) {
+  const saved = (await searchParams).saved === "1";
+  const td = await getTranslations("details");
   const t = await getTranslations("menu");
   const [s, me] = await Promise.all([data().settings(), account().me()]);
   const monthYear = (d: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", month: "short", year: "numeric" }).format(new Date(`${d}T00:00:00Z`));
@@ -20,7 +23,7 @@ export default async function MenuPage() {
   return (
     <div className="page">
       <header className="topbar" style={{ justifyContent: "flex-start", gap: 12, paddingLeft: 16 }}>
-        <Link className="back-button" href="/classes" aria-label={t("close")}><BackIcon /></Link>
+        <MenuCloseLink className="back-button" aria-label={t("close")}><BackIcon /></MenuCloseLink>
         <h1 className="heading" style={{ fontSize: 24 }}>{t("title")}</h1>
       </header>
       <main className="page-body" style={{ gap: 8 }}>
@@ -43,11 +46,13 @@ export default async function MenuPage() {
         {me && (
           <>
             <h2 className="label">{t("myDetails")}</h2>
+            {saved && <p className="ok-box" role="status" style={{ margin: 0 }}>✓ {td("saved")}</p>}
             <div className="card menu-list">
               <div className="menu-item" style={{ flexDirection: "column", alignItems: "flex-start", gap: 2 }}>
                 <strong>{me.fullName}</strong>
                 <span className="muted small">{[me.phone, me.email].filter(Boolean).join(" · ")}</span>
               </div>
+              <Link className="menu-item" href="/menu/details"><span>{t("editDetails")}</span><span aria-hidden="true">›</span></Link>
               <div className="menu-item">
                 <span>{t("children")}{me.children.length > 0 && <span className="muted"> · {me.children.map((c) => `${c.name} (${monthYear(c.birthMonth)})`).join(", ")}</span>}</span>
               </div>

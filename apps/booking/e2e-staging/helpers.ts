@@ -1,5 +1,7 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { test as base, expect, type Page } from "@playwright/test";
 
 // Full check against the staging site and staging database (see README.md in this folder).
@@ -18,6 +20,9 @@ export const test = base.extend({
   },
 });
 export { expect };
+
+/** The "QA Today" class made by global-setup (taught by the QA instructor), for check-in tests. */
+export const qaTodaySession = (): string => JSON.parse(readFileSync(join(tmpdir(), "village-staging-qa-today.json"), "utf8"));
 
 export const QA_MANAGER = "delivered+qa-manager@resend.dev";
 export const QA_INSTRUCTOR = "delivered+qa-instructor@resend.dev";

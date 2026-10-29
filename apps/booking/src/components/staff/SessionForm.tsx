@@ -95,7 +95,7 @@ export function SessionForm({ initial, types, instructors, lockInstructor }: {
         </div>
       )}
       <div className="field">
-        <label htmlFor="notes">{type?.kind === "private_hire" ? "Customer, group size, agreed price and notes" : "Notes for staff (optional)"}</label>
+        <label htmlFor="notes">{type?.kind === "private_hire" ? "Customer, group size and notes (the agreed price goes under Payment)" : "Notes for staff (optional)"}</label>
         <textarea id="notes" name="notes" rows={2} defaultValue={initial.notes ?? ""} />
       </div>
       {type?.description && <p className="muted small" style={{ margin: 0 }}>Customers see the class description: {type.description}</p>}

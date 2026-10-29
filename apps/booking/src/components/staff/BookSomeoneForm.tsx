@@ -23,7 +23,10 @@ export function BookSomeoneForm(p: {
   const [q, setQ] = useState("");
   const [hits, setHits] = useState<CustomerHit[]>([]);
   const [searched, setSearched] = useState(""); // the text the current hits are for
-  const [info, setInfo] = useState<{ children: Array<{ id: string; name: string }>; hadFreeTrial: boolean } | null>(null);
+  const [info, setInfo] = useState<{
+    children: Array<{ id: string; name: string }>; hadFreeTrial: boolean;
+    packs: Array<{ name: string; remaining: number; lastDay: string }>;
+  } | null>(null);
   const [, start] = useTransition();
   const kind = p.sessions.find((s) => s.id === sessionId)?.kind;
 
@@ -80,6 +83,13 @@ export function BookSomeoneForm(p: {
       )}
 
       {customer && info && (
+        <p className="muted small" style={{ margin: 0 }} role="status">
+          {info.packs.length === 0
+            ? "No pack: this booking will be pay on the day."
+            : info.packs.map((k) => `${k.name}: ${k.remaining} credit${k.remaining === 1 ? "" : "s"} left (until ${shortDate(k.lastDay)})`).join(" · ")}
+        </p>
+      )}
+      {customer && info && (
         <fieldset className="child-fields" style={{ padding: 0 }}>
           <legend className="field-label">Who&apos;s coming</legend>
           {info.children.map((k) => <label key={k.id} className="check"><input type="checkbox" name="child" value={k.id} defaultChecked={kind === "open_play"} />{k.name}</label>)}
@@ -104,4 +114,8 @@ export function BookSomeoneForm(p: {
       <p className="muted small" style={{ margin: 0 }}>Uses the customer&apos;s pack if they have one; otherwise it&apos;s pay on the day. They get the confirmation email.</p>
     </form>
   );
+}
+
+function shortDate(key: string) {
+  return new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", day: "numeric", month: "short" }).format(new Date(`${key}T00:00:00Z`));
 }

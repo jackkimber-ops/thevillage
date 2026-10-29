@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { ActionError, staffApi, type ContactMethod } from "@/lib/data";
 import { isEmail, toE164 } from "@/lib/phone";
+import { parseVnd } from "@/lib/vnd";
 
 export type StaffFormState = { error?: string; ok?: string } | undefined;
 const code = (e: unknown) => (e instanceof ActionError ? e.code : "generic");
@@ -59,11 +60,12 @@ export async function extendPackAction(form: FormData) {
 }
 
 export async function recordPaymentAction(form: FormData) {
-  if (!(Number(str(form, "amount").replace(/\D/g, "")) > 0)) redirect(`${back(form, "/staff")}?error=invalid_amount`);
+  const amount = parseVnd(str(form, "amount")); // "450k", "1.5m", "450,000"; never negative
+  if (amount === null) redirect(`${back(form, "/staff")}?error=invalid_amount`);
   try {
     await staffApi().recordPayment({
       customerId: str(form, "customerId") || null,
-      amountVnd: Number(str(form, "amount").replace(/\D/g, "")),
+      amountVnd: amount,
       method: str(form, "method") as "qr",
       paidFor: (str(form, "paidFor") || "drop_in") as "drop_in",
       bookingId: str(form, "bookingId") || null,
@@ -199,7 +201,23 @@ export async function cancelSessionAction(form: FormData) {
   } catch (e) {
     redirect(`/staff/sessions/${id}?error=${code(e)}`);
   }
-  redirect("/staff/calendar?cancelled=1");
+  // Back to the week the session was in, not today.
+  const date = str(form, "date");
+  redirect(`/staff/calendar?cancelled=1${/^\d{4}-\d{2}-\d{2}$/.test(date) ? `&date=${date}` : ""}`);
+}
+
+// Private hire: the price agreed on chat, so the payment section can show what's still to pay.
+export async function setHirePriceAction(form: FormData) {
+  const id = str(form, "sessionId");
+  const text = str(form, "price");
+  const price = text ? parseVnd(text) : null;
+  if (text && price === null) redirect(`/staff/sessions/${id}?error=invalid_amount`);
+  try {
+    await staffApi().setHirePrice(id, price);
+  } catch (e) {
+    redirect(`/staff/sessions/${id}?error=${code(e)}`);
+  }
+  redirect(`/staff/sessions/${id}?price=1`);
 }
 
 export async function addCustomerAction(_: StaffFormState, form: FormData): Promise<StaffFormState> {
@@ -263,11 +281,13 @@ export async function sellPackAction(_: StaffFormState, form: FormData): Promise
 
 export async function savePackTypeAction(_: StaffFormState, form: FormData): Promise<StaffFormState> {
   const validity = str(form, "validityUnit");
+  const price = parseVnd(str(form, "price"));
+  if (price === null) return { error: "invalid_amount" };
   const n = Number(str(form, "validity"));
   try {
     await staffApi().savePackType({
       id: str(form, "id") || null, name: str(form, "name"), credits: Number(str(form, "credits")),
-      priceVnd: Number(str(form, "price").replace(/\D/g, "")), validityMonths: validity === "months" ? n : null,
+      priceVnd: price, validityMonths: validity === "months" ? n : null,
       validityDays: validity === "days" ? n : null, isIntro: str(form, "isIntro") === "on", onSale: str(form, "onSale") === "on",
       coversSessionTypeIds: form.getAll("covers").map(String),
     });
@@ -279,13 +299,15 @@ export async function savePackTypeAction(_: StaffFormState, form: FormData): Pro
 }
 
 export async function saveSessionTypeAction(_: StaffFormState, form: FormData): Promise<StaffFormState> {
-  const price = str(form, "price").replace(/\D/g, "");
+  const priceText = str(form, "price");
+  const price = priceText ? parseVnd(priceText) : null;
+  if (priceText && price === null) return { error: "invalid_amount" };
   const cap = str(form, "capacity");
   try {
     await staffApi().saveSessionType({
       id: str(form, "id") || null, kind: str(form, "kind") as "class", name: str(form, "name"),
       defaultMinutes: Number(str(form, "minutes")), defaultCapacity: cap ? Number(cap) : null,
-      dropInPriceVnd: price ? Number(price) : null, active: str(form, "active") === "on", description: str(form, "description") || null,
+      dropInPriceVnd: price, active: str(form, "active") === "on", description: str(form, "description") || null,
     });
   } catch (e) {
     return { error: code(e) };
@@ -310,5 +332,9 @@ export async function findCustomersAction(q: string) {
 
 export async function customerChildrenAction(id: string) {
   const c = await staffApi().customer(id);
-  return c ? { name: c.fullName, children: c.children, hadFreeTrial: c.hadFreeTrial } : null;
+  if (!c) return null;
+  const today = new Date(Date.now() + 7 * 3600000).toISOString().slice(0, 10); // Saigon date
+  // Packs they can still use, so staff see credits left before booking (team feedback 29 Oct).
+  const packs = c.packs.filter((p) => p.lastDay >= today).map((p) => ({ name: p.name, remaining: p.remaining, lastDay: p.lastDay }));
+  return { name: c.fullName, children: c.children, hadFreeTrial: c.hadFreeTrial, packs };
 }

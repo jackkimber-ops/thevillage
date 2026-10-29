@@ -28,11 +28,11 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
       <header className="wrap header">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/brand/wordmark-full-colour.png" alt="the village." width={103} height={48} className="logo" />
+        {/* Team feedback 29 Oct: logo and language only on phones (Book now is right under the headline);
+            Facebook and Instagram moved down to "find us" and the footer. */}
         <div className="header-actions">
-          {s.facebookUrl && <a className="social" href={s.facebookUrl} aria-label="Facebook">f</a>}
-          {s.instagramUrl && <a className="social" href={s.instagramUrl} aria-label="Instagram">IG</a>}
           <Link className="lang" href={other.href} hrefLang={other.href === "/" ? "en" : "vi"} aria-label={other.name}>{other.label}</Link>
-          <a className="btn" href={book}>{t("bookNow")}</a>
+          <a className="btn header-book" href={book}>{t("bookNow")}</a>
         </div>
       </header>
 
@@ -109,6 +109,12 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                 .filter((x): x is string[] => Boolean(x))
                 .map(([label, href], i) => <span key={label}>{i > 0 && " · "}<a href={href}>{label}</a></span>)}
             </p>
+            {(s.facebookUrl || s.instagramUrl) && (
+              <p className="socials">
+                {s.facebookUrl && <a className="social" href={s.facebookUrl} target="_blank" rel="noopener noreferrer">Facebook</a>}
+                {s.instagramUrl && <a className="social" href={s.instagramUrl} target="_blank" rel="noopener noreferrer">Instagram</a>}
+              </p>
+            )}
           </div>
           {/* Change list #7: a picture of the map (owners' Google Maps screenshot); tapping opens Google Maps. */}
           <a className="map" href={s.mapsUrl ?? undefined} target="_blank" rel="noopener noreferrer" aria-label={t("mapAlt")}>
@@ -122,6 +128,8 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
       <footer className="wrap footer">
         <span>{s.name}</span>
         <span className="footer-links">
+          {s.facebookUrl && <a href={s.facebookUrl} target="_blank" rel="noopener noreferrer">Facebook</a>}
+          {s.instagramUrl && <a href={s.instagramUrl} target="_blank" rel="noopener noreferrer">Instagram</a>}
           <a href={bookingUrl("/privacy")}>{t("privacy")}</a>
           <a href={bookingUrl("/terms")}>{t("terms")}</a>
         </span>

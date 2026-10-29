@@ -40,6 +40,11 @@ function overlaps(start: Date, end: Date, ignore?: string) {
 }
 
 const demoExtensions: Record<string, Array<{ at: string; from: string; to: string; reason: string; by: string | null }>> = {};
+const demoHirePrices: Record<string, number> = {};
+/** Credits left on a demo customer's packs that haven't ended. */
+function demoCredits(c: { packs: Array<{ lastDay: string; remaining: number }> }, today = vnDateKey(new Date())) {
+  return c.packs.filter((p) => p.lastDay >= today).reduce((n, p) => n + p.remaining, 0);
+}
 const demoPayments: Record<string, Array<{ amountVnd: number; method: "qr" | "transfer" | "cash"; note: string | null; recordedAt: string }>> = {};
 
 export const demoStaff: StaffApi = {
@@ -184,7 +189,7 @@ export const demoStaff: StaffApi = {
           || (digits.length >= 3 && (phone.includes(digits) || (vn !== null && phone.startsWith(vn)))));
       })
       .slice(0, 20)
-      .map((c) => ({ customerId: c.id, fullName: c.fullName!, phone: c.phone, email: c.email, deactivated: Boolean(c.deactivated) }));
+      .map((c) => ({ customerId: c.id, fullName: c.fullName!, phone: c.phone, email: c.email, deactivated: Boolean(c.deactivated), creditsLeft: demoCredits(c) }));
   },
   async listCustomers(limit, offset) {
     await requireStaff();
@@ -195,7 +200,7 @@ export const demoStaff: StaffApi = {
       total: all.length,
       rows: all.slice(offset, offset + limit).map((c) => ({
         customerId: c.id, fullName: c.fullName!, phone: c.phone, email: c.email, deactivated: Boolean(c.deactivated), createdAt: c.createdAt,
-        creditsLeft: c.packs.filter((p) => p.lastDay >= today).reduce((n, p) => n + p.remaining, 0),
+        creditsLeft: demoCredits(c, today),
       })),
     };
   },
@@ -264,9 +269,15 @@ export const demoStaff: StaffApi = {
     if (b) b.paid = true;
     if (d.sessionId) (demoPayments[d.sessionId] ??= []).push({ amountVnd: d.amountVnd, method: d.method, note: d.note, recordedAt: new Date().toISOString() });
   },
-  async sessionPayments(sessionId) {
+  async hirePayments(sessionId) {
     await requireManager();
-    return demoPayments[sessionId] ?? [];
+    return { agreedVnd: demoHirePrices[sessionId] ?? null, payments: demoPayments[sessionId] ?? [] };
+  },
+  async setHirePrice(sessionId, priceVnd) {
+    await requireManager();
+    if (priceVnd !== null && priceVnd <= 0) throw new ActionError("invalid_amount");
+    if (priceVnd === null) delete demoHirePrices[sessionId];
+    else demoHirePrices[sessionId] = priceVnd;
   },
   async updateCustomer(id, d) {
     await requireStaff();
