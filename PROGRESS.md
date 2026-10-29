@@ -11,6 +11,19 @@
 - 21 Oct: **visual style v1**: a style sheet plus 5 key screens in the brand (login, timetable, confirm a class, staff dashboard, website top), as a new row at the bottom of the preview canvas.
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
+## Update (28 Oct)
+
+- **Studio alert emails now go to hello@thevillagesaigon.com** on staging and production (`studio_settings.alert_email`). A test email to hello@ was delivered. The customer-facing contact email stays thevillage.saigon@gmail.com until the owners say to switch.
+- **Change #14, one-class drop-ins** (#31, wording fixed in #32): the customer page says there's no pack to sell for one class and to use **Book in** (pay on the day, 450,000 ₫ from the catalog). Managers can **Record** a payment next to an upcoming pay-on-the-day booking, for someone who pays by transfer before the day.
+- **Staging check** (#29, #30):
+  - test logins that collide between the phone and computer runs retry once
+  - while it runs, studio alerts go to Resend's test inbox
+  - afterwards the address in use before is put back (hello@)
+  - 71 of 71 checks pass on the current code
+- **Team retest:** staging is clean. Message drafted for Jack to send to Phuong, Caroline and Rob (fixes from their feedback, plus new features to try).
+- **Company mailbox on phones:** Namecheap Private Email works in iPhone Mail, Gmail or Outlook (IMAP `mail.privateemail.com` 993 SSL, SMTP 465 SSL), or webmail at privateemail.com. It's one shared login, so share the password privately.
+- **Flaky CI test fixed** (#32): "Back returns to the week" read the week label before the next week had loaded, so on GitHub's slower runners it sometimes failed (seen on #30 and #32). It now waits. CI also reports browser test failures as GitHub annotations, which can be read through the API: CI logs themselves can't be opened from this session.
+
 ## Update (27 Oct, evening): first team test, full check, missing features
 
 All merged to `main` and live; staging matches `main`.
