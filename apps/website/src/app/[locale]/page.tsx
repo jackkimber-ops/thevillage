@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { bookingUrl, studio } from "@/lib/settings";
+import { IconLinks, type IconName } from "./ContactIcons";
 
 // W1 One-page website. Wording from the requirements doc (draft); photos are placeholders until the owners send them.
 export default async function Home({ params }: PageProps<"/[locale]">) {
@@ -8,8 +8,10 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   setRequestLocale(locale);
   const t = await getTranslations("site");
   const s = await studio();
-  const other = locale === "vi" ? { href: "/", label: "EN", name: "English" } : { href: "/vi", label: "VN", name: "Tiếng Việt" };
-  const book = bookingUrl();
+  // EN goes to /en (not /): the server then remembers English and shows /. A plain "/" would be sent back
+  // to /vi by the remembered language or a Vietnamese phone (team feedback 30 Oct).
+  const other = locale === "vi" ? { href: "/en", lang: "en", label: "EN", name: "English" } : { href: "/vi", lang: "vi", label: "VN", name: "Tiếng Việt" };
+  const book = bookingUrl("", locale);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -31,7 +33,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         {/* Team feedback 29 Oct: logo and language only on phones (Book now is right under the headline);
             Facebook and Instagram moved down to "find us" and the footer. */}
         <div className="header-actions">
-          <Link className="lang" href={other.href} hrefLang={other.href === "/" ? "en" : "vi"} aria-label={other.name}>{other.label}</Link>
+          <a className="lang" href={other.href} hrefLang={other.lang} aria-label={other.name}>{other.label}</a>
           <a className="btn header-book" href={book}>{t("bookNow")}</a>
         </div>
       </header>
@@ -43,7 +45,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             <p className="lead">{t("heroLead")}</p>
             <div className="buttons">
               <a className="btn" href={book}>{t("bookClass")}</a>
-              <a className="btn2" href={bookingUrl("/classes")}>{t("seeTimetable")}</a>
+              <a className="btn2" href={bookingUrl("/classes", locale)}>{t("seeTimetable")}</a>
             </div>
           </div>
           <div className="hero-pic" aria-hidden="true">
@@ -77,9 +79,9 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             <h2 className="h">{t("whatsOn")}</h2>
             <div className="grid3">
               {([
-                { k: "classes", href: bookingUrl("/classes?filter=classes"), cls: "sage" },
-                { k: "openPlay", href: bookingUrl("/classes?filter=open-play"), cls: "rose" },
-                { k: "hire", href: bookingUrl("/hire"), cls: "sky" },
+                { k: "classes", href: bookingUrl("/classes?filter=classes", locale), cls: "sage" },
+                { k: "openPlay", href: bookingUrl("/classes?filter=open-play", locale), cls: "rose" },
+                { k: "hire", href: bookingUrl("/hire", locale), cls: "sky" },
               ] as const).map((c) => (
                 <a key={c.k} className="whats-card" href={c.href}>
                   <div className={`whats-pic ${c.cls}`} aria-hidden="true">
@@ -100,20 +102,24 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             <h2 className="h">{t("visitTitle")}</h2>
             <p className="body">{s.address}<br /><span className="muted">{s.openingHours}</span></p>
             <div className="buttons">
-              <a className="btn" href={book}>{t("bookNow")}</a>
+              <a className="btn" href={book}>{t("bookClass")}</a>
               {s.mapsUrl && <a className="btn2" href={s.mapsUrl} target="_blank" rel="noopener noreferrer">{t("maps")}</a>}
             </div>
-            <p className="muted">
-              {t("messageUs")}{" "}
-              {[s.zaloUrl && ["Zalo", s.zaloUrl], s.whatsappUrl && ["WhatsApp", s.whatsappUrl], s.messengerUrl && ["Messenger", s.messengerUrl], ["Email", `mailto:${s.contactEmail}`]]
-                .filter((x): x is string[] => Boolean(x))
-                .map(([label, href], i) => <span key={label}>{i > 0 && " · "}<a href={href}>{label}</a></span>)}
-            </p>
+            <h3 className="icons-title">{t("messageUs")}</h3>
+            <IconLinks label={t("messageUs")} links={([
+              s.zaloUrl && { name: "Zalo", href: s.zaloUrl },
+              s.whatsappUrl && { name: "WhatsApp", href: s.whatsappUrl },
+              s.messengerUrl && { name: "Messenger", href: s.messengerUrl },
+              { name: "Email", href: `mailto:${s.contactEmail}` },
+            ] as Array<{ name: IconName; href: string } | null>).filter((x): x is { name: IconName; href: string } => Boolean(x))} />
             {(s.facebookUrl || s.instagramUrl) && (
-              <p className="socials">
-                {s.facebookUrl && <a className="social" href={s.facebookUrl} target="_blank" rel="noopener noreferrer">Facebook</a>}
-                {s.instagramUrl && <a className="social" href={s.instagramUrl} target="_blank" rel="noopener noreferrer">Instagram</a>}
-              </p>
+              <>
+                <h3 className="icons-title">{t("followUs")}</h3>
+                <IconLinks label={t("followUs")} links={([
+                  s.facebookUrl && { name: "Facebook", href: s.facebookUrl },
+                  s.instagramUrl && { name: "Instagram", href: s.instagramUrl },
+                ] as Array<{ name: IconName; href: string } | null>).filter((x): x is { name: IconName; href: string } => Boolean(x))} />
+              </>
             )}
           </div>
           {/* Change list #7: a picture of the map (owners' Google Maps screenshot); tapping opens Google Maps. */}
@@ -128,10 +134,8 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
       <footer className="wrap footer">
         <span>{s.name}</span>
         <span className="footer-links">
-          {s.facebookUrl && <a href={s.facebookUrl} target="_blank" rel="noopener noreferrer">Facebook</a>}
-          {s.instagramUrl && <a href={s.instagramUrl} target="_blank" rel="noopener noreferrer">Instagram</a>}
-          <a href={bookingUrl("/privacy")}>{t("privacy")}</a>
-          <a href={bookingUrl("/terms")}>{t("terms")}</a>
+          <a href={bookingUrl("/privacy", locale)}>{t("privacy")}</a>
+          <a href={bookingUrl("/terms", locale)}>{t("terms")}</a>
         </span>
       </footer>
     </div>

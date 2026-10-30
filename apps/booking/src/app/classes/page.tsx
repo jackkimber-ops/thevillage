@@ -210,8 +210,12 @@ async function WeekGrid({ monday, today, sessions, booked, locale, from }: {
     const [h, m] = formatTime(iso, "en").split(":").map(Number);
     return h + m / 60;
   };
-  const startHour = Math.min(8.5, ...sessions.map((s) => Math.floor(hourOf(s.startsAt))));
-  const endHour = Math.max(17, ...sessions.map((s) => Math.ceil(hourOf(s.endsAt))));
+  // Only the hours that week uses (team feedback 30 Oct): from the first class to an hour after the last,
+  // not a big empty afternoon. At least 4 hours tall so a quiet week still reads as a day.
+  const starts = sessions.map((s) => Math.floor(hourOf(s.startsAt)));
+  const ends = sessions.map((s) => Math.ceil(hourOf(s.endsAt)) + 1);
+  const startHour = starts.length ? Math.min(...starts) : 8;
+  const endHour = Math.max(startHour + 4, ...ends);
   const height = (endHour - startHour) * PX;
   const days = Array.from({ length: 7 }, (_, i) => addDays(monday, i));
   const dayFmt = new Intl.DateTimeFormat(locale === "vi" ? "vi-VN" : "en-GB", { timeZone: "UTC", weekday: "short" });

@@ -1,10 +1,21 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { routeForHost } from "@/lib/hosts";
+import { LOCALE_COOKIE } from "@/i18n/locales";
 
 export async function proxy(request: NextRequest) {
   const host = request.headers.get("host") ?? "";
   const { pathname, search } = request.nextUrl;
+
+  // ?lang=vi or ?lang=en (the website's Book buttons): remember that language, then show the page without it.
+  const lang = request.nextUrl.searchParams.get("lang");
+  if (lang === "vi" || lang === "en") {
+    const url = request.nextUrl.clone();
+    url.searchParams.delete("lang");
+    const res = NextResponse.redirect(url);
+    res.cookies.set(LOCALE_COOKIE, lang, { path: "/", maxAge: 31536000, sameSite: "lax" });
+    return res;
+  }
   const route = routeForHost(host, pathname, search);
   if (route.action === "redirect") return NextResponse.redirect(route.url);
 

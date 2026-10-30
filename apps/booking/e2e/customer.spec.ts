@@ -6,7 +6,7 @@ test("home shows upcoming sessions and where to find us", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "coming up" })).toBeVisible();
   await expect(page.getByRole("link", { name: /^Book:/ }).first()).toBeVisible();
-  await expect(page.locator(".session-card")).toHaveCount(3);
+  await expect(page.locator(".session-card")).toHaveCount(6);
   await expect(page.locator(".session-card .full-label")).toHaveCount(0); // only sessions people can still book
   await expect(page.getByRole("link", { name: "Open in Google Maps" })).toHaveAttribute("href", /maps/);
 });
@@ -105,4 +105,26 @@ test("Back from a class returns to the week you were looking at", async ({ page 
   await page.locator(".session-card", { hasNot: page.locator(".full-label") }).first().getByRole("link").click();
   await page.getByRole("link", { name: "Back" }).click();
   await expect(page.locator(".stepper strong")).toHaveText(week!);
+});
+
+test("team feedback 30 Oct: ?lang=vi from the website opens the booking site in Vietnamese; menu links back to the website", async ({ page }) => {
+  await page.goto("/classes?lang=vi");
+  await expect(page).toHaveURL(/\/classes$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "vi");
+  await page.goto("/menu?lang=en");
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.getByRole("link", { name: "The Village website" })).toHaveAttribute("href", /thevillagesaigon\.com\/en$/);
+  await expect(page.locator(".message-icon svg").first()).toBeVisible();
+});
+
+test("logging in to book shows which class you're booking", async ({ page }) => {
+  await page.goto("/classes?filter=classes");
+  await page.getByRole("link", { name: "See next week" }).click();
+  const card = page.locator(".session-card", { hasNot: page.locator(".full-label") }).first();
+  const title = (await card.locator(".session-title").textContent())!.trim();
+  await card.getByRole("link").click();
+  await page.getByRole("link", { name: "Book this class" }).click();
+  await expect(page.getByRole("heading", { name: "log in" })).toBeVisible();
+  await expect(page.locator(".summary")).toContainText("You're booking");
+  await expect(page.locator(".summary")).toContainText(new RegExp(title, "i"));
 });

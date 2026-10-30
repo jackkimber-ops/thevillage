@@ -109,7 +109,8 @@
     "myDetails": "thông tin của tôi",
     "children": "Con",
     "logOut": "Đăng xuất",
-    "editDetails": "Sửa thông tin của tôi"
+    "editDetails": "Sửa thông tin của tôi",
+    "website": "Trang web The Village"
   },
   "policies": {
     "privacyTitle": "chính sách bảo mật",
@@ -134,7 +135,7 @@
   "login": {
     "home": "Trang chủ The Village",
     "menu": "Menu",
-    "title": "chào mừng đến the village",
+    "title": "đăng nhập",
     "intro": "Đăng nhập hoặc đặt chỗ. Không cần mật khẩu: chúng tôi gửi mã 6 số.",
     "email": "Email",
     "sendCode": "Gửi mã cho tôi",
@@ -146,7 +147,8 @@
     "yourCode": "mã của bạn",
     "logIn": "Đăng nhập",
     "newCode": "Gửi mã mới",
-    "differentEmail": "Dùng email khác"
+    "differentEmail": "Dùng email khác",
+    "booking": "Bạn đang đặt"
   },
   "details": {
     "title": "thông tin của bạn",

@@ -13,21 +13,40 @@
     "villageTitle": "nuôi dạy một đứa trẻ cần cả một ngôi làng",
     "villageStrong": "Bố mẹ không nên phải chọn giữa chăm sóc bản thân và chăm sóc con.",
     "villageBody": "Vì vậy chúng tôi xây dựng việc tập luyện xoay quanh việc làm cha mẹ: những lớp học thực sự, trong khi các bé chơi, khám phá hoặc ở ngay bên cạnh. Không phải phòng gym, không phải khu vui chơi. Một nơi được thiết kế dành cho bạn.",
-    "move": { "title": "vận động", "body": "Pilates, yoga, sức mạnh, thể dục và nhảy, đáng tập vì chính giá trị của chúng." },
-    "connect": { "title": "kết nối", "body": "Các bé ở gần bạn. Gặp gỡ những bố mẹ cùng giai đoạn qua cà phê, workshop và sự kiện." },
-    "belong": { "title": "gắn bó", "body": "Dành cho giai đoạn này của cuộc sống. Đến cùng em bé, không ngại ngùng. Đây là nơi của bạn." },
+    "move": {
+      "title": "vận động",
+      "body": "Pilates, yoga, sức mạnh, thể dục và nhảy, đáng tập vì chính giá trị của chúng."
+    },
+    "connect": {
+      "title": "kết nối",
+      "body": "Các bé ở gần bạn. Gặp gỡ những bố mẹ cùng giai đoạn qua cà phê, workshop và sự kiện."
+    },
+    "belong": {
+      "title": "gắn bó",
+      "body": "Dành cho giai đoạn này của cuộc sống. Đến cùng em bé, không ngại ngùng. Đây là nơi của bạn."
+    },
     "welcomeAll": "Được tạo ra cho các mẹ và trẻ nhỏ. Các bố, bố mẹ sắp đón con và cả gia đình đều được chào đón.",
     "whatsOn": "có gì ở đây",
-    "classes": { "title": "Lớp học", "body": "Core & Cuddle, Mum & Bub Yoga và Wiggle & Wonder." },
-    "openPlay": { "title": "Giờ chơi tự do", "body": "Thời gian chơi cho bố mẹ và các bé." },
-    "hire": { "title": "Thuê studio", "body": "Thuê cả studio: nhắn cho chúng tôi qua WhatsApp hoặc Zalo." },
+    "classes": {
+      "title": "Lớp học",
+      "body": "Core & Cuddle, Mum & Bub Yoga và Wiggle & Wonder."
+    },
+    "openPlay": {
+      "title": "Giờ chơi tự do",
+      "body": "Thời gian chơi cho bố mẹ và các bé."
+    },
+    "hire": {
+      "title": "Thuê studio",
+      "body": "Thuê cả studio: nhắn cho chúng tôi qua WhatsApp hoặc Zalo."
+    },
     "comingSoon": "Sắp ra mắt: workshop về nuôi dạy con, sức khoẻ và an toàn cho bé, và các sự kiện cho cả gia đình.",
     "visitTitle": "ghé thăm",
     "maps": "Xem trên Google Maps",
     "map": "Bản đồ",
     "mapAlt": "Bản đồ: The Village, 47/1 Quốc Hương. Mở Google Maps",
-    "messageUs": "Nhắn cho chúng tôi:",
+    "messageUs": "Nhắn cho chúng tôi",
     "privacy": "Bảo mật",
-    "terms": "Điều khoản"
+    "terms": "Điều khoản",
+    "followUs": "Theo dõi chúng tôi"
   }
 }
