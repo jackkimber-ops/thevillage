@@ -198,6 +198,8 @@ a { color: var(--forrest-deep); }
 .login-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(59,58,42,.3) 0%, rgba(59,58,42,0) 30%, rgba(59,58,42,0) 55%, rgba(59,58,42,.7) 100%); }
 .login-hero > * { position: relative; z-index: 1; }
 .login-hero .lang-button, .icon-button.on-photo { background: var(--linen); }
+/* The wordmark's sage letters vanish on the sage header (and on a photo later): give it a light pill. */
+.login-hero .logo-pill { background: var(--linen); border-radius: 22px; padding: 4px 12px; display: inline-flex; }
 .login-title { font-size: 27px; line-height: 1.1; color: var(--linen); padding: 0 22px 18px; }
 .divider { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; }
 .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--sage); }

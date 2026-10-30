@@ -22,7 +22,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
     <div className="page">
       <div className="login-hero">
         <div className="topbar">
-          <Link href="/" aria-label={t("home")}>
+          <Link href="/" aria-label={t("home")} className="logo-pill">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className="logo" src="/brand/wordmark-full-colour.png" alt="the village." width={73} height={34} />
           </Link>
