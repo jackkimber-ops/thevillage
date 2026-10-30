@@ -52,6 +52,8 @@ export async function studio(): Promise<Studio> {
 }
 
 /** Where every Book button goes: the booking site (book.thevillagesaigon.com). */
-export function bookingUrl(path = "") {
-  return `${process.env.NEXT_PUBLIC_BOOKING_URL ?? "https://book.thevillagesaigon.com"}${path}`;
+/** A link into the booking site, in the website's language (it sets the booking site's language too). */
+export function bookingUrl(path = "", locale?: string) {
+  const base = `${process.env.NEXT_PUBLIC_BOOKING_URL ?? "https://book.thevillagesaigon.com"}${path}`;
+  return locale ? `${base}${path.includes("?") ? "&" : "?"}lang=${locale}` : base;
 }

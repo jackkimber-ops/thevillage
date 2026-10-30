@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { BackIcon } from "@/components/Icons";
 import { LanguageChoice } from "@/components/LanguageChoice";
 import { MenuCloseLink } from "@/components/RememberPlace";
+import { ICONS } from "@/components/ContactIcons";
 import { account, data } from "@/lib/data";
 import { signOutAction } from "@/lib/actions/auth";
 
@@ -14,11 +15,13 @@ export default async function MenuPage({ searchParams }: PageProps<"/menu">) {
   const [s, me] = await Promise.all([data().settings(), account().me()]);
   const monthYear = (d: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", month: "short", year: "numeric" }).format(new Date(`${d}T00:00:00Z`));
   const channels = [
-    { key: "zalo", href: s.zaloUrl, cls: "kind-private_hire" },
-    { key: "whatsapp", href: s.whatsappUrl, cls: "kind-class" },
-    { key: "messenger", href: s.messengerUrl, cls: "kind-open_play" },
-    { key: "email", href: `mailto:${s.contactEmail}`, cls: "kind-private_hire" },
+    { key: "zalo", href: s.zaloUrl, icon: ICONS.Zalo },
+    { key: "whatsapp", href: s.whatsappUrl, icon: ICONS.WhatsApp },
+    { key: "messenger", href: s.messengerUrl, icon: ICONS.Messenger },
+    { key: "email", href: `mailto:${s.contactEmail}`, icon: ICONS.Email },
   ].filter((c) => c.href);
+  // Back to the main website, in the same language (team feedback 30 Oct).
+  const website = `${process.env.NEXT_PUBLIC_WEBSITE_URL ?? "https://thevillagesaigon.com"}${(await getLocale()) === "vi" ? "/vi" : "/en"}`;
 
   return (
     <div className="page">
@@ -31,7 +34,7 @@ export default async function MenuPage({ searchParams }: PageProps<"/menu">) {
         <div className="message-grid">
           {channels.map((c) => (
             <a key={c.key} className="message-link" href={c.href!} target={c.key === "email" ? undefined : "_blank"} rel="noopener noreferrer">
-              <span className={`message-icon ${c.cls}`} aria-hidden="true" />
+              <span className="message-icon">{c.icon}</span>
               {t(`channels.${c.key}`)}
             </a>
           ))}
@@ -66,6 +69,7 @@ export default async function MenuPage({ searchParams }: PageProps<"/menu">) {
             <span style={{ fontSize: 14 }}>{s.address}<br /><span className="muted">{s.openingHours}</span></span>
             {s.mapsUrl && <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer">{t("map")}</a>}
           </div>
+          <a className="menu-item" href={website}><span>{t("website")}</span><span aria-hidden="true">›</span></a>
           <Link className="menu-item" href="/privacy"><span>{t("privacy")}</span><span aria-hidden="true">›</span></Link>
           <Link className="menu-item" href="/terms"><span>{t("terms")}</span><span aria-hidden="true">›</span></Link>
         </div>

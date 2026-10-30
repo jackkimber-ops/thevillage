@@ -17,7 +17,7 @@ export default async function Home() {
     myBookedSessions(),
   ]);
   // The next 3 sessions people can still book: more than 1 hour away and not full.
-  const next = upcoming.filter((s) => !s.bookingClosed && !s.isFull).slice(0, 3);
+  const next = upcoming.filter((s) => !s.bookingClosed && !s.isFull).slice(0, 6); // 6 so most people don't need "See all classes" (team feedback 30 Oct)
 
   return (
     <div className="page">

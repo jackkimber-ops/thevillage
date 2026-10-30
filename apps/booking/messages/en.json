@@ -108,7 +108,8 @@
     "myDetails": "my details",
     "children": "Children",
     "logOut": "Log out",
-    "editDetails": "Edit my details"
+    "editDetails": "Edit my details",
+    "website": "The Village website"
   },
   "policies": {
     "privacyTitle": "privacy policy",
@@ -133,7 +134,7 @@
   "login": {
     "home": "The Village home",
     "menu": "Menu",
-    "title": "welcome to the village",
+    "title": "log in",
     "intro": "Log in or book. No password: we send you a 6-digit code.",
     "email": "Email",
     "sendCode": "Send me a code",
@@ -145,7 +146,8 @@
     "yourCode": "your code",
     "logIn": "Log in",
     "newCode": "Send a new code",
-    "differentEmail": "Use a different email"
+    "differentEmail": "Use a different email",
+    "booking": "You're booking"
   },
   "details": {
     "title": "your details",

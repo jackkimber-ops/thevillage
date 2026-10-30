@@ -12,21 +12,40 @@
     "villageTitle": "it takes a village to raise a child",
     "villageStrong": "Parents shouldn't have to choose between looking after themselves and their children.",
     "villageBody": "So we built exercise around parenthood: proper classes, with your little ones playing, exploring or simply close by. Not a gym, not a play centre. A place designed with you in mind.",
-    "move": { "title": "move", "body": "Pilates, yoga, strength, fitness and dance, worth doing in their own right." },
-    "connect": { "title": "connect", "body": "Children stay close. Meet parents at your stage over coffee, workshops and events." },
-    "belong": { "title": "belong", "body": "Made for this stage of life. Arrive with your baby, no awkwardness. You belong here." },
+    "move": {
+      "title": "move",
+      "body": "Pilates, yoga, strength, fitness and dance, worth doing in their own right."
+    },
+    "connect": {
+      "title": "connect",
+      "body": "Children stay close. Meet parents at your stage over coffee, workshops and events."
+    },
+    "belong": {
+      "title": "belong",
+      "body": "Made for this stage of life. Arrive with your baby, no awkwardness. You belong here."
+    },
     "welcomeAll": "Made with mums and young children in mind. Dads, expectant parents and families are welcome too.",
     "whatsOn": "what's on",
-    "classes": { "title": "Classes", "body": "Core & Cuddle, Mum & Bub Yoga and Wiggle & Wonder." },
-    "openPlay": { "title": "Open play", "body": "Play time for parents and kids." },
-    "hire": { "title": "Private hire", "body": "Hire the whole studio: message us on WhatsApp or Zalo." },
+    "classes": {
+      "title": "Classes",
+      "body": "Core & Cuddle, Mum & Bub Yoga and Wiggle & Wonder."
+    },
+    "openPlay": {
+      "title": "Open play",
+      "body": "Play time for parents and kids."
+    },
+    "hire": {
+      "title": "Private hire",
+      "body": "Hire the whole studio: message us on WhatsApp or Zalo."
+    },
     "comingSoon": "Coming soon: workshops on parenting and baby health and safety, and events for the whole family.",
     "visitTitle": "visit us",
     "maps": "Find us on Google Maps",
     "map": "Map",
     "mapAlt": "Map: The Village, 47/1 Quốc Hương. Opens Google Maps",
-    "messageUs": "Message us:",
+    "messageUs": "Message us",
     "privacy": "Privacy",
-    "terms": "Terms"
+    "terms": "Terms",
+    "followUs": "Follow us"
   }
 }

@@ -174,7 +174,8 @@ a { color: var(--forrest-deep); }
 /* ---------- Menu ---------- */
 .message-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .message-link { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 4px; background: #fff; border-radius: 18px; box-shadow: 0 1px 0 var(--sky); font-size: 13px; font-weight: 600; color: var(--ink); text-decoration: none; }
-.message-icon { width: 36px; height: 36px; border-radius: 18px; }
+.message-icon { width: 40px; height: 40px; border-radius: 20px; background: var(--sky); color: var(--forrest-deep); display: inline-flex; align-items: center; justify-content: center; }
+.message-icon svg { width: 24px; height: 24px; }
 .menu-list { padding: 4px 16px; }
 .menu-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 52px; padding: 6px 0; border-bottom: 1px solid #efe9d6; color: var(--ink); text-decoration: none; font-size: 15.5px; }
 .menu-item:last-child { border-bottom: 0; }
@@ -192,11 +193,13 @@ a { color: var(--forrest-deep); }
 .small { font-size: 13px; }
 .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .row-between { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.login-hero { position: relative; height: 250px; border-radius: 0 0 36px 36px; overflow: hidden; background: var(--sage); display: flex; flex-direction: column; justify-content: space-between; }
+.login-hero { position: relative; height: 110px; border-radius: 0 0 36px 36px; overflow: hidden; background: var(--sage); display: flex; flex-direction: column; justify-content: space-between; }
 .login-hero::before { content: ""; position: absolute; right: -60px; top: -60px; width: 200px; height: 200px; border-radius: 50%; background: var(--rose); opacity: .6; }
 .login-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(59,58,42,.3) 0%, rgba(59,58,42,0) 30%, rgba(59,58,42,0) 55%, rgba(59,58,42,.7) 100%); }
 .login-hero > * { position: relative; z-index: 1; }
 .login-hero .lang-button, .icon-button.on-photo { background: var(--linen); }
+/* The wordmark's sage letters vanish on the sage header (and on a photo later): give it a light pill. */
+.login-hero .logo-pill { background: var(--linen); border-radius: 22px; padding: 4px 12px; display: inline-flex; }
 .login-title { font-size: 27px; line-height: 1.1; color: var(--linen); padding: 0 22px 18px; }
 .divider { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; }
 .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--sage); }

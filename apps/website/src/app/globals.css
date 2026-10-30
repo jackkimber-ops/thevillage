@@ -53,3 +53,16 @@ a { color: var(--forrest-deep); }
 .footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 24px; padding-bottom: 32px; border-top: 1px solid var(--sage); font-size: 14px; }
 .footer-links { display: flex; gap: 16px; }
 @media (max-width: 600px) { .hero-pic { min-height: 280px; } .band, .visit { padding-top: 40px; padding-bottom: 40px; } }
+
+/* Team feedback 30 Oct: stacked buttons on phones are all full width. */
+@media (max-width: 640px) {
+  .buttons { flex-direction: column; align-items: stretch; }
+  .buttons > .btn, .buttons > .btn2 { width: 100%; text-align: center; justify-content: center; }
+}
+/* Message us / Follow us: round icons with the name underneath. */
+.icons-title { font-size: 15px; font-weight: 600; margin: 22px 0 10px; }
+.icon-links { list-style: none; display: flex; gap: 14px; flex-wrap: wrap; padding: 0; margin: 0; }
+.icon-links a { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--ink); font-size: 12px; font-weight: 600; min-width: 64px; }
+.icon-circle { width: 52px; height: 52px; border-radius: 50%; background: var(--sky); color: var(--deep, #5E5B3B); display: inline-flex; align-items: center; justify-content: center; }
+.icon-circle svg { width: 28px; height: 28px; }
+.icon-links a:hover .icon-circle, .icon-links a:focus-visible .icon-circle { background: var(--sage); }
