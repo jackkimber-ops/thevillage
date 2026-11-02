@@ -118,18 +118,19 @@
   },
   "hire": {
     "title": "hire the studio",
-    "intro": "Parties and family groups, 1 or 2 hours in any free slot. Please ask at least 24 hours ahead.",
+    "intro": "Parties and family groups: book the whole studio for an hour, an afternoon or a full day, within our opening hours. Tell us what you have in mind and we'll confirm. Please ask at least 24 hours ahead.",
     "date": "Date",
-    "start": "Start time",
-    "length": "How long",
-    "hours": "{n, plural, one {# hour} other {# hours}}",
     "group": "Group size",
     "notes": "Anything else (optional)",
     "sendWhatsapp": "Send on WhatsApp",
     "sendZalo": "Send on Zalo",
     "nothingBooked": "Opens a chat with your details already written. Nothing is booked until we confirm.",
     "copied": "Your details are copied: paste them into the Zalo chat. Nothing is booked until we confirm.",
-    "message": "Hello The Village! I'd like to hire the studio.\nDate: {date}\nStart: {time}\nLength: {hours, plural, one {# hour} other {# hours}}\nGroup size: {group}\nNotes: {notes}"
+    "message": "Hello The Village! I'd like to hire the studio.\nDate: {date}\nTime: {when}\nGroup size: {group}\nNotes: {notes}",
+    "when": "Time and how long",
+    "whenHint": "e.g. 9:00–11:00, or the full day",
+    "maxGroup": "Up to {n} people",
+    "tooMany": "We can host up to {n} people. Message us and we'll see what's possible."
   },
   "login": {
     "home": "The Village home",
@@ -172,7 +173,8 @@
     "editTitle": "my details",
     "editIntro": "Your email is your login: to change it, message us.",
     "saveChanges": "Save changes",
-    "saved": "Details saved."
+    "saved": "Details saved.",
+    "removeChild": "Remove"
   },
   "book": {
     "placesLeft": "{n} places left",
@@ -209,7 +211,8 @@
     "addAnother": "Add another child",
     "childHint": "Name and month/year of birth, up to 2",
     "submit": "Book, pay on the day",
-    "smallPrint": "We'll get in touch before your first visit to say hello. Free cancellation until {time} the evening before. By booking you agree to our <privacy>privacy policy</privacy>."
+    "smallPrint": "We'll get in touch before your first visit to say hello. Free cancellation until {time} the evening before. By booking you agree to our <privacy>privacy policy</privacy>.",
+    "removeChildN": "Remove child {n}"
   },
   "booked": {
     "you": "You",

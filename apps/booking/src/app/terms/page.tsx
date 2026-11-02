@@ -6,7 +6,7 @@ export default async function Page() {
   const t = await getTranslations("policies");
   return (
     <div className="page">
-      <TopBar back="/menu" />
+      <TopBar back="/menu" backToPrevious />
       <main className="page-body">
         <h1 className="heading" style={{ fontSize: 28 }}>{t("termsTitle")}</h1>
         <p><span className="tag tag-todo">[PLACEHOLDER: {t("comingSoon")}]</span></p>

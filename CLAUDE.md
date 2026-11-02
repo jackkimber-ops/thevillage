@@ -66,7 +66,7 @@ Database also enforces: unique active booking per (session, customer); customers
 - Free cancellation until **20:00 the evening before**; inside the cutoff Cancel becomes "Message us", staff cancel, credit used unless a manager restores it. No-show: credit used.
 - Book up to **1 month** ahead, up to **1 hour** before start. Staff can override both, never capacity.
 - Expired pack can't be used; staff can extend.
-- Private hire: 1 or 2 h, in open hours, ≥ 24 h notice, priced and paid in person; arranged on WhatsApp/Zalo, staff add it to the calendar.
+- Private hire: from 1 hour up to a full day (changed 2 Nov, was 1 or 2 h), case by case, in open hours, ≥ 24 h notice, priced and paid in person; arranged on WhatsApp/Zalo, staff add it to the calendar. The hire page has no time or length pickers: customers say when and how long in their own words.
 - Prices (updated 21 Oct): single class / drop-in **450,000 VND** (was 400,000; higher on purpose to encourage packs); 10-class pack **4,000,000** (400,000/class); 20-class pack **7,200,000** (10% off, 360,000/class); intro pack 3 classes 750,000 (new customers only, sold by a manager); open play 150,000 per child, paid on the day (no open play packs at launch). Validity: 10-class pack **3 months**, 20-class pack **7 months** (calendar months from the valid-from date). Intro pack valid **3 weeks**. No promotions in the app at launch (the opening-weekend free class is handled offline). **Undecided:** 40/60 packs and open play packs are undecided and not on sale. All prices live in the catalog, never in code.
 - No online payment. Payment by QR at check-in (cash/transfer also recorded). Managers only record payments.
 - Unpaid late cancellation: no fee at launch; no screen says "full price due".
@@ -82,7 +82,7 @@ Database also enforces: unique active booking per (session, customer); customers
 - Login email: 6-digit code with a one-tap link underneath; the screen asks for the code. WhatsApp/Zalo login hidden until Meta/Zalo approve (after business registration).
 - No limit on unpaid bookings for logged-in customers (all go to the call-to-confirm list). Free trial is for a class only and doesn't block the intro pack later.
 - Selling a pack to a customer with unpaid bookings switches those bookings to credits from the new pack.
-- Private hire: no group-size limit.
+- Private hire: up to **15 people** (changed 2 Nov, was no limit), shown on the hire page; `studio_settings.hire_max_group`.
 - Instructors default to "own sessions only" access.
 - Staff dragging a session to a new time moves its bookings with it and emails everyone booked; a move that overlaps another session is refused.
 - Studio: 47/1 Quốc Hương, An Khánh, Hồ Chí Minh. Open every day 8:30–17:00. Contact email for now: thevillage.saigon@gmail.com, later hello@thevillagesaigon.com (one shared Namecheap mailbox; staff log in with personal emails). Contact/WhatsApp/Zalo for now: +84 933 834 068 (temporary until the business is registered). "Message us" buttons: Zalo, WhatsApp, Messenger and Email (studio contact email). Social: facebook.com/thevillage.saigon, instagram.com/thevillage.saigon, Messenger m.me/thevillage.saigon. Name is written "The Village - Family Club". All of these go in `studio_settings`, never in code.

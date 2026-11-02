@@ -16,6 +16,7 @@ test("Vietnamese at /vi, with a link back to English", async ({ page }) => {
   await expect(page).toHaveURL(/\/vi$/);
   await expect(page.locator("html")).toHaveAttribute("lang", "vi");
   await expect(page.getByRole("link", { name: "Đặt lớp học" }).first()).toBeVisible();
+  await expect(page.getByText("Mở cửa mỗi ngày 8:30–17:00")).toBeVisible(); // team feedback 2 Nov
   await page.getByRole("link", { name: "English" }).click();
   await expect(page).toHaveURL(/\/$/);
 });

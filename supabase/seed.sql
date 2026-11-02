@@ -2,12 +2,13 @@
 -- Prices live here and in the catalog screens, never in app code.
 
 insert into public.studio_settings (
-  name, address, opening_hours, contact_email, contact_phone,
+  name, address, opening_hours, opening_hours_vi, contact_email, contact_phone,
   whatsapp_url, zalo_url, messenger_url, facebook_url, instagram_url, maps_url
 ) values (
   'The Village - Family Club',
   '47/1 Quốc Hương, An Khánh, Hồ Chí Minh',
   'Every day 8:30–17:00',
+  'Mở cửa mỗi ngày 8:30–17:00',
   'thevillage.saigon@gmail.com',
   '+84933834068',
   'https://wa.me/84933834068',
@@ -26,7 +27,7 @@ insert into public.session_types (id, kind, name, description, colour, default_m
   ('00000000-0000-4000-8000-000000000002', 'open_play', 'Open Play',
    '[PLACEHOLDER: description to come]', '#FFBEA1', 90, 10, 150000),
   ('00000000-0000-4000-8000-000000000003', 'private_hire', 'Private hire',
-   'Hire the whole studio for 1 or 2 hours. Arranged by message.', '#E8E3C5', 60, null, null);
+   'Hire the whole studio, from an hour to a full day. Arranged by message.', '#E8E3C5', 60, null, null);
 
 insert into public.pack_types (id, name, credits, price_vnd, validity_months, validity_days, is_intro) values
   ('00000000-0000-4000-8000-000000000101', '10-class pack', 10, 4000000, 3, null, false),

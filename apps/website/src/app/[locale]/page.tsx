@@ -100,7 +100,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         <section className="wrap visit">
           <div>
             <h2 className="h">{t("visitTitle")}</h2>
-            <p className="body">{s.address}<br /><span className="muted">{s.openingHours}</span></p>
+            <p className="body">{s.address}<br /><span className="muted">{locale === "vi" ? s.openingHoursVi : s.openingHours}</span></p>
             <div className="buttons">
               <a className="btn" href={book}>{t("bookClass")}</a>
               {s.mapsUrl && <a className="btn2" href={s.mapsUrl} target="_blank" rel="noopener noreferrer">{t("maps")}</a>}

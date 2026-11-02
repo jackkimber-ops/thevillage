@@ -5,6 +5,7 @@ import { LanguageChoice } from "@/components/LanguageChoice";
 import { MenuCloseLink } from "@/components/RememberPlace";
 import { ICONS } from "@/components/ContactIcons";
 import { account, data } from "@/lib/data";
+import { openingHoursIn } from "@/lib/data/types";
 import { signOutAction } from "@/lib/actions/auth";
 
 // C14 Menu: message us, hire the studio, language, studio details. (My details come with login, stage 5.)
@@ -21,7 +22,8 @@ export default async function MenuPage({ searchParams }: PageProps<"/menu">) {
     { key: "email", href: `mailto:${s.contactEmail}`, icon: ICONS.Email },
   ].filter((c) => c.href);
   // Back to the main website, in the same language (team feedback 30 Oct).
-  const website = `${process.env.NEXT_PUBLIC_WEBSITE_URL ?? "https://thevillagesaigon.com"}${(await getLocale()) === "vi" ? "/vi" : "/en"}`;
+  const locale = await getLocale();
+  const website = `${process.env.NEXT_PUBLIC_WEBSITE_URL ?? "https://thevillagesaigon.com"}${locale === "vi" ? "/vi" : "/en"}`;
 
   return (
     <div className="page">
@@ -66,7 +68,7 @@ export default async function MenuPage({ searchParams }: PageProps<"/menu">) {
         <h2 className="label">{t("studio")}</h2>
         <div className="card menu-list">
           <div className="menu-item" style={{ alignItems: "flex-start" }}>
-            <span style={{ fontSize: 14 }}>{s.address}<br /><span className="muted">{s.openingHours}</span></span>
+            <span style={{ fontSize: 14 }}>{s.address}<br /><span className="muted">{openingHoursIn(s, locale)}</span></span>
             {s.mapsUrl && <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer">{t("map")}</a>}
           </div>
           <a className="menu-item" href={website}><span>{t("website")}</span><span aria-hidden="true">›</span></a>

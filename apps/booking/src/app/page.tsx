@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { SessionCard } from "@/components/SessionCard";
 import { TopBar } from "@/components/TopBar";
 import { data } from "@/lib/data";
+import { openingHoursIn } from "@/lib/data/types";
 import { myBookedSessions } from "@/lib/my-booked";
 
 // C0 Home: the first page before logging in.
@@ -49,7 +50,7 @@ export default async function Home() {
             <p style={{ margin: "2px 0 0", fontSize: 14, lineHeight: 1.45 }}>
               {settings.address}
               <br />
-              <span className="muted">{settings.openingHours}</span>
+              <span className="muted">{openingHoursIn(settings, await getLocale())}</span>
             </p>
           </div>
           {settings.mapsUrl && (

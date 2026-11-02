@@ -6,6 +6,8 @@ export interface Studio {
   name: string;
   address: string;
   openingHours: string;
+  /** The same line in Vietnamese (team feedback 2 Nov). */
+  openingHoursVi: string;
   contactEmail: string;
   whatsappUrl: string | null;
   zaloUrl: string | null;
@@ -21,6 +23,7 @@ const demo: Studio = {
   name: "The Village - Family Club",
   address: "47/1 Quốc Hương, An Khánh, Hồ Chí Minh",
   openingHours: "Every day 8:30–17:00",
+  openingHoursVi: "Mở cửa mỗi ngày 8:30–17:00",
   contactEmail: "thevillage.saigon@gmail.com",
   contactPhone: "+84933834068",
   whatsappUrl: "https://wa.me/84933834068",
@@ -45,7 +48,7 @@ export async function studio(): Promise<Studio> {
   if (!res.ok) throw new Error(`Couldn't load studio settings (${res.status})`);
   const [s] = await res.json();
   return {
-    name: s.name, address: s.address, openingHours: s.opening_hours, contactEmail: s.contact_email, contactPhone: s.contact_phone,
+    name: s.name, address: s.address, openingHours: s.opening_hours, openingHoursVi: s.opening_hours_vi ?? s.opening_hours, contactEmail: s.contact_email, contactPhone: s.contact_phone,
     whatsappUrl: s.whatsapp_url, zaloUrl: s.zalo_url, messengerUrl: s.messenger_url, facebookUrl: s.facebook_url,
     instagramUrl: s.instagram_url, mapsUrl: s.maps_url,
   };

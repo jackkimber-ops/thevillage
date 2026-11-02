@@ -33,9 +33,9 @@ export async function POST(request: Request) {
   const { data: s, error: settingsError } = await db.from("studio_settings").select("*").single();
   if (settingsError) return Response.json({ error: settingsError.message }, { status: 500 });
   const settings: StudioSettings = {
-    name: s.name, address: s.address, openingHours: s.opening_hours, contactEmail: s.contact_email, contactPhone: s.contact_phone,
+    name: s.name, address: s.address, openingHours: s.opening_hours, openingHoursVi: s.opening_hours_vi ?? s.opening_hours, contactEmail: s.contact_email, contactPhone: s.contact_phone,
     whatsappUrl: s.whatsapp_url, zaloUrl: s.zalo_url, messengerUrl: s.messenger_url, facebookUrl: s.facebook_url,
-    instagramUrl: s.instagram_url, mapsUrl: s.maps_url, cancelCutoffTime: String(s.cancel_cutoff_time).slice(0, 5), bookingWindowDays: 31,
+    instagramUrl: s.instagram_url, mapsUrl: s.maps_url, cancelCutoffTime: String(s.cancel_cutoff_time).slice(0, 5), bookingWindowDays: 31, hireMaxGroup: s.hire_max_group ?? 15,
   };
 
   const { data, error } = await db.rpc("claim_notifications", { p_limit: 25 });

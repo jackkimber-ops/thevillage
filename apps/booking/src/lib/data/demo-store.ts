@@ -12,6 +12,7 @@ export const settings: StudioSettings = {
   name: "The Village - Family Club",
   address: "47/1 Quốc Hương, An Khánh, Hồ Chí Minh",
   openingHours: "Every day 8:30–17:00",
+  openingHoursVi: "Mở cửa mỗi ngày 8:30–17:00",
   contactEmail: "thevillage.saigon@gmail.com",
   contactPhone: "+84933834068",
   whatsappUrl: "https://wa.me/84933834068",
@@ -22,6 +23,7 @@ export const settings: StudioSettings = {
   mapsUrl: "https://maps.app.goo.gl/shhU5KCEVMMrX4cd8",
   cancelCutoffTime: "20:00",
   bookingWindowDays: 31,
+  hireMaxGroup: 15,
 };
 
 export const staff: Record<string, StaffMember> = {

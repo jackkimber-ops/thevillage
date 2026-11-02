@@ -28,9 +28,8 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
   const [settings, me, booked] = await Promise.all([db.settings(), account().me(), myBookedSessions()]);
 
   const view: View = ["week", "month"].includes(first(sp.view) ?? "") ? (first(sp.view) as View) : "list";
-  // The All / Classes / Open play pills are on the List view only, so Week and Month always show everything
-  // (a filter picked in List mustn't silently hide Open Play there).
-  const filter: Filter = view === "list" && ["classes", "open-play"].includes(first(sp.filter) ?? "") ? (first(sp.filter) as Filter) : "all";
+  // The All / Classes / Open play pills are on every view and stay picked when the view changes (team feedback 2 Nov).
+  const filter: Filter = ["classes", "open-play"].includes(first(sp.filter) ?? "") ? (first(sp.filter) as Filter) : "all";
   const today = vnDateKey(new Date());
   const lastBookable = addDays(today, settings.bookingWindowDays);
   const requested = first(sp.date);
@@ -44,8 +43,13 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
     return s ? `/classes?${s}` : "/classes";
   };
 
-  // This exact view (week, month day, filter), for the class page's Back button.
-  const here = href({ date: anchor === today ? undefined : anchor, day: view === "month" && isDateKey(first(sp.day)) ? first(sp.day) : undefined });
+  // The day tapped in Month, if any.
+  const day = view === "month" && isDateKey(first(sp.day)) ? first(sp.day) : undefined;
+  // This exact view (week, month day, filter), for the class page's Back button and the filter pills.
+  const place = { date: anchor === today ? undefined : anchor, day };
+  const here = href(place);
+  // The day being looked at, so another view opens on it (team feedback 2 Nov: Month 26 Nov, then List, shows that week).
+  const focus = day && day >= today ? (day <= lastBookable ? day : lastBookable) : anchor;
 
   const keep = (s: TimetableEntry) =>
     filter === "all" || (filter === "classes" ? s.kind === "class" || s.kind === "workshop" : s.kind === "open_play");
@@ -53,8 +57,18 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
   const nav = (
     <nav className="segmented" aria-label={t("viewLabel")}>
       {(["list", "week", "month"] as const).map((v) => (
-        <Link key={v} href={href({ view: v === "list" ? undefined : v, date: anchor === today ? undefined : anchor })} aria-current={view === v ? "page" : undefined}>
+        <Link key={v} href={href({ view: v === "list" ? undefined : v, date: focus === today ? undefined : focus })} aria-current={view === v ? "page" : undefined}>
           {t(`views.${v}`)}
+        </Link>
+      ))}
+    </nav>
+  );
+
+  const pills = (
+    <nav className="pills" aria-label={t("filterLabel")}>
+      {(["all", "classes", "open-play"] as const).map((f) => (
+        <Link key={f} className="pill" href={href({ ...place, filter: f === "all" ? undefined : f })} aria-current={filter === f ? "page" : undefined}>
+          {t(`filters.${f}`)}
         </Link>
       ))}
     </nav>
@@ -75,6 +89,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
           prevLabel={t("prevMonth")}
           nextLabel={t("nextMonth")}
         />
+        {pills}
         <MonthGrid start={start} sessions={sessions} today={today} lastBookable={lastBookable} selected={selected}
           dayHref={(d) => href({ view: "month", date: start === monthStart(today) ? undefined : start, day: d })} locale={locale} />
         <Legend kind="month" types={typesOf(sessions)} />
@@ -96,6 +111,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
           prevLabel={t("prevWeek")}
           nextLabel={t("nextWeek")}
         />
+        {pills}
         <WeekGrid monday={monday} today={today} sessions={sessions} booked={booked} locale={locale} from={here} />
         <Legend kind="week" />
       </>
@@ -120,13 +136,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
           prevLabel={t("prevWeek")}
           nextLabel={t("nextWeek")}
         />
-        <nav className="pills" aria-label={t("filterLabel")}>
-          {(["all", "classes", "open-play"] as const).map((f) => (
-            <Link key={f} className="pill" href={href({ filter: f === "all" ? undefined : f, date: anchor === today ? undefined : anchor })} aria-current={filter === f ? "page" : undefined}>
-              {t(`filters.${f}`)}
-            </Link>
-          ))}
-        </nav>
+        {pills}
         {days.length === 0 && <p className="empty">{t("nothingThisWeek")}</p>}
         {days.map(({ d, items }) => (
           <section key={d} style={{ display: "flex", flexDirection: "column", gap: 10 }}>

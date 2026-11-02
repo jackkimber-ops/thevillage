@@ -60,7 +60,7 @@ export function SessionForm({ initial, types, instructors, lockInstructor }: {
         <div className="field" style={{ gridColumn: "1 / -1" }}><label htmlFor="title">Title</label><input id="title" name="title" value={title} onChange={(e) => setTitle(e.target.value)} required /></div>
         <div className="field"><label htmlFor="date">Date</label><input id="date" name="date" type="date" defaultValue={initial.date} required /></div>
         <div className="field"><label htmlFor="time">Start</label><input id="time" name="time" type="time" step={900} defaultValue={initial.time} required /></div>
-        <div className="field"><label htmlFor="minutes">Length (minutes)</label><input id="minutes" name="minutes" type="number" min={15} max={480} step={15} value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} required /></div>
+        <div className="field"><label htmlFor="minutes">Length (minutes)</label><input id="minutes" name="minutes" type="number" min={15} max={600} step={15} value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} required /></div>
         {type?.kind !== "private_hire" && (
           <div className="field"><label htmlFor="capacity">{type?.kind === "open_play" ? "Capacity (children)" : "Capacity"}</label><input id="capacity" name="capacity" type="number" min={1} max={200} value={capacity} onChange={(e) => setCapacity(e.target.value)} required /></div>
         )}

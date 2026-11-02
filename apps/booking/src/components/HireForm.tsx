@@ -2,18 +2,31 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useDraft, useDraftForm, type Draft } from "@/lib/draft";
 
-export function HireForm({ whatsappUrl, zaloUrl, earliestDate }: { whatsappUrl: string | null; zaloUrl: string | null; earliestDate: string }) {
+type Props = { whatsappUrl: string | null; zaloUrl: string | null; earliestDate: string; maxGroup: number };
+
+const DRAFT = "hire";
+
+export function HireForm(props: Props) {
+  const draft = useDraft(DRAFT);
+  return <HireFormFields key={draft ? "draft" : "new"} draft={draft} {...props} />;
+}
+
+// Team feedback (2 Nov): hire can be anything from an hour to a full day, agreed case by case on chat,
+// so the customer says when and for how long in their own words (no time or length pickers).
+function HireFormFields({ whatsappUrl, zaloUrl, earliestDate, maxGroup, draft }: Props & { draft: Draft | null }) {
   const t = useTranslations("hire");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [hours, setHours] = useState<1 | 2>(1);
-  const [group, setGroup] = useState("");
-  const [notes, setNotes] = useState("");
+  const [date, setDate] = useState(draft?.date ?? "");
+  const [when, setWhen] = useState(draft?.when ?? "");
+  const [group, setGroup] = useState(draft?.group ?? "");
+  const [notes, setNotes] = useState(draft?.notes ?? "");
   const [copied, setCopied] = useState(false);
+  const form = useDraftForm(DRAFT, null);
 
-  const ready = date !== "" && time !== "";
-  const message = t("message", { date, time, hours, group: group || "-", notes: notes || "-" });
+  const ready = date !== "" && when.trim() !== "";
+  const tooMany = Number(group) > maxGroup;
+  const message = t("message", { date, when: when.trim(), group: group || "-", notes: notes || "-" });
 
   async function sendZalo() {
     // Zalo links can't carry text, so copy it for the customer to paste.
@@ -27,32 +40,23 @@ export function HireForm({ whatsappUrl, zaloUrl, earliestDate }: { whatsappUrl: 
   }
 
   return (
-    <form className="card" style={{ display: "flex", flexDirection: "column", gap: 12 }} onSubmit={(e) => e.preventDefault()}>
+    <form {...form} className="card" style={{ display: "flex", flexDirection: "column", gap: 12 }} onSubmit={(e) => e.preventDefault()}>
       <div className="field">
         <label htmlFor="hire-date">{t("date")}</label>
-        <input id="hire-date" type="date" min={earliestDate} value={date} onChange={(e) => setDate(e.target.value)} required />
+        <input id="hire-date" name="date" type="date" min={earliestDate} value={date} onChange={(e) => setDate(e.target.value)} required />
       </div>
       <div className="field">
-        <label htmlFor="hire-time">{t("start")}</label>
-        <input id="hire-time" type="time" step={1800} value={time} onChange={(e) => setTime(e.target.value)} required />
-      </div>
-      <div className="field">
-        <span className="field-label" id="hire-length">{t("length")}</span>
-        <div className="segmented" role="group" aria-labelledby="hire-length">
-          {([1, 2] as const).map((h) => (
-            <button key={h} type="button" className="segmented-button" aria-pressed={hours === h} onClick={() => setHours(h)}>
-              {t("hours", { n: h })}
-            </button>
-          ))}
-        </div>
+        <label htmlFor="hire-when">{t("when")}</label>
+        <input id="hire-when" name="when" placeholder={t("whenHint")} value={when} onChange={(e) => setWhen(e.target.value)} required />
       </div>
       <div className="field">
         <label htmlFor="hire-group">{t("group")}</label>
-        <input id="hire-group" inputMode="numeric" value={group} onChange={(e) => setGroup(e.target.value)} />
+        <input id="hire-group" name="group" inputMode="numeric" aria-describedby="hire-group-max" value={group} onChange={(e) => setGroup(e.target.value)} />
+        <span id="hire-group-max" className={tooMany ? "error-text small" : "muted small"}>{t(tooMany ? "tooMany" : "maxGroup", { n: maxGroup })}</span>
       </div>
       <div className="field">
         <label htmlFor="hire-notes">{t("notes")}</label>
-        <textarea id="hire-notes" rows={2} value={notes} onChange={(e) => setNotes(e.target.value)} />
+        <textarea id="hire-notes" name="notes" rows={2} value={notes} onChange={(e) => setNotes(e.target.value)} />
       </div>
       {whatsappUrl && (ready ? (
         <a className="btn" href={`${whatsappUrl}?text=${encodeURIComponent(message)}`} target="_blank" rel="noopener noreferrer">

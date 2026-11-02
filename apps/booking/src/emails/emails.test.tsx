@@ -4,9 +4,9 @@ import { renderStaffAlert, staffUrlFor } from "./StaffAlertEmail";
 import type { EmailData } from "./types";
 
 const settings = {
-  name: "The Village - Family Club", address: "47/1 Quốc Hương, An Khánh, Hồ Chí Minh", openingHours: "Every day 8:30–17:00",
+  name: "The Village - Family Club", address: "47/1 Quốc Hương, An Khánh, Hồ Chí Minh", openingHours: "Every day 8:30–17:00", openingHoursVi: "Mở cửa mỗi ngày 8:30–17:00",
   contactEmail: "studio@example.com", contactPhone: "+84933834068", whatsappUrl: "https://wa.me/84933834068", zaloUrl: "https://zalo.me/0933834068",
-  messengerUrl: null, facebookUrl: null, instagramUrl: null, mapsUrl: "https://maps.example", cancelCutoffTime: "20:00", bookingWindowDays: 31,
+  messengerUrl: null, facebookUrl: null, instagramUrl: null, mapsUrl: "https://maps.example", cancelCutoffTime: "20:00", bookingWindowDays: 31, hireMaxGroup: 15,
 };
 
 const base: EmailData = {

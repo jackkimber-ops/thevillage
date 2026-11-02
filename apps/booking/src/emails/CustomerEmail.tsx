@@ -1,4 +1,5 @@
 import { Body, Button, Container, Head, Heading, Hr, Html, Img, Link, Preview, Section, Text } from "@react-email/components";
+import { openingHoursIn } from "@/lib/data/types";
 import { formatVnd } from "@/lib/money";
 import { formatDayLong, formatDayShort, formatTime, formatTimeRange, vnDateKey } from "@/lib/time";
 import { en, fill, vi } from "./strings";
@@ -97,7 +98,7 @@ export function CustomerEmail(d: EmailData) {
           </Button>
           <Hr style={{ borderColor: C.sage, margin: "26px 0 14px" }} />
           <Text style={{ fontSize: 14, margin: 0, fontWeight: 600 }}>{s.findUs}</Text>
-          <Text style={{ fontSize: 14, margin: "2px 0 0", color: C.muted }}>{st.address} · {st.openingHours}</Text>
+          <Text style={{ fontSize: 14, margin: "2px 0 0", color: C.muted }}>{st.address} · {openingHoursIn(st, d.lang)}</Text>
           {st.mapsUrl && <Link href={st.mapsUrl} style={{ fontSize: 14, color: C.deep }}>{s.openMaps}</Link>}
           <Text style={{ fontSize: 14, margin: "14px 0 0" }}>
             {s.messageUs}{" "}
@@ -117,13 +118,13 @@ export function plainText(d: EmailData): string {
   if (d.kind === "welcome") {
     return [
       fill(s.heading.welcome, { name: d.firstName }), "", fill(s.welcomeIntro, { studio: d.settings.name }), s.welcomeHow, "",
-      `${s.openBooking}: ${d.appUrl}/login`, "", `${d.settings.address} · ${d.settings.openingHours}`, `${s.messageUs} ${d.settings.contactEmail}`,
+      `${s.openBooking}: ${d.appUrl}/login`, "", `${d.settings.address} · ${openingHoursIn(d.settings, d.lang)}`, `${s.messageUs} ${d.settings.contactEmail}`,
     ].join("\n");
   }
   const l = lines(d);
   return [
     l.heading, "", l.title, l.time, l.who, l.pay ?? "", "", ...l.notes, "",
-    `${s.seeBookings}: ${d.appUrl}/bookings`, "", `${d.settings.address} · ${d.settings.openingHours}`,
+    `${s.seeBookings}: ${d.appUrl}/bookings`, "", `${d.settings.address} · ${openingHoursIn(d.settings, d.lang)}`,
     d.settings.mapsUrl ?? "", `${s.messageUs} ${d.settings.contactEmail}`,
   ].filter((x, i, a) => !(x === "" && a[i - 1] === "")).join("\n");
 }

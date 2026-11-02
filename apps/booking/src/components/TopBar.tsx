@@ -2,14 +2,21 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { LanguageButton } from "./LanguageButton";
 import { BackIcon, MenuIcon } from "./Icons";
-import { MenuLink } from "./RememberPlace";
+import { BackLink, MenuLink } from "./RememberPlace";
 
-/** Customer header: logo (or a back button), the language button and the menu. */
-export async function TopBar({ back, extra }: { back?: string; extra?: React.ReactNode }) {
+/**
+ * Customer header: logo (or a back button), the language button and the menu.
+ * `backToPrevious`: Back returns to the page you came from, with `back` as the fallback.
+ */
+export async function TopBar({ back, backToPrevious, extra }: { back?: string; backToPrevious?: boolean; extra?: React.ReactNode }) {
   const t = await getTranslations("nav");
   return (
     <header className="topbar">
-      {back ? (
+      {back && backToPrevious ? (
+        <BackLink className="back-button" href={back} aria-label={t("back")}>
+          <BackIcon />
+        </BackLink>
+      ) : back ? (
         <Link className="back-button" href={back} aria-label={t("back")}>
           <BackIcon />
         </Link>
