@@ -209,7 +209,8 @@ a { color: var(--forrest-deep); }
 .warn-box strong { color: var(--coral-deep); }
 .field input.readonly { background: #fbf7ef; color: var(--muted); }
 .code-input { border: 1.5px solid var(--sage); border-radius: 16px; min-height: 60px; text-align: center; font: 600 28px var(--font-heading), sans-serif; letter-spacing: .4em; color: var(--ink); background: #fff; width: 100%; }
-.child-fields { border: 0; display: flex; flex-direction: column; gap: 8px; margin: 0; }
+.child-fields { border: 0; display: flex; flex-direction: column; gap: 8px; margin: 0; position: relative; }
+.child-remove { position: absolute; top: 8px; right: 14px; }
 .add-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 0; text-align: left; font: inherit; color: var(--ink); cursor: pointer; }
 .add-icon { width: 32px; height: 32px; border-radius: 16px; background: var(--rose); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; flex: none; }
 .check { display: flex; align-items: center; gap: 12px; min-height: 44px; font-size: 15.5px; }

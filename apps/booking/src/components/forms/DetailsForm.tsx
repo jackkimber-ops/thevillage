@@ -6,26 +6,38 @@ import { saveDetailsAction } from "@/lib/actions/auth";
 import { ErrorText } from "./ErrorText";
 import { ContactChoice } from "./ContactChoice";
 import { keepValues } from "@/lib/keep-values";
+import { clearDraft, contactOf, useDraft, useDraftForm, type Draft } from "@/lib/draft";
 
-export function DetailsForm({ email, next, initial }: {
+type Props = {
   email: string;
   next: string;
   /** Editing from the menu: their current details, filled in. */
   initial?: { fullName: string; phone: string | null; preferredContact: "whatsapp" | "zalo" | "call" };
-}) {
+};
+
+export function DetailsForm(props: Props) {
+  const key = props.initial ? "my-details" : "welcome";
+  const draft = useDraft(key);
+  return <DetailsFormFields key={draft ? "draft" : "new"} draftKey={key} draft={draft} {...props} />;
+}
+
+function DetailsFormFields({ email, next, initial, draftKey, draft }: Props & { draftKey: string; draft: Draft | null }) {
   const t = useTranslations("details");
   const [state, action, pending] = useActionState(saveDetailsAction, undefined);
-  const [addChild, setAddChild] = useState(false);
+  const [addChild, setAddChild] = useState(() => draft !== null && "childName" in draft);
+  const form = useDraftForm(draftKey, draft);
+  const submit = keepValues(action);
   return (
-    <form onSubmit={keepValues(action)} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+    <form {...form} onSubmit={(e) => { clearDraft(draftKey); submit(e); }} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <input type="hidden" name="next" value={next} />
       <div className="field"><label htmlFor="fullName">{t("name")}</label><input id="fullName" name="fullName" autoComplete="name" defaultValue={initial?.fullName} required /></div>
       <div className="field"><label htmlFor="phone">{t("mobile")}</label><input id="phone" name="phone" type="tel" autoComplete="tel" placeholder="090 123 4567" defaultValue={initial?.phone ?? undefined} required /></div>
-      <ContactChoice initial={initial?.preferredContact} />
+      <ContactChoice initial={contactOf(draft) ?? initial?.preferredContact} />
       <div className="field"><label htmlFor="em">{t("email")}</label><input id="em" value={email} readOnly className="readonly" /></div>
       {addChild ? (
         <fieldset className="card child-fields">
           <legend className="field-label">{t("child")}</legend>
+          <button type="button" className="link-button child-remove" onClick={() => setAddChild(false)}>{t("removeChild")}</button>
           <div className="field"><label htmlFor="childName">{t("childName")}</label><input id="childName" name="childName" /></div>
           <div className="field"><label htmlFor="childMonth">{t("childBorn")}</label><input id="childMonth" name="childMonth" type="month" /></div>
         </fieldset>

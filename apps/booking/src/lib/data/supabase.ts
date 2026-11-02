@@ -66,6 +66,7 @@ export const supabaseData: DataSource = {
       name: data.name,
       address: data.address,
       openingHours: data.opening_hours,
+      openingHoursVi: data.opening_hours_vi ?? data.opening_hours,
       contactEmail: data.contact_email,
       contactPhone: data.contact_phone,
       whatsappUrl: data.whatsapp_url,
@@ -76,6 +77,7 @@ export const supabaseData: DataSource = {
       mapsUrl: data.maps_url,
       cancelCutoffTime: String(data.cancel_cutoff_time).slice(0, 5),
       bookingWindowDays: intervalDays(String(data.booking_window)),
+      hireMaxGroup: data.hire_max_group ?? 15,
     };
   },
 

@@ -12,7 +12,7 @@ export default async function MyDetailsPage() {
   const t = await getTranslations("details");
   return (
     <div className="page">
-      <TopBar back="/menu" />
+      <TopBar back="/menu" backToPrevious />
       <main className="page-body" style={{ padding: "8px 20px 24px" }}>
         <div>
           <h1 className="heading" style={{ fontSize: 28, marginBottom: 6 }}>{t("editTitle")}</h1>

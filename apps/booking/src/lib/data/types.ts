@@ -4,6 +4,8 @@ export interface StudioSettings {
   name: string;
   address: string;
   openingHours: string;
+  /** The same line in Vietnamese (team feedback 2 Nov); pick with openingHoursIn. */
+  openingHoursVi: string;
   contactEmail: string;
   contactPhone: string;
   whatsappUrl: string | null;
@@ -14,6 +16,13 @@ export interface StudioSettings {
   mapsUrl: string | null;
   cancelCutoffTime: string; // "20:00"
   bookingWindowDays: number;
+  /** Largest group for a private hire, shown on the hire page. */
+  hireMaxGroup: number;
+}
+
+/** Opening hours in the page's or email's language. */
+export function openingHoursIn(s: Pick<StudioSettings, "openingHours" | "openingHoursVi">, locale: string): string {
+  return locale === "vi" ? s.openingHoursVi : s.openingHours;
 }
 
 export interface TimetableEntry {

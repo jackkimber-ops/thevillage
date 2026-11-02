@@ -58,15 +58,83 @@ test("week and month views", async ({ page }) => {
   await expect(page.locator(".month-cell.later").first()).toBeVisible();
 });
 
-test("a filter picked in List doesn't hide Open Play in Week or Month", async ({ page }) => {
+test("team feedback 2 Nov: the filter and the day you're on stay when you change view", async ({ page }) => {
   await page.goto("/classes");
   const pills = page.locator(".pills");
-  await pills.getByRole("link", { name: "Classes", exact: true }).click();
-  await expect(pills.getByRole("link", { name: "Classes", exact: true })).toHaveAttribute("aria-current", "page");
-  await page.getByRole("link", { name: "Month" }).click();
-  await expect(page.locator(".legend")).toContainText("Open Play");
-  await page.getByRole("link", { name: "Week" }).click();
-  await expect(page.locator(".week-block.kind-open_play, .week-block.swatch-full", { hasText: "Open Play" }).first()).toBeVisible();
+  await pills.getByRole("link", { name: "Open play", exact: true }).click();
+  await expect(pills.getByRole("link", { name: "Open play", exact: true })).toHaveAttribute("aria-current", "page");
+  await page.getByRole("link", { name: "Week", exact: true }).click();
+  await expect(page.locator(".week-grid")).toBeVisible();
+  await expect(pills.getByRole("link", { name: "Open play", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(page.locator(".week-block.kind-class")).toHaveCount(0);
+  await page.getByRole("link", { name: "Month", exact: true }).click();
+  await expect(page.locator(".month-grid")).toBeVisible();
+  await expect(pills.getByRole("link", { name: "Open play", exact: true })).toHaveAttribute("aria-current", "page");
+  // Pick a day next week in Month, then List shows that week, still Open play only.
+  await pills.getByRole("link", { name: "All", exact: true }).click();
+  await expect(pills.getByRole("link", { name: "All", exact: true })).toHaveAttribute("aria-current", "page");
+  const nextWeek = new Date(Date.now() + 7 * 3600000 + 8 * 86400000).toISOString().slice(0, 10);
+  await page.goto(`/classes?view=month&day=${nextWeek}&filter=open-play`);
+  await page.getByRole("link", { name: "List", exact: true }).click();
+  await expect(page).toHaveURL(new RegExp(`date=${nextWeek}`));
+  await expect(page).toHaveURL(/filter=open-play/);
+  await expect(page.locator(".session-card").first()).toBeVisible();
+  await expect(page.locator(".session-card", { hasText: "Open Play" }).first()).toBeVisible();
+});
+
+test("team feedback 2 Nov: the guest form keeps what you typed through the menu and the privacy policy; children can be removed", async ({ page }) => {
+  await page.goto("/classes?filter=classes");
+  await page.locator(".session-card", { hasNot: page.locator(".full-label") }).first().getByRole("link").click();
+  await page.getByRole("link", { name: "Book this class" }).click();
+  await page.getByRole("link", { name: "Book as a guest" }).click();
+  await expect(page).toHaveURL(/\/guest$/);
+  const guestUrl = page.url();
+  await page.getByLabel("Your name").fill("Lan Nguyen");
+  await page.getByLabel("Mobile number").fill("0901234567");
+  await page.getByRole("button", { name: "Zalo" }).click();
+  await page.getByText(/Add your child/).click();
+  await page.getByText(/Add another child/).click();
+  await page.getByLabel("Child's name").first().fill("Bao");
+  await page.getByLabel("Child's name").nth(1).fill("Mai");
+  // Remove child 1: child 2 (Mai) stays and becomes child 1.
+  await page.getByRole("button", { name: "Remove child 1" }).click();
+  await expect(page.getByLabel("Child's name")).toHaveCount(1);
+  await expect(page.getByLabel("Child's name")).toHaveValue("Mai");
+
+  // Menu and back.
+  await page.getByRole("link", { name: "Menu" }).click();
+  await expect(page.getByRole("heading", { name: "menu" })).toBeVisible();
+  await page.getByRole("link", { name: "Close" }).click();
+  await expect(page).toHaveURL(guestUrl);
+  await expect(page.getByLabel("Your name")).toHaveValue("Lan Nguyen");
+  await expect(page.getByLabel("Mobile number")).toHaveValue("0901234567");
+  await expect(page.getByRole("button", { name: "Zalo" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByLabel("Child's name")).toHaveValue("Mai");
+
+  // Privacy policy and Back.
+  await page.getByRole("link", { name: "privacy policy" }).click();
+  await expect(page).toHaveURL(/\/privacy$/);
+  await page.getByRole("link", { name: "Back" }).click();
+  await expect(page).toHaveURL(guestUrl);
+  await expect(page.getByLabel("Your name")).toHaveValue("Lan Nguyen");
+  await expect(page.getByLabel("Child's name")).toHaveValue("Mai");
+});
+
+test("team feedback 2 Nov: Questions about this class, then closing the menu, returns to the class", async ({ page }) => {
+  await page.goto("/classes?filter=classes");
+  await page.locator(".session-card", { hasNot: page.locator(".full-label") }).first().getByRole("link").click();
+  await expect(page).toHaveURL(/\/classes\/[^/?]+\?/);
+  const classUrl = page.url();
+  await page.getByRole("link", { name: /Questions about this class/ }).click();
+  await expect(page.getByRole("heading", { name: "menu" })).toBeVisible();
+  await page.getByRole("link", { name: "Close" }).click();
+  await expect(page).toHaveURL(classUrl);
+});
+
+test("team feedback 2 Nov: Vietnamese opening hours", async ({ page }) => {
+  await page.goto("/menu?lang=vi");
+  await expect(page.getByText("Mở cửa mỗi ngày 8:30–17:00")).toBeVisible();
+  await expect(page.getByText("Every day 8:30–17:00")).toHaveCount(0);
 });
 
 test("session details", async ({ page }) => {
@@ -85,15 +153,22 @@ test("menu has message us links from the studio settings", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "nhắn cho chúng tôi" })).toBeVisible();
 });
 
-test("hire the studio writes the WhatsApp message", async ({ page }) => {
+test("hire the studio writes the WhatsApp message (from an hour to a full day, up to 15 people)", async ({ page }) => {
   await page.goto("/hire");
+  await expect(page.getByText(/full day/).first()).toBeVisible();
   await expect(page.getByRole("button", { name: "Send on WhatsApp" })).toBeDisabled();
   const send = page.getByRole("link", { name: "Send on WhatsApp" });
   await page.getByLabel("Date").fill("2026-12-05");
-  await page.getByLabel("Start time").fill("13:00");
-  await page.getByRole("button", { name: "2 hours" }).click();
+  await page.getByLabel("Time and how long").fill("the full day");
+  await expect(page.getByText("Up to 15 people")).toBeVisible();
+  await page.getByLabel("Group size").fill("20");
+  await expect(page.getByText(/We can host up to 15 people/)).toBeVisible();
   await page.getByLabel("Group size").fill("12");
-  await expect(send).toHaveAttribute("href", /text=.*2026-12-05.*13%3A00.*2%20hours.*12/);
+  await expect(send).toHaveAttribute("href", /text=.*2026-12-05.*the%20full%20day.*12/);
+  // Kept if they look at the menu and come back.
+  await page.getByRole("link", { name: "Menu" }).click();
+  await page.getByRole("link", { name: "Close" }).click();
+  await expect(page.getByLabel("Time and how long")).toHaveValue("the full day");
 });
 
 test("Back from a class returns to the week you were looking at", async ({ page }) => {
@@ -120,6 +195,7 @@ test("team feedback 30 Oct: ?lang=vi from the website opens the booking site in 
 test("logging in to book shows which class you're booking", async ({ page }) => {
   await page.goto("/classes?filter=classes");
   await page.getByRole("link", { name: "See next week" }).click();
+  await expect(page).toHaveURL(/date=/);
   const card = page.locator(".session-card", { hasNot: page.locator(".full-label") }).first();
   const title = (await card.locator(".session-title").textContent())!.trim();
   await card.getByRole("link").click();

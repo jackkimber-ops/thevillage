@@ -80,9 +80,9 @@ test("message us links come from the studio settings", async ({ page }) => {
 test("hire the studio builds the WhatsApp message", async ({ page }) => {
   await page.goto("/hire");
   await page.getByLabel("Date").fill("2026-12-05");
-  await page.getByLabel("Start time").fill("13:00");
-  await page.getByRole("button", { name: "2 hours" }).click();
+  await page.getByLabel("Time and how long").fill("13:00–15:00");
   await page.getByLabel("Group size").fill("12");
+  await expect(page.getByText("Up to 15 people")).toBeVisible();
   await expect(page.getByRole("link", { name: "Send on WhatsApp" })).toHaveAttribute("href", /wa\.me\/84933834068\?text=.*2026-12-05/);
   await expect(page.getByText(/24 hours/)).toBeVisible();
 });

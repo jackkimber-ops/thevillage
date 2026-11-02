@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
+import { MenuLink } from "@/components/RememberPlace";
 import { TopBar } from "@/components/TopBar";
 import { safeNext } from "@/lib/safe-next";
 import { data } from "@/lib/data";
@@ -59,7 +60,7 @@ export default async function SessionPage({ params, searchParams }: PageProps<"/
           ) : (
             <Link className="btn" href={`/classes/${s.id}/book${from !== "/classes" ? `?from=${encodeURIComponent(from)}` : ""}`}>{s.kind === "open_play" ? t("bookOpenPlay") : t("bookClass")}</Link>
           )}
-          <Link className="link-center" style={{ display: "block" }} href="/menu#message-us">{t("questions")}</Link>
+          <MenuLink className="link-center" style={{ display: "block" }} hash="message-us">{t("questions")}</MenuLink>
         </div>
       </main>
     </div>

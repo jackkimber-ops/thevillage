@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Lexend_Deca, Work_Sans } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
+import { TrackMoves } from "@/components/RememberPlace";
 import "./globals.css";
 
 const lexend = Lexend_Deca({ variable: "--font-heading", subsets: ["latin", "vietnamese"] });
@@ -18,6 +19,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     <html lang={locale} className={`${lexend.variable} ${workSans.variable}`}>
       <body>
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <TrackMoves />
       </body>
     </html>
   );

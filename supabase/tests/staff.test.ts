@@ -126,6 +126,22 @@ describe("sessions", () => {
       expect(n.n).toBe(0);
     }));
 
+  it("a private hire can last a full day (8:30-17:00), but not more than 10 hours", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const [r] = await db.as(manager,
+        `select public.create_sessions($1, 'Private hire', '2026-12-12 08:30+07', 510, null, null) as ids`, [TYPES.privateHire]);
+      expect(r.ids).toHaveLength(1);
+      expect(await db.fails(manager,
+        `select public.create_sessions($1, 'Private hire', '2026-12-13 07:00+07', 601, null, null)`, [TYPES.privateHire])).toBe("invalid_length");
+    }));
+
+  it("studio settings hold the Vietnamese opening hours and the private hire group size", () =>
+    inTx(async (db) => {
+      const [s] = await db.as("anon", "select opening_hours_vi, hire_max_group from public.studio_settings");
+      expect(s).toEqual({ opening_hours_vi: "Mở cửa mỗi ngày 8:30–17:00", hire_max_group: 15 });
+    }));
+
   it("instructors create only their own classes", () =>
     inTx(async (db) => {
       const mai = await db.staff("instructor");
