@@ -25,5 +25,7 @@ What it does:
 - **03 staff app** (phone and computer): manager and instructor tasks, and what instructors can't do.
 - **04 system**: every email sent, scheduled jobs healthy, the credit ledger adds up, private tables closed to logged-out visitors.
 
+**When to run it:** from 16 Nov the real timetable fills 8:30–15:00 every day, so run the check **after 15:00 or before 8:00 Vietnam time** (it makes test sessions starting within the next hour or two, which would overlap a class; it refuses to start during studio hours). Its other test sessions are in the evenings.
+
 Test people use Resend's test inbox (`delivered+qa-…@resend.dev`), so nobody real is emailed.
 Everything it creates is called "QA …" and is removed before and after each run (`cleanup.sql`). While it runs, studio alert emails go to Resend's test inbox; afterwards the address in use before the run is put back (`hello@thevillagesaigon.com` since 28 Oct).

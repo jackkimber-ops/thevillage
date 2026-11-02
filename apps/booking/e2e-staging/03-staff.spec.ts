@@ -234,7 +234,7 @@ test("manager: edit details and children, deactivate and reactivate, private hir
   const [c] = sql<{ language: string; kids: number }>(`select language::text, (select count(*)::int from customer_children where customer_id = c.id) as kids from customers c where id = '${id}'`);
   expect(c).toEqual({ language: "vi", kids: 1 });
 
-  const hire = qaSession({ title: `QA Hire ${uid()}`, start: `${vnDate(dayOffset(info) + 3)} 13:00`, typeId: "00000000-0000-4000-8000-000000000003", capacity: null, minutes: 120 });
+  const hire = qaSession({ title: `QA Hire ${uid()}`, start: `${vnDate(dayOffset(info) + 3)} 17:00`, typeId: "00000000-0000-4000-8000-000000000003", capacity: null, minutes: 120 });
   await page.goto(`/staff/sessions/${hire}`);
   await page.getByLabel("Amount paid (VND)").fill("1500000");
   await page.getByLabel("Payment method").selectOption("transfer");
@@ -267,7 +267,7 @@ test("instructor: own sessions, check-in and book someone in; no catalog, packs,
 });
 
 test("instructor can't change someone else's session (database refuses, not just the screen)", async ({ page }, info) => {
-  const other = qaSession({ title: `QA Not Mine ${uid()}`, start: `${vnDate(dayOffset(info) + 2)} 11:00` });
+  const other = qaSession({ title: `QA Not Mine ${uid()}`, start: `${vnDate(dayOffset(info) + 2)} 19:30` });
   await staffLogin(page, QA_INSTRUCTOR);
   await page.goto(`/staff/sessions/${other}`);
   await expect(page.getByRole("button", { name: "Save" })).toHaveCount(0);
