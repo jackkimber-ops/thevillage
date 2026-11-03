@@ -14,6 +14,28 @@ const back = (f: FormData, fallback: string) => {
   return b.startsWith("/staff") ? b : fallback;
 };
 
+// M9 Studio settings (managers).
+export async function saveSettingsAction(_: StaffFormState, form: FormData): Promise<StaffFormState> {
+  const phone = toE164(str(form, "contactPhone"));
+  if (!phone) return { error: "invalid_phone" };
+  const opt = (k: string) => str(form, k) || null;
+  try {
+    await staffApi().saveSettings({
+      name: str(form, "name"), address: str(form, "address"), openingHours: str(form, "openingHours"), openingHoursVi: str(form, "openingHoursVi"),
+      contactEmail: str(form, "contactEmail"), contactPhone: phone, alertEmail: opt("alertEmail"),
+      whatsappUrl: opt("whatsappUrl"), zaloUrl: opt("zaloUrl"), messengerUrl: opt("messengerUrl"),
+      facebookUrl: opt("facebookUrl"), instagramUrl: opt("instagramUrl"), mapsUrl: opt("mapsUrl"),
+      cancelCutoffTime: str(form, "cancelCutoffTime"),
+      bookingWindow: { n: Number(str(form, "windowN")), unit: str(form, "windowUnit") === "days" ? "days" : "months" },
+      latestBookingMinutes: Number(str(form, "latestMinutes")), hireMaxGroup: Number(str(form, "hireMaxGroup")),
+    });
+  } catch (e) {
+    return { error: code(e) };
+  }
+  revalidatePath("/", "layout");
+  return { ok: "Saved. The booking site uses the new settings straight away; the website within the hour." };
+}
+
 // S2 Staff page (managers).
 export async function saveStaffAction(_: StaffFormState, form: FormData): Promise<StaffFormState> {
   const email = str(form, "email");
