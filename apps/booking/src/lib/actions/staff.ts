@@ -307,7 +307,7 @@ export async function saveSessionTypeAction(_: StaffFormState, form: FormData): 
     await staffApi().saveSessionType({
       id: str(form, "id") || null, kind: str(form, "kind") as "class", name: str(form, "name"),
       defaultMinutes: Number(str(form, "minutes")), defaultCapacity: cap ? Number(cap) : null,
-      dropInPriceVnd: price, active: str(form, "active") === "on", description: str(form, "description") || null,
+      dropInPriceVnd: price, active: str(form, "active") === "on", tagline: str(form, "tagline") || null, description: str(form, "description") || null,
     });
   } catch (e) {
     return { error: code(e) };

@@ -45,6 +45,8 @@ export interface TimetableEntry {
 }
 
 export interface SessionDetail extends TimetableEntry {
+  /** A short line under the name (owners' taglines, 3 Nov). */
+  tagline: string | null;
   description: string | null;
   suits: string | null;
   bring: string | null;

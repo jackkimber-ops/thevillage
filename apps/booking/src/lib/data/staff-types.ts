@@ -101,6 +101,7 @@ export interface SessionType {
   defaultCapacity: number | null;
   dropInPriceVnd: number | null;
   active: boolean;
+  tagline: string | null;
   description: string | null;
 }
 

@@ -115,11 +115,12 @@ export const supabaseData: DataSource = {
     if (!row) return null;
     const { data: type } = await supabase
       .from("session_types")
-      .select("description, description_vi, suits, suits_vi, bring, bring_vi")
+      .select("tagline, tagline_vi, description, description_vi, suits, suits_vi, bring, bring_vi")
       .eq("id", s.session_type_id)
       .single();
     return {
       ...toEntry(row, await latestBookingMs(supabase)),
+      tagline: (locale === "vi" ? type?.tagline_vi : null) ?? type?.tagline ?? null,
       description: (locale === "vi" ? type?.description_vi : null) ?? type?.description ?? null,
       suits: (locale === "vi" ? type?.suits_vi : null) ?? type?.suits ?? null,
       bring: (locale === "vi" ? type?.bring_vi : null) ?? type?.bring ?? null,

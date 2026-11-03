@@ -41,6 +41,7 @@ export default async function SessionPage({ params, searchParams }: PageProps<"/
       <main className="page-body" style={{ gap: 10 }}>
         <div><span className="tag tag-ok">{t(`kinds.${s.kind}`)}</span></div>
         <h1 className="heading" style={{ fontSize: 30 }}>{s.title}</h1>
+        {s.tagline && <p className="tagline">{s.tagline}</p>}
         {s.description && <p style={{ margin: 0, fontSize: 15, lineHeight: 1.5 }}>{s.description}</p>}
         <dl className="card details">
           {rows.filter(([, v]) => v).map(([k, v]) => (

@@ -47,7 +47,7 @@ export const supabaseStaff: StaffApi = {
     check(error);
     return (data ?? []).map((t) => ({
       id: t.id, kind: t.kind, name: t.name, defaultMinutes: t.default_minutes, defaultCapacity: t.default_capacity,
-      dropInPriceVnd: t.drop_in_price_vnd === null ? null : Number(t.drop_in_price_vnd), active: t.active, description: t.description,
+      dropInPriceVnd: t.drop_in_price_vnd === null ? null : Number(t.drop_in_price_vnd), active: t.active, tagline: t.tagline, description: t.description,
     }));
   },
 
@@ -319,7 +319,7 @@ export const supabaseStaff: StaffApi = {
   },
   async saveSessionType(t) {
     const supabase = await createClient();
-    const row = { kind: t.kind, name: t.name, default_minutes: t.defaultMinutes, default_capacity: t.defaultCapacity, drop_in_price_vnd: t.dropInPriceVnd, active: t.active, description: t.description };
+    const row = { kind: t.kind, name: t.name, default_minutes: t.defaultMinutes, default_capacity: t.defaultCapacity, drop_in_price_vnd: t.dropInPriceVnd, active: t.active, tagline: t.tagline, description: t.description };
     const colours: Record<string, string> = { class: "#C3BF94", open_play: "#FFBEA1", private_hire: "#E8E3C5", workshop: "#E88D6D" };
     const { error } = t.id
       ? await supabase.from("session_types").update(row).eq("id", t.id)

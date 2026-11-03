@@ -143,6 +143,7 @@ test("session details", async ({ page }) => {
   await expect(page.getByRole("link", { name: "Book this class" })).toBeVisible();
   await expect(page.getByText("1 class credit, or 450,000 ₫ on the day")).toBeVisible();
   await expect(page.getByRole("link", { name: /Questions about this class/ })).toBeVisible();
+  await expect(page.locator(".tagline")).toHaveText("Move, strengthen & bond"); // the class type's tagline (3 Nov)
 });
 
 test("menu has message us links from the studio settings", async ({ page }) => {

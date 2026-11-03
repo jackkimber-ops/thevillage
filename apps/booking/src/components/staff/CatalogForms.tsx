@@ -57,6 +57,7 @@ export function SessionTypeForm({ type }: { type: SessionType | null }) {
         <div className="field"><label>Capacity<input name="capacity" type="number" min={1} defaultValue={type?.defaultCapacity ?? 10} /></label></div>
         <div className="field"><label>Drop-in price (VND)<input name="price" inputMode="numeric" defaultValue={type?.dropInPriceVnd ?? ""} /></label></div>
       </div>
+      <div className="field"><label>Tagline (a short line under the name)<input name="tagline" defaultValue={type?.tagline ?? ""} /></label></div>
       <div className="field"><label>Description customers see<textarea name="description" rows={2} defaultValue={type?.description ?? ""} /></label></div>
       <label className="check" style={{ minHeight: 32 }}><input type="checkbox" name="active" defaultChecked={type?.active ?? true} />Active</label>
       <StaffFormError code={state?.error} />
