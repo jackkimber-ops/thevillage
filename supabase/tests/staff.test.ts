@@ -1,6 +1,6 @@
 // Staff app functions: calendar counts, get-in-touch list, search, adding customers, sessions.
 import { describe, expect, it } from "vitest";
-import { inTx, TYPES } from "./db";
+import { inTx, PACKS, TYPES } from "./db";
 
 describe("staff calendar and get-in-touch list", () => {
   it("shows real counts to staff (open play too) and refuses customers", () =>
@@ -296,5 +296,27 @@ describe("studio settings page (M9)", () => {
       expect(await bad({ address: " " })).toBe("settings_required");
       const instructor = await db.staff("instructor");
       expect(await db.fails(instructor, "select public.manager_save_settings($1)", [JSON.stringify(good)])).toBe("managers_only");
+    }));
+});
+
+describe("money report (M3)", () => {
+  it("lists the payments in a date range with who paid, what for and who recorded them; managers only", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager", { name: "Caroline" });
+      const c = await db.customer({ name: "Lan Tran" });
+      await db.as(manager, "select public.sell_pack($1, $2, 'qr')", [c.customerId, PACKS.ten]);
+      await db.as(manager, "select public.record_payment($1, 450000, 'cash', 'drop_in', null, null, 'paid at the door')", [c.customerId]);
+      // A payment from last month stays out of this month's report.
+      await db.su("insert into public.payments (customer_id, amount_vnd, method, paid_for, recorded_by, recorded_at) values ($1, 150000, 'transfer', 'drop_in', $2, now() - interval '40 days')", [c.customerId, manager.id]);
+      const rows = await db.as(manager, "select amount_vnd::int amount, method, paid_for, customer_name, recorded_by, what, note from public.money_report(public.vn_date(now()) - 1, public.vn_date(now()))");
+      // Same transaction, same time: the order between these two doesn't matter.
+      expect(rows).toHaveLength(2);
+      expect(rows).toEqual(expect.arrayContaining([
+        { amount: 4000000, method: "qr", paid_for: "pack", customer_name: "Lan Tran", recorded_by: "Caroline", what: "10-class pack", note: null },
+        { amount: 450000, method: "cash", paid_for: "drop_in", customer_name: "Lan Tran", recorded_by: "Caroline", what: null, note: "paid at the door" },
+      ]));
+      const instructor = await db.staff("instructor");
+      expect(await db.fails(instructor, "select * from public.money_report(current_date, current_date)")).toBe("managers_only");
+      expect(await db.fails(manager, "select * from public.money_report(current_date, current_date - 1)")).toBe("invalid_dates");
     }));
 });

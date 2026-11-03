@@ -209,6 +209,41 @@ test("instructors can't open settings", async ({ page }) => {
   await expect(page).toHaveURL(/managers_only=1/);
 });
 
+test("M3 money report: a pack sold today shows in the month by method, and downloads as a spreadsheet", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  const name = `Report ${uid()}`;
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name").fill(name);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Customer added.")).toBeVisible();
+  await page.getByText("Sell a pack").click();
+  await page.getByLabel("Pack", { exact: true }).selectOption({ index: 1 }); // the 10-class pack
+  await page.getByLabel("Paid by").selectOption("cash");
+  await page.getByRole("button", { name: "Sell and record payment" }).click();
+  await expect(page.getByText("Pack sold and payment recorded.")).toBeVisible();
+
+  await page.getByRole("link", { name: "Reports" }).first().click();
+  await expect(page.getByRole("heading", { name: /^money · / })).toBeVisible();
+  await expect(page.locator(".report-tiles .card", { hasText: "Cash" })).not.toContainText(/^Cash0 ₫$/);
+  await expect(page.locator(".report-table tfoot")).toBeVisible();
+  await page.locator("details", { hasText: "₫" }).first().locator("summary").click();
+  await expect(page.locator("details tr", { hasText: name })).toContainText("Packs: 10-class pack");
+
+  const res = await page.request.get(await page.getByRole("link", { name: "Download (spreadsheet)" }).getAttribute("href") as string);
+  expect(res.headers()["content-type"]).toContain("text/csv");
+  const csv = await res.text();
+  expect(csv).toContain("Date,Time,Amount (VND),Method,For,What,Customer,Recorded by,Note");
+  expect(csv).toContain(`4000000,Cash,Packs,10-class pack,${name},Phuong`);
+});
+
+test("instructors can't see the money report", async ({ page }) => {
+  await staffLogin(page, "instructor@village.test");
+  await page.goto("/staff/reports");
+  await expect(page).toHaveURL(/managers_only=1/);
+  expect((await page.request.get("/staff/reports/export")).status()).toBe(403);
+});
+
 test("instructors can't open the staff page", async ({ page }) => {
   await staffLogin(page, "instructor@village.test");
   await page.goto("/staff/team");
