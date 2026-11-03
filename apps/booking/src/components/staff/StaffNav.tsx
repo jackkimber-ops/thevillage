@@ -3,17 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { StaffMember } from "@/lib/data/staff-types";
+import { LINKS, MORE } from "@/lib/staff-links";
 
-const LINKS = [
-  { href: "/staff", label: "Dashboard", phone: true },
-  { href: "/staff/today", label: "My sessions", phone: true, desk: false },
-  { href: "/staff/calendar", label: "Calendar", phone: true },
-  { href: "/staff/customers", label: "Customers", phone: true },
-  { href: "/staff/catalog", label: "Catalog", manager: true },
-  { href: "/staff/reports", label: "Reports", manager: true },
-  { href: "/staff/team", label: "Staff", manager: true },
-  { href: "/staff/settings", label: "Settings", manager: true },
-];
 
 export function StaffNav({ me }: { me: StaffMember }) {
   const path = usePathname().replace(/^(?!\/staff)/, "/staff").replace(/\/$/, "") || "/staff";
@@ -40,6 +31,12 @@ export function StaffNav({ me }: { me: StaffMember }) {
             <span className="tab-dot" />{l.label}
           </Link>
         ))}
+        {/* Phones: the manager pages sit behind More (team check, 3 Nov: they weren't reachable on a phone). */}
+        {me.role === "manager" && (
+          <Link className="tab" href="/staff/more" aria-current={["/staff/more", ...MORE.map((l) => l.href)].some(current) ? "page" : undefined}>
+            <span className="tab-dot" />More
+          </Link>
+        )}
       </nav>
     </>
   );

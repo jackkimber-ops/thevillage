@@ -4,13 +4,16 @@ import { useActionState } from "react";
 import { addClosureAction } from "@/lib/actions/staff";
 import { StaffFormError } from "./StaffFormError";
 import { keepValues } from "@/lib/keep-values";
+import { useClearOnSuccess } from "@/lib/clear-on-success";
 
 // M1: close the studio for a day or a few. Everything on those days is cancelled for everyone, so ask first.
 export function ClosureForm({ today }: { today: string }) {
   const [state, action, pending] = useActionState(addClosureAction, undefined);
   const submit = keepValues(action);
+  const ref = useClearOnSuccess(state);
   return (
     <form
+      ref={ref}
       onSubmit={(e) => {
         if (!window.confirm("Close the studio on these days? Every session on them is cancelled and everyone booked gets an email.")) {
           e.preventDefault();
