@@ -64,6 +64,13 @@ export const supabaseAccount: Account = {
     await supabase.auth.signOut();
   },
 
+  async calendarToken(fresh) {
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("my_calendar_token", { p_new: fresh });
+    if (error) throw new ActionError(error.code === "P0001" ? error.message : "generic");
+    return data as string;
+  },
+
   async me() {
     const supabase = await createClient();
     const { data: auth } = await supabase.auth.getUser();

@@ -43,6 +43,13 @@ export const demoAccount: Account = {
   async signOut() {
     (await cookies()).delete(COOKIE);
   },
+  async calendarToken(fresh) {
+    const email = await demoEmail();
+    if (!email) throw new ActionError("not_logged_in");
+    const tokens = ((globalThis as { __villageFeeds?: Record<string, string> }).__villageFeeds ??= {});
+    if (fresh || !tokens[email]) tokens[email] = randomUUID().replace(/-/g, "") + randomUUID().replace(/-/g, "");
+    return tokens[email];
+  },
   async me() {
     const c = await current();
     return c ? toMe(c) : null;

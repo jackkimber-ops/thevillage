@@ -267,6 +267,13 @@ test("M1 closures: a manager closes a day, its sessions are cancelled and custom
   await expect(customer.getByText(/QA Holiday/)).toHaveCount(0);
 });
 
+test("S8: instructors subscribe to their own sessions from My sessions", async ({ page }) => {
+  await staffLogin(page, "instructor@village.test");
+  await page.goto("/staff/today");
+  await page.getByRole("button", { name: "Add to my calendar" }).click();
+  await expect(page.getByRole("link", { name: "Apple Calendar (iPhone, Mac)" })).toHaveAttribute("href", /\/api\/calendar\/[0-9a-f]{64}\.ics$/);
+});
+
 test("instructors can't open the staff page", async ({ page }) => {
   await staffLogin(page, "instructor@village.test");
   await page.goto("/staff/team");

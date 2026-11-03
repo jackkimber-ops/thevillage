@@ -152,6 +152,8 @@ export interface Account {
   sendCode(email: string, next: string): Promise<void>;
   verifyCode(email: string, code: string): Promise<void>;
   signOut(): Promise<void>;
+  /** C11/S8: the secret calendar feed token (made on first use; `fresh` replaces it, so an old link stops working). */
+  calendarToken(fresh: boolean): Promise<string>;
 
   me(): Promise<Me | null>;
   saveDetails(d: { fullName: string; phone: string; preferredContact: ContactMethod; language: "en" | "vi" }): Promise<void>;

@@ -322,5 +322,17 @@
     "android1": "In Chrome, tap ⋮ at the top right.",
     "android2": "Tap “Add to home screen” (or “Install app”), then “Add”.",
     "menu": "Add to home screen"
+  },
+  "calendarFeed": {
+    "title": "Add my bookings to my calendar",
+    "body": "Subscribe once: new bookings and changes appear in your phone's calendar by themselves. Only class names and times are shared.",
+    "show": "Add to my calendar",
+    "apple": "Apple Calendar (iPhone, Mac)",
+    "google": "Google Calendar",
+    "copy": "Copy the link",
+    "copied": "Link copied: paste it into your calendar app (“add calendar from URL”).",
+    "renew": "Make a new link",
+    "renewed": "New link made: the old one no longer works.",
+    "error": "Something went wrong. Please try again."
   }
 }
