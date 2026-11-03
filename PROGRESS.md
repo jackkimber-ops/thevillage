@@ -11,6 +11,35 @@
 - 21 Oct: **visual style v1**: a style sheet plus 5 key screens in the brand (login, timetable, confirm a class, staff dashboard, website top), as a new row at the bottom of the preview canvas.
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
+## Update (3 Nov, evening): second-release features brought forward
+
+All merged to `main` and live; staging matches `main`. The full staging check passes (71 of 71).
+
+- **Home screen icon (C9, opening-day requirement that had been missed)** (#43):
+  - The booking site can be saved to a phone's home screen, with an app manifest and the house badge on sage as the icon, named "The Village".
+  - "Keep the village on your phone" appears on "you're booked" and in the menu: Android adds it in one tap, iPhone gets the Safari steps.
+- **Brought forward from the +1 month release** (#44–#48, change list #22–#26). Migrations `20261103000002`–`000005` are applied to staging and production.
+  - **Staff page** (S2, `/staff/team`): managers add staff by name and email (a login is made if needed), change role and instructor access, and switch access off. Rules in the database: managers only, never yourself, always one manager.
+  - **Settings** (M9): studio details, opening hours EN/VI, contact email and phone, where alerts go, messaging and social links, and the booking rules (cancellation time, how far ahead, how late, largest hire group). Every value is checked and every change is audited. The booking site applies changes at once, the website within the hour.
+  - **Money report** (M3, Reports): a month at a time, by QR, transfer and cash, day by day with weekly and monthly totals, every payment listed, and a spreadsheet download (`/staff/reports/export`).
+  - **Closures** (M1, in Settings): close the studio for given days. Those sessions are cancelled for everyone (credits back, emails sent), packs are extended by the closed days, a trigger refuses sessions on closed days, and the timetable shows "The studio is closed…". **Test only on staging**: on live it cancels real sessions and emails real customers.
+  - **Calendar subscription** (C11/S8): "Add to my calendar" on My bookings, My sessions and the staff dashboard, for Apple Calendar, Google Calendar or a copied link, plus "make a new link".
+  - The "+1 month" placeholders are gone from the staff menu.
+- **Fixes after checking against the team's earlier feedback** (#49):
+  - On phones, managers get a **More** tab for Catalog, Reports, Staff and Settings, which before were only in the computer side menu.
+  - The add-staff and closure forms empty after a successful save.
+- **Staying logged in** (#50, Jack on Android):
+  - The login itself lasted: the cookie is kept 400 days and the hourly token renews by itself.
+  - But the home page always showed "Log in", so the reopened app looked logged out. It now shows "My bookings" to logged-in people, and `/login` skips ahead if you're already logged in.
+  - Jack confirmed it works.
+- **Still left in the +1 month release:**
+  - pick several dates at once (C25)
+  - pause a pack (M2)
+  - instructor report (M4, before the first pay day)
+  - delete or anonymise a customer (M10)
+  - one-off workshops (M7)
+- **Team message drafted** for the retest. It asks for a check of the Vietnamese on the new parts and for real-phone tests of the home-screen icon and calendar links.
+
 ## Update (3 Nov): timetable and class details live
 
 All merged to `main` and live; staging matches `main`.
@@ -192,11 +221,12 @@ All merged to `main` and live; staging matches `main`.
 - 25 Oct: **designs signed off.** Build plan in `docs/build-plan.md`.
 
 ## Waiting on the owners
-- **Instructors:** who teaches Little Yogi & Me, Breathe & Unwind, Bump & Breathe and Wiggle & Wonder, and their emails (for staff logins). Phuong teaches Core & Cuddle.
+- **Instructors:** who teaches Little Yogi & Me, Breathe & Unwind, Bump & Breathe and Wiggle & Wonder. Phuong teaches Core & Cuddle. Managers can now add instructors themselves (Staff page), then set them on sessions.
 - **Strong & Snuggly:** day and time, to put it on the timetable.
-- **Closure days** (e.g. Tết, around 6–10 Feb 2027): sessions currently run every day.
+- **Closure days** (e.g. Tết, around 6–10 Feb 2027): sessions currently run every day. Managers can enter them under Settings → closures.
 - **Tuesday and Thursday afternoons:** stay Open Play for now; may become classes.
 - Privacy policy and cancellation terms (EN and VI); studio photo for the login and home screens; website photos, FAQ and headline copy.
+- A native speaker to read the new Vietnamese: the home-screen card, calendar card, "studio is closed" note and the "sorry, that didn't load" page.
 - Optional: `sentry.io` allowed in the environment's network settings plus a read-only Sentry token, so Claude can read new errors directly (today Jack pastes them in).
 - When to switch the customer-facing contact email to hello@thevillagesaigon.com.
 - SVGs of the full-colour wordmark and badges (later).
