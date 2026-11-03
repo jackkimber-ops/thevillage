@@ -229,7 +229,10 @@
     "bookAnother": "Book another class",
     "guestTitle": "you're booked",
     "guestBody": "We'll send the details to {email} and get in touch before your first visit. Pay at the studio on the day.",
-    "logInToSee": "Log in to see my bookings"
+    "logInToSee": "Log in to see my bookings",
+    "addToGoogle": "Add to Google Calendar",
+    "addToApple": "Add to Apple Calendar",
+    "calendarDetails": "Your booking at The Village. See or cancel it at book.thevillagesaigon.com/bookings"
   },
   "bookings": {
     "title": "my bookings",
@@ -334,6 +337,10 @@
     "copied": "Link copied: paste it into your calendar app (“add calendar from URL”).",
     "renew": "Make a new link",
     "renewed": "New link made: the old one no longer works.",
-    "error": "Something went wrong. Please try again."
+    "error": "Something went wrong. Please try again.",
+    "appleTitle": "Add all my bookings to Apple Calendar",
+    "appleBody": "Subscribe once: new bookings and changes appear in your calendar by themselves. Only class names and times are shared.",
+    "subscribe": "Subscribe in Apple Calendar",
+    "openApple": "Open Apple Calendar"
   }
 }

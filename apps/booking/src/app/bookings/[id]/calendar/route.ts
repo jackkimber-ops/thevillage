@@ -1,6 +1,7 @@
 import { account, data } from "@/lib/data";
 
-// "Add to my calendar" for one booking: a small .ics file (title, time and place; no names).
+// "Add to Apple Calendar" for one booking: a small .ics (title, time and place; no names), sent to open in the
+// calendar (iPhone/Mac Safari shows "Add to Calendar"), not as a download (Jack, 3 Nov).
 export async function GET(_: Request, ctx: RouteContext<"/bookings/[id]/calendar">) {
   const { id } = await ctx.params;
   const b = (await account().myBookings()).find((x) => x.id === id);
@@ -24,6 +25,6 @@ export async function GET(_: Request, ctx: RouteContext<"/bookings/[id]/calendar
     "",
   ].join("\r\n");
   return new Response(ics, {
-    headers: { "Content-Type": "text/calendar; charset=utf-8", "Content-Disposition": `attachment; filename="the-village-${b.id.slice(0, 8)}.ics"` },
+    headers: { "Content-Type": "text/calendar; charset=utf-8", "Content-Disposition": `inline; filename="the-village-${b.id.slice(0, 8)}.ics"` },
   });
 }

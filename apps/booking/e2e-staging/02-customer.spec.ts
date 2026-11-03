@@ -108,10 +108,8 @@ test("new parent: first login asks for details once, then books, sees ✓ Booked
   await pageIsHealthy(page);
   await shot(page, "booked");
 
-  // Add to my calendar gives a calendar file.
-  const ics = await page.getByRole("link", { name: "Add to my calendar" }).getAttribute("href");
-  const res = await page.request.get(ics!).catch(() => null);
-  if (res) expect(res.headers()["content-type"]).toContain("text/calendar");
+  // Add to calendar opens Google Calendar filled in (Apple Calendar on Apple devices; the phone test is Android).
+  await expect(page.getByRole("link", { name: "Add to Google Calendar" })).toHaveAttribute("href", /^https:\/\/calendar\.google\.com\/calendar\/render\?action=TEMPLATE&text=/);
 
   await page.goto(`/classes/${classA}`);
   await expect(page.getByText("You're booked into this session.")).toBeVisible();

@@ -230,7 +230,10 @@
     "bookAnother": "Đặt lớp khác",
     "guestTitle": "đã đặt xong",
     "guestBody": "Chúng tôi sẽ gửi chi tiết tới {email} và liên hệ trước buổi đầu tiên. Thanh toán tại studio vào hôm đó.",
-    "logInToSee": "Đăng nhập để xem lịch đã đặt"
+    "logInToSee": "Đăng nhập để xem lịch đã đặt",
+    "addToGoogle": "Thêm vào Google Lịch",
+    "addToApple": "Thêm vào Lịch Apple",
+    "calendarDetails": "Lịch đặt của bạn tại The Village. Xem hoặc huỷ tại book.thevillagesaigon.com/bookings"
   },
   "bookings": {
     "title": "lịch đã đặt",
@@ -335,6 +338,10 @@
     "copied": "Đã sao chép: dán vào ứng dụng lịch (“thêm lịch từ URL”).",
     "renew": "Tạo đường dẫn mới",
     "renewed": "Đã tạo đường dẫn mới: đường dẫn cũ không còn dùng được.",
-    "error": "Đã có lỗi. Vui lòng thử lại."
+    "error": "Đã có lỗi. Vui lòng thử lại.",
+    "appleTitle": "Thêm mọi lịch đặt vào Lịch Apple",
+    "appleBody": "Đăng ký một lần: lịch đặt mới và thay đổi sẽ tự hiện trong lịch của bạn. Chỉ chia sẻ tên lớp và thời gian.",
+    "subscribe": "Đăng ký trong Lịch Apple",
+    "openApple": "Mở Lịch Apple"
   }
 }
