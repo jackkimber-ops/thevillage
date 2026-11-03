@@ -10,8 +10,9 @@ const LINKS = [
   { href: "/staff/calendar", label: "Calendar", phone: true },
   { href: "/staff/customers", label: "Customers", phone: true },
   { href: "/staff/catalog", label: "Catalog", manager: true },
+  { href: "/staff/team", label: "Staff", manager: true },
 ];
-const LATER = ["Reports", "Staff", "Settings"];
+const LATER = ["Reports", "Settings"];
 
 export function StaffNav({ me }: { me: StaffMember }) {
   const path = usePathname().replace(/^(?!\/staff)/, "/staff").replace(/\/$/, "") || "/staff";

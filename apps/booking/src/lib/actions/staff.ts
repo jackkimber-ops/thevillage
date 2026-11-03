@@ -14,6 +14,25 @@ const back = (f: FormData, fallback: string) => {
   return b.startsWith("/staff") ? b : fallback;
 };
 
+// S2 Staff page (managers).
+export async function saveStaffAction(_: StaffFormState, form: FormData): Promise<StaffFormState> {
+  const email = str(form, "email");
+  const userId = str(form, "userId") || null;
+  if (!userId && !isEmail(email)) return { error: "invalid_email" };
+  const role = str(form, "role") === "manager" ? "manager" : "instructor";
+  try {
+    await staffApi().saveStaff({
+      userId, email, name: str(form, "name"), role,
+      access: role === "manager" || str(form, "access") === "all_customers" ? "all_customers" : "own_sessions",
+      active: str(form, "active") !== "off",
+    });
+  } catch (e) {
+    return { error: code(e) };
+  }
+  revalidatePath("/staff/team");
+  return { ok: userId ? "Saved." : `Added. ${str(form, "name")} logs in at the staff app with ${email} (a code by email, no password).` };
+}
+
 export async function markContactedAction(form: FormData) {
   await staffApi().markContacted(str(form, "bookingId"));
   revalidatePath("/staff");

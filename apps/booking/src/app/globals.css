@@ -330,3 +330,4 @@ a { color: var(--forrest-deep); }
 .home-tip { display: flex; gap: 12px; align-items: flex-start; }
 .home-tip-icon { border-radius: 10px; flex: none; }
 .home-tip-steps { margin: 8px 0 0; padding-left: 18px; line-height: 1.45; display: flex; flex-direction: column; gap: 4px; }
+.staff .staff-off { opacity: .7; }

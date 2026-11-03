@@ -153,6 +153,41 @@ test("instructors: their sessions, no catalog, can't sell packs", async ({ page 
   await expect(page.getByText("That page is for managers only.")).toBeVisible();
 });
 
+test("S2 staff page: a manager adds an instructor, who can then log in; switching them off stops that", async ({ page, browser }) => {
+  await staffLogin(page, "manager@village.test");
+  await page.getByRole("link", { name: "Staff" }).first().click();
+  await expect(page.getByRole("heading", { name: "staff" })).toBeVisible();
+  await expect(page.getByText("Phuong (you)")).toBeVisible();
+  const email = `new${uid()}@village.test`;
+  const add = page.locator("form", { has: page.getByRole("button", { name: "Add to staff" }) });
+  await add.getByLabel("Name").fill("Linh");
+  await add.getByLabel("Email (their login)").fill(email);
+  await add.getByLabel("Can see").selectOption("all_customers");
+  await add.getByRole("button", { name: "Add to staff" }).click();
+  await expect(add.getByText(`Added. Linh logs in at the staff app with ${email}`)).toBeVisible();
+
+  const linh = await (await browser.newContext()).newPage();
+  await staffLogin(linh, email);
+  await expect(linh.getByText("Signed in as Linh (Instructor)")).toBeAttached();
+
+  await page.reload();
+  const row = page.locator("form", { hasText: email });
+  await expect(row.getByLabel("Can see")).toHaveValue("all_customers");
+  await row.getByRole("button", { name: "Switch off access" }).click();
+  await expect(row.getByText("Switched off")).toBeVisible();
+  await linh.goto("/staff");
+  await expect(linh).toHaveURL(/\/staff\/login\?not_staff=1/);
+
+  // Your own row can't be switched off, and instructors can't open the page.
+  await expect(page.locator("form", { hasText: "Phuong (you)" }).getByRole("button", { name: "Switch off access" })).toHaveCount(0);
+});
+
+test("instructors can't open the staff page", async ({ page }) => {
+  await staffLogin(page, "instructor@village.test");
+  await page.goto("/staff/team");
+  await expect(page).toHaveURL(/managers_only=1/);
+});
+
 test("managers change prices in the catalog", async ({ page }) => {
   await staffLogin(page, "manager@village.test");
   await page.goto("/staff/catalog");

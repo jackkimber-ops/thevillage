@@ -229,3 +229,34 @@ describe("team feedback 29 Oct", () => {
       expect(hit.credits_left).toBe(10);
     }));
 });
+
+describe("staff page (S2)", () => {
+  it("managers add staff, change them and switch access off; the rules hold", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const [{ id: newId }] = await db.su("insert into auth.users (id, email) values (gen_random_uuid(), 'Mai@Example.com') returning id");
+      const [found] = await db.as(manager, "select public.manager_find_user(' mai@example.com ') as id");
+      expect(found.id).toBe(newId);
+
+      await db.as(manager, "select public.manager_save_staff($1, 'Mai', 'instructor', 'own_sessions', true)", [newId]);
+      let list = await db.as(manager, "select user_id, email, display_name, role, instructor_access, active from public.staff_list()");
+      expect(list).toContainEqual({ user_id: newId, email: "Mai@Example.com", display_name: "Mai", role: "instructor", instructor_access: "own_sessions", active: true });
+
+      // All customers, then switched off: no longer staff.
+      await db.as(manager, "select public.manager_save_staff($1, 'Mai', 'instructor', 'all_customers', false)", [newId]);
+      const [role] = await db.as({ id: newId }, "select public.current_staff_role() as r");
+      expect(role.r).toBeNull();
+      list = await db.as(manager, "select user_id, active from public.staff_list()");
+      expect(list).toContainEqual({ user_id: newId, active: false });
+      const [audit] = await db.su("select count(*)::int n from public.audit_log where entity = 'staff_roles' and entity_id = $1", [newId]);
+      expect(audit.n).toBe(2);
+
+      // Not yourself, never the last manager, managers only.
+      expect(await db.fails(manager, "select public.manager_save_staff($1, 'Boss', 'manager', 'all_customers', false)", [manager.id])).toBe("not_yourself");
+      expect(await db.fails(manager, "select public.manager_save_staff($1, 'Boss', 'instructor', 'own_sessions', true)", [manager.id])).toBe("not_yourself");
+      const instructor = await db.staff("instructor");
+      expect(await db.fails(instructor, "select * from public.staff_list()")).toBe("managers_only");
+      expect(await db.fails(instructor, "select public.manager_find_user('x@y.z')")).toBe("managers_only");
+      expect(await db.fails(instructor, "select public.manager_save_staff($1, 'Me', 'manager', 'all_customers', true)", [instructor.id])).toBe("managers_only");
+    }));
+});
