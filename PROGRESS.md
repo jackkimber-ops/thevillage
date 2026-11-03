@@ -11,6 +11,43 @@
 - 21 Oct: **visual style v1**: a style sheet plus 5 key screens in the brand (login, timetable, confirm a class, staff dashboard, website top), as a new row at the bottom of the preview canvas.
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
+## Update (3 Nov): timetable and class details live
+
+All merged to `main` and live; staging matches `main`.
+
+- **Timetable from Monday 16 Nov** (#37, change #18; data `supabase/data/20261102-timetable-from-16nov.sql`, loaded on staging, then production):
+  - Every day: a class 8:30–9:30, then Open Play 9:30–11:30; Mon–Sat also Open Play 13:00–15:00.
+  - Classes: Core & Cuddle (Mon, Fri, Sat), Little Yogi & Me (Tue; was "Mum & Bub Yoga"), Breathe & Unwind (Wed, new), Bump & Breathe (Thu, new), Wiggle & Wonder (Sun).
+  - 300 sessions up to 28 Feb 2027, capacity 10. The 27 Oct sample sessions are gone (none had bookings on production).
+  - Opening hours are now "Mon–Sat 8:30–15:00, Sun 8:30–11:30" (Vietnamese too) on the website, booking site and emails.
+  - The website's Classes card lists the five classes.
+- **Class details** (#38, change #19; migration `20261103000001_class_taglines`, data `supabase/data/20261103-class-details-and-badges.sql`):
+  - **Badges:** every class has its own, from the Instagram set. The new ones are recoloured from the existing badges so they stay sharp: Breathe & Unwind (cream, sage triangle), Bump & Breathe (peach, cream circle), Strong & Snuggly (cream, peach arch).
+  - **Text:** the owners' descriptions and taglines, in English and Vietnamese, for all six classes. The tagline shows under the class name on its page. Staff edit the English text in the catalog; Vietnamese changes go through Claude.
+  - **Strong & Snuggly:** new class type, covered by every class pack. Not on the timetable yet.
+  - **Phuong** teaches every Core & Cuddle session.
+- **Staging check:** its test sessions moved to the evenings. From 16 Nov it only runs **after 15:00 or before 8:00 Vietnam time**: some of its sessions must start within the hour, which would overlap a class during studio hours. 71 of 71 pass.
+
+## Update (29 Oct – 2 Nov): team feedback rounds
+
+All merged and live.
+
+- **#34 (change #15, 29 Oct):**
+  - staff app: amounts like "450k"; private hire agreed price and balance; Here / No-show only on the day; credits in search and when booking someone in
+  - customer site: **Edit my details** in the menu (brought forward); Back and the Classes tab return to where you were
+  - website: phone header layout
+- **#35 (change #16, 30 Oct):**
+  - website: EN button works after visiting Vietnamese; Book links keep the language; Message us / Follow us as icons
+  - booking site: website link and icons in the menu; 6 upcoming classes; week view trimmed to the hours used; the login page shows the class you're booking
+- **#36 (change #17, 2 Nov, final sweep):**
+  - Back returns to the page you came from
+  - forms keep what you typed through the menu or privacy policy
+  - Remove a child
+  - the All / Classes / Open play filter and the day you're on stay when changing view
+  - **Hire the studio:** from an hour to a full day, case by case, written in the customer's own words; up to 15 people (`studio_settings.hire_max_group`); staff can enter sessions up to 10 hours
+  - Vietnamese opening hours (`studio_settings.opening_hours_vi`)
+- **Sentry alert (29 Oct, 20:56 Vietnam time, production):** not from the database or jobs (no customers or bookings then, all jobs fine). Sentry can't be opened from the cloud session; waiting for the error text from Jack.
+
 ## Update (28 Oct)
 
 - **Studio alert emails now go to hello@thevillagesaigon.com** on staging and production (`studio_settings.alert_email`). A test email to hello@ was delivered. The customer-facing contact email stays thevillage.saigon@gmail.com until the owners say to switch.
@@ -144,8 +181,13 @@ All merged to `main` and live; staging matches `main`.
 - 25 Oct: **designs signed off.** Build plan in `docs/build-plan.md`.
 
 ## Waiting on the owners
-- Instructor names and emails (Caroline: yousun.nam@gmail.com, received 26 Oct), and whether +84 933 834 068 is the studio's WhatsApp and Zalo number. (Address and opening hours received 21 Oct.)
-- For go-live (by about 10 Nov, see `docs/build-plan.md`): first month's timetable (classes, days, times, instructor); privacy policy and cancellation terms (EN and VI); studio photo for the login and home screens.
+- **Instructors:** who teaches Little Yogi & Me, Breathe & Unwind, Bump & Breathe and Wiggle & Wonder, and their emails (for staff logins). Phuong teaches Core & Cuddle.
+- **Strong & Snuggly:** day and time, to put it on the timetable.
+- **Closure days** (e.g. Tết, around 6–10 Feb 2027): sessions currently run every day.
+- **Tuesday and Thursday afternoons:** stay Open Play for now; may become classes.
+- Privacy policy and cancellation terms (EN and VI); studio photo for the login and home screens; website photos, FAQ and headline copy.
+- The Sentry error text (29 Oct alert), or `sentry.io` allowed in the environment's network settings plus a read-only token, so Claude can read it.
+- When to switch the customer-facing contact email to hello@thevillagesaigon.com.
 - SVGs of the full-colour wordmark and badges (later).
 
 ## Sign-off log
