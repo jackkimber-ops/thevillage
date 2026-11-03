@@ -229,7 +229,10 @@
     "bookAnother": "Book another class",
     "guestTitle": "you're booked",
     "guestBody": "We'll send the details to {email} and get in touch before your first visit. Pay at the studio on the day.",
-    "logInToSee": "Log in to see my bookings"
+    "logInToSee": "Log in to see my bookings",
+    "addToGoogle": "Add to Google Calendar",
+    "addToApple": "Add to Apple Calendar",
+    "calendarDetails": "Your booking at The Village. See or cancel it at book.thevillagesaigon.com/bookings"
   },
   "bookings": {
     "title": "my bookings",

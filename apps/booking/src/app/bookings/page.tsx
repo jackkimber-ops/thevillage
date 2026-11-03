@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
+import { AddToCalendar } from "@/components/AddToCalendar";
+import { googleCalendarUrl } from "@/lib/calendar-links";
 import { CalendarFeed } from "@/components/CalendarFeed";
 import { TabBar } from "@/components/TabBar";
 import { TopBar } from "@/components/TopBar";
@@ -15,6 +17,7 @@ export default async function BookingsPage({ searchParams }: PageProps<"/booking
   await requireCustomer("/bookings");
   const t = await getTranslations("bookings");
   const tf = await getTranslations("calendarFeed");
+  const tb = await getTranslations("booked");
   const locale = await getLocale();
   const [all, settings] = await Promise.all([account().myBookings(), data().settings()]);
   const now = nowMs();
@@ -48,6 +51,14 @@ export default async function BookingsPage({ searchParams }: PageProps<"/booking
           ) : !upcomingRow ? (
             <div className="muted small">{t(`status.${b.status}`)}</div>
           ) : null}
+          {upcomingRow && (
+            <AddToCalendar
+              compact
+              apple={`/bookings/${b.id}/calendar`}
+              google={googleCalendarUrl({ title: `${b.session.title} · ${settings.name}`, startsAt: b.session.startsAt, endsAt: b.session.endsAt, location: settings.address, details: tb("calendarDetails") })}
+              labels={{ google: tb("addToGoogle"), apple: tb("addToApple") }}
+            />
+          )}
         </div>
         {upcomingRow && (canCancel
           ? <Link className="small-link" href={`/bookings/${b.id}/cancel`}>{t("cancel")}</Link>

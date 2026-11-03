@@ -343,3 +343,6 @@ a { color: var(--forrest-deep); }
 .calendar-feed .row a, .calendar-feed .row button { flex: none; }
 .staff-feed { max-width: 640px; }
 .staff-tabs .tab { font-size: 12px; }
+.add-cal { display: flex; flex-direction: column; gap: 8px; }
+.add-cal-compact { gap: 12px; margin-top: 4px; }
+.add-cal-compact .small-link { padding: 4px 0; font-size: 13px; }

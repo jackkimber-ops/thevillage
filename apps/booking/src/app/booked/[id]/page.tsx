@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
+import { AddToCalendar } from "@/components/AddToCalendar";
+import { googleCalendarUrl } from "@/lib/calendar-links";
 import { HomeScreenTip } from "@/components/HomeScreenTip";
 import { TopBar } from "@/components/TopBar";
 import { account, data } from "@/lib/data";
@@ -45,7 +47,11 @@ export default async function BookedPage({ params }: PageProps<"/booked/[id]">) 
           {" "}{t("emailSent")}
         </p>
         <HomeScreenTip />
-        <a className="btn-secondary" href={`/bookings/${b.id}/calendar`} download>{t("addToCalendar")}</a>
+        <AddToCalendar
+          apple={`/bookings/${b.id}/calendar`}
+          google={googleCalendarUrl({ title: `${b.session.title} · ${settings.name}`, startsAt: b.session.startsAt, endsAt: b.session.endsAt, location: settings.address, details: t("calendarDetails") })}
+          labels={{ google: t("addToGoogle"), apple: t("addToApple") }}
+        />
         <Link className="btn" href="/bookings" style={{ marginTop: "auto" }}>{t("seeBookings")}</Link>
         <Link className="link-center" href="/classes">{t("bookAnother")}</Link>
       </main>
