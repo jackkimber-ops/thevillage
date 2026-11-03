@@ -8,7 +8,7 @@ import { TopBar } from "@/components/TopBar";
 import { account, data, type TimetableEntry } from "@/lib/data";
 import { myBookedSessions } from "@/lib/my-booked";
 import {
-  addDays, addMonths, formatDayLong, formatMonth, formatTime, formatWeekRange, isDateKey, monthStart,
+  addDays, addMonths, formatDayLong, formatMonth, formatTime, formatTimeRange, formatWeekRange, isDateKey, monthStart,
   vnDateKey, vnDayStart, weekStart,
 } from "@/lib/time";
 
@@ -215,22 +215,35 @@ async function WeekGrid({ monday, today, sessions, booked, locale, from }: {
   monday: string; today: string; sessions: TimetableEntry[]; booked: Map<string, string>; locale: string; from: string;
 }) {
   const t = await getTranslations("session");
-  const PX = 44; // per hour
+  // Team feedback (3 Nov): 1-hour classes were too short for their names. Hours with sessions are taller;
+  // hours nobody uses (the lunch gap, quiet mornings) shrink to a thin strip instead of empty space.
+  const PX = 56; // an hour with sessions
+  const GAP = 14; // an hour with none
   const hourOf = (iso: string) => {
     const [h, m] = formatTime(iso, "en").split(":").map(Number);
     return h + m / 60;
   };
-  // Only the hours that week uses (team feedback 30 Oct): from the first class to an hour after the last,
-  // not a big empty afternoon. At least 4 hours tall so a quiet week still reads as a day.
+  // From the first class to the end of the last (team feedback 30 Oct: no big empty afternoon).
   const starts = sessions.map((s) => Math.floor(hourOf(s.startsAt)));
-  const ends = sessions.map((s) => Math.ceil(hourOf(s.endsAt)) + 1);
+  const ends = sessions.map((s) => Math.ceil(hourOf(s.endsAt)));
   const startHour = starts.length ? Math.min(...starts) : 8;
   const endHour = Math.max(startHour + 4, ...ends);
-  const height = (endHour - startHour) * PX;
+  const used = (h: number) => sessions.some((s) => hourOf(s.startsAt) < h + 1 && hourOf(s.endsAt) > h);
+  const hours: number[] = [];
+  for (let h = startHour; h < endHour; h++) hours.push(h);
+  const rowHeight = (h: number) => (sessions.length === 0 || used(h) ? PX : GAP);
+  /** Distance from the top of the grid for a time of day (hours, e.g. 9.5). */
+  const y = (t: number) => {
+    let top = 0;
+    for (const h of hours) {
+      if (t >= h + 1) top += rowHeight(h);
+      else if (t > h) top += (t - h) * rowHeight(h);
+    }
+    return top;
+  };
+  const height = y(endHour);
   const days = Array.from({ length: 7 }, (_, i) => addDays(monday, i));
   const dayFmt = new Intl.DateTimeFormat(locale === "vi" ? "vi-VN" : "en-GB", { timeZone: "UTC", weekday: "short" });
-  const hours: number[] = [];
-  for (let h = Math.ceil(startHour); h < endHour; h++) hours.push(h);
 
   return (
     <div className="week-grid">
@@ -242,27 +255,25 @@ async function WeekGrid({ monday, today, sessions, booked, locale, from }: {
         </div>
       ))}
       <div style={{ position: "relative", height }}>
-        {hours.map((h) => <span key={h} className="week-hour" style={{ top: (h - startHour) * PX - 6 }}>{h}</span>)}
+        {hours.filter((h) => rowHeight(h) === PX).map((h) => <span key={h} className="week-hour" style={{ top: y(h) - 6 }}>{h}</span>)}
       </div>
       {days.map((d) => (
         <div key={d} className="week-col" style={{ height }}>
           {sessions.filter((s) => vnDateKey(s.startsAt) === d).map((s) => {
-            const top = (hourOf(s.startsAt) - startHour) * PX + 2;
-            const h = (hourOf(s.endsAt) - hourOf(s.startsAt)) * PX - 4;
-            const time = formatTime(s.startsAt, locale);
+            const top = y(hourOf(s.startsAt)) + 1;
+            const h = y(hourOf(s.endsAt)) - y(hourOf(s.startsAt)) - 2;
+            // Long blocks have room for the end time too.
+            const time = hourOf(s.endsAt) - hourOf(s.startsAt) >= 1.5 ? formatTimeRange(s.startsAt, s.endsAt, locale) : formatTime(s.startsAt, locale);
             const isBooked = booked.has(s.id);
             const label = `${s.title}, ${time}${isBooked ? `, ${t("booked")}` : s.isFull ? `, ${t("full")}` : ""}`;
             const style = { top, height: h };
             const closed = !isBooked && (s.isFull || s.bookingClosed);
             return closed ? (
-              <div key={s.id} className="week-block swatch-full" style={style} aria-label={label}><b>{s.title}</b>{time}</div>
+              <div key={s.id} className="week-block swatch-full" style={style} aria-label={label}><span className="week-time">{time}</span><b>{s.title}</b></div>
             ) : (
               <Link key={s.id} className={`week-block kind-${s.kind}${isBooked ? " booked" : ""}`} style={style} href={sessionHref(s.id, from)} aria-label={label}>
-                <b>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  {s.pictureUrl && <img className="mini-badge" src={s.pictureUrl} alt="" />}
-                  {isBooked && "✓ "}{s.title}
-                </b>{time}
+                <span className="week-time">{time}</span>
+                <b>{isBooked && "✓ "}{s.title}</b>
               </Link>
             );
           })}
