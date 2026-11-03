@@ -50,6 +50,7 @@ export const demoData: DataSource = {
     const kind = kindOf(s);
     return {
       ...entry(s),
+      tagline: typeOf(s).tagline,
       description: typeOf(s).description,
       suits: kind === "class" ? "Babies and crawlers" : "Children up to 5",
       bring: kind === "class" ? "Water, a towel, a blanket for baby" : "Socks for everyone",

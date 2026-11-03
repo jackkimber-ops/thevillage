@@ -33,9 +33,9 @@ export const staff: Record<string, StaffMember> = {
 const instructorNames: Record<string, string> = { "demo-phuong": "Phuong", "demo-mai": "Mai", "demo-anna": "Anna" };
 
 export const sessionTypes: SessionType[] = [
-  { id: "demo-class", kind: "class", name: "Group class", defaultMinutes: 60, defaultCapacity: 10, dropInPriceVnd: 450000, active: true, description: "A gentle full-body class. Your little one plays on the mat beside you." },
-  { id: "demo-open-play", kind: "open_play", name: "Open Play", defaultMinutes: 90, defaultCapacity: 10, dropInPriceVnd: 150000, active: true, description: "Play time for parents and little ones." },
-  { id: "demo-hire", kind: "private_hire", name: "Private hire", defaultMinutes: 60, defaultCapacity: null, dropInPriceVnd: null, active: true, description: null },
+  { id: "demo-class", kind: "class", name: "Group class", defaultMinutes: 60, defaultCapacity: 10, dropInPriceVnd: 450000, active: true, tagline: "Move, strengthen & bond", description: "A gentle full-body class. Your little one plays on the mat beside you." },
+  { id: "demo-open-play", kind: "open_play", name: "Open Play", defaultMinutes: 90, defaultCapacity: 10, dropInPriceVnd: 150000, active: true, tagline: null, description: "Play time for parents and little ones." },
+  { id: "demo-hire", kind: "private_hire", name: "Private hire", defaultMinutes: 60, defaultCapacity: null, dropInPriceVnd: null, active: true, tagline: null, description: null },
 ];
 
 export const packTypes: PackType[] = [

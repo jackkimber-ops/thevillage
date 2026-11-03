@@ -32,6 +32,7 @@ a { color: var(--forrest-deep); }
   color: var(--forrest-deep);
   margin: 0;
 }
+.tagline { margin: -4px 0 2px; font: 500 17px var(--font-heading), system-ui, sans-serif; color: var(--coral-deep); }
 
 .lang-button {
   display: inline-flex;
