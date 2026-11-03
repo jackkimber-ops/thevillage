@@ -2,7 +2,7 @@ import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { ActionError, type BookingStatus } from "./types";
-import type { CustomerProfile, EditableSettings, PackType, RosterRow, SessionType, StaffApi, StaffListRow, StaffSession } from "./staff-types";
+import type { CustomerProfile, EditableSettings, MoneyRow, PackType, RosterRow, SessionType, StaffApi, StaffListRow, StaffSession } from "./staff-types";
 
 function check(error: { code?: string; message: string } | null) {
   if (!error) return;
@@ -39,6 +39,14 @@ function minutesOf(interval: string): number {
 }
 
 export const supabaseStaff: StaffApi = {
+  async moneyReport(from, to) {
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("money_report", { p_from: from, p_to: to });
+    check(error);
+    return ((data ?? []) as Array<{ payment_id: string; vn_day: string; recorded_at: string; amount_vnd: number | string; method: MoneyRow["method"]; paid_for: MoneyRow["paidFor"]; customer_name: string | null; recorded_by: string; note: string | null; what: string | null }>)
+      .map((r) => ({ id: r.payment_id, day: r.vn_day, recordedAt: r.recorded_at, amountVnd: Number(r.amount_vnd), method: r.method, paidFor: r.paid_for, customerName: r.customer_name, recordedBy: r.recorded_by, note: r.note, what: r.what }));
+  },
+
   async editableSettings() {
     const supabase = await createClient();
     const { data: s, error } = await supabase.from("studio_settings").select("*").single();

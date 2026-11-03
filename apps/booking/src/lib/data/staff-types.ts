@@ -9,6 +9,22 @@ export interface StaffMember {
   access: "own_sessions" | "all_customers";
 }
 
+/** M3 Money report: one payment (managers only). */
+export interface MoneyRow {
+  id: string;
+  /** Vietnam date, YYYY-MM-DD. */
+  day: string;
+  recordedAt: string;
+  amountVnd: number;
+  method: "qr" | "transfer" | "cash";
+  paidFor: "pack" | "drop_in" | "private_hire" | "workshop" | "other";
+  customerName: string | null;
+  recordedBy: string;
+  note: string | null;
+  /** The pack sold, or the session paid for. */
+  what: string | null;
+}
+
 /** M9 Studio settings page (managers): what can be changed without a developer. */
 export interface EditableSettings {
   name: string;
@@ -202,6 +218,9 @@ export interface StaffApi {
   setCustomerActive(id: string, active: boolean): Promise<void>;
   saveChild(customerId: string, childId: string | null, name: string, birthMonth: string): Promise<void>;
   removeChild(childId: string): Promise<void>;
+
+  // M3 Money report (managers): payments recorded between two Vietnam dates, inclusive.
+  moneyReport(from: string, to: string): Promise<MoneyRow[]>;
 
   // M9 Studio settings (managers).
   editableSettings(): Promise<EditableSettings>;

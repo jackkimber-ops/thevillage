@@ -10,10 +10,10 @@ const LINKS = [
   { href: "/staff/calendar", label: "Calendar", phone: true },
   { href: "/staff/customers", label: "Customers", phone: true },
   { href: "/staff/catalog", label: "Catalog", manager: true },
+  { href: "/staff/reports", label: "Reports", manager: true },
   { href: "/staff/team", label: "Staff", manager: true },
   { href: "/staff/settings", label: "Settings", manager: true },
 ];
-const LATER = ["Reports"];
 
 export function StaffNav({ me }: { me: StaffMember }) {
   const path = usePathname().replace(/^(?!\/staff)/, "/staff").replace(/\/$/, "") || "/staff";
@@ -31,9 +31,6 @@ export function StaffNav({ me }: { me: StaffMember }) {
           <Link key={l.href} className="staff-link" href={l.href} aria-current={current(l.href) ? "page" : undefined}>
             {l.label}{l.manager && <span className="staff-mgr">manager</span>}
           </Link>
-        ))}
-        {me.role === "manager" && LATER.map((l) => (
-          <span key={l} className="staff-link staff-later" title="Coming in the +1 month release">{l}<span className="staff-mgr">+1 month</span></span>
         ))}
         <span className="staff-who">Signed in as {me.name} ({me.role === "manager" ? "Manager" : "Instructor"})</span>
       </nav>

@@ -7,7 +7,7 @@ import {
   addPack, book, cancel, instructorName, kindOf, packTypes, sessionTypes, settings, staff, store, taken, type DemoSession,
 } from "./demo-store";
 import { ActionError } from "./types";
-import type { EditableSettings, StaffApi, StaffMember, StaffSession } from "./staff-types";
+import type { EditableSettings, MoneyRow, StaffApi, StaffMember, StaffSession } from "./staff-types";
 
 const demoInactive = new Set<string>();
 
@@ -51,10 +51,20 @@ function demoCredits(c: { packs: Array<{ lastDay: string; remaining: number }> }
 const demoPayments: Record<string, Array<{ amountVnd: number; method: "qr" | "transfer" | "cash"; note: string | null; recordedAt: string }>> = {};
 
 const demoLastSignIn: Record<string, string | null> = {};
+// Shared through globalThis like the demo store: the spreadsheet download runs in its own module copy.
+const demoMoney: MoneyRow[] = ((globalThis as { __villageDemoMoney?: MoneyRow[] }).__villageDemoMoney ??= []);
+function logMoney(by: StaffMember, p: Omit<MoneyRow, "id" | "day" | "recordedAt" | "recordedBy">) {
+  const now = new Date();
+  demoMoney.push({ ...p, id: randomUUID(), day: vnDateKey(now), recordedAt: now.toISOString(), recordedBy: by.name });
+}
 const demoRules = { alertEmail: null as string | null, bookingWindow: { n: 1, unit: "months" } as EditableSettings["bookingWindow"], latestBookingMinutes: 60 };
 
 export const demoStaff: StaffApi = {
   me,
+  async moneyReport(from, to) {
+    await requireManager();
+    return demoMoney.filter((m) => m.day >= from && m.day <= to);
+  },
   async editableSettings() {
     await requireManager();
     const { bookingWindowDays: _days, ...rest } = settings;
@@ -281,12 +291,13 @@ export const demoStaff: StaffApi = {
       source: "staff", freeTrial: d.freeTrial, override: d.override });
   },
   async sellPack(d) {
-    await requireManager();
+    const by = await requireManager();
     const c = store.customers.get(d.customerId);
     const t = packTypes.find((p) => p.id === d.packTypeId);
     if (!c || !t) throw new ActionError("pack_not_on_sale");
     if (t.isIntro && c.packs.length > 0) throw new ActionError("intro_pack_new_customers_only");
     const id = addPack(c, t, d.validFrom ?? vnDateKey(new Date()));
+    logMoney(by, { amountVnd: t.priceVnd, method: d.method, paidFor: "pack", customerName: c.fullName, note: null, what: t.name });
     // Switch upcoming unpaid bookings onto the new pack.
     const pack = c.packs.find((p) => p.id === id)!;
     for (const b of store.bookings.filter((x) => x.customerId === c.id && x.status === "booked" && x.unpaid && !x.paid)) {
@@ -300,8 +311,10 @@ export const demoStaff: StaffApi = {
     return id;
   },
   async recordPayment(d) {
-    await requireManager();
+    const by = await requireManager();
     const b = d.bookingId ? store.bookings.find((x) => x.id === d.bookingId) : undefined;
+    const s = store.sessions.find((x) => x.id === (d.sessionId ?? b?.sessionId));
+    logMoney(by, { amountVnd: d.amountVnd, method: d.method, paidFor: d.paidFor, customerName: d.customerId ? store.customers.get(d.customerId)?.fullName ?? null : null, note: d.note, what: s?.title ?? null });
     if (b) b.paid = true;
     if (d.sessionId) (demoPayments[d.sessionId] ??= []).push({ amountVnd: d.amountVnd, method: d.method, note: d.note, recordedAt: new Date().toISOString() });
   },
