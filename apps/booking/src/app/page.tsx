@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { SessionCard } from "@/components/SessionCard";
 import { TopBar } from "@/components/TopBar";
-import { data } from "@/lib/data";
+import { account, data } from "@/lib/data";
 import { openingHoursIn } from "@/lib/data/types";
 import { myBookedSessions } from "@/lib/my-booked";
 
@@ -11,18 +11,20 @@ export default async function Home() {
   const t = await getTranslations("home");
   const db = data();
   const now = new Date();
-  const [settings, upcoming, booked] = await Promise.all([
+  const [settings, upcoming, booked, user] = await Promise.all([
     db.settings(),
     // The whole booking window, so "coming up" still shows something when the next class is weeks away.
     db.timetable(now, new Date(now.getTime() + 31 * 86400000)),
     myBookedSessions(),
+    account().user(),
   ]);
   // The next 3 sessions people can still book: more than 1 hour away and not full.
   const next = upcoming.filter((s) => !s.bookingClosed && !s.isFull).slice(0, 6); // 6 so most people don't need "See all classes" (team feedback 30 Oct)
 
   return (
     <div className="page">
-      <TopBar extra={<Link href="/login" style={{ fontSize: 15, fontWeight: 600, padding: "8px" }}>{t("logIn")}</Link>} />
+      {/* "Log in" only for people who aren't (Jack, 3 Nov: reopening the home screen app looked logged out). */}
+      <TopBar extra={<Link href={user ? "/bookings" : "/login"} style={{ fontSize: 15, fontWeight: 600, padding: "8px" }}>{user ? t("myBookings") : t("logIn")}</Link>} />
       <main className="page-body">
         <section className="hero">
           <div className="hero-text">
