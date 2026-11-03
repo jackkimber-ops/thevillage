@@ -37,6 +37,14 @@ All merged to `main` and live; staging matches `main`. The full staging check pa
   - On Apple devices it also offers **Add to Apple Calendar**, which opens Apple's "Add to Calendar" sheet. The .ics is now sent inline, not as an attachment.
   - The customers' "add all my bookings" subscription is **Apple only**, on Apple devices, as one button. Google subscriptions refresh every few hours and often can't be added on a phone.
   - The staff card keeps all its options.
+- **Final schedule from 16 Nov** (#54, change #30; data `supabase/data/20261103-final-timetable.sql`, on staging and production). It replaces the 2 Nov timetable below.
+  - Every day: a class 9:00–10:00 and Open Play 10:00–12:00. No afternoon Open Play.
+  - 210 sessions to 28 Feb. Phuong teaches Core & Cuddle.
+  - Opening hours: "Every day 9:00–12:00; Tue & Thu also 15:30–16:30 (from December)", in EN and VI.
+- **Children's classes not loaded yet:** Yoga Storytelling (3–5, Tue) and Yoga Adventure (6–10, Thu), 15:30–16:30 from December, 10 places, children only.
+  - Waiting on the owners: the price per child, whether packs can be used, and two badges.
+  - Then Claude builds booking a child without a parent (about half a day), aiming for about 10 Nov.
+- **Team message drafted** for the retest, with the test-site links (booking site, staff app, website).
 - **Still left in the +1 month release:**
   - pick several dates at once (C25)
   - pause a pack (M2)
@@ -227,9 +235,9 @@ All merged to `main` and live; staging matches `main`.
 
 ## Waiting on the owners
 - **Instructors:** who teaches Little Yogi & Me, Breathe & Unwind, Bump & Breathe and Wiggle & Wonder. Phuong teaches Core & Cuddle. Managers can now add instructors themselves (Staff page), then set them on sessions.
-- **Strong & Snuggly:** day and time, to put it on the timetable.
+- **Children's classes** (Yoga Storytelling 3–5, Yoga Adventure 6–10, from December): price per child, whether class packs can be used, and two badges (all seven Instagram badges are in use).
+- **Strong & Snuggly:** day and time, to put it on the timetable (not on the final schedule).
 - **Closure days** (e.g. Tết, around 6–10 Feb 2027): sessions currently run every day. Managers can enter them under Settings → closures.
-- **Tuesday and Thursday afternoons:** stay Open Play for now; may become classes.
 - Privacy policy and cancellation terms (EN and VI); studio photo for the login and home screens; website photos, FAQ and headline copy.
 - A native speaker to read the new Vietnamese: the home-screen card, calendar card, "studio is closed" note and the "sorry, that didn't load" page.
 - Optional: `sentry.io` allowed in the environment's network settings plus a read-only Sentry token, so Claude can read new errors directly (today Jack pastes them in).
