@@ -32,6 +32,11 @@ All merged to `main` and live; staging matches `main`. The full staging check pa
   - The login itself lasted: the cookie is kept 400 days and the hourly token renews by itself.
   - But the home page always showed "Log in", so the reopened app looked logged out. It now shows "My bookings" to logged-in people, and `/login` skips ahead if you're already logged in.
   - Jack confirmed it works.
+- **Add to calendar opens the calendar, no file download** (#52, Jack):
+  - Each booking offers **Add to Google Calendar**, with the class, time and address filled in; one tap to save.
+  - On Apple devices it also offers **Add to Apple Calendar**, which opens Apple's "Add to Calendar" sheet. The .ics is now sent inline, not as an attachment.
+  - The customers' "add all my bookings" subscription is **Apple only**, on Apple devices, as one button. Google subscriptions refresh every few hours and often can't be added on a phone.
+  - The staff card keeps all its options.
 - **Still left in the +1 month release:**
   - pick several dates at once (C25)
   - pause a pack (M2)
