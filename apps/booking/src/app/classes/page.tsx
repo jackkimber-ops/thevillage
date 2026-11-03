@@ -8,7 +8,7 @@ import { TopBar } from "@/components/TopBar";
 import { account, data, type TimetableEntry } from "@/lib/data";
 import { myBookedSessions } from "@/lib/my-booked";
 import {
-  addDays, addMonths, formatDayLong, formatMonth, formatTime, formatTimeRange, formatWeekRange, isDateKey, monthStart,
+  addDays, addMonths, formatDayLong, formatMonth, formatTime, formatWeekRange, isDateKey, monthStart,
   vnDateKey, vnDayStart, weekStart,
 } from "@/lib/time";
 
@@ -217,7 +217,7 @@ async function WeekGrid({ monday, today, sessions, booked, locale, from }: {
   const t = await getTranslations("session");
   // Team feedback (3 Nov): 1-hour classes were too short for their names. Hours with sessions are taller;
   // hours nobody uses (the lunch gap, quiet mornings) shrink to a thin strip instead of empty space.
-  const PX = 56; // an hour with sessions
+  const PX = 64; // an hour with sessions: room for the time and a name on up to 3 lines
   const GAP = 14; // an hour with none
   const hourOf = (iso: string) => {
     const [h, m] = formatTime(iso, "en").split(":").map(Number);
@@ -262,8 +262,7 @@ async function WeekGrid({ monday, today, sessions, booked, locale, from }: {
           {sessions.filter((s) => vnDateKey(s.startsAt) === d).map((s) => {
             const top = y(hourOf(s.startsAt)) + 1;
             const h = y(hourOf(s.endsAt)) - y(hourOf(s.startsAt)) - 2;
-            // Long blocks have room for the end time too.
-            const time = hourOf(s.endsAt) - hourOf(s.startsAt) >= 1.5 ? formatTimeRange(s.startsAt, s.endsAt, locale) : formatTime(s.startsAt, locale);
+            const time = formatTime(s.startsAt, locale);
             const isBooked = booked.has(s.id);
             const label = `${s.title}, ${time}${isBooked ? `, ${t("booked")}` : s.isFull ? `, ${t("full")}` : ""}`;
             const style = { top, height: h };
