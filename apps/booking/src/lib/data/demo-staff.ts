@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import { vnDateKey } from "@/lib/time";
 import { demoEmail } from "./demo-account";
 import {
-  addPack, book, cancel, instructorName, kindOf, packTypes, sessionTypes, settings, staff, store, taken, type DemoSession,
+  addPack, book, cancel, demoClosures, instructorName, kindOf, packTypes, sessionTypes, settings, staff, store, taken, type DemoSession,
 } from "./demo-store";
 import { ActionError } from "./types";
 import type { EditableSettings, MoneyRow, StaffApi, StaffMember, StaffSession } from "./staff-types";
@@ -61,6 +61,31 @@ const demoRules = { alertEmail: null as string | null, bookingWindow: { n: 1, un
 
 export const demoStaff: StaffApi = {
   me,
+  async closures() {
+    await requireStaff();
+    return demoClosures.filter((c) => c.endsOn >= vnDateKey(new Date())).sort((a, b) => a.startsOn.localeCompare(b.startsOn));
+  },
+  async addClosure(c) {
+    await requireManager();
+    if (!c.reason.trim()) throw new ActionError("reason_required");
+    if (c.endsOn < c.startsOn) throw new ActionError("invalid_dates");
+    if (c.startsOn < vnDateKey(new Date())) throw new ActionError("closure_in_past");
+    if (demoClosures.some((x) => x.startsOn <= c.endsOn && x.endsOn >= c.startsOn)) throw new ActionError("closure_overlaps");
+    let sessions = 0;
+    let bookings = 0;
+    for (const s of store.sessions.filter((x) => x.status === "scheduled" && vnDateKey(x.startsAt) >= c.startsOn && vnDateKey(x.startsAt) <= c.endsOn)) {
+      bookings += await demoStaff.cancelSession(s.id, `Studio closed: ${c.reason}`);
+      sessions++;
+    }
+    demoClosures.push({ id: randomUUID(), startsOn: c.startsOn, endsOn: c.endsOn, reason: c.reason.trim() });
+    return { sessions, bookings, packs: 0 };
+  },
+  async removeClosure(id) {
+    await requireManager();
+    const i = demoClosures.findIndex((x) => x.id === id);
+    if (i < 0) throw new ActionError("closure_not_found");
+    demoClosures.splice(i, 1);
+  },
   async moneyReport(from, to) {
     await requireManager();
     return demoMoney.filter((m) => m.day >= from && m.day <= to);

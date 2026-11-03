@@ -320,3 +320,42 @@ describe("money report (M3)", () => {
       expect(await db.fails(manager, "select * from public.money_report(current_date, current_date - 1)")).toBe("invalid_dates");
     }));
 });
+
+describe("closures (M1)", () => {
+  it("cancels the sessions on closed days for everyone, gives credits back, extends packs, and refuses new sessions there", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer();
+      const packId = await db.sellPack(manager, c.customerId);
+      const [before] = await db.su("select valid_to::text v from public.customer_packs where id = $1", [packId]);
+      const onDay = await db.session({ startsIn: "10 days", exact: true });
+      const bookingId = await db.book(c.user!, onDay);
+      const [{ d }] = await db.su("select public.vn_date(starts_at)::text d from public.sessions where id = $1", [onDay]);
+
+      const [res] = await db.as(manager, "select public.add_closure($1::date, $1::date + 1, 'Tết', true) r", [d]);
+      expect(res.r).toMatchObject({ sessions: 1, bookings: 1, packs: 1 });
+      const [b] = await db.su("select status, cancel_reason from public.bookings where id = $1", [bookingId]);
+      expect(b).toEqual({ status: "cancelled", cancel_reason: "Studio closed: Tết" });
+      const [bal] = await db.su("select sum(amount)::int n from public.credit_ledger where customer_pack_id = $1", [packId]);
+      expect(bal.n).toBe(10); // the credit came back
+      const [after] = await db.su("select (valid_to - $2::date) n from public.customer_packs where id = $1", [packId, before.v]);
+      expect(after.n).toBe(2); // two closed days added
+      const [mail] = await db.su("select count(*)::int n from public.notifications where kind = 'session_cancelled' and booking_id = $1", [bookingId]);
+      expect(mail.n).toBe(1);
+
+      // No new session (or moved session) on a closed day; closures can't overlap or be in the past.
+      expect(await db.fails(manager, `select public.create_sessions($1, 'Yoga', public.vn_at($2::date, '10:00'), 60, 10, null)`, [TYPES.classType, d]))
+        .toBe(`studio_closed:${d}`);
+      expect(await db.fails(manager, "select public.add_closure($1::date + 1, $1::date + 3, 'Again', false)", [d])).toBe("closure_overlaps");
+      expect(await db.fails(manager, "select public.add_closure(current_date - 3, current_date - 2, 'Old', false)")).toBe("closure_in_past");
+      expect(await db.fails(manager, "select public.add_closure(current_date + 5, current_date + 4, 'Bad', false)")).toBe("invalid_dates");
+
+      // Reopen: sessions can go there again.
+      const [{ id }] = await db.su("select id from public.closures where reason = 'Tết'");
+      await db.as(manager, "select public.remove_closure($1)", [id]);
+      await db.as(manager, `select public.create_sessions($1, 'Yoga', public.vn_at($2::date, '10:00'), 60, 10, null)`, [TYPES.classType, d]);
+
+      const instructor = await db.staff("instructor");
+      expect(await db.fails(instructor, "select public.add_closure(current_date + 40, current_date + 40, 'x', false)")).toBe("managers_only");
+    }));
+});

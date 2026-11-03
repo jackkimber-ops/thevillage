@@ -14,6 +14,30 @@ const back = (f: FormData, fallback: string) => {
   return b.startsWith("/staff") ? b : fallback;
 };
 
+// M1 Closures (managers).
+export async function addClosureAction(_: StaffFormState, form: FormData): Promise<StaffFormState> {
+  const startsOn = str(form, "startsOn");
+  const endsOn = str(form, "endsOn") || startsOn;
+  try {
+    const r = await staffApi().addClosure({ startsOn, endsOn, reason: str(form, "reason"), extendPacks: str(form, "extendPacks") === "on" });
+    revalidatePath("/", "layout");
+    const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+    return { ok: `Closed. ${plural(r.sessions, "session", "sessions")} cancelled, ${plural(r.bookings, "person", "people")} emailed, ${plural(r.packs, "pack", "packs")} extended.` };
+  } catch (e) {
+    return { error: code(e) };
+  }
+}
+
+export async function removeClosureAction(form: FormData) {
+  try {
+    await staffApi().removeClosure(str(form, "id"));
+  } catch (e) {
+    redirect(`/staff/settings?error=${code(e)}`);
+  }
+  revalidatePath("/", "layout");
+  redirect("/staff/settings#closures");
+}
+
 // M9 Studio settings (managers).
 export async function saveSettingsAction(_: StaffFormState, form: FormData): Promise<StaffFormState> {
   const phone = toE164(str(form, "contactPhone"));

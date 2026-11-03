@@ -1,6 +1,7 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
+import { vnDateKey } from "@/lib/time";
 import { ActionError, type BookingStatus } from "./types";
 import type { CustomerProfile, EditableSettings, MoneyRow, PackType, RosterRow, SessionType, StaffApi, StaffListRow, StaffSession } from "./staff-types";
 
@@ -39,6 +40,24 @@ function minutesOf(interval: string): number {
 }
 
 export const supabaseStaff: StaffApi = {
+  async closures() {
+    const supabase = await createClient();
+    const { data, error } = await supabase.from("closures").select("id, starts_on, ends_on, reason").gte("ends_on", vnDateKey(new Date())).order("starts_on");
+    check(error);
+    return (data ?? []).map((c) => ({ id: c.id, startsOn: c.starts_on, endsOn: c.ends_on, reason: c.reason }));
+  },
+  async addClosure(c) {
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("add_closure", { p_starts_on: c.startsOn, p_ends_on: c.endsOn, p_reason: c.reason, p_extend_packs: c.extendPacks });
+    check(error);
+    const r = data as { sessions: number; bookings: number; packs: number };
+    return { sessions: r.sessions, bookings: r.bookings, packs: r.packs };
+  },
+  async removeClosure(id) {
+    const supabase = await createClient();
+    const { error } = await supabase.rpc("remove_closure", { p_closure_id: id });
+    check(error);
+  },
   async moneyReport(from, to) {
     const supabase = await createClient();
     const { data, error } = await supabase.rpc("money_report", { p_from: from, p_to: to });
