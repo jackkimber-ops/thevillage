@@ -302,5 +302,11 @@
     "booking_not_found": "Không tìm thấy chỗ đã đặt.",
     "booking_not_active": "Chỗ này đã huỷ hoặc đã kết thúc.",
     "customer_deactivated": "Tài khoản của bạn đang tạm dừng nên chưa thể đặt chỗ mới. Hãy nhắn cho chúng tôi."
+  },
+  "errorPage": {
+    "title": "xin lỗi, trang chưa tải được",
+    "body": "Hệ thống đặt lịch tạm thời chưa phản hồi. Vui lòng thử lại sau giây lát.",
+    "retry": "Thử lại",
+    "home": "Về trang chủ"
   }
 }

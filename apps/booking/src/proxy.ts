@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
+import { retryFetch } from "@/lib/supabase/retry-fetch";
 import { NextResponse, type NextRequest } from "next/server";
 import { routeForHost } from "@/lib/hosts";
 import { LOCALE_COOKIE } from "@/i18n/locales";
@@ -32,6 +33,7 @@ export async function proxy(request: NextRequest) {
   // Keep the Supabase login fresh (refreshes the session cookies when needed).
   if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
+      global: { fetch: retryFetch() },
       cookies: {
         getAll: () => request.cookies.getAll(),
         setAll: (toSet) => {

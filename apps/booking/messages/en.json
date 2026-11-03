@@ -301,5 +301,11 @@
     "booking_not_found": "We couldn't find that booking.",
     "booking_not_active": "This booking is already cancelled or finished.",
     "customer_deactivated": "Your account is paused, so we can't take new bookings. Please message us."
+  },
+  "errorPage": {
+    "title": "sorry, that didn't load",
+    "body": "We couldn't reach our booking system just now. Please try again in a moment.",
+    "retry": "Try again",
+    "home": "Go to the home page"
   }
 }
