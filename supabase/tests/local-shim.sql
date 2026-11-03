@@ -16,7 +16,8 @@ grant usage on schema auth, extensions to anon, authenticated, service_role;
 
 create table auth.users (
   id uuid primary key,
-  email text
+  email text,
+  last_sign_in_at timestamptz -- as on Supabase (the staff page shows it)
 );
 
 create function auth.jwt() returns jsonb language sql stable as $$

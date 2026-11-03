@@ -9,6 +9,17 @@ export interface StaffMember {
   access: "own_sessions" | "all_customers";
 }
 
+/** S2 Staff page: everyone with a staff role (managers only). */
+export interface StaffListRow {
+  userId: string;
+  email: string;
+  name: string;
+  role: StaffRole;
+  access: "own_sessions" | "all_customers";
+  active: boolean;
+  lastSignInAt: string | null;
+}
+
 export interface StaffSession {
   id: string;
   sessionTypeId: string;
@@ -166,6 +177,10 @@ export interface StaffApi {
   setCustomerActive(id: string, active: boolean): Promise<void>;
   saveChild(customerId: string, childId: string | null, name: string, birthMonth: string): Promise<void>;
   removeChild(childId: string): Promise<void>;
+
+  // S2 Staff page (managers): add staff by email (a login is made if they have none), change or switch off.
+  staffList(): Promise<StaffListRow[]>;
+  saveStaff(s: { userId: string | null; email: string; name: string; role: StaffRole; access: StaffListRow["access"]; active: boolean }): Promise<void>;
 
   savePackType(p: Omit<PackType, "id"> & { id: string | null }): Promise<void>;
   saveSessionType(t: Omit<SessionType, "id"> & { id: string | null }): Promise<void>;

@@ -1,7 +1,8 @@
 import "server-only";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { ActionError, type BookingStatus } from "./types";
-import type { CustomerProfile, PackType, RosterRow, SessionType, StaffApi, StaffSession } from "./staff-types";
+import type { CustomerProfile, PackType, RosterRow, SessionType, StaffApi, StaffListRow, StaffSession } from "./staff-types";
 
 function check(error: { code?: string; message: string } | null) {
   if (!error) return;
@@ -25,6 +26,34 @@ const balances = (ledger: Array<{ customer_pack_id: string; amount: number }>) =
   ledger.reduce<Record<string, number>>((acc, l) => ({ ...acc, [l.customer_pack_id]: (acc[l.customer_pack_id] ?? 0) + l.amount }), {});
 
 export const supabaseStaff: StaffApi = {
+  async staffList() {
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("staff_list");
+    check(error);
+    return ((data ?? []) as Array<{ user_id: string; email: string; display_name: string; role: StaffListRow["role"]; instructor_access: StaffListRow["access"]; active: boolean; last_sign_in_at: string | null }>)
+      .map((r) => ({ userId: r.user_id, email: r.email, name: r.display_name, role: r.role, access: r.instructor_access, active: r.active, lastSignInAt: r.last_sign_in_at }));
+  },
+
+  async saveStaff(s) {
+    const supabase = await createClient();
+    let userId = s.userId;
+    if (!userId) {
+      // manager_find_user refuses anyone but a manager, so only a manager ever gets a login made below.
+      const { data, error } = await supabase.rpc("manager_find_user", { p_email: s.email });
+      check(error);
+      userId = (data as string | null) ?? null;
+      if (!userId) {
+        const { data: made, error: makeError } = await createAdminClient().auth.admin.createUser({ email: s.email.toLowerCase(), email_confirm: true });
+        if (makeError || !made.user) throw new Error(makeError?.message ?? "Couldn't make the login");
+        userId = made.user.id;
+      }
+    }
+    const { error } = await supabase.rpc("manager_save_staff", {
+      p_user_id: userId, p_display_name: s.name, p_role: s.role, p_access: s.access, p_active: s.active,
+    });
+    check(error);
+  },
+
   async me() {
     const supabase = await createClient();
     const { data: auth } = await supabase.auth.getUser();

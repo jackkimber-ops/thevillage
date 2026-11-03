@@ -9,9 +9,12 @@ import {
 import { ActionError } from "./types";
 import type { StaffApi, StaffMember, StaffSession } from "./staff-types";
 
+const demoInactive = new Set<string>();
+
 async function me(): Promise<StaffMember | null> {
   const email = await demoEmail();
-  return email ? staff[email] ?? null : null;
+  const m = email ? staff[email] ?? null : null;
+  return m && !demoInactive.has(m.userId) ? m : null;
 }
 
 async function requireStaff() {
@@ -47,8 +50,24 @@ function demoCredits(c: { packs: Array<{ lastDay: string; remaining: number }> }
 }
 const demoPayments: Record<string, Array<{ amountVnd: number; method: "qr" | "transfer" | "cash"; note: string | null; recordedAt: string }>> = {};
 
+const demoLastSignIn: Record<string, string | null> = {};
+
 export const demoStaff: StaffApi = {
   me,
+  async staffList() {
+    await requireManager();
+    return Object.entries(staff).map(([email, m]) => ({ userId: m.userId, email, name: m.name, role: m.role, access: m.access, active: !demoInactive.has(m.userId), lastSignInAt: demoLastSignIn[m.userId] ?? null }));
+  },
+  async saveStaff(s) {
+    const mine = await requireManager();
+    const email = s.email.toLowerCase();
+    const existing = s.userId ? Object.entries(staff).find(([, m]) => m.userId === s.userId) : Object.entries(staff).find(([e]) => e === email);
+    const userId = existing?.[1].userId ?? `demo-${randomUUID()}`;
+    if (userId === mine.userId && (!s.active || s.role !== "manager")) throw new ActionError("not_yourself");
+    if (!s.name.trim()) throw new ActionError("name_required");
+    staff[existing?.[0] ?? email] = { userId, role: s.role, name: s.name.trim(), access: s.access };
+    if (s.active) demoInactive.delete(userId); else demoInactive.add(userId);
+  },
   async instructors() {
     return [{ userId: "demo-phuong", name: "Phuong" }, { userId: "demo-mai", name: "Mai" }, { userId: "demo-anna", name: "Anna" }];
   },
