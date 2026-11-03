@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useSyncExternalStore, useTransition } from "react";
 import { calendarLinksAction, type CalendarLinks } from "@/lib/actions/calendar";
 
 export type CalendarFeedText = {
@@ -9,6 +9,44 @@ export type CalendarFeedText = {
 
 // C11 (customers) and S8 (staff): subscribe once in Apple or Google Calendar; new bookings and changes appear by themselves.
 // The link is made only when asked for. Titles and times only, never names.
+const noSubscribe = () => () => {};
+const isApple = () => /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+
+/**
+ * Customers (Jack, 3 Nov): Apple subscribe only, on Apple devices. Google subscriptions refresh every few hours
+ * and often can't be added on a phone, so Android users add each booking with "Add to Google Calendar" instead.
+ */
+export function AppleCalendarFeed({ text }: { text: { title: string; body: string; subscribe: string; open: string; error: string } }) {
+  const apple = useSyncExternalStore(noSubscribe, isApple, () => false);
+  const [links, setLinks] = useState<CalendarLinks | null>(null);
+  const [pending, start] = useTransition();
+  if (!apple) return null;
+  const ok = links && !("error" in links) ? links : null;
+  return (
+    <div className="card calendar-feed">
+      <strong>{text.title}</strong>
+      <p className="muted small" style={{ margin: "2px 0 8px" }}>{text.body}</p>
+      {ok ? (
+        <a className="btn-secondary" href={ok.webcal}>{text.open}</a>
+      ) : (
+        <button
+          type="button"
+          className="btn-secondary"
+          disabled={pending}
+          onClick={() => start(async () => {
+            const l = await calendarLinksAction(false);
+            setLinks(l);
+            if (!("error" in l)) window.location.href = l.webcal; // straight to Apple Calendar's "Subscribe"
+          })}
+        >
+          {text.subscribe}
+        </button>
+      )}
+      {links && "error" in links && <p className="error-text" role="alert">{text.error}</p>}
+    </div>
+  );
+}
+
 export function CalendarFeed({ text, staff = false }: { text: CalendarFeedText; staff?: boolean }) {
   const [links, setLinks] = useState<CalendarLinks | null>(null);
   const [note, setNote] = useState<string | null>(null);

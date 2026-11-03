@@ -211,18 +211,17 @@ test("the menu's back button and the Classes tab return to where you were", asyn
   await expect(page.locator(".stepper strong")).toHaveText(week!);
 });
 
-test("C11: customers subscribe to their bookings in Apple or Google Calendar; a new link replaces the old one", async ({ page }) => {
+test("C11: on iPhone, customers subscribe to all their bookings in Apple Calendar; Android doesn't show it", async ({ page, browser }) => {
   await logIn(page, `cal${Date.now()}@example.com`, "/bookings");
   await fillDetails(page);
   await page.goto("/bookings");
-  await page.getByRole("button", { name: "Add to my calendar" }).click();
-  const apple = page.getByRole("link", { name: "Apple Calendar (iPhone, Mac)" });
-  await expect(apple).toHaveAttribute("href", /^webcal:\/\/[^/]+\/api\/calendar\/[0-9a-f]{64}\.ics$/);
-  await expect(page.getByRole("link", { name: "Google Calendar" })).toHaveAttribute("href", /^https:\/\/calendar\.google\.com\/calendar\/r\?cid=webcal%3A%2F%2F/);
-  const first = await apple.getAttribute("href");
-  await page.getByRole("button", { name: "Make a new link" }).click();
-  await expect(page.getByText("New link made: the old one no longer works.")).toBeVisible();
-  await expect(apple).not.toHaveAttribute("href", first!);
+  await expect(page.getByText("Add all my bookings to Apple Calendar")).toHaveCount(0); // Android (Jack, 3 Nov: Apple only)
+  const iphone = await (await browser.newContext({ storageState: await page.context().storageState(),
+    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1" })).newPage();
+  await iphone.goto("/bookings");
+  await iphone.getByRole("button", { name: "Subscribe in Apple Calendar" }).click();
+  await expect(iphone.getByRole("link", { name: "Open Apple Calendar" })).toHaveAttribute("href", /^webcal:\/\/[^/]+\/api\/calendar\/[0-9a-f]{64}\.ics$/);
+  await expect(iphone.getByText(/Google/)).toHaveCount(0); // no Google subscription (no bookings yet, so no per-booking button either)
 });
 
 test("staying logged in: the home page doesn't offer Log in to someone logged in, and the login page skips ahead", async ({ page }) => {

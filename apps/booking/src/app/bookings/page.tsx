@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { AddToCalendar } from "@/components/AddToCalendar";
 import { googleCalendarUrl } from "@/lib/calendar-links";
-import { CalendarFeed } from "@/components/CalendarFeed";
+import { AppleCalendarFeed } from "@/components/CalendarFeed";
 import { TabBar } from "@/components/TabBar";
 import { TopBar } from "@/components/TopBar";
 import { account, data, type MyBooking } from "@/lib/data";
@@ -81,7 +81,7 @@ export default async function BookingsPage({ searchParams }: PageProps<"/booking
         ) : upcoming.map((b) => <Row key={b.id} b={b} upcomingRow />)}
         {past.length > 0 && <h2 className="day-label">{t("past")}</h2>}
         {past.map((b) => <Row key={b.id} b={b} upcomingRow={false} />)}
-        <CalendarFeed text={{ title: tf("title"), body: tf("body"), show: tf("show"), apple: tf("apple"), google: tf("google"), copy: tf("copy"), copied: tf("copied"), renew: tf("renew"), renewed: tf("renewed"), error: tf("error") }} />
+        <AppleCalendarFeed text={{ title: tf("appleTitle"), body: tf("appleBody"), subscribe: tf("subscribe"), open: tf("openApple"), error: tf("error") }} />
       </main>
       <TabBar current="bookings" />
     </div>

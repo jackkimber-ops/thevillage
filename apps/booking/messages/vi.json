@@ -338,6 +338,10 @@
     "copied": "Đã sao chép: dán vào ứng dụng lịch (“thêm lịch từ URL”).",
     "renew": "Tạo đường dẫn mới",
     "renewed": "Đã tạo đường dẫn mới: đường dẫn cũ không còn dùng được.",
-    "error": "Đã có lỗi. Vui lòng thử lại."
+    "error": "Đã có lỗi. Vui lòng thử lại.",
+    "appleTitle": "Thêm mọi lịch đặt vào Lịch Apple",
+    "appleBody": "Đăng ký một lần: lịch đặt mới và thay đổi sẽ tự hiện trong lịch của bạn. Chỉ chia sẻ tên lớp và thời gian.",
+    "subscribe": "Đăng ký trong Lịch Apple",
+    "openApple": "Mở Lịch Apple"
   }
 }
