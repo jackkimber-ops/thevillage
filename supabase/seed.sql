@@ -7,8 +7,8 @@ insert into public.studio_settings (
 ) values (
   'The Village - Family Club',
   '47/1 Quốc Hương, An Khánh, Hồ Chí Minh',
-  'Every day 8:30–17:00',
-  'Mở cửa mỗi ngày 8:30–17:00',
+  'Mon–Sat 8:30–15:00, Sun 8:30–11:30',
+  'Thứ Hai–Thứ Bảy 8:30–15:00, Chủ Nhật 8:30–11:30',
   'thevillage.saigon@gmail.com',
   '+84933834068',
   'https://wa.me/84933834068',
@@ -43,19 +43,25 @@ insert into public.pack_type_covers (pack_type_id, session_type_id) values
 insert into public.session_types (id, kind, name, description, colour, picture_url, default_minutes, default_capacity, drop_in_price_vnd) values
   ('00000000-0000-4000-8000-000000000004', 'class', 'Core & Cuddle',
    '[PLACEHOLDER: description to come]', '#858152', '/brand/badges/core-cuddle.png', 60, 10, 450000),
-  ('00000000-0000-4000-8000-000000000005', 'class', 'Mum & Bub Yoga',
+  ('00000000-0000-4000-8000-000000000005', 'class', 'Little Yogi & Me',
    '[PLACEHOLDER: description to come]', '#C2BE8E', '/brand/badges/mum-bub-yoga.png', 60, 10, 450000),
   ('00000000-0000-4000-8000-000000000006', 'class', 'Wiggle & Wonder',
-   '[PLACEHOLDER: description to come]', '#F78666', '/brand/badges/wiggle-wonder.png', 60, 10, 450000)
+   '[PLACEHOLDER: description to come]', '#F78666', '/brand/badges/wiggle-wonder.png', 60, 10, 450000),
+  -- Timetable from 16 Nov (supabase/data/20261102-timetable-from-16nov.sql): no badges yet.
+  ('00000000-0000-4000-8000-000000000007', 'class', 'Breathe & Unwind',
+   '[PLACEHOLDER: description to come]', '#C3BF94', null, 60, 10, 450000),
+  ('00000000-0000-4000-8000-000000000008', 'class', 'Bump & Breathe',
+   '[PLACEHOLDER: description to come]', '#FFBEA1', null, 60, 10, 450000)
 on conflict (id) do update set name = excluded.name, colour = excluded.colour, picture_url = excluded.picture_url;
 
-update public.session_types set colour = '#FFBA9B', picture_url = '/brand/badges/open-play.png'
+update public.session_types set colour = '#FFBA9B', picture_url = '/brand/badges/open-play.png', default_minutes = 120
 where id = '00000000-0000-4000-8000-000000000002';
 
 -- Every class pack covers the new classes (otherwise credits couldn't be used on them).
 insert into public.pack_type_covers (pack_type_id, session_type_id)
 select p.id, t.id
 from public.pack_types p
-cross join (values ('00000000-0000-4000-8000-000000000004'::uuid), ('00000000-0000-4000-8000-000000000005'::uuid), ('00000000-0000-4000-8000-000000000006'::uuid)) t(id)
+cross join (values ('00000000-0000-4000-8000-000000000004'::uuid), ('00000000-0000-4000-8000-000000000005'::uuid), ('00000000-0000-4000-8000-000000000006'::uuid),
+                  ('00000000-0000-4000-8000-000000000007'::uuid), ('00000000-0000-4000-8000-000000000008'::uuid)) t(id)
 where p.id in ('00000000-0000-4000-8000-000000000101', '00000000-0000-4000-8000-000000000102', '00000000-0000-4000-8000-000000000103')
 on conflict do nothing;

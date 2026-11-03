@@ -13,11 +13,12 @@ function vnClock(minutes: number): { date: string; time: string } {
   return { date: t.slice(0, 10), time: t.slice(11, 16) };
 }
 
+// Evenings, clear of the real timetable (8:30-15:00 from 16 Nov).
 test.beforeAll(() => {
   const run = uid();
-  classA = qaSession({ title: `QA Class ${run}`, start: `${vnDate(3)} 13:00` });
-  openPlay = qaSession({ title: `QA Open Play ${run}`, start: `${vnDate(3)} 14:30`, typeId: OPEN_PLAY, capacity: null, minutes: 90 });
-  onePlace = qaSession({ title: `QA One Place ${run}`, start: `${vnDate(4)} 13:00`, capacity: 1 });
+  classA = qaSession({ title: `QA Class ${run}`, start: `${vnDate(3)} 17:00` });
+  openPlay = qaSession({ title: `QA Open Play ${run}`, start: `${vnDate(3)} 18:30`, typeId: OPEN_PLAY, capacity: null, minutes: 90 });
+  onePlace = qaSession({ title: `QA One Place ${run}`, start: `${vnDate(4)} 17:00`, capacity: 1 });
   const later = vnClock(150);
   laterToday = qaSession({ title: `QA Later Today ${run}`, start: `${later.date} ${later.time}`, minutes: 30 });
   const soon = vnClock(25);

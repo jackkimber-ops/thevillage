@@ -10,6 +10,15 @@ export const QA_TODAY_FILE = join(tmpdir(), "village-staging-qa-today.json");
 // (S25) to Resend's test inbox while the check runs, so the studio mailbox isn't flooded.
 // The address in use is saved and put back afterwards (global-teardown.ts).
 export default function globalSetup() {
+  // From 16 Nov the real timetable fills 8:30-15:00 every day, and the check makes sessions starting
+  // within the next hour or two, which would overlap it. Run it after 15:00 (or before 8:00) Vietnam time.
+  {
+    const now = new Date(Date.now() + 7 * 3600000);
+    const hhmm = now.getUTCHours() * 60 + now.getUTCMinutes();
+    if (now.toISOString().slice(0, 10) >= "2026-11-16" && hhmm >= 8 * 60 && hhmm < 15 * 60)
+      throw new Error("Studio hours: run the staging check after 15:00 or before 8:00 Vietnam time (the check's test sessions would overlap the timetable).");
+  }
+
   sql(readFileSync(join(__dirname, "cleanup.sql"), "utf8"));
   const [{ alert_email }] = sql<{ alert_email: string | null }>("select alert_email from public.studio_settings");
   if (alert_email !== "delivered+qa-alerts@resend.dev") writeFileSync(SAVED_ALERT_EMAIL, JSON.stringify(alert_email));

@@ -139,7 +139,7 @@ describe("sessions", () => {
   it("studio settings hold the Vietnamese opening hours and the private hire group size", () =>
     inTx(async (db) => {
       const [s] = await db.as("anon", "select opening_hours_vi, hire_max_group from public.studio_settings");
-      expect(s).toEqual({ opening_hours_vi: "Mở cửa mỗi ngày 8:30–17:00", hire_max_group: 15 });
+      expect(s).toEqual({ opening_hours_vi: "Thứ Hai–Thứ Bảy 8:30–15:00, Chủ Nhật 8:30–11:30", hire_max_group: 15 });
     }));
 
   it("instructors create only their own classes", () =>
