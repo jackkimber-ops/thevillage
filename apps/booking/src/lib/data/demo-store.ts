@@ -5,7 +5,7 @@ import "server-only";
 // and tested in supabase/tests. Never used in staging or production.
 import { randomUUID } from "node:crypto";
 import { addDays, vnDateKey } from "@/lib/time";
-import { ActionError, type BookingStatus, type ContactMethod, type MyPack, type SessionKind, type StudioSettings } from "./types";
+import { ActionError, type BookingStatus, type Closure, type ContactMethod, type MyPack, type SessionKind, type StudioSettings } from "./types";
 import type { PackType, SessionType, StaffMember } from "./staff-types";
 
 export const settings: StudioSettings = {
@@ -143,6 +143,8 @@ function seedSessions(): DemoSession[] {
 type Store = { sessions: DemoSession[]; bookings: DemoBooking[]; customers: Map<string, DemoCustomer> };
 const g = globalThis as unknown as { __villageDemo?: Store };
 export const store: Store = (g.__villageDemo ??= { sessions: seedSessions(), bookings: [], customers: new Map() });
+/** M1 closures in demo mode (shared like the store). */
+export const demoClosures: Closure[] = ((globalThis as { __villageClosures?: Closure[] }).__villageClosures ??= []);
 
 export const typeOf = (s: DemoSession) => sessionTypes.find((t) => t.id === s.sessionTypeId)!;
 export const kindOf = (s: DemoSession): SessionKind => typeOf(s).kind;

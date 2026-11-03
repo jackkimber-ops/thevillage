@@ -1,6 +1,6 @@
 import "server-only";
 // DEMO DATA for local development and automated tests only (see demo-store.ts).
-import { instructorName, kindOf, settings, store, taken, typeOf, type DemoSession } from "./demo-store";
+import { demoClosures, instructorName, kindOf, settings, store, taken, typeOf, type DemoSession } from "./demo-store";
 import type { DataSource, SessionDetail, TimetableEntry } from "./types";
 
 // Badges for the demo types, so the timetable looks as it will with real data (change list #5).
@@ -32,6 +32,9 @@ function entry(s: DemoSession): TimetableEntry {
 }
 
 export const demoData: DataSource = {
+  async closures(from, to) {
+    return demoClosures.filter((c) => c.startsOn <= to && c.endsOn >= from);
+  },
   async settings() {
     return settings;
   },

@@ -244,6 +244,29 @@ test("instructors can't see the money report", async ({ page }) => {
   expect((await page.request.get("/staff/reports/export")).status()).toBe(403);
 });
 
+test("M1 closures: a manager closes a day, its sessions are cancelled and customers see it closed; reopening clears it", async ({ page, browser }) => {
+  await staffLogin(page, "manager@village.test");
+  await page.goto("/staff/settings");
+  const day = new Date(Date.now() + 7 * 3600000 + 25 * 86400000).toISOString().slice(0, 10);
+  const form = page.locator("form", { has: page.getByRole("button", { name: "Close the studio" }) });
+  await form.getByLabel("From").fill(day);
+  await form.getByLabel("Reason (customers see it)").fill("QA Holiday");
+  page.once("dialog", (d) => d.accept());
+  await form.getByRole("button", { name: "Close the studio" }).click();
+  await expect(form.getByText(/^Closed\. \d+ sessions? cancelled/)).toBeVisible();
+
+  const customer = await (await browser.newContext()).newPage();
+  await customer.goto(`/classes?date=${day}`);
+  await expect(customer.getByText(/The studio is closed .*: QA Holiday/)).toBeVisible();
+
+  await page.reload();
+  const row = page.locator("#closures .row-between", { hasText: "QA Holiday" });
+  await row.getByRole("button", { name: "Reopen" }).click();
+  await expect(page.locator("#closures .row-between", { hasText: "QA Holiday" })).toHaveCount(0);
+  await customer.reload();
+  await expect(customer.getByText(/QA Holiday/)).toHaveCount(0);
+});
+
 test("instructors can't open the staff page", async ({ page }) => {
   await staffLogin(page, "instructor@village.test");
   await page.goto("/staff/team");

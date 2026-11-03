@@ -74,6 +74,16 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
     </nav>
   );
 
+  // M1: say when the studio is closed in the week or month on screen.
+  const rangeFrom = view === "month" ? monthStart(anchor) : weekStart(anchor);
+  const rangeTo = view === "month" ? addDays(addMonths(monthStart(anchor), 1), -1) : addDays(weekStart(anchor), 6);
+  const closures = await db.closures(rangeFrom, rangeTo);
+  const closedNote = closures.map((c) => (
+    <p key={c.id} className="closed-note" role="status">
+      {t("closed", { days: c.startsOn === c.endsOn ? formatDayLong(c.startsOn, locale) : `${formatDayLong(c.startsOn, locale)} – ${formatDayLong(c.endsOn, locale)}`, reason: c.reason })}
+    </p>
+  ));
+
   let body: React.ReactNode;
   if (view === "month") {
     const start = monthStart(anchor);
@@ -155,6 +165,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
       <main className="page-body">
         <h1 className="heading" style={{ fontSize: 28 }}>{me ? t("greeting", { name: me.fullName.split(" ")[0].toLowerCase() }) : t("title")}</h1>
         {nav}
+        {closedNote}
         {body}
       </main>
       <TabBar current="classes" />

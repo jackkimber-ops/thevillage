@@ -55,7 +55,8 @@
       "full": "Full",
       "greyLater": "Grey dates open for booking later"
     },
-    "greeting": "hi {name}"
+    "greeting": "hi {name}",
+    "closed": "The studio is closed {days}: {reason}"
   },
   "session": {
     "book": "Book",

@@ -58,6 +58,12 @@ async function latestBookingMs(supabase: Awaited<ReturnType<typeof createClient>
 }
 
 export const supabaseData: DataSource = {
+  async closures(from, to) {
+    const supabase = await createClient();
+    const { data, error } = await supabase.from("closures").select("id, starts_on, ends_on, reason").lte("starts_on", to).gte("ends_on", from).order("starts_on");
+    if (error) throw error;
+    return (data ?? []).map((c) => ({ id: c.id, startsOn: c.starts_on, endsOn: c.ends_on, reason: c.reason }));
+  },
   async settings(): Promise<StudioSettings> {
     const supabase = await createClient();
     const { data, error } = await supabase.from("studio_settings").select("*").single();

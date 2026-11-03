@@ -56,7 +56,8 @@
       "full": "Hết chỗ",
       "greyLater": "Ngày màu xám sẽ mở đặt chỗ sau"
     },
-    "greeting": "chào {name}"
+    "greeting": "chào {name}",
+    "closed": "Studio đóng cửa {days}: {reason}"
   },
   "session": {
     "book": "Đặt",

@@ -1,4 +1,4 @@
-import type { BookingStatus, ContactMethod, SessionKind } from "./types";
+import type { BookingStatus, Closure, ContactMethod, SessionKind } from "./types";
 
 export type StaffRole = "manager" | "instructor";
 
@@ -218,6 +218,11 @@ export interface StaffApi {
   setCustomerActive(id: string, active: boolean): Promise<void>;
   saveChild(customerId: string, childId: string | null, name: string, birthMonth: string): Promise<void>;
   removeChild(childId: string): Promise<void>;
+
+  // M1 Closures (managers): sessions on the days are cancelled for everyone; packs optionally extended.
+  closures(): Promise<Closure[]>;
+  addClosure(c: { startsOn: string; endsOn: string; reason: string; extendPacks: boolean }): Promise<{ sessions: number; bookings: number; packs: number }>;
+  removeClosure(id: string): Promise<void>;
 
   // M3 Money report (managers): payments recorded between two Vietnam dates, inclusive.
   moneyReport(from: string, to: string): Promise<MoneyRow[]>;

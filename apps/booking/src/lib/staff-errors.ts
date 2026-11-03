@@ -5,6 +5,9 @@ const MESSAGES: Record<string, string> = {
   session_full: "That session is full. Capacity is never overridden.",
   already_booked: "They're already booked into this session.",
   managers_only: "Only a manager can do that.",
+  closure_overlaps: "Those days overlap a closure already set.",
+  closure_in_past: "A closure can't start in the past.",
+  invalid_dates: "Check the dates (a closure is up to 31 days).",
   settings_required: "Name, address and opening hours (English and Vietnamese) are needed.",
   invalid_link: "Links must start with https:// (or leave them empty).",
   invalid_booking_window: "Customers can book between 1 day and 6 months ahead.",
@@ -52,5 +55,6 @@ const MESSAGES: Record<string, string> = {
 
 export function staffError(code: string): string {
   if (code.startsWith("overlap:")) return `The session on ${code.slice(8)} overlaps another session, so nothing was created.`;
+  if (code.startsWith("studio_closed:")) return `The studio is closed on ${code.slice(14)} (see Settings, closures), so nothing was created or moved.`;
   return MESSAGES[code] ?? "Something went wrong. Please try again.";
 }

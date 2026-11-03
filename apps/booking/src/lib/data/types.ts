@@ -52,12 +52,22 @@ export interface SessionDetail extends TimetableEntry {
   bring: string | null;
 }
 
+/** M1: days the studio is closed (Tết, holidays), inclusive Vietnam dates. */
+export interface Closure {
+  id: string;
+  startsOn: string;
+  endsOn: string;
+  reason: string;
+}
+
 export interface DataSource {
   settings(): Promise<StudioSettings>;
   /** Pay-on-the-day prices from the catalog: a class (per parent) and open play (per child). */
   dropInPrices(): Promise<{ classVnd: number | null; openPlayVnd: number | null }>;
   timetable(from: Date, to: Date): Promise<TimetableEntry[]>;
   session(id: string, locale: string): Promise<SessionDetail | null>;
+  /** Closures that overlap these Vietnam dates. */
+  closures(from: string, to: string): Promise<Closure[]>;
 }
 
 export type ContactMethod = "whatsapp" | "zalo" | "call";
