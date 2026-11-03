@@ -27,6 +27,17 @@ All merged to `main` and live; staging matches `main`.
   - **Strong & Snuggly:** new class type, covered by every class pack. Not on the timetable yet.
   - **Phuong** teaches every Core & Cuddle session.
 - **Staging check:** its test sessions moved to the evenings. From 16 Nov it only runs **after 15:00 or before 8:00 Vietnam time**: some of its sessions must start within the hour, which would overlap a class during studio hours. 71 of 71 pass.
+- **Open Play text:** tagline "Little Adventures" / "Những cuộc phiêu lưu nhỏ" and the owners' description, in English and Vietnamese (data `supabase/data/20261103-open-play-details.sql`). Every class and Open Play now has its tagline and description in both languages.
+- **Week view easier to read** (#40, change #20):
+  - Hours with sessions are taller, so a 1-hour class shows its start time and its full name on up to 3 lines.
+  - No tiny badge inside the blocks.
+  - Empty hours (the lunch gap) shrink to a thin strip.
+  - Tighter spacing on phones.
+- **Sentry issue 157146842 fixed** (#41), the same error on 29 Oct and 3 Nov:
+  - **Cause:** the app sometimes couldn't open a connection to Supabase within 10 s (`ConnectTimeoutError`), and the page crashed. A network blip between Vercel and Supabase, not a bug in the page; the 3 Nov one came 40 s after a fresh deploy.
+  - **Retry:** the Supabase clients (pages, admin, proxy) now try once more when the connection never opened. Safe for every request, bookings included, since nothing reached the database. Requests that may have arrived are never retried.
+  - **Error page:** if a page still can't load, customers see "sorry, that didn't load" with Try again (EN/VI) instead of a crash.
+  - **If it keeps happening:** a Sentry report even with the retry would mean a Supabase support ticket.
 
 ## Update (29 Oct – 2 Nov): team feedback rounds
 
@@ -46,7 +57,7 @@ All merged and live.
   - the All / Classes / Open play filter and the day you're on stay when changing view
   - **Hire the studio:** from an hour to a full day, case by case, written in the customer's own words; up to 15 people (`studio_settings.hire_max_group`); staff can enter sessions up to 10 hours
   - Vietnamese opening hours (`studio_settings.opening_hours_vi`)
-- **Sentry alert (29 Oct, 20:56 Vietnam time, production):** not from the database or jobs (no customers or bookings then, all jobs fine). Sentry can't be opened from the cloud session; waiting for the error text from Jack.
+- **Sentry alert (29 Oct, 20:56 Vietnam time, production):** a database connection timeout, fixed on 3 Nov (#41, see above).
 
 ## Update (28 Oct)
 
@@ -186,7 +197,7 @@ All merged to `main` and live; staging matches `main`.
 - **Closure days** (e.g. Tết, around 6–10 Feb 2027): sessions currently run every day.
 - **Tuesday and Thursday afternoons:** stay Open Play for now; may become classes.
 - Privacy policy and cancellation terms (EN and VI); studio photo for the login and home screens; website photos, FAQ and headline copy.
-- The Sentry error text (29 Oct alert), or `sentry.io` allowed in the environment's network settings plus a read-only token, so Claude can read it.
+- Optional: `sentry.io` allowed in the environment's network settings plus a read-only Sentry token, so Claude can read new errors directly (today Jack pastes them in).
 - When to switch the customer-facing contact email to hello@thevillagesaigon.com.
 - SVGs of the full-colour wordmark and badges (later).
 
