@@ -165,6 +165,10 @@ test("S2 staff page: a manager adds an instructor, who can then log in; switchin
   await add.getByLabel("Can see").selectOption("all_customers");
   await add.getByRole("button", { name: "Add to staff" }).click();
   await expect(add.getByText(`Added. Linh logs in at the staff app with ${email}`)).toBeVisible();
+  // The add form empties after a save (team check, 3 Nov), ready for the next person.
+  await expect(add.getByLabel("Name")).toHaveValue("");
+  await expect(add.getByLabel("Email (their login)")).toHaveValue("");
+  await expect(add.getByLabel("Role")).toHaveValue("instructor");
 
   const linh = await (await browser.newContext()).newPage();
   await staffLogin(linh, email);
@@ -254,6 +258,7 @@ test("M1 closures: a manager closes a day, its sessions are cancelled and custom
   page.once("dialog", (d) => d.accept());
   await form.getByRole("button", { name: "Close the studio" }).click();
   await expect(form.getByText(/^Closed\. \d+ sessions? cancelled/)).toBeVisible();
+  await expect(form.getByLabel("Reason (customers see it)")).toHaveValue("");
 
   const customer = await (await browser.newContext()).newPage();
   await customer.goto(`/classes?date=${day}`);
@@ -272,6 +277,24 @@ test("S8: instructors subscribe to their own sessions from My sessions", async (
   await page.goto("/staff/today");
   await page.getByRole("button", { name: "Add to my calendar" }).click();
   await expect(page.getByRole("link", { name: "Apple Calendar (iPhone, Mac)" })).toHaveAttribute("href", /\/api\/calendar\/[0-9a-f]{64}\.ics$/);
+});
+
+test.describe("on a phone", () => {
+  test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+  test("managers reach Catalog, Reports, Staff and Settings through More; instructors have no More", async ({ page, browser }) => {
+    await staffLogin(page, "manager@village.test");
+    const tabs = page.getByRole("navigation", { name: "Staff sections" });
+    await tabs.getByRole("link", { name: "More" }).click();
+    for (const [label, heading] of [["Catalog", "catalog"], ["Reports", "reports"], ["Staff", "staff"], ["Settings", "settings"]]) {
+      await page.goto("/staff/more");
+      await page.getByRole("link", { name: new RegExp(`^${label}`) }).click();
+      await expect(page.getByRole("heading", { name: heading, exact: true })).toBeVisible();
+      await expect(tabs.getByRole("link", { name: "More" })).toHaveAttribute("aria-current", "page");
+    }
+    const instructor = await (await browser.newContext({ viewport: { width: 390, height: 844 } })).newPage();
+    await staffLogin(instructor, "instructor@village.test");
+    await expect(instructor.getByRole("navigation", { name: "Staff sections" }).getByRole("link", { name: "More" })).toHaveCount(0);
+  });
 });
 
 test("instructors can't open the staff page", async ({ page }) => {

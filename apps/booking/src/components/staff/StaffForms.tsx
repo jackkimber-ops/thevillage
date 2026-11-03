@@ -1,10 +1,11 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { saveStaffAction } from "@/lib/actions/staff";
 import type { StaffListRow } from "@/lib/data/staff-types";
 import { StaffFormError } from "./StaffFormError";
 import { keepValues } from "@/lib/keep-values";
+import { useClearOnSuccess } from "@/lib/clear-on-success";
 
 const ACCESS = [
   { v: "own_sessions", l: "Own sessions only" },
@@ -14,12 +15,20 @@ const ACCESS = [
 /** Role, and for instructors what they can see. Managers always see everything. */
 function RoleFields({ role: initialRole, access, locked = false }: { role: StaffListRow["role"]; access: StaffListRow["access"]; locked?: boolean }) {
   const [role, setRole] = useState(initialRole);
+  const select = useRef<HTMLSelectElement>(null);
+  // When the add form empties after a save, the role goes back to what it started as.
+  useEffect(() => {
+    const form = select.current?.form;
+    const back = () => setRole(initialRole);
+    form?.addEventListener("reset", back);
+    return () => form?.removeEventListener("reset", back);
+  }, [initialRole]);
   return (
     <>
       <div className="field"><label>Role
         {/* Your own role is locked: another manager changes it (the database refuses it too). */}
         {locked && <input type="hidden" name="role" value={role} />}
-        <select name={locked ? undefined : "role"} value={role} disabled={locked} onChange={(e) => setRole(e.target.value as StaffListRow["role"])}>
+        <select ref={select} name={locked ? undefined : "role"} value={role} disabled={locked} onChange={(e) => setRole(e.target.value as StaffListRow["role"])}>
           <option value="instructor">Instructor</option>
           <option value="manager">Manager</option>
         </select>
@@ -69,8 +78,9 @@ export function StaffRowForm({ person, isMe }: { person: StaffListRow; isMe: boo
 
 export function AddStaffForm() {
   const [state, action, pending] = useActionState(saveStaffAction, undefined);
+  const ref = useClearOnSuccess(state);
   return (
-    <form onSubmit={keepValues(action)} className="card" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+    <form ref={ref} onSubmit={keepValues(action)} className="card" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <div className="form-grid">
         <div className="field"><label>Name<input name="name" required /></label></div>
         <div className="field"><label>Email (their login)<input name="email" type="email" required /></label></div>
