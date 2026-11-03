@@ -3,7 +3,8 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { LanguageButton } from "@/components/LanguageButton";
 import { MenuIcon } from "@/components/Icons";
 import { LoginForm } from "@/components/forms/LoginForm";
-import { data } from "@/lib/data";
+import { redirect } from "next/navigation";
+import { account, data } from "@/lib/data";
 import { formatVnd } from "@/lib/money";
 import { safeNext } from "@/lib/safe-next";
 import { formatDayShort, formatTimeRange, vnDateKey } from "@/lib/time";
@@ -12,6 +13,8 @@ import { formatDayShort, formatTimeRange, vnDateKey } from "@/lib/time";
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const sp = await searchParams;
   const next = safeNext(sp.next);
+  // Already logged in (Jack, 3 Nov: the home screen app looked logged out and Log in asked for a new code): carry on.
+  if (await account().user()) redirect(next);
   const t = await getTranslations("login");
   const booking = /^\/classes\/([^/]+)\/book$/.exec(next);
   const locale = await getLocale();

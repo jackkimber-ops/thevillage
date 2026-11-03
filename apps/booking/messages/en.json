@@ -25,7 +25,8 @@
     "map": "Map",
     "mapAlt": "Map: The Village, 47/1 Quốc Hương. Opens Google Maps",
     "findUs": "find us",
-    "openMaps": "Open in Google Maps"
+    "openMaps": "Open in Google Maps",
+    "myBookings": "My bookings"
   },
   "timetable": {
     "title": "classes",

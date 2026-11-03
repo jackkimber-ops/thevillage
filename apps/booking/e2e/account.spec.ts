@@ -46,6 +46,7 @@ test("first login asks for your details once, then greets you", async ({ page })
   await expect(page.getByText("Lan Pham")).toBeVisible();
   await expect(page.getByText("+84905551234")).toBeVisible();
   await page.getByRole("button", { name: "Log out" }).click();
+  await expect(page.getByRole("link", { name: "Log in" })).toBeVisible(); // logged out (the login page skips people still logged in)
   await logIn(page, email);
   await expect(page.getByRole("heading", { name: "hi lan" })).toBeVisible();
 });
@@ -210,4 +211,14 @@ test("C11: customers subscribe to their bookings in Apple or Google Calendar; a 
   await page.getByRole("button", { name: "Make a new link" }).click();
   await expect(page.getByText("New link made: the old one no longer works.")).toBeVisible();
   await expect(apple).not.toHaveAttribute("href", first!);
+});
+
+test("staying logged in: the home page doesn't offer Log in to someone logged in, and the login page skips ahead", async ({ page }) => {
+  await logIn(page, `stay${Date.now()}@example.com`, "/classes");
+  await fillDetails(page);
+  await page.goto("/"); // where the home screen app opens
+  await expect(page.getByRole("link", { name: "Log in" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "My bookings" })).toHaveAttribute("href", "/bookings");
+  await page.goto("/login?next=%2Fbookings");
+  await expect(page).toHaveURL(/\/bookings$/);
 });
