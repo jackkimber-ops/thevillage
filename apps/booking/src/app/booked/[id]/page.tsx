@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
+import { HomeScreenTip } from "@/components/HomeScreenTip";
 import { TopBar } from "@/components/TopBar";
 import { account, data } from "@/lib/data";
 import { cancelCutoff } from "@/lib/cutoff";
@@ -43,6 +44,7 @@ export default async function BookedPage({ params }: PageProps<"/booked/[id]">) 
             : t("cantCancel")}
           {" "}{t("emailSent")}
         </p>
+        <HomeScreenTip />
         <a className="btn-secondary" href={`/bookings/${b.id}/calendar`} download>{t("addToCalendar")}</a>
         <Link className="btn" href="/bookings" style={{ marginTop: "auto" }}>{t("seeBookings")}</Link>
         <Link className="link-center" href="/classes">{t("bookAnother")}</Link>

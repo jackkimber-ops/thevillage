@@ -75,6 +75,9 @@ test("book a class with a pack, then cancel it and get the credit back", async (
   await page.getByRole("button", { name: "Confirm booking" }).click();
 
   await expect(page.getByRole("heading", { name: "you're booked, Lan" })).toBeVisible();
+  // C9: on a phone, "Keep the village on your phone" (Android: one tap, or the steps).
+  await expect(page.getByText("Keep the village on your phone")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Not now" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Add to my calendar" })).toHaveAttribute("href", /\/calendar$/);
   await page.getByRole("link", { name: "See my bookings" }).click();
 

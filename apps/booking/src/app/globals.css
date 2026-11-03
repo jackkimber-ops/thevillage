@@ -325,3 +325,8 @@ a { color: var(--forrest-deep); }
 .link-row { background: #fff; border: 0; border-bottom: 1px solid #efe9d6; width: 100%; text-align: left; font: inherit; cursor: pointer; color: var(--ink); }
 .staff .field label { display: flex; flex-direction: column; gap: 6px; }
 .staff .field label > input, .staff .field label > select, .staff .field label > textarea { font-weight: 400; }
+
+/* C9 "Keep the village on your phone" */
+.home-tip { display: flex; gap: 12px; align-items: flex-start; }
+.home-tip-icon { border-radius: 10px; flex: none; }
+.home-tip-steps { margin: 8px 0 0; padding-left: 18px; line-height: 1.45; display: flex; flex-direction: column; gap: 4px; }

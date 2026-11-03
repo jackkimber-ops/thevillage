@@ -307,5 +307,19 @@
     "body": "We couldn't reach our booking system just now. Please try again in a moment.",
     "retry": "Try again",
     "home": "Go to the home page"
+  },
+  "homeScreen": {
+    "title": "Keep the village on your phone",
+    "body": "Add it to your home screen to book like an app.",
+    "bodyIphone": "Add it to your home screen to book like an app. You'll log in once more inside the icon.",
+    "showMe": "Show me how",
+    "add": "Add to home screen",
+    "notNow": "Not now",
+    "iphone1": "In Safari, tap the Share button (the square with an arrow) at the bottom.",
+    "iphone2": "Scroll down and tap “Add to Home Screen”, then “Add”.",
+    "iphone3": "Open The Village from the new icon and log in once.",
+    "android1": "In Chrome, tap ⋮ at the top right.",
+    "android2": "Tap “Add to home screen” (or “Install app”), then “Add”.",
+    "menu": "Add to home screen"
   }
 }
