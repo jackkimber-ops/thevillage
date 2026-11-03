@@ -205,3 +205,24 @@ test("logging in to book shows which class you're booking", async ({ page }) => 
   await expect(page.locator(".summary")).toContainText("You're booking");
   await expect(page.locator(".summary")).toContainText(new RegExp(title, "i"));
 });
+
+test("C9: the site can be saved to the home screen with its own icon", async ({ page, request }) => {
+  const manifest = await (await request.get("/manifest.webmanifest")).json();
+  expect(manifest).toMatchObject({ short_name: "The Village", display: "standalone", start_url: "/" });
+  for (const icon of manifest.icons) expect((await request.get(icon.src)).status(), icon.src).toBe(200);
+  await page.goto("/");
+  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveCount(1);
+  await expect(page.locator('meta[name="apple-mobile-web-app-title"]')).toHaveAttribute("content", "The Village");
+});
+
+test.describe("C9 on an iPhone", () => {
+  test.use({ userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1" });
+  test("the menu shows how to add it to the home screen in Safari", async ({ page }) => {
+    await page.goto("/menu");
+    await expect(page.getByText("Keep the village on your phone")).toBeVisible();
+    await page.getByRole("button", { name: "Show me how" }).click();
+    await expect(page.getByText(/tap the Share button/)).toBeVisible();
+    await expect(page.getByText(/Add to Home Screen/)).toBeVisible();
+    await expect(page.getByRole("button", { name: "Not now" })).toHaveCount(0); // the menu always offers it
+  });
+});

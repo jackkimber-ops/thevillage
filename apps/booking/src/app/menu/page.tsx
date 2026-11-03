@@ -4,6 +4,7 @@ import { BackIcon } from "@/components/Icons";
 import { LanguageChoice } from "@/components/LanguageChoice";
 import { MenuCloseLink } from "@/components/RememberPlace";
 import { ICONS } from "@/components/ContactIcons";
+import { HomeScreenTip } from "@/components/HomeScreenTip";
 import { account, data } from "@/lib/data";
 import { openingHoursIn } from "@/lib/data/types";
 import { signOutAction } from "@/lib/actions/auth";
@@ -64,6 +65,8 @@ export default async function MenuPage({ searchParams }: PageProps<"/menu">) {
             </div>
           </>
         )}
+
+        <HomeScreenTip always />
 
         <h2 className="label">{t("studio")}</h2>
         <div className="card menu-list">

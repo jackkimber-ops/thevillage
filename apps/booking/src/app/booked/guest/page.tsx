@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
+import { HomeScreenTip } from "@/components/HomeScreenTip";
 import { TopBar } from "@/components/TopBar";
 import { data } from "@/lib/data";
 import { formatDayLong, formatTimeRange, vnDateKey } from "@/lib/time";
@@ -24,6 +25,7 @@ export default async function GuestBookedPage({ searchParams }: PageProps<"/book
           </div>
         )}
         <p style={{ margin: 0, lineHeight: 1.5 }}>{t("guestBody", { email })}</p>
+        <HomeScreenTip />
         <Link className="btn" href={`/login?next=${encodeURIComponent("/bookings")}`} style={{ marginTop: "auto" }}>{t("logInToSee")}</Link>
         <Link className="link-center" href="/classes">{t("bookAnother")}</Link>
       </main>

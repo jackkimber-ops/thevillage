@@ -308,5 +308,19 @@
     "body": "Hệ thống đặt lịch tạm thời chưa phản hồi. Vui lòng thử lại sau giây lát.",
     "retry": "Thử lại",
     "home": "Về trang chủ"
+  },
+  "homeScreen": {
+    "title": "Lưu The Village trên điện thoại",
+    "body": "Thêm vào màn hình chính để đặt lịch như một ứng dụng.",
+    "bodyIphone": "Thêm vào màn hình chính để đặt lịch như một ứng dụng. Bạn sẽ đăng nhập thêm một lần trong biểu tượng.",
+    "showMe": "Xem cách làm",
+    "add": "Thêm vào màn hình chính",
+    "notNow": "Để sau",
+    "iphone1": "Trong Safari, chạm nút Chia sẻ (hình vuông có mũi tên) ở phía dưới.",
+    "iphone2": "Kéo xuống và chạm “Thêm vào MH chính”, rồi “Thêm”.",
+    "iphone3": "Mở The Village từ biểu tượng mới và đăng nhập một lần.",
+    "android1": "Trong Chrome, chạm ⋮ ở góc trên bên phải.",
+    "android2": "Chạm “Thêm vào màn hình chính” (hoặc “Cài đặt ứng dụng”), rồi “Thêm”.",
+    "menu": "Thêm vào màn hình chính"
   }
 }
