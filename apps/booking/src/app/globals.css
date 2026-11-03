@@ -145,6 +145,13 @@ a { color: var(--forrest-deep); }
 .week-block b { font-size: 10.5px; line-height: 1.15; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .week-time { font-size: 9.5px; font-weight: 500; opacity: .8; white-space: nowrap; overflow: hidden; text-overflow: clip; }
 .week-block.booked { box-shadow: inset 0 0 0 2px var(--forrest-deep); }
+/* Phones: 7 columns are about 45px wide, so a little less padding and type keeps words like "Cuddle" whole. */
+@media (max-width: 420px) {
+  .week-grid { grid-template-columns: 20px repeat(7, minmax(0, 1fr)); column-gap: 2px; }
+  .week-block { left: 1px; right: 1px; padding: 3px 2px 2px 3px; }
+  .week-block b { font-size: 9.5px; letter-spacing: -.1px; }
+  .week-time { font-size: 9px; }
+}
 .month-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; background: #fff; border-radius: 20px; padding: 10px 8px; box-shadow: 0 1px 0 var(--sky); }
 .month-dow { text-align: center; font-size: 11.5px; color: var(--muted); padding-bottom: 4px; }
 .month-cell { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; height: 46px; border-radius: 12px; text-decoration: none; color: var(--ink); font: 500 14px var(--font-heading), sans-serif; }
