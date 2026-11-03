@@ -4,10 +4,10 @@ import { randomUUID } from "node:crypto";
 import { vnDateKey } from "@/lib/time";
 import { demoEmail } from "./demo-account";
 import {
-  addPack, book, cancel, instructorName, kindOf, packTypes, sessionTypes, staff, store, taken, type DemoSession,
+  addPack, book, cancel, instructorName, kindOf, packTypes, sessionTypes, settings, staff, store, taken, type DemoSession,
 } from "./demo-store";
 import { ActionError } from "./types";
-import type { StaffApi, StaffMember, StaffSession } from "./staff-types";
+import type { EditableSettings, StaffApi, StaffMember, StaffSession } from "./staff-types";
 
 const demoInactive = new Set<string>();
 
@@ -51,9 +51,26 @@ function demoCredits(c: { packs: Array<{ lastDay: string; remaining: number }> }
 const demoPayments: Record<string, Array<{ amountVnd: number; method: "qr" | "transfer" | "cash"; note: string | null; recordedAt: string }>> = {};
 
 const demoLastSignIn: Record<string, string | null> = {};
+const demoRules = { alertEmail: null as string | null, bookingWindow: { n: 1, unit: "months" } as EditableSettings["bookingWindow"], latestBookingMinutes: 60 };
 
 export const demoStaff: StaffApi = {
   me,
+  async editableSettings() {
+    await requireManager();
+    const { bookingWindowDays: _days, ...rest } = settings;
+    void _days;
+    return { ...rest, ...demoRules };
+  },
+  async saveSettings(s) {
+    await requireManager();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.contactEmail)) throw new ActionError("invalid_email");
+    for (const link of [s.whatsappUrl, s.zaloUrl, s.messengerUrl, s.facebookUrl, s.instagramUrl, s.mapsUrl]) {
+      if (link && !/^https:\/\/\S+$/.test(link)) throw new ActionError("invalid_link");
+    }
+    const { alertEmail, bookingWindow, latestBookingMinutes, ...shown } = s;
+    Object.assign(settings, shown, { bookingWindowDays: bookingWindow.unit === "months" ? bookingWindow.n * 31 : bookingWindow.n });
+    Object.assign(demoRules, { alertEmail, bookingWindow, latestBookingMinutes });
+  },
   async staffList() {
     await requireManager();
     return Object.entries(staff).map(([email, m]) => ({ userId: m.userId, email, name: m.name, role: m.role, access: m.access, active: !demoInactive.has(m.userId), lastSignInAt: demoLastSignIn[m.userId] ?? null }));

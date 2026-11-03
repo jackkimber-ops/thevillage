@@ -182,6 +182,33 @@ test("S2 staff page: a manager adds an instructor, who can then log in; switchin
   await expect(page.locator("form", { hasText: "Phuong (you)" }).getByRole("button", { name: "Switch off access" })).toHaveCount(0);
 });
 
+test("M9 settings: a manager changes a messaging link and the booking site uses it straight away", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  await page.getByRole("link", { name: "Settings" }).first().click();
+  await expect(page.getByRole("heading", { name: "settings" })).toBeVisible();
+  const messenger = page.getByLabel("Messenger link");
+  const before = await messenger.inputValue();
+  await messenger.fill("http://m.me/not-secure");
+  await page.getByRole("button", { name: "Save settings" }).click();
+  await expect(page.getByText("Links must start with https://")).toBeVisible();
+  await messenger.fill("https://m.me/village.test");
+  await page.getByRole("button", { name: "Save settings" }).click();
+  await expect(page.getByText(/^Saved\. The booking site uses the new settings/)).toBeVisible();
+  await page.goto("/menu");
+  await expect(page.getByRole("link", { name: "Messenger" })).toHaveAttribute("href", "https://m.me/village.test");
+  // Put it back for the other tests.
+  await page.goto("/staff/settings");
+  await page.getByLabel("Messenger link").fill(before);
+  await page.getByRole("button", { name: "Save settings" }).click();
+  await expect(page.getByText(/^Saved\./)).toBeVisible();
+});
+
+test("instructors can't open settings", async ({ page }) => {
+  await staffLogin(page, "instructor@village.test");
+  await page.goto("/staff/settings");
+  await expect(page).toHaveURL(/managers_only=1/);
+});
+
 test("instructors can't open the staff page", async ({ page }) => {
   await staffLogin(page, "instructor@village.test");
   await page.goto("/staff/team");

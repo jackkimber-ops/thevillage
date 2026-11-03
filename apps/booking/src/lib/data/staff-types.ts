@@ -9,6 +9,31 @@ export interface StaffMember {
   access: "own_sessions" | "all_customers";
 }
 
+/** M9 Studio settings page (managers): what can be changed without a developer. */
+export interface EditableSettings {
+  name: string;
+  address: string;
+  openingHours: string;
+  openingHoursVi: string;
+  contactEmail: string;
+  contactPhone: string;
+  /** Where studio alerts go (new customers, unpaid drop-ins); empty = the contact email. */
+  alertEmail: string | null;
+  whatsappUrl: string | null;
+  zaloUrl: string | null;
+  messengerUrl: string | null;
+  facebookUrl: string | null;
+  instagramUrl: string | null;
+  mapsUrl: string | null;
+  /** Free cancellation until this time the evening before, "HH:MM". */
+  cancelCutoffTime: string;
+  /** How far ahead customers can book. */
+  bookingWindow: { n: number; unit: "days" | "months" };
+  /** Online booking closes this many minutes before the start. */
+  latestBookingMinutes: number;
+  hireMaxGroup: number;
+}
+
 /** S2 Staff page: everyone with a staff role (managers only). */
 export interface StaffListRow {
   userId: string;
@@ -177,6 +202,10 @@ export interface StaffApi {
   setCustomerActive(id: string, active: boolean): Promise<void>;
   saveChild(customerId: string, childId: string | null, name: string, birthMonth: string): Promise<void>;
   removeChild(childId: string): Promise<void>;
+
+  // M9 Studio settings (managers).
+  editableSettings(): Promise<EditableSettings>;
+  saveSettings(s: EditableSettings): Promise<void>;
 
   // S2 Staff page (managers): add staff by email (a login is made if they have none), change or switch off.
   staffList(): Promise<StaffListRow[]>;

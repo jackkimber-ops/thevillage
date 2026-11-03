@@ -2,7 +2,7 @@ import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { ActionError, type BookingStatus } from "./types";
-import type { CustomerProfile, PackType, RosterRow, SessionType, StaffApi, StaffListRow, StaffSession } from "./staff-types";
+import type { CustomerProfile, EditableSettings, PackType, RosterRow, SessionType, StaffApi, StaffListRow, StaffSession } from "./staff-types";
 
 function check(error: { code?: string; message: string } | null) {
   if (!error) return;
@@ -25,7 +25,46 @@ const toSession = (r: TRow): StaffSession => ({
 const balances = (ledger: Array<{ customer_pack_id: string; amount: number }>) =>
   ledger.reduce<Record<string, number>>((acc, l) => ({ ...acc, [l.customer_pack_id]: (acc[l.customer_pack_id] ?? 0) + l.amount }), {});
 
+/** Postgres intervals as the settings form shows them: "1 mon" -> 1 month, "45 days" -> 45 days, "01:30:00" -> 90 minutes. */
+function windowOf(interval: string): EditableSettings["bookingWindow"] {
+  const m = /(\d+) mon/.exec(interval);
+  const d = /(\d+) day/.exec(interval);
+  if (m && !d) return { n: Number(m[1]), unit: "months" };
+  return { n: (m ? Number(m[1]) * 31 : 0) + (d ? Number(d[1]) : 0) || 31, unit: "days" };
+}
+function minutesOf(interval: string): number {
+  const d = /(\d+) day/.exec(interval);
+  const hms = /(\d+):(\d+):(\d+)/.exec(interval);
+  return (d ? Number(d[1]) * 1440 : 0) + (hms ? Number(hms[1]) * 60 + Number(hms[2]) : 0);
+}
+
 export const supabaseStaff: StaffApi = {
+  async editableSettings() {
+    const supabase = await createClient();
+    const { data: s, error } = await supabase.from("studio_settings").select("*").single();
+    check(error);
+    return {
+      name: s.name, address: s.address, openingHours: s.opening_hours, openingHoursVi: s.opening_hours_vi ?? s.opening_hours,
+      contactEmail: s.contact_email, contactPhone: s.contact_phone, alertEmail: s.alert_email,
+      whatsappUrl: s.whatsapp_url, zaloUrl: s.zalo_url, messengerUrl: s.messenger_url, facebookUrl: s.facebook_url,
+      instagramUrl: s.instagram_url, mapsUrl: s.maps_url, cancelCutoffTime: String(s.cancel_cutoff_time).slice(0, 5),
+      bookingWindow: windowOf(String(s.booking_window)), latestBookingMinutes: minutesOf(String(s.latest_booking)), hireMaxGroup: s.hire_max_group,
+    };
+  },
+
+  async saveSettings(s) {
+    const supabase = await createClient();
+    const { error } = await supabase.rpc("manager_save_settings", { p: {
+      name: s.name, address: s.address, opening_hours: s.openingHours, opening_hours_vi: s.openingHoursVi,
+      contact_email: s.contactEmail, contact_phone: s.contactPhone, alert_email: s.alertEmail ?? "",
+      whatsapp_url: s.whatsappUrl ?? "", zalo_url: s.zaloUrl ?? "", messenger_url: s.messengerUrl ?? "",
+      facebook_url: s.facebookUrl ?? "", instagram_url: s.instagramUrl ?? "", maps_url: s.mapsUrl ?? "",
+      cancel_cutoff_time: s.cancelCutoffTime, booking_window: `${s.bookingWindow.n} ${s.bookingWindow.unit}`,
+      latest_booking: `${s.latestBookingMinutes} minutes`, hire_max_group: s.hireMaxGroup,
+    } });
+    check(error);
+  },
+
   async staffList() {
     const supabase = await createClient();
     const { data, error } = await supabase.rpc("staff_list");

@@ -260,3 +260,41 @@ describe("staff page (S2)", () => {
       expect(await db.fails(instructor, "select public.manager_save_staff($1, 'Me', 'manager', 'all_customers', true)", [instructor.id])).toBe("managers_only");
     }));
 });
+
+describe("studio settings page (M9)", () => {
+  const good = {
+    name: "The Village - Family Club", address: "47/1 Quốc Hương", opening_hours: "Mon–Sat 8:30–15:00", opening_hours_vi: "Thứ Hai–Thứ Bảy 8:30–15:00",
+    contact_email: "Hello@TheVillageSaigon.com", contact_phone: "+84933834068", alert_email: "",
+    whatsapp_url: "https://wa.me/84933834068", zalo_url: "", messenger_url: "", facebook_url: "", instagram_url: "", maps_url: "",
+    cancel_cutoff_time: "19:30", booking_window: "45 days", latest_booking: "30 minutes", hire_max_group: 12,
+  };
+
+  it("managers change the details and booking rules; bookings follow the new rules", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      await db.as(manager, "select public.manager_save_settings($1)", [JSON.stringify(good)]);
+      const [s] = await db.su("select contact_email, alert_email, zalo_url, cancel_cutoff_time::text cut, booking_window::text win, latest_booking::text latest, hire_max_group from public.studio_settings");
+      expect(s).toEqual({ contact_email: "hello@thevillagesaigon.com", alert_email: null, zalo_url: null, cut: "19:30:00", win: "45 days", latest: "00:30:00", hire_max_group: 12 });
+      const [a] = await db.su("select count(*)::int n from public.audit_log where action = 'change_settings'");
+      expect(a.n).toBe(1);
+      // 40 days ahead is now bookable (it wasn't with 1 month).
+      const c = await db.customer();
+      const far = await db.session({ startsIn: "40 days" });
+      await db.book(c.user!, far);
+    }));
+
+  it("refuses bad values and anyone but a manager", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const bad = (patch: Record<string, unknown>) => db.fails(manager, "select public.manager_save_settings($1)", [JSON.stringify({ ...good, ...patch })]);
+      expect(await bad({ contact_email: "nope" })).toBe("invalid_email");
+      expect(await bad({ contact_phone: "0933834068" })).toBe("invalid_phone");
+      expect(await bad({ zalo_url: "zalo.me/123" })).toBe("invalid_link");
+      expect(await bad({ booking_window: "1 year" })).toBe("invalid_booking_window");
+      expect(await bad({ latest_booking: "-1 hour" })).toBe("invalid_latest_booking");
+      expect(await bad({ cancel_cutoff_time: "25:00" })).toBe("invalid_setting");
+      expect(await bad({ address: " " })).toBe("settings_required");
+      const instructor = await db.staff("instructor");
+      expect(await db.fails(instructor, "select public.manager_save_settings($1)", [JSON.stringify(good)])).toBe("managers_only");
+    }));
+});
