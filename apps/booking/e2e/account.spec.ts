@@ -197,3 +197,17 @@ test("the menu's back button and the Classes tab return to where you were", asyn
   await page.getByRole("navigation", { name: "Main sections" }).getByRole("link", { name: "Classes" }).click();
   await expect(page.locator(".stepper strong")).toHaveText(week!);
 });
+
+test("C11: customers subscribe to their bookings in Apple or Google Calendar; a new link replaces the old one", async ({ page }) => {
+  await logIn(page, `cal${Date.now()}@example.com`, "/bookings");
+  await fillDetails(page);
+  await page.goto("/bookings");
+  await page.getByRole("button", { name: "Add to my calendar" }).click();
+  const apple = page.getByRole("link", { name: "Apple Calendar (iPhone, Mac)" });
+  await expect(apple).toHaveAttribute("href", /^webcal:\/\/[^/]+\/api\/calendar\/[0-9a-f]{64}\.ics$/);
+  await expect(page.getByRole("link", { name: "Google Calendar" })).toHaveAttribute("href", /^https:\/\/calendar\.google\.com\/calendar\/r\?cid=webcal%3A%2F%2F/);
+  const first = await apple.getAttribute("href");
+  await page.getByRole("button", { name: "Make a new link" }).click();
+  await expect(page.getByText("New link made: the old one no longer works.")).toBeVisible();
+  await expect(apple).not.toHaveAttribute("href", first!);
+});

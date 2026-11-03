@@ -323,5 +323,17 @@
     "android1": "Trong Chrome, chạm ⋮ ở góc trên bên phải.",
     "android2": "Chạm “Thêm vào màn hình chính” (hoặc “Cài đặt ứng dụng”), rồi “Thêm”.",
     "menu": "Thêm vào màn hình chính"
+  },
+  "calendarFeed": {
+    "title": "Thêm lịch đặt vào lịch của tôi",
+    "body": "Đăng ký một lần: lịch đặt mới và thay đổi sẽ tự hiện trong lịch trên điện thoại. Chỉ chia sẻ tên lớp và thời gian.",
+    "show": "Thêm vào lịch của tôi",
+    "apple": "Lịch Apple (iPhone, Mac)",
+    "google": "Google Lịch",
+    "copy": "Sao chép đường dẫn",
+    "copied": "Đã sao chép: dán vào ứng dụng lịch (“thêm lịch từ URL”).",
+    "renew": "Tạo đường dẫn mới",
+    "renewed": "Đã tạo đường dẫn mới: đường dẫn cũ không còn dùng được.",
+    "error": "Đã có lỗi. Vui lòng thử lại."
   }
 }

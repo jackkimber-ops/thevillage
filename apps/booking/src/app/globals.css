@@ -340,3 +340,5 @@ a { color: var(--forrest-deep); }
 .report-table .report-week td { background: #fbf7ef; font-weight: 600; }
 .report-table tfoot td { font-weight: 700; border-bottom: 0; }
 .closed-note { margin: 0; padding: 10px 14px; border-radius: 14px; background: var(--rose, #ffd9c7); color: var(--ink); font-weight: 500; font-size: 14px; }
+.calendar-feed .row a, .calendar-feed .row button { flex: none; }
+.staff-feed { max-width: 640px; }
