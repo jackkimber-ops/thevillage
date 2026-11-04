@@ -49,7 +49,7 @@ export default async function BookedPage({ params }: PageProps<"/booked/[id]">) 
         <HomeScreenTip />
         <AddToCalendar
           apple={`/bookings/${b.id}/calendar`}
-          google={googleCalendarUrl({ title: `${b.session.title} · ${settings.name}`, startsAt: b.session.startsAt, endsAt: b.session.endsAt, location: settings.address, details: t("calendarDetails") })}
+          google={googleCalendarUrl({ title: `${b.session.title} · ${settings.name}`, startsAt: b.session.startsAt, endsAt: b.session.endsAt, location: settings.address, details: t("calendarDetails", { url: `${process.env.APP_URL ?? "https://book.thevillagesaigon.com"}/bookings` }) })}
           labels={{ google: t("addToGoogle"), apple: t("addToApple") }}
         />
         <Link className="btn" href="/bookings" style={{ marginTop: "auto" }}>{t("seeBookings")}</Link>

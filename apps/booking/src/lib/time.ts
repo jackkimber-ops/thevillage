@@ -97,3 +97,8 @@ export function minutesBetween(start: Date | string, end: Date | string): number
 export function nowMs(): number {
   return Date.now();
 }
+
+/** This month in Vietnam, "YYYY-MM": the latest month a child can be born (team feedback 4 Nov). */
+export function thisMonthVn(): string {
+  return vnDateKey(new Date()).slice(0, 7);
+}

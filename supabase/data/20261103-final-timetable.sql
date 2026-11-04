@@ -4,6 +4,9 @@
 -- and are NOT loaded here: they're children-only (no parents) with a price still to be decided.
 -- Applied once to staging, then production. Phuong still teaches Core & Cuddle.
 
+-- Note (4 Nov): sessions with bookings can no longer be marked cancelled directly (migration
+-- 20261104000001); cancel them with public.cancel_session, which cancels the bookings and emails people.
+
 begin;
 
 update public.studio_settings set

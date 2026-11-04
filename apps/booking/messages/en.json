@@ -213,7 +213,7 @@
     "addAnother": "Add another child",
     "childHint": "Name and month/year of birth, up to 2",
     "submit": "Book, pay on the day",
-    "smallPrint": "We'll get in touch before your first visit to say hello. Free cancellation until {time} the evening before. By booking you agree to our <privacy>privacy policy</privacy>.",
+    "smallPrint": "We'll get in touch before your first visit to say hello. Free cancellation until {time} the evening before. By booking you agree to our <privacy>privacy policy</privacy> and <terms>cancellation terms</terms>.",
     "removeChildN": "Remove child {n}"
   },
   "booked": {
@@ -232,7 +232,7 @@
     "logInToSee": "Log in to see my bookings",
     "addToGoogle": "Add to Google Calendar",
     "addToApple": "Add to Apple Calendar",
-    "calendarDetails": "Your booking at The Village. See or cancel it at book.thevillagesaigon.com/bookings"
+    "calendarDetails": "Your booking at The Village. See or cancel it at {url}"
   },
   "bookings": {
     "title": "my bookings",
@@ -305,7 +305,8 @@
     "cutoff_passed": "It's too late to cancel online. Please message us.",
     "booking_not_found": "We couldn't find that booking.",
     "booking_not_active": "This booking is already cancelled or finished.",
-    "customer_deactivated": "Your account is paused, so we can't take new bookings. Please message us."
+    "customer_deactivated": "Your account is paused, so we can't take new bookings. Please message us.",
+    "child_born_in_future": "A child's month and year of birth can't be in the future."
   },
   "errorPage": {
     "title": "sorry, that didn't load",
