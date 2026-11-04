@@ -5,6 +5,8 @@ const MESSAGES: Record<string, string> = {
   session_full: "That session is full. Capacity is never overridden.",
   already_booked: "They're already booked into this session.",
   managers_only: "Only a manager can do that.",
+  child_born_in_future: "A child's month of birth can't be in the future.",
+  session_has_bookings: "That session still has bookings: use Cancel session so everyone is told.",
   closure_overlaps: "Those days overlap a closure already set.",
   closure_in_past: "A closure can't start in the past.",
   invalid_dates: "Check the dates (a closure is up to 31 days).",

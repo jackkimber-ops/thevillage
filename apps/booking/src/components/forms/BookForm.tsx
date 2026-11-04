@@ -6,6 +6,7 @@ import { addChildAction, bookAction } from "@/lib/actions/booking";
 import { formatVnd } from "@/lib/money";
 import { ErrorText } from "./ErrorText";
 import { keepValues } from "@/lib/keep-values";
+import { thisMonthVn } from "@/lib/time";
 
 type Props = {
   sessionId: string;
@@ -62,7 +63,7 @@ export function BookForm(p: Props) {
             <input type="hidden" name="back" value={p.back} />
             <strong>{t("addChild")}</strong>
             <div className="field"><label htmlFor="childName">{t("childName")}</label><input id="childName" name="childName" placeholder={t("childNameExample")} /></div>
-            <div className="field"><label htmlFor="childMonth">{t("childBorn")}</label><input id="childMonth" name="childMonth" type="month" /></div>
+            <div className="field"><label htmlFor="childMonth">{t("childBorn")}</label><input id="childMonth" name="childMonth" type="month" max={thisMonthVn()} /></div>
             <ErrorText code={childState?.error} />
             <div className="two-buttons">
               <button type="button" className="btn-secondary" onClick={() => setAdding(false)}>{t("cancel")}</button>

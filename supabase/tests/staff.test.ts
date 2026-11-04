@@ -359,3 +359,24 @@ describe("closures (M1)", () => {
       expect(await db.fails(instructor, "select public.add_closure(current_date + 40, current_date + 40, 'x', false)")).toBe("managers_only");
     }));
 });
+
+describe("safeguards (team feedback 4 Nov)", () => {
+  it("refuses a child born in the future, from any form", () =>
+    inTx(async (db) => {
+      const instructor = await db.staff("instructor");
+      const [r] = await db.as(instructor, "select public.staff_add_customer('Future Parent', '+84912349999', null, 'zalo') as id");
+      expect(await db.fails(instructor, "select public.staff_save_child($1, null, 'Bao', (current_date + interval '2 months')::date)", [r.id])).toBe("child_born_in_future");
+      await db.as(instructor, "select public.staff_save_child($1, null, 'Bao', date_trunc('month', current_date)::date)", [r.id]); // this month is fine
+    }));
+
+  it("a session with bookings can only be cancelled through cancel_session (which cancels them first)", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer();
+      const s = await db.session();
+      await db.book(c.user!, s);
+      expect(await db.fails("su", "update public.sessions set status = 'cancelled' where id = $1", [s])).toBe("session_has_bookings");
+      const [n] = await db.as(manager, "select public.cancel_session($1, 'Teacher ill') as n", [s]);
+      expect(n.n).toBe(1);
+    }));
+});

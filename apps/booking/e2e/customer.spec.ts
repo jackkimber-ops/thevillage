@@ -94,6 +94,10 @@ test("team feedback 2 Nov: the guest form keeps what you typed through the menu 
   await page.getByRole("button", { name: "Zalo" }).click();
   await page.getByText(/Add your child/).click();
   await page.getByText(/Add another child/).click();
+  // Team feedback 4 Nov: no future birth months; the cancellation terms sit next to the privacy policy.
+  const thisMonth = new Date(Date.now() + 7 * 3600000).toISOString().slice(0, 7);
+  await expect(page.getByLabel("Month and year of birth").first()).toHaveAttribute("max", thisMonth);
+  await expect(page.getByRole("link", { name: "cancellation terms" })).toHaveAttribute("href", "/terms");
   await page.getByLabel("Child's name").first().fill("Bao");
   await page.getByLabel("Child's name").nth(1).fill("Mai");
   // Remove child 1: child 2 (Mai) stays and becomes child 1.

@@ -7,7 +7,7 @@ import { data, staffApi } from "@/lib/data";
 import { extendPackAction, recordPaymentAction, removeChildAction, restoreCreditAction, saveChildAction, setCustomerActiveAction, staffCancelBookingAction } from "@/lib/actions/staff";
 import { formatVnd } from "@/lib/money";
 import { requireStaff } from "@/lib/staff-guard";
-import { addDays, formatDayShort, formatTime, vnDateKey } from "@/lib/time";
+import { addDays, formatDayShort, formatTime, vnDateKey, thisMonthVn } from "@/lib/time";
 
 const CONTACT = { whatsapp: "WhatsApp", zalo: "Zalo", call: "Call" } as const;
 const STATUS: Record<string, string> = { booked: "Booked", attended: "Attended", no_show: "No-show", cancelled: "Cancelled", late_cancelled: "Late cancellation" };
@@ -111,7 +111,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
                     <input type="hidden" name="customerId" value={c.customerId} />
                     <input type="hidden" name="childId" value={k.id} />
                     <input name="name" defaultValue={k.name} required className="small-input" aria-label={`Name of ${k.name}`} />
-                    <input name="birthMonth" type="month" defaultValue={k.birthMonth.slice(0, 7)} required className="small-input" aria-label={`Month and year of birth of ${k.name}`} />
+                    <input name="birthMonth" type="month" max={thisMonthVn()} defaultValue={k.birthMonth.slice(0, 7)} required className="small-input" aria-label={`Month and year of birth of ${k.name}`} />
                     <button className="sbtn sbtn-sm" type="submit">Save</button>
                   </form>
                   <form action={removeChildAction} className="staff-actions">
@@ -128,7 +128,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
                 <form action={saveChildAction} className="staff-actions" style={{ marginTop: 10 }}>
                   <input type="hidden" name="customerId" value={c.customerId} />
                   <input name="name" placeholder="Child's name" required className="small-input" aria-label="Child's name" />
-                  <input name="birthMonth" type="month" required className="small-input" aria-label="Month and year of birth" />
+                  <input name="birthMonth" type="month" max={thisMonthVn()} required className="small-input" aria-label="Month and year of birth" />
                   <button className="sbtn sbtn-sm" type="submit">Add child</button>
                 </form>
               </details>

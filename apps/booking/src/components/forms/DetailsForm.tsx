@@ -7,6 +7,7 @@ import { ErrorText } from "./ErrorText";
 import { ContactChoice } from "./ContactChoice";
 import { keepValues } from "@/lib/keep-values";
 import { clearDraft, contactOf, useDraft, useDraftForm, type Draft } from "@/lib/draft";
+import { thisMonthVn } from "@/lib/time";
 
 type Props = {
   email: string;
@@ -39,7 +40,7 @@ function DetailsFormFields({ email, next, initial, draftKey, draft }: Props & { 
           <legend className="field-label">{t("child")}</legend>
           <button type="button" className="link-button child-remove" onClick={() => setAddChild(false)}>{t("removeChild")}</button>
           <div className="field"><label htmlFor="childName">{t("childName")}</label><input id="childName" name="childName" /></div>
-          <div className="field"><label htmlFor="childMonth">{t("childBorn")}</label><input id="childMonth" name="childMonth" type="month" /></div>
+          <div className="field"><label htmlFor="childMonth">{t("childBorn")}</label><input id="childMonth" name="childMonth" type="month" max={thisMonthVn()} /></div>
         </fieldset>
       ) : (
         <button type="button" className="card add-row" onClick={() => setAddChild(true)}>
