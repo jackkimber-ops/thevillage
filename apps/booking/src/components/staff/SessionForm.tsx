@@ -102,6 +102,7 @@ export function SessionForm({ initial, types, instructors, lockInstructor }: {
       <StaffFormError code={state?.error} />
       <div className="staff-actions">
         <button className="sbtn" type="submit" disabled={pending}>{isNew ? "Create" : "Save"}</button>
+        {!isNew && <span className="muted small">Changing the date or time emails everyone booked (and the instructor) 10 minutes later.</span>}
       </div>
     </form>
   );

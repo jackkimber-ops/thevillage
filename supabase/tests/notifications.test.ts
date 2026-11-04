@@ -26,6 +26,60 @@ describe("email outbox", () => {
       expect(new Date(rows[0].old).getTime()).toBe(new Date(old.starts_at).getTime());
     }));
 
+  it("a session moved twice in a row sends one email per person, from the original time; moved back sends nothing (Jack, 4 Nov)", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const instructor = await db.staff("instructor", { name: "Mai" });
+      const c = await db.customer();
+      const s = await db.session({ startsIn: "5 days", instructor: instructor.id });
+      const [orig] = await db.su("select starts_at, starts_at::text as exact from public.sessions where id = $1", [s]);
+      const id = await db.book(c.user!, s);
+      const move = (to: string) => db.as(manager, `select public.update_session($1, 'Pilates Flow', now() + interval '${to}', 60, 10, $2)`, [s, instructor.id]);
+      const pending = () => db.su(
+        "select kind, payload->>'old_starts_at' as old, send_after > now() + interval '9 minutes' as waits from public.notifications where (booking_id = $1 or staff_user_id = $2) and kind in ('session_moved', 'instructor_session_moved') and status = 'pending' order by kind",
+        [id, instructor.id]);
+
+      await move("6 days");          // a slip
+      await move("6 days 1 hour");   // corrected straight away
+      let rows = await pending();
+      expect(rows).toHaveLength(2); // one for the customer, one for the instructor
+      for (const r of rows) {
+        expect(new Date(r.old).getTime()).toBe(new Date(orig.starts_at).getTime()); // "moved from" the original time
+        expect(r.waits).toBe(true); // goes out in 10 minutes, not straight away
+      }
+      expect(rows.map((r) => r.kind).sort()).toEqual(["instructor_session_moved", "session_moved"]);
+      // Not claimed by the sender until it's due.
+      const due = await db.su("select id from public.claim_notifications(100) where kind in ('session_moved', 'instructor_session_moved')");
+      expect(due).toEqual([]);
+
+      // Moved back to where it was: nobody is emailed.
+      await db.su("update public.sessions set starts_at = $2::timestamptz, ends_at = $2::timestamptz + interval '60 minutes' where id = $1", [s, orig.exact]);
+      rows = await pending();
+      expect(rows).toEqual([]);
+    }));
+
+  it("an instructor who moves their own session isn't emailed about it; their customers are", () =>
+    inTx(async (db) => {
+      const instructor = await db.staff("instructor");
+      const c = await db.customer();
+      const s = await db.session({ startsIn: "5 days", instructor: instructor.id });
+      await db.book(c.user!, s);
+      await db.as(instructor, "select public.update_session($1, 'Pilates Flow', now() + interval '6 days', 60, 10, $2)", [s, instructor.id]);
+      const kinds = await db.su("select kind from public.notifications where kind in ('session_moved', 'instructor_session_moved') and status = 'pending' and (staff_user_id = $1 or booking_id in (select id from public.bookings where session_id = $2))", [instructor.id, s]);
+      expect(kinds.map((k) => k.kind)).toEqual(["session_moved"]);
+    }));
+
+  it("the sender gets the instructor's email and the session for an instructor email once it's due", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const instructor = await db.staff("instructor", { name: "Mai" });
+      const s = await db.session({ startsIn: "5 days", instructor: instructor.id, title: "Yoga" });
+      await db.as(manager, "select public.update_session($1, 'Yoga', now() + interval '6 days', 60, 10, $2)", [s, instructor.id]);
+      await db.su("update public.notifications set send_after = now() - interval '1 minute' where kind = 'instructor_session_moved' and staff_user_id = $1", [instructor.id]);
+      const rows = await db.su("select kind, staff_email, staff_name, session_title from public.claim_notifications(100) where kind = 'instructor_session_moved'");
+      expect(rows).toEqual([{ kind: "instructor_session_moved", staff_email: instructor.email, staff_name: "Mai", session_title: "Yoga" }]);
+    }));
+
   it("queues 'session cancelled' with the reason", () =>
     inTx(async (db) => {
       const manager = await db.staff("manager");

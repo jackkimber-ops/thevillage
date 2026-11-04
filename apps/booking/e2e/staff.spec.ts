@@ -86,7 +86,8 @@ test("drag a session on the calendar to move it", async ({ page }) => {
   await page.goto(`/staff/calendar?view=day&date=${d}`);
   const block = page.locator(".staff-block", { hasText: title });
   await expect(block).toContainText("7:00");
-  page.once("dialog", (dialog) => dialog.accept());
+  let question = "";
+  page.once("dialog", (dialog) => { question = dialog.message(); void dialog.accept(); });
   const box = (await block.boundingBox())!;
   await page.mouse.move(box.x + 20, box.y + 8);
   await page.mouse.down();
@@ -94,6 +95,9 @@ test("drag a session on the calendar to move it", async ({ page }) => {
   await expect(page.locator(".staff-col.dragging")).toHaveCount(1); // stays visible, even over another day
   await page.mouse.up();
   await expect(page.locator(".staff-block", { hasText: title })).toContainText("7:30");
+  // Jack, 4 Nov: the question says from when, to when, and that nobody is emailed when nobody is booked.
+  expect(question).toMatch(/^Move .+\nfrom .+, 7:00\nto .+, 7:30\?/);
+  expect(question).toContain("Nobody is booked, so no emails are sent.");
 });
 
 test("add a customer, sell a pack, book them in and check them in", async ({ page }) => {
