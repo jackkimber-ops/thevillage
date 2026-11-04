@@ -8,8 +8,9 @@ test("every email the check queued was sent (none failed or stuck)", async () =>
   // The sender job runs every minute; give it up to 3 minutes to catch up.
   let rows: Array<{ status: string; n: number }> = [];
   for (let i = 0; i < 18; i++) {
+    // "Session moved" emails wait 10 minutes on purpose (4 Nov), so only emails already due count as stuck.
     rows = sql(`select n.status::text as status, count(*)::int as n from notifications n
-                where n.created_at > now() - interval '3 hours' group by 1`);
+                where n.created_at > now() - interval '3 hours' and n.send_after <= now() group by 1`);
     if (!rows.some((r) => r.status === "pending" || r.status === "sending")) break;
     await new Promise((r) => setTimeout(r, 10_000));
   }
