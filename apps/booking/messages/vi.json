@@ -214,7 +214,7 @@
     "addAnother": "Thêm bé khác",
     "childHint": "Tên và tháng/năm sinh, tối đa 2",
     "submit": "Đặt chỗ, trả tại studio",
-    "smallPrint": "Chúng tôi sẽ liên hệ trước buổi đầu tiên để chào bạn. Huỷ miễn phí trước {time} tối hôm trước. Khi đặt chỗ, bạn đồng ý với <privacy>chính sách bảo mật</privacy>.",
+    "smallPrint": "Chúng tôi sẽ liên hệ trước buổi đầu tiên để chào bạn. Huỷ miễn phí trước {time} tối hôm trước. Khi đặt chỗ, bạn đồng ý với <privacy>chính sách bảo mật</privacy> và <terms>điều khoản huỷ</terms>.",
     "removeChildN": "Xoá bé {n}"
   },
   "booked": {
@@ -233,7 +233,7 @@
     "logInToSee": "Đăng nhập để xem lịch đã đặt",
     "addToGoogle": "Thêm vào Google Lịch",
     "addToApple": "Thêm vào Lịch Apple",
-    "calendarDetails": "Lịch đặt của bạn tại The Village. Xem hoặc huỷ tại book.thevillagesaigon.com/bookings"
+    "calendarDetails": "Lịch đặt của bạn tại The Village. Xem hoặc huỷ tại {url}"
   },
   "bookings": {
     "title": "lịch đã đặt",
@@ -306,7 +306,8 @@
     "cutoff_passed": "Đã quá hạn huỷ trực tuyến. Vui lòng nhắn cho chúng tôi.",
     "booking_not_found": "Không tìm thấy chỗ đã đặt.",
     "booking_not_active": "Chỗ này đã huỷ hoặc đã kết thúc.",
-    "customer_deactivated": "Tài khoản của bạn đang tạm dừng nên chưa thể đặt chỗ mới. Hãy nhắn cho chúng tôi."
+    "customer_deactivated": "Tài khoản của bạn đang tạm dừng nên chưa thể đặt chỗ mới. Hãy nhắn cho chúng tôi.",
+    "child_born_in_future": "Tháng và năm sinh của bé không thể ở tương lai."
   },
   "errorPage": {
     "title": "xin lỗi, trang chưa tải được",

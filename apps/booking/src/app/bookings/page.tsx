@@ -55,7 +55,7 @@ export default async function BookingsPage({ searchParams }: PageProps<"/booking
             <AddToCalendar
               compact
               apple={`/bookings/${b.id}/calendar`}
-              google={googleCalendarUrl({ title: `${b.session.title} · ${settings.name}`, startsAt: b.session.startsAt, endsAt: b.session.endsAt, location: settings.address, details: tb("calendarDetails") })}
+              google={googleCalendarUrl({ title: `${b.session.title} · ${settings.name}`, startsAt: b.session.startsAt, endsAt: b.session.endsAt, location: settings.address, details: tb("calendarDetails", { url: `${process.env.APP_URL ?? "https://book.thevillagesaigon.com"}/bookings` }) })}
               labels={{ google: tb("addToGoogle"), apple: tb("addToApple") }}
             />
           )}

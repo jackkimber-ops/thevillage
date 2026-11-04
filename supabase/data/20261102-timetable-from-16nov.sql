@@ -3,6 +3,9 @@
 -- Replaces the sample sessions loaded on 27 Oct. Applied once to staging, then production.
 -- Instructors are not set yet (names to come); capacity 10 (parents for classes, children for open play).
 
+-- Note (4 Nov): sessions with bookings can no longer be marked cancelled directly (migration
+-- 20261104000001); cancel them with public.cancel_session, which cancels the bookings and emails people.
+
 begin;
 
 -- Classes. "Mum & Bub Yoga" is now "Little Yogi & Me" (same class, same badge). Two new classes, coloured dots until they have badges.
