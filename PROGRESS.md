@@ -11,6 +11,20 @@
 - 21 Oct: **visual style v1**: a style sheet plus 5 key screens in the brand (login, timetable, confirm a class, staff dashboard, website top), as a new row at the bottom of the preview canvas.
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
+## Update (4 Nov): team retest fixes
+
+All merged to `main` and live; staging matches `main`.
+
+- **Team feedback** (#56, change #31):
+  - **Test sites link to each other:** the test website's Book buttons went to the live booking site, and the test booking app's website link to the live website. Fixed with Vercel settings for the `staging` branch only (`NEXT_PUBLIC_BOOKING_URL`, `NEXT_PUBLIC_WEBSITE_URL`). The "Add to Google Calendar" event text now uses each site's own address.
+  - **No future birth months:** every month picker stops at this month, and a database trigger refuses a future month from any form.
+  - **Cancellation terms link** next to the privacy policy in the guest form's small print. The terms page waits for the owners' wording.
+  - **Safeguard:** a session with bookings can only be cancelled through Cancel session, which cancels the bookings and emails everyone. The 3 Nov timetable reloads on staging had marked sessions cancelled directly, leaving Rob's test bookings in My bookings; those are tidied.
+  - Migration `20261104000001_feedback_safeguards`, on staging and production.
+  - **WhatsApp number:** managers change it in Settings when the business number exists.
+  - A reply to Rob is drafted.
+- **For future timetable changes:** sessions with bookings must be cancelled with `cancel_session`, never by setting their status. The old data scripts carry a note.
+
 ## Update (3 Nov, evening): second-release features brought forward
 
 All merged to `main` and live; staging matches `main`. The full staging check passes (71 of 71).
