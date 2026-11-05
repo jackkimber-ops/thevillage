@@ -10,13 +10,14 @@ export function moveQuestion(s: { title: string; startsAt: string; taken: number
     s.taken > 0 ? `the ${s.taken === 1 ? "person" : `${s.taken} people`} booked` : null,
     s.instructorId && s.instructorId !== meId ? `${s.instructorName ?? "the instructor"} (instructor)` : null,
   ].filter(Boolean);
+  const list = who.join(" and ");
   return [
     `Move ${s.title}`,
     `from ${when(s.startsAt)}`,
     `to ${when(newStartIso)}?`,
     "",
     who.length
-      ? `${who.join(" and ")} will get an email. Emails go out 10 minutes after the move, so if this is a slip, move it back and nobody is emailed.`
+      ? `${list.charAt(0).toUpperCase()}${list.slice(1)} will get an email. Emails go out 10 minutes after the move, so if this is a slip, move it back and nobody is emailed.`
       : "Nobody is booked, so no emails are sent.",
   ].join("\n");
 }
