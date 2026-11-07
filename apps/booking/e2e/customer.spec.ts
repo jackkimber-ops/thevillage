@@ -2,6 +2,9 @@ import { expect, test } from "@playwright/test";
 
 // These run against the demo data (DEMO_DATA=1), a repeating week of classes and open play.
 
+/** A Vietnam date a week from today, for "the first bookable class" (this week can be all gone at the weekend). */
+const nextWeek = () => new Date(Date.now() + 7 * 3600000 + 7 * 86400000).toISOString().slice(0, 10);
+
 test("home shows upcoming sessions and where to find us", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "coming up" })).toBeVisible();
@@ -83,7 +86,7 @@ test("team feedback 2 Nov: the filter and the day you're on stay when you change
 });
 
 test("team feedback 2 Nov: the guest form keeps what you typed through the menu and the privacy policy; children can be removed", async ({ page }) => {
-  await page.goto("/classes?filter=classes");
+  await page.goto(`/classes?filter=classes&date=${nextWeek()}`); // this week can be all gone at the weekend
   await page.locator(".session-card", { hasNot: page.locator(".full-label") }).first().getByRole("link").click();
   await page.getByRole("link", { name: "Book this class" }).click();
   await page.getByRole("link", { name: "Book as a guest" }).click();
@@ -125,7 +128,7 @@ test("team feedback 2 Nov: the guest form keeps what you typed through the menu 
 });
 
 test("team feedback 2 Nov: Questions about this class, then closing the menu, returns to the class", async ({ page }) => {
-  await page.goto("/classes?filter=classes");
+  await page.goto(`/classes?filter=classes&date=${nextWeek()}`); // this week can be all gone at the weekend
   await page.locator(".session-card", { hasNot: page.locator(".full-label") }).first().getByRole("link").click();
   await expect(page).toHaveURL(/\/classes\/[^/?]+\?/);
   const classUrl = page.url();
@@ -142,7 +145,7 @@ test("team feedback 2 Nov: Vietnamese opening hours", async ({ page }) => {
 });
 
 test("session details", async ({ page }) => {
-  await page.goto("/classes?filter=classes");
+  await page.goto(`/classes?filter=classes&date=${nextWeek()}`); // this week can be all gone at the weekend
   await page.locator(".session-card", { hasNot: page.locator(".full-label") }).first().getByRole("link").click(); // not Full or Closed
   await expect(page.getByRole("link", { name: "Book this class" })).toBeVisible();
   await expect(page.getByText("1 class credit, or 450,000 ₫ on the day")).toBeVisible();
