@@ -3,6 +3,7 @@ import type { MetadataRoute } from "next";
 // C9: customers save the booking site to their phone's home screen and it opens like an app.
 export default function manifest(): MetadataRoute.Manifest {
   return {
+    id: "/",
     name: "The Village - Family Club",
     short_name: "The Village",
     description: "Book classes and open play at The Village - Family Club, Saigon.",
