@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { CalendarFeed } from "@/components/CalendarFeed";
 import { Notice } from "@/components/staff/Notice";
-import { FEED_TEXT } from "@/lib/staff-feed-text";
+import { FEED_TEXT, HOME_SCREEN_TEXT } from "@/lib/staff-feed-text";
+import { HomeScreenTip } from "@/components/HomeScreenTip";
 import { data, staffApi, type ContactItem } from "@/lib/data";
 import { markContactedAction } from "@/lib/actions/staff";
 import { formatVnd } from "@/lib/money";
@@ -90,6 +91,7 @@ export default async function Dashboard({ searchParams }: PageProps<"/staff">) {
           ))}
         </section>
       </div>
+      <HomeScreenTip text={HOME_SCREEN_TEXT} hideKey="village:staff-home-screen-tip" />
       <CalendarFeed text={me.role === "manager" ? { ...FEED_TEXT, title: "Add the studio's sessions to my calendar", body: "Managers' calendars show every session. Titles and times only, no customer names." } : FEED_TEXT} staff />
     </>
   );

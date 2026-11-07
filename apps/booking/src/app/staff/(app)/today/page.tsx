@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CalendarFeed } from "@/components/CalendarFeed";
-import { FEED_TEXT } from "@/lib/staff-feed-text";
+import { FEED_TEXT, HOME_SCREEN_TEXT } from "@/lib/staff-feed-text";
+import { HomeScreenTip } from "@/components/HomeScreenTip";
 import { staffApi } from "@/lib/data";
 import { requireStaff } from "@/lib/staff-guard";
 import { sessionLine } from "@/lib/staff-format";
@@ -30,6 +31,7 @@ export default async function Today() {
         </section>
       ))}
       <p className="muted small">A manager who also teaches sees this same list for their own classes.</p>
+      <HomeScreenTip text={HOME_SCREEN_TEXT} hideKey="village:staff-home-screen-tip" />
       <CalendarFeed text={FEED_TEXT} staff />
     </>
   );

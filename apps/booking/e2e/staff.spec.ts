@@ -301,6 +301,25 @@ test.describe("on a phone", () => {
   });
 });
 
+test("staff app on the home screen (Jack, 7 Nov): its own name, icon and start page, and a card on phones", async ({ page, browser, request }) => {
+  const manifest = await (await request.get("/staff/manifest.webmanifest")).json();
+  expect(manifest).toMatchObject({ short_name: "Village Staff", start_url: "/staff", display: "standalone" });
+  for (const icon of manifest.icons) expect((await request.get(icon.src)).status(), icon.src).toBe(200);
+  await page.goto("/staff/login");
+  await expect(page.locator('link[rel="manifest"]')).toHaveAttribute("href", "/staff/manifest.webmanifest");
+  await expect(page.locator('meta[name="apple-mobile-web-app-title"]')).toHaveAttribute("content", "Village Staff");
+  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute("href", /\/staff\/apple-icon/);
+  // The customer site keeps its own.
+  await page.goto("/");
+  await expect(page.locator('link[rel="manifest"]')).toHaveAttribute("href", "/manifest.webmanifest");
+  // On an Android phone, the dashboard offers it.
+  const phone = await (await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true,
+    userAgent: "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Mobile Safari/537.36" })).newPage();
+  await staffLogin(phone, "instructor@village.test");
+  await phone.goto("/staff/today");
+  await expect(phone.getByText("Keep the staff app on your phone")).toBeVisible();
+});
+
 test("instructors can't open the staff page", async ({ page }) => {
   await staffLogin(page, "instructor@village.test");
   await page.goto("/staff/team");

@@ -40,18 +40,22 @@ function whichPhone(): Phone {
   return "other";
 }
 
-function saidNotNow(): boolean {
+function saidNotNow(key: string): boolean {
   try {
-    return Boolean(localStorage.getItem(HIDE));
+    return Boolean(localStorage.getItem(key));
   } catch {
     return false; // private mode: show it
   }
 }
 
-export function HomeScreenTip({ always = false }: { always?: boolean }) {
-  const t = useTranslations("homeScreen");
+export type HomeScreenText = Record<"title" | "body" | "bodyIphone" | "showMe" | "add" | "notNow" | "iphone1" | "iphone2" | "iphone3" | "android1" | "android2", string>;
+
+/** `text`: fixed wording instead of the site's language (the staff app is English only). */
+export function HomeScreenTip({ always = false, text, hideKey = HIDE }: { always?: boolean; text?: HomeScreenText; hideKey?: string }) {
+  const translate = useTranslations("homeScreen");
+  const t = (k: keyof HomeScreenText) => (text ? text[k] : translate(k));
   const phone = useSyncExternalStore(noSubscribe, whichPhone, () => "installed" as Phone);
-  const notNow = useSyncExternalStore(noSubscribe, saidNotNow, () => true);
+  const notNow = useSyncExternalStore(noSubscribe, () => saidNotNow(hideKey), () => true);
   const [open, setOpen] = useState(false);
   const [gone, setGone] = useState(false);
   // Phones only; `always` (the menu) ignores "Not now".
@@ -92,7 +96,7 @@ export function HomeScreenTip({ always = false }: { always?: boolean }) {
               type="button"
               className="link-button muted"
               onClick={() => {
-                try { localStorage.setItem(HIDE, "1"); } catch { /* fine */ }
+                try { localStorage.setItem(hideKey, "1"); } catch { /* fine */ }
                 setGone(true);
               }}
             >
