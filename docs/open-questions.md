@@ -91,5 +91,8 @@ The requirements win on *what* to build, so I'll follow the answer in **bold** u
 
 All 16 rows in *Mockup vs requirements* are ticked. The two follow-ups they raised are answered: the cutoff is 20:00 the evening before, and payment is by QR at check-in. All 13 business rules are agreed.
 
-## Children's classes (3 Nov, from the final schedule)
+## Children's classes (3 Nov, from a draft schedule; not in the agreed November schedule, 7 Nov)
 - **Yoga Storytelling (3–5 yrs, Tue) and Yoga Adventure (6–10 yrs, Thu), 15:30–16:30 from December, 10 places, children only (no parents).** To decide: the price per child, whether class packs can be used, and a badge for each (all seven Instagram badges are in use). Building it: a booking for one or two children without a parent, places counted by children. Needed in time for bookings to open about 1 month ahead.
+
+## December timetable (7 Nov)
+- **Nothing is on the timetable from 1 December.** Customers book up to a month ahead, so from about 1 November-ish onwards they look for December dates: the December schedule is needed **by mid-November** (and instructors for each class). Managers can add it themselves (Calendar, "Every week"), or send it and Claude loads it.
