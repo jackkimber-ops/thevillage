@@ -9,7 +9,7 @@ import { account, data, type TimetableEntry } from "@/lib/data";
 import { myBookedSessions } from "@/lib/my-booked";
 import {
   addDays, addMonths, formatDayLong, formatMonth, formatTime, formatWeekRange, isDateKey, monthStart,
-  vnDateKey, vnDayStart, weekStart,
+  nowMs, vnDateKey, vnDayStart, weekStart,
 } from "@/lib/time";
 
 type View = "list" | "week" | "month";
@@ -33,7 +33,12 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
   const today = vnDateKey(new Date());
   const lastBookable = addDays(today, settings.bookingWindowDays);
   const requested = first(sp.date);
-  const anchor = isDateKey(requested) && requested >= today && requested <= lastBookable ? requested : today;
+  // The first day with sessions (team feedback 8 Nov: before opening, new visitors clicked through empty weeks).
+  // Opens there and doesn't go back before it; once sessions run, that's today, as before.
+  const upcoming = await db.timetable(new Date(), vnDayStart(addDays(lastBookable, 1)));
+  const firstDay = upcoming.filter((s) => new Date(s.endsAt).getTime() > nowMs()).map((s) => vnDateKey(s.startsAt)).sort()[0];
+  const startDay = firstDay && firstDay > today ? firstDay : today;
+  const anchor = isDateKey(requested) && requested >= startDay && requested <= lastBookable ? requested : startDay;
 
   const href = (params: Record<string, string | undefined>) => {
     const q = new URLSearchParams();
@@ -46,7 +51,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
   // The day tapped in Month, if any.
   const day = view === "month" && isDateKey(first(sp.day)) ? first(sp.day) : undefined;
   // This exact view (week, month day, filter), for the class page's Back button and the filter pills.
-  const place = { date: anchor === today ? undefined : anchor, day };
+  const place = { date: anchor === startDay ? undefined : anchor, day };
   const here = href(place);
   // The day being looked at, so another view opens on it (team feedback 2 Nov: Month 26 Nov, then List, shows that week).
   const focus = day && day >= today ? (day <= lastBookable ? day : lastBookable) : anchor;
@@ -57,7 +62,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
   const nav = (
     <nav className="segmented" aria-label={t("viewLabel")}>
       {(["list", "week", "month"] as const).map((v) => (
-        <Link key={v} href={href({ view: v === "list" ? undefined : v, date: focus === today ? undefined : focus })} aria-current={view === v ? "page" : undefined}>
+        <Link key={v} href={href({ view: v === "list" ? undefined : v, date: focus === startDay ? undefined : focus })} aria-current={view === v ? "page" : undefined}>
           {t(`views.${v}`)}
         </Link>
       ))}
@@ -94,14 +99,14 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
       <>
         <Stepper
           label={formatMonth(start, locale)}
-          prev={start > monthStart(today) ? href({ view: "month", date: addMonths(start, -1) < today ? undefined : addMonths(start, -1) }) : null}
+          prev={start > monthStart(startDay) ? href({ view: "month", date: addMonths(start, -1) < startDay ? undefined : addMonths(start, -1) }) : null}
           next={next <= lastBookable ? href({ view: "month", date: next }) : null}
           prevLabel={t("prevMonth")}
           nextLabel={t("nextMonth")}
         />
         {pills}
         <MonthGrid start={start} sessions={sessions} today={today} lastBookable={lastBookable} selected={selected}
-          dayHref={(d) => href({ view: "month", date: start === monthStart(today) ? undefined : start, day: d })} locale={locale} />
+          dayHref={(d) => href({ view: "month", date: start === monthStart(startDay) ? undefined : start, day: d })} locale={locale} />
         <Legend kind="month" types={typesOf(sessions)} />
         <h2 className="day-label">{formatDayLong(selected, locale)}</h2>
         {sessions.filter((s) => vnDateKey(s.startsAt) === selected).map((s) => <SessionCard key={s.id} s={s} bookingId={booked.get(s.id)} from={here} />)}
@@ -116,7 +121,7 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
       <>
         <Stepper
           label={formatWeekRange(monday, locale)}
-          prev={monday > weekStart(today) ? href({ view: "week", date: addDays(monday, -7) < today ? undefined : addDays(monday, -7) }) : null}
+          prev={monday > weekStart(startDay) ? href({ view: "week", date: addDays(monday, -7) < startDay ? undefined : addDays(monday, -7) }) : null}
           next={addDays(monday, 7) <= lastBookable ? href({ view: "week", date: addDays(monday, 7) }) : null}
           prevLabel={t("prevWeek")}
           nextLabel={t("nextWeek")}
@@ -135,13 +140,13 @@ export default async function ClassesPage({ searchParams }: PageProps<"/classes"
     const days = Array.from({ length: 7 }, (_, i) => addDays(monday, i))
       .map((d) => ({ d, items: sessions.filter((s) => vnDateKey(s.startsAt) === d && new Date(s.endsAt) > new Date()) }))
       .filter((x) => x.items.length > 0);
-    const weekHref = (m: string) => href({ date: m <= today ? undefined : m });
+    const weekHref = (m: string) => href({ date: m <= startDay ? undefined : m });
     const nextHref = end <= lastBookable ? weekHref(end) : null;
     body = (
       <>
         <Stepper
           label={formatWeekRange(monday, locale)}
-          prev={monday > weekStart(today) ? weekHref(addDays(monday, -7)) : null}
+          prev={monday > weekStart(startDay) ? weekHref(addDays(monday, -7)) : null}
           next={nextHref}
           prevLabel={t("prevWeek")}
           nextLabel={t("nextWeek")}
