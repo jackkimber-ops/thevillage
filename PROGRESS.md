@@ -11,6 +11,51 @@
 - 21 Oct: **visual style v1**: a style sheet plus 5 key screens in the brand (login, timetable, confirm a class, staff dashboard, website top), as a new row at the bottom of the preview canvas.
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
+## Update (4–9 Nov): schedule agreed, staff app on phones, places, business number
+
+All merged to `main` and live; staging matches `main`. The full staging check passes (71 of 71).
+
+- **Moving a session** (#57, change #32, migration `20261104000002_move_emails_once`):
+  - The drag question says from when, to when, and who gets an email.
+  - "Session moved" emails wait 10 minutes. A second move in that time sends one email from the original time; moving it back sends nothing.
+  - The instructor is emailed when someone else moves their session.
+- **Agreed November schedule** (#58, change #33; data `supabase/data/20261107-november-schedule.sql`):
+  - 16–30 Nov only.
+  - Mon–Fri & Sun: a class 9:00–10:00, then Open Play 10:00–12:00.
+  - Saturday: Open Play 8:30–10:30, then Core & Cuddle 10:30–11:30.
+  - Everything from 1 December removed; no bookings were on changed or removed sessions.
+  - Opening hours "Mon–Fri & Sun 9:00–12:00, Sat 8:30–11:30".
+  - The children's classes from the 3 Nov draft aren't agreed and aren't loaded.
+- **Staff app on the home screen** (#59, change #34):
+  - "Village Staff", with the house badge on dark olive (`/staff/manifest.webmanifest`, `app/staff/apple-icon.png`).
+  - It opens the staff app, never the customer site.
+  - A "Keep the staff app on your phone" card on the dashboard and My sessions.
+- **Business number** (#60, change #35):
+  - Contact phone +84 906 446 214 (staging and production settings).
+  - WhatsApp and Zalo buttons stay on +84 933 834 068 until set up on the new number.
+  - Decided: no Meta/Zalo business verification; email is the only automated channel.
+- **Timetable opens on the first week with sessions** (#61, change #36): until opening that's 16–22 Nov, so no empty weeks to click through; from then on, the current week.
+- **Places left only when few are left** (#62, change #37, migration `20261109000001_places_hint`):
+  - Classes: "Only 3 places left" / "Last place!".
+  - Open Play: "Almost full", with no number.
+  - Then "Full".
+  - Above the cut-off the count isn't sent to the customer site. The cut-off (3) is in Settings; staff keep exact counts.
+- **Staging check:** waiting move emails don't count as stuck. Late-evening runs keep "QA Today" clear of the "very soon" session. Three customer tests look a week ahead (weekends had no bookable class left).
+
+## Update (4 Nov): team retest fixes
+
+All merged to `main` and live; staging matches `main`.
+
+- **Team feedback** (#56, change #31):
+  - **Test sites link to each other:** the test website's Book buttons went to the live booking site, and the test booking app's website link to the live website. Fixed with Vercel settings for the `staging` branch only (`NEXT_PUBLIC_BOOKING_URL`, `NEXT_PUBLIC_WEBSITE_URL`). The "Add to Google Calendar" event text now uses each site's own address.
+  - **No future birth months:** every month picker stops at this month, and a database trigger refuses a future month from any form.
+  - **Cancellation terms link** next to the privacy policy in the guest form's small print. The terms page waits for the owners' wording.
+  - **Safeguard:** a session with bookings can only be cancelled through Cancel session, which cancels the bookings and emails everyone. The 3 Nov timetable reloads on staging had marked sessions cancelled directly, leaving Rob's test bookings in My bookings; those are tidied.
+  - Migration `20261104000001_feedback_safeguards`, on staging and production.
+  - **WhatsApp number:** managers change it in Settings when the business number exists.
+  - A reply to Rob is drafted.
+- **For future timetable changes:** sessions with bookings must be cancelled with `cancel_session`, never by setting their status. The old data scripts carry a note.
+
 ## Update (3 Nov, evening): second-release features brought forward
 
 All merged to `main` and live; staging matches `main`. The full staging check passes (71 of 71).
@@ -37,6 +82,14 @@ All merged to `main` and live; staging matches `main`. The full staging check pa
   - On Apple devices it also offers **Add to Apple Calendar**, which opens Apple's "Add to Calendar" sheet. The .ics is now sent inline, not as an attachment.
   - The customers' "add all my bookings" subscription is **Apple only**, on Apple devices, as one button. Google subscriptions refresh every few hours and often can't be added on a phone.
   - The staff card keeps all its options.
+- **Final schedule from 16 Nov** (#54, change #30; data `supabase/data/20261103-final-timetable.sql`, on staging and production). It replaces the 2 Nov timetable below.
+  - Every day: a class 9:00–10:00 and Open Play 10:00–12:00. No afternoon Open Play.
+  - 210 sessions to 28 Feb. Phuong teaches Core & Cuddle.
+  - Opening hours: "Every day 9:00–12:00; Tue & Thu also 15:30–16:30 (from December)", in EN and VI.
+- **Children's classes not loaded yet:** Yoga Storytelling (3–5, Tue) and Yoga Adventure (6–10, Thu), 15:30–16:30 from December, 10 places, children only.
+  - Waiting on the owners: the price per child, whether packs can be used, and two badges.
+  - Then Claude builds booking a child without a parent (about half a day), aiming for about 10 Nov.
+- **Team message drafted** for the retest, with the test-site links (booking site, staff app, website).
 - **Still left in the +1 month release:**
   - pick several dates at once (C25)
   - pause a pack (M2)
@@ -226,13 +279,14 @@ All merged to `main` and live; staging matches `main`.
 - 25 Oct: **designs signed off.** Build plan in `docs/build-plan.md`.
 
 ## Waiting on the owners
-- **Instructors:** who teaches Little Yogi & Me, Breathe & Unwind, Bump & Breathe and Wiggle & Wonder. Phuong teaches Core & Cuddle. Managers can now add instructors themselves (Staff page), then set them on sessions.
-- **Strong & Snuggly:** day and time, to put it on the timetable.
+- **Instructors:** agreed (7 Nov); Jack adds them on the Staff page, then they're set on their sessions (by a manager, or Claude in bulk). Phuong teaches Core & Cuddle.
+- **December timetable:** nothing is loaded from 1 Dec, and early December already shows (empty) to customers booking a month ahead. Needed as soon as possible; managers can add it (Calendar, "Every week") or send it to Claude. (Children's classes, if they come back: price per child, packs, two badges, and booking a child without a parent to build.)
+- **Strong & Snuggly:** not on the agreed November schedule.
 - **Closure days** (e.g. Tết, around 6–10 Feb 2027): sessions currently run every day. Managers can enter them under Settings → closures.
-- **Tuesday and Thursday afternoons:** stay Open Play for now; may become classes.
 - Privacy policy and cancellation terms (EN and VI); studio photo for the login and home screens; website photos, FAQ and headline copy.
 - A native speaker to read the new Vietnamese: the home-screen card, calendar card, "studio is closed" note and the "sorry, that didn't load" page.
 - Optional: `sentry.io` allowed in the environment's network settings plus a read-only Sentry token, so Claude can read new errors directly (today Jack pastes them in).
+- **WhatsApp and Zalo on the business number +84 906 446 214:** then the buttons switch (Settings, or Claude).
 - When to switch the customer-facing contact email to hello@thevillagesaigon.com.
 - SVGs of the full-colour wordmark and badges (later).
 
