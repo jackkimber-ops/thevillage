@@ -52,6 +52,7 @@ export async function saveSettingsAction(_: StaffFormState, form: FormData): Pro
       cancelCutoffTime: str(form, "cancelCutoffTime"),
       bookingWindow: { n: Number(str(form, "windowN")), unit: str(form, "windowUnit") === "days" ? "days" : "months" },
       latestBookingMinutes: Number(str(form, "latestMinutes")), hireMaxGroup: Number(str(form, "hireMaxGroup")),
+      placesHintAt: Number(str(form, "placesHintAt")),
     });
   } catch (e) {
     return { error: code(e) };

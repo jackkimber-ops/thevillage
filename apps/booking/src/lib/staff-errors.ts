@@ -15,6 +15,7 @@ const MESSAGES: Record<string, string> = {
   invalid_booking_window: "Customers can book between 1 day and 6 months ahead.",
   invalid_latest_booking: "Booking can close between 0 minutes and 2 days before the start.",
   invalid_group: "Group size must be between 1 and 200.",
+  invalid_places_hint: "\"Only X places left\" must be between 0 and 50.",
   invalid_setting: "Check the times and numbers.",
   not_yourself: "You can't switch off or demote your own login: ask another manager.",
   last_manager: "There must always be at least one manager.",

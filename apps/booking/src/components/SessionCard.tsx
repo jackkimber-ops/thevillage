@@ -14,10 +14,9 @@ export async function SessionCard({ s, showDay = false, bookingId, from }: { s: 
   const when = showDay
     ? `${formatDayShort(vnDateKey(s.startsAt), locale)} · ${formatTime(s.startsAt, locale)}`
     : formatTimeRange(s.startsAt, s.endsAt, locale);
-  const line =
-    s.kind === "open_play"
-      ? s.priceVnd !== null ? t("perChild", { price: formatVnd(s.priceVnd, locale) }) : null
-      : s.isFull ? null : s.placesLeft !== null && s.capacity !== null ? t("placesLeft", { left: s.placesLeft, capacity: s.capacity }) : null;
+  // Open play shows its price; classes say nothing about places until few are left (team feedback 9 Nov).
+  const line = s.kind === "open_play" && s.priceVnd !== null ? t("perChild", { price: formatVnd(s.priceVnd, locale) }) : null;
+  const hint = s.isFull ? null : placesHint(s, t);
   return (
     <div className="session-card">
       {s.pictureUrl ? (
@@ -35,6 +34,7 @@ export async function SessionCard({ s, showDay = false, bookingId, from }: { s: 
         <div className="session-title">{s.title}</div>
         <div className="session-meta">{s.instructorName ? `${when} · ${s.instructorName}` : when}</div>
         {line && <div className="session-left">{line}</div>}
+        {hint && <div className="session-hint">{hint}</div>}
       </div>
       {bookingId ? (
         <Link className="booked-pill" href={`/bookings#booking-${bookingId}`} aria-label={`${t("booked")}: ${s.title}, ${when}. ${t("seeBooking")}`}>
@@ -56,4 +56,10 @@ export async function SessionCard({ s, showDay = false, bookingId, from }: { s: 
 /** A class page link that remembers the timetable view it came from, so Back returns to the same week. */
 export function sessionHref(id: string, from?: string) {
   return from ? `/classes/${id}?from=${encodeURIComponent(from)}` : `/classes/${id}`;
+}
+
+/** "Last place!", "Only 3 places left", or "Almost full" (Open Play: no number). Null when there's plenty of room. */
+export function placesHint(s: Pick<TimetableEntry, "kind" | "placesLeft" | "almostFull">, t: (key: string, values?: Record<string, number>) => string): string | null {
+  if (s.kind !== "open_play" && s.placesLeft !== null) return s.placesLeft === 1 ? t("lastPlace") : t("onlyLeft", { left: s.placesLeft });
+  return s.almostFull ? t("almostFull") : null;
 }

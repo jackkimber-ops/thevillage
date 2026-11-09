@@ -233,3 +233,16 @@ test.describe("C9 on an iPhone", () => {
     await expect(page.getByRole("button", { name: "Not now" })).toHaveCount(0); // the menu always offers it
   });
 });
+
+test("team feedback 9 Nov: places only show when few are left, and the class page follows", async ({ page }) => {
+  await page.goto(`/classes?date=${nextWeek()}`);
+  // Demo week: Dance Fit (Tue) has 2 of 10 left, Mum & Baby Yoga (Tue) 7 of 10 (no test books either).
+  const danceFit = page.locator(".session-card", { hasText: "Dance Fit" }).first();
+  await expect(danceFit.locator(".session-hint")).toHaveText("Only 2 places left");
+  const yoga = page.locator(".session-card", { hasText: "Mum & Baby Yoga" }).first();
+  await expect(yoga).toBeVisible();
+  await expect(yoga).not.toContainText(/place/);
+  await expect(page.getByText(/of 10 places left/)).toHaveCount(0);
+  await danceFit.getByRole("link").first().click();
+  await expect(page.locator(".details")).toContainText("Only 2 places left");
+});

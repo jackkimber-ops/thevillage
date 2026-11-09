@@ -18,6 +18,8 @@ export interface StudioSettings {
   bookingWindowDays: number;
   /** Largest group for a private hire, shown on the hire page. */
   hireMaxGroup: number;
+  /** Show places left once this few remain (0 = never, only "Full"). */
+  placesHintAt: number;
 }
 
 /** Opening hours in the page's or email's language. */
@@ -35,8 +37,11 @@ export interface TimetableEntry {
   instructorName: string | null;
   priceVnd: number | null;
   capacity: number | null;
-  placesLeft: number | null; // null for open play (customers only see "Full")
+  /** Classes only, and only when few are left (studio setting, 3): "Only 3 places left" (team feedback 9 Nov). */
+  placesLeft: number | null;
   isFull: boolean;
+  /** Few places left, not full: "Almost full" for Open Play (no number). */
+  almostFull: boolean;
   /** Too close to the start to book online (the studio's latest-booking setting, 1 hour at launch). */
   bookingClosed: boolean;
   typeName: string;

@@ -24,6 +24,7 @@ export const settings: StudioSettings = {
   cancelCutoffTime: "20:00",
   bookingWindowDays: 31,
   hireMaxGroup: 15,
+  placesHintAt: 3,
 };
 
 export const staff: Record<string, StaffMember> = {

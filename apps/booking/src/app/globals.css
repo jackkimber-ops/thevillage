@@ -346,3 +346,4 @@ a { color: var(--forrest-deep); }
 .add-cal { display: flex; flex-direction: column; gap: 8px; }
 .add-cal-compact { gap: 12px; margin-top: 4px; }
 .add-cal-compact .small-link { padding: 4px 0; font-size: 13px; }
+.session-hint { margin-top: 2px; font-size: 13px; font-weight: 600; color: var(--coral-deep); }
