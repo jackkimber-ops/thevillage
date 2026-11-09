@@ -48,6 +48,7 @@ export interface EditableSettings {
   /** Online booking closes this many minutes before the start. */
   latestBookingMinutes: number;
   hireMaxGroup: number;
+  placesHintAt: number;
 }
 
 /** S2 Staff page: everyone with a staff role (managers only). */

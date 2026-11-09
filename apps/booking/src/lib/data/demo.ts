@@ -13,6 +13,7 @@ function entry(s: DemoSession): TimetableEntry {
   const kind = kindOf(s);
   const t = taken(s);
   const look = DEMO_LOOK[s.sessionTypeId] ?? { colour: "#E8E3C5", pictureUrl: null };
+  const left = s.capacity === null ? 0 : Math.max(s.capacity - t, 0);
   return {
     id: s.id,
     sessionTypeId: s.sessionTypeId,
@@ -23,8 +24,10 @@ function entry(s: DemoSession): TimetableEntry {
     instructorName: instructorName(s.instructorId),
     priceVnd: typeOf(s).dropInPriceVnd,
     capacity: s.capacity,
-    placesLeft: kind === "open_play" || s.capacity === null ? null : Math.max(s.capacity - t, 0),
+    // Like the database: a count only when few are left, and never for Open Play.
+    placesLeft: kind === "open_play" || s.capacity === null || left < 1 || left > settings.placesHintAt ? null : left,
     isFull: s.capacity !== null && t >= s.capacity,
+    almostFull: s.capacity !== null && left >= 1 && left <= settings.placesHintAt,
     bookingClosed: new Date(s.startsAt).getTime() - 3600_000 < Date.now(),
     typeName: typeOf(s).name,
     ...look,

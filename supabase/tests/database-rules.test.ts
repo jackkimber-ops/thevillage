@@ -157,6 +157,30 @@ describe("timetable", () => {
       expect(byId[op]).toMatchObject({ places_left: null, is_full: true });
     }));
 
+  it("says nothing about places until few are left; Open Play only 'almost full' (team feedback 9 Nov)", () =>
+    inTx(async (db) => {
+      const a = await db.customer();
+      const roomy = await db.session({ capacity: 10 });
+      const busy = await db.session({ capacity: 4 });
+      const op = await db.session({ type: TYPES.openPlay, capacity: 3 });
+      await db.book(a.user!, roomy);
+      await db.book(a.user!, busy);
+      await db.book(a.user!, op, { childIds: [await db.child(a.customerId)] });
+      const get = async () => Object.fromEntries((await db.as("anon",
+        "select session_id, places_left, is_full, almost_full from public.timetable(now(), now() + interval '30 days')")).map((r) => [r.session_id, r]));
+      let byId = await get();
+      expect(byId[roomy]).toMatchObject({ places_left: null, almost_full: false, is_full: false }); // 9 left: nothing shown, not even sent
+      expect(byId[busy]).toMatchObject({ places_left: 3, almost_full: true, is_full: false });      // 3 left: "Only 3 places left"
+      expect(byId[op]).toMatchObject({ places_left: null, almost_full: true, is_full: false });     // Open Play: "Almost full", no number
+      // A cut-off of 0 never shows places; a bigger one shows them earlier.
+      await db.su("update public.studio_settings set places_hint_at = 0");
+      byId = await get();
+      expect(byId[busy]).toMatchObject({ places_left: null, almost_full: false });
+      await db.su("update public.studio_settings set places_hint_at = 9");
+      byId = await get();
+      expect(byId[roomy]).toMatchObject({ places_left: 9, almost_full: true });
+    }));
+
   it("gives each session its class type's name and badge (change list #5)", () =>
     inTx(async (db) => {
       const core = await db.session({ type: "00000000-0000-4000-8000-000000000004", title: "Core & Cuddle" });

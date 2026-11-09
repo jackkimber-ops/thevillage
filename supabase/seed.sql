@@ -10,7 +10,7 @@ insert into public.studio_settings (
   'Mon–Sat 8:30–15:00, Sun 8:30–11:30',
   'Thứ Hai–Thứ Bảy 8:30–15:00, Chủ Nhật 8:30–11:30',
   'thevillage.saigon@gmail.com',
-  '+84933834068',
+  '+84906446214', -- business number (7 Nov); WhatsApp/Zalo below move to it once set up
   'https://wa.me/84933834068',
   'https://zalo.me/0933834068',
   'https://m.me/thevillage.saigon',

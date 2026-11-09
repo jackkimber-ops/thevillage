@@ -25,11 +25,13 @@ export default function globalSetup() {
   sql("update public.studio_settings set alert_email = 'delivered+qa-alerts@resend.dev'");
 
   // One class later today for check-in tests: Here / No-show only show on the day of the session.
-  // 22:00 Saigon time, or 20 minutes from now if that's already too late (runs late at night still land today).
+  // 22:00 Saigon time, or later if that's already too late (runs late at night still land today).
   const vnNow = new Date(Date.now() + 7 * 3600000);
   const today = vnNow.toISOString().slice(0, 10);
   const minutes = vnNow.getUTCHours() * 60 + vnNow.getUTCMinutes();
-  const startMin = minutes < 21 * 60 ? 22 * 60 : Math.min(Math.ceil((minutes + 20) / 5) * 5, 23 * 60 + 25);
+  // Late in the evening it starts 50 minutes from now: clear of the customer check's "very soon" session
+  // (25-45 minutes from now), which would otherwise overlap it (4 Nov).
+  const startMin = minutes < 21 * 60 ? 22 * 60 : Math.min(Math.ceil((minutes + 50) / 5) * 5, 23 * 60 + 25);
   const start = `${today} ${String(Math.floor(startMin / 60)).padStart(2, "0")}:${String(startMin % 60).padStart(2, "0")}`;
   const [{ id }] = sql<{ id: string }>(`
     insert into public.sessions (session_type_id, title, starts_at, ends_at, capacity, instructor_id)

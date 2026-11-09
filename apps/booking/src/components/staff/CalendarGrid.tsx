@@ -6,6 +6,7 @@ import { moveSessionAction } from "@/lib/actions/staff";
 import type { StaffSession } from "@/lib/data/staff-types";
 import { staffError } from "@/lib/staff-errors";
 import { formatTime, vnDateKey } from "@/lib/time";
+import { moveQuestion } from "@/lib/move-question";
 import { sessionLine } from "@/lib/staff-format";
 
 const PX = 56; // per hour
@@ -62,8 +63,7 @@ export function CalendarGrid({ days, today, sessions, meId, isManager }: Props) 
     dragged.current = true;
     if (dayShift === 0 && minuteShift === 0) return;
     const newStart = new Date(new Date(s.startsAt).getTime() + dayShift * 86400000 + minuteShift * 60000);
-    const msg = `Move ${s.title} to ${vnDateKey(newStart.toISOString())} at ${formatTime(newStart, "en")}? ${s.taken > 0 ? "Everyone booked will be emailed." : ""}`;
-    if (!window.confirm(msg)) return;
+    if (!window.confirm(moveQuestion(s, newStart.toISOString(), meId))) return;
     start(async () => {
       const res = await moveSessionAction(s.id, newStart.toISOString());
       setError(res.error ? staffError(res.error) : null);

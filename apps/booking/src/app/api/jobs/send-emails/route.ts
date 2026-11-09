@@ -1,7 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
 import { Resend } from "resend";
 import { renderEmail } from "@/emails/render";
-import { renderStaffAlert, staffUrlFor } from "@/emails/StaffAlertEmail";
+import { renderInstructorMoved, renderStaffAlert, staffUrlFor } from "@/emails/StaffAlertEmail";
 import type { EmailData, EmailKind } from "@/emails/types";
 import type { SessionKind, StudioSettings } from "@/lib/data/types";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -16,7 +16,9 @@ function authorised(request: Request) {
 }
 
 type Claimed = {
-  id: number; kind: EmailKind | "staff_alert"; payload: { old_starts_at?: string; reason?: string; late?: boolean; credit_back?: boolean; first?: boolean };
+  id: number; kind: EmailKind | "staff_alert" | "instructor_session_moved";
+  payload: { old_starts_at?: string; reason?: string; late?: boolean; credit_back?: boolean; first?: boolean; booked?: number };
+  staff_email: string | null; staff_name: string | null;
   email: string | null; language: "en" | "vi"; full_name: string; phone: string | null; preferred_contact: "whatsapp" | "zalo" | "call";
   first_name: string; session_title: string; session_kind: SessionKind; starts_at: string; ends_at: string; child_names: string[];
   parents: number; credits: number; pack_name: string | null; unpaid: boolean; amount_due_vnd: number; free_trial: boolean; cancel_cutoff: string;
@@ -35,7 +37,7 @@ export async function POST(request: Request) {
   const settings: StudioSettings = {
     name: s.name, address: s.address, openingHours: s.opening_hours, openingHoursVi: s.opening_hours_vi ?? s.opening_hours, contactEmail: s.contact_email, contactPhone: s.contact_phone,
     whatsappUrl: s.whatsapp_url, zaloUrl: s.zalo_url, messengerUrl: s.messenger_url, facebookUrl: s.facebook_url,
-    instagramUrl: s.instagram_url, mapsUrl: s.maps_url, cancelCutoffTime: String(s.cancel_cutoff_time).slice(0, 5), bookingWindowDays: 31, hireMaxGroup: s.hire_max_group ?? 15,
+    instagramUrl: s.instagram_url, mapsUrl: s.maps_url, cancelCutoffTime: String(s.cancel_cutoff_time).slice(0, 5), bookingWindowDays: 31, hireMaxGroup: s.hire_max_group ?? 15, placesHintAt: s.places_hint_at ?? 3,
   };
 
   const { data, error } = await db.rpc("claim_notifications", { p_limit: 25 });
@@ -48,6 +50,23 @@ export async function POST(request: Request) {
   const alertTo = (s.alert_email as string | null) || settings.contactEmail;
 
   for (const n of data as Claimed[]) {
+    if (n.kind === "instructor_session_moved") {
+      try {
+        if (!n.staff_email) throw new Error("no instructor email");
+        const email = await renderInstructorMoved({
+          name: n.staff_name ?? "", title: n.session_title, fromStartsAt: n.payload?.old_starts_at ?? n.starts_at, startsAt: n.starts_at,
+          booked: Number(n.payload?.booked ?? 0), staffUrl: staffUrlFor(appUrl),
+        });
+        const res = await resend.emails.send({ from, to: n.staff_email, replyTo: settings.contactEmail, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
+        if (res.error) throw new Error(res.error.message);
+        await db.rpc("finish_notification", { p_id: n.id, p_ok: true, p_provider_id: res.data?.id ?? null });
+        sent++;
+      } catch (e) {
+        await db.rpc("finish_notification", { p_id: n.id, p_ok: false, p_error: (e as Error).message });
+        failed++;
+      }
+      continue;
+    }
     if (n.kind === "staff_alert") {
       try {
         const email = await renderStaffAlert({

@@ -14,6 +14,7 @@ type TimetableRow = {
   capacity: number | null;
   places_left: number | null;
   is_full: boolean;
+  almost_full: boolean;
   type_name: string;
   type_colour: string;
   type_picture_url: string | null;
@@ -31,6 +32,7 @@ const toEntry = (r: TimetableRow, latestBookingMs: number): TimetableEntry => ({
   capacity: r.capacity,
   placesLeft: r.places_left,
   isFull: r.is_full,
+  almostFull: r.almost_full,
   bookingClosed: new Date(r.starts_at).getTime() - latestBookingMs < Date.now(),
   typeName: r.type_name,
   colour: r.type_colour,
@@ -84,6 +86,7 @@ export const supabaseData: DataSource = {
       cancelCutoffTime: String(data.cancel_cutoff_time).slice(0, 5),
       bookingWindowDays: intervalDays(String(data.booking_window)),
       hireMaxGroup: data.hire_max_group ?? 15,
+      placesHintAt: data.places_hint_at ?? 3,
     };
   },
 
