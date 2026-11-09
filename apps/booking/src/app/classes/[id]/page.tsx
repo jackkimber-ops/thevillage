@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { MenuLink } from "@/components/RememberPlace";
+import { placesHint } from "@/components/SessionCard";
 import { TopBar } from "@/components/TopBar";
 import { safeNext } from "@/lib/safe-next";
 import { data } from "@/lib/data";
@@ -27,7 +28,7 @@ export default async function SessionPage({ params, searchParams }: PageProps<"/
     [t("instructor"), s.instructorName],
     [t("suits"), s.suits],
     [t("bring"), s.bring],
-    [t("places"), s.kind === "open_play" ? (s.isFull ? t("full") : null) : s.isFull ? t("full") : s.placesLeft !== null ? t("placesShort", { left: s.placesLeft, capacity: s.capacity ?? 0 }) : null],
+    [t("places"), s.isFull ? t("full") : placesHint(s, t)],
     [t("price"), price === null ? null : s.kind === "open_play" ? t("priceOpenPlay", { price }) : s.kind === "workshop" ? price : t("priceClass", { price })],
   ];
 

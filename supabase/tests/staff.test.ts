@@ -266,7 +266,7 @@ describe("studio settings page (M9)", () => {
     name: "The Village - Family Club", address: "47/1 Quốc Hương", opening_hours: "Mon–Sat 8:30–15:00", opening_hours_vi: "Thứ Hai–Thứ Bảy 8:30–15:00",
     contact_email: "Hello@TheVillageSaigon.com", contact_phone: "+84933834068", alert_email: "",
     whatsapp_url: "https://wa.me/84933834068", zalo_url: "", messenger_url: "", facebook_url: "", instagram_url: "", maps_url: "",
-    cancel_cutoff_time: "19:30", booking_window: "45 days", latest_booking: "30 minutes", hire_max_group: 12,
+    cancel_cutoff_time: "19:30", booking_window: "45 days", latest_booking: "30 minutes", hire_max_group: 12, places_hint_at: 3,
   };
 
   it("managers change the details and booking rules; bookings follow the new rules", () =>

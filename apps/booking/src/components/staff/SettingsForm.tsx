@@ -44,6 +44,8 @@ export function SettingsForm({ s }: { s: EditableSettings }) {
             <label>Online booking closes (minutes before the start)<input name="latestMinutes" type="number" min={0} defaultValue={s.latestBookingMinutes} required /></label>
             <span className="muted small">Staff can still book people in later, and further ahead.</span>
           </div>
+          <Text name="placesHintAt" label="Show &ldquo;Only X places left&rdquo; from" value={String(s.placesHintAt)} type="number" required
+            hint="Customers see nothing about places until this few are left (Open Play says &ldquo;Almost full&rdquo;). 0 = never, only &ldquo;Full&rdquo;. Staff always see the counts." />
           <Text name="hireMaxGroup" label="Private hire: largest group" value={String(s.hireMaxGroup)} type="number" required />
         </section>
         <section className="card" style={{ display: "flex", flexDirection: "column", gap: 10 }}>

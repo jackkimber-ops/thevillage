@@ -41,7 +41,8 @@ test("no Vercel toolbar or feedback button on the page", async ({ page }) => {
 test("timetable: List, Week and Month with the November sessions and class badges", async ({ page }) => {
   await page.goto("/classes?date=2026-11-16");
   await expect(page.locator(".session-card").first()).toBeVisible();
-  await expect(page.locator(".session-card", { hasText: "Core & Cuddle" }).first()).toContainText(/of 10 places left/);
+  // Team feedback 9 Nov: nothing about places until few are left (an empty class says nothing).
+  await expect(page.locator(".session-card", { hasText: "Core & Cuddle" }).first()).not.toContainText(/places? left/);
   const openPlay = page.locator(".session-card", { hasText: "Open Play" }).first();
   await expect(openPlay).not.toContainText("places left");
   await expect(page.locator(".session-card img").first()).toBeVisible();

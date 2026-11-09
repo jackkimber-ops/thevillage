@@ -37,7 +37,7 @@ export async function POST(request: Request) {
   const settings: StudioSettings = {
     name: s.name, address: s.address, openingHours: s.opening_hours, openingHoursVi: s.opening_hours_vi ?? s.opening_hours, contactEmail: s.contact_email, contactPhone: s.contact_phone,
     whatsappUrl: s.whatsapp_url, zaloUrl: s.zalo_url, messengerUrl: s.messenger_url, facebookUrl: s.facebook_url,
-    instagramUrl: s.instagram_url, mapsUrl: s.maps_url, cancelCutoffTime: String(s.cancel_cutoff_time).slice(0, 5), bookingWindowDays: 31, hireMaxGroup: s.hire_max_group ?? 15,
+    instagramUrl: s.instagram_url, mapsUrl: s.maps_url, cancelCutoffTime: String(s.cancel_cutoff_time).slice(0, 5), bookingWindowDays: 31, hireMaxGroup: s.hire_max_group ?? 15, placesHintAt: s.places_hint_at ?? 3,
   };
 
   const { data, error } = await db.rpc("claim_notifications", { p_limit: 25 });

@@ -88,7 +88,10 @@
     "fullMessage": "This session is full.",
     "questions": "Questions about this class? Message us",
     "closed": "Closed",
-    "closedMessage": "Booking has closed for this session (up to 1 hour before). Message us if you'd like to come."
+    "closedMessage": "Booking has closed for this session (up to 1 hour before). Message us if you'd like to come.",
+    "onlyLeft": "Only {left} places left",
+    "lastPlace": "Last place!",
+    "almostFull": "Almost full"
   },
   "menu": {
     "title": "menu",
