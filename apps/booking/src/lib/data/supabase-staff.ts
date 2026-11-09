@@ -3,7 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { vnDateKey } from "@/lib/time";
 import { ActionError, type BookingStatus } from "./types";
-import type { CustomerProfile, EditableSettings, MoneyRow, PackType, RosterRow, SessionType, StaffApi, StaffListRow, StaffSession } from "./staff-types";
+import type { ContactOutcome, ContactWay, CustomerProfile, EditableSettings, MoneyRow, PackType, RosterRow, SessionType, StaffApi, StaffListRow, StaffSession } from "./staff-types";
 
 function check(error: { code?: string; message: string } | null) {
   if (!error) return;
@@ -213,12 +213,27 @@ export const supabaseStaff: StaffApi = {
       unpaid: r.unpaid as boolean, amountDueVnd: Number(r.amount_due_vnd), source: r.source as "online",
       freeTrial: r.free_trial as boolean, children: r.children as number, sessionId: r.session_id as string,
       title: r.title as string, startsAt: r.starts_at as string,
+      contactedAt: (r.contacted_at as string | null) ?? null, contactedBy: (r.contacted_by as string | null) ?? null,
+      contactedWay: (r.contacted_way as ContactWay | null) ?? null, tries: Number(r.tries ?? 0),
+      lastTry: r.last_try_at ? { at: r.last_try_at as string, by: (r.last_try_by as string | null) ?? null, way: r.last_try_way as ContactWay } : null,
     }));
   },
 
-  async markContacted(id) {
-    const { error } = await (await createClient()).rpc("mark_contacted", { p_booking_id: id });
+  async logContact(id, way, outcome) {
+    const { error } = await (await createClient()).rpc("log_contact", { p_booking_id: id, p_way: way, p_outcome: outcome });
     check(error);
+  },
+  async undoContact(id) {
+    const { error } = await (await createClient()).rpc("undo_contact", { p_booking_id: id });
+    check(error);
+  },
+  async contactHistory(customerId) {
+    const { data, error } = await (await createClient()).rpc("contact_history", { p_customer_id: customerId });
+    check(error);
+    return (data as Array<Record<string, unknown>>).map((r) => ({
+      at: r.at as string, outcome: r.outcome as ContactOutcome, way: (r.way as ContactWay | null) ?? null,
+      staffName: (r.staff_name as string | null) ?? null, title: r.title as string, startsAt: r.starts_at as string,
+    }));
   },
   async markAttendance(id, status) {
     const { error } = await (await createClient()).rpc("mark_attendance", { p_booking_id: id, p_status: status });

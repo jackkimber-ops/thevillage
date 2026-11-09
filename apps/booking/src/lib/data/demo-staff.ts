@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import { vnDateKey } from "@/lib/time";
 import { demoEmail } from "./demo-account";
 import {
-  addPack, book, cancel, demoClosures, instructorName, kindOf, packTypes, sessionTypes, settings, staff, store, taken, type DemoSession,
+  addPack, book, cancel, demoClosures, demoContactLog, instructorName, kindOf, packTypes, sessionTypes, settings, staff, store, taken, type DemoSession,
 } from "./demo-store";
 import { ActionError } from "./types";
 import type { EditableSettings, MoneyRow, StaffApi, StaffMember, StaffSession } from "./staff-types";
@@ -156,24 +156,54 @@ export const demoStaff: StaffApi = {
   },
   async contactList() {
     await requireStaff();
+    const today = vnDateKey(new Date());
     return store.bookings
-      .filter((b) => b.status === "booked" && !b.contacted && (b.firstBooking || (b.unpaid && !b.paid)))
+      .filter((b) => b.status === "booked" && (!b.contacted || vnDateKey(b.contacted.at) === today) && (b.firstBooking || (b.unpaid && !b.paid)))
       .map((b) => {
         const s = store.sessions.find((x) => x.id === b.sessionId)!;
         const c = store.customers.get(b.customerId)!;
+        const tries = demoContactLog.filter((l) => l.bookingId === b.id && l.outcome === "no_answer");
+        const last = tries.at(-1);
         return {
           bookingId: b.id, customerId: c.id, fullName: c.fullName ?? "", phone: c.phone, preferredContact: c.preferredContact,
           firstBooking: b.firstBooking, unpaid: b.unpaid && !b.paid, amountDueVnd: b.amountDueVnd, source: b.source,
           freeTrial: b.freeTrial, children: b.childIds.length + b.unnamedChildren, sessionId: s.id, title: s.title, startsAt: s.startsAt,
+          contactedAt: b.contacted?.at ?? null, contactedBy: b.contacted?.by ?? null, contactedWay: b.contacted?.way ?? null,
+          tries: tries.length, lastTry: last ? { at: last.at, by: last.staffName, way: last.way! } : null,
         };
       })
       .filter((x) => new Date(x.startsAt) > new Date())
-      .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+      .sort((a, b) => Number(a.contactedAt !== null) - Number(b.contactedAt !== null) || a.startsAt.localeCompare(b.startsAt));
   },
-  async markContacted(id) {
-    await requireStaff();
+  async logContact(id, way, outcome) {
+    const m = await requireStaff();
     const b = store.bookings.find((x) => x.id === id);
-    if (b) b.contacted = true;
+    if (!b) throw new ActionError("booking_not_found");
+    const at = new Date().toISOString();
+    if (outcome === "contacted") {
+      if (b.contacted) throw new ActionError("already_contacted");
+      b.contacted = { at, by: m.name, way };
+    }
+    demoContactLog.push({ bookingId: id, customerId: b.customerId, at, outcome, way, staffName: m.name });
+  },
+  async undoContact(id) {
+    const m = await requireStaff();
+    const b = store.bookings.find((x) => x.id === id);
+    if (!b) throw new ActionError("booking_not_found");
+    if (!b.contacted) return;
+    b.contacted = null;
+    demoContactLog.push({ bookingId: id, customerId: b.customerId, at: new Date().toISOString(), outcome: "undone", way: null, staffName: m.name });
+  },
+  async contactHistory(customerId) {
+    await requireStaff();
+    return demoContactLog
+      .filter((l) => l.customerId === customerId)
+      .map((l) => {
+        const b = store.bookings.find((x) => x.id === l.bookingId);
+        const s = store.sessions.find((x) => x.id === b?.sessionId);
+        return { at: l.at, outcome: l.outcome, way: l.way, staffName: l.staffName, title: s?.title ?? "", startsAt: s?.startsAt ?? l.at };
+      })
+      .reverse();
   },
   async markAttendance(id, status) {
     await requireStaff();

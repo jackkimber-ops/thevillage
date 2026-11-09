@@ -284,6 +284,9 @@ a { color: var(--forrest-deep); }
 .extend-pack[open] { flex-basis: 100%; }
 .extend-pack[open] form { margin-top: 8px; align-items: center; }
 .contact-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 18px; background: var(--linen); }
+.contact-log { flex-basis: 100%; justify-content: flex-end; align-items: center; }
+.contact-done { background: transparent; box-shadow: inset 0 0 0 1px #e6ded3; padding: 10px 16px; }
+.contact-tries { color: var(--coral-deep); margin-top: 2px; }
 .sess-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px; text-decoration: none; color: var(--ink); }
 .sess-row strong { width: 50px; flex: none; }
 .tag-new { background: var(--sky); }

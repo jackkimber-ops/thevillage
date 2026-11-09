@@ -22,7 +22,7 @@ test("customers can't get into the staff app", async ({ page }) => {
   await expect(page.getByText("This email isn't a staff account")).toBeVisible();
 });
 
-test("dashboard: a guest booking shows in the get-in-touch list until Contacted", async ({ page, browser }) => {
+test("dashboard: a guest booking on the get-in-touch list: no answer, contacted (stays as done today), undo", async ({ page, browser }) => {
   // A guest books from the customer site.
   const guest = await (await browser.newContext()).newPage();
   const name = `Guest ${uid()}`;
@@ -47,8 +47,27 @@ test("dashboard: a guest booking shows in the get-in-touch list until Contacted"
   await expect(row).toContainText("prefers Zalo");
   await expect(row).toContainText(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun) \d{1,2} [A-Z][a-z]{2}, \d{1,2}:\d{2}/); // the date too (Jack, 10 Nov)
   await expect(row.getByRole("link", { name: "Zalo" })).toHaveAttribute("href", /zalo\.me\/09/);
-  await row.getByRole("button", { name: "Contacted ✓" }).click();
-  await expect(page.locator(".contact-row", { hasText: name })).toHaveCount(0);
+  // Tried by phone, no answer: still to contact, with the try shown.
+  await row.getByLabel("How").selectOption("call");
+  await row.getByRole("button", { name: "No answer" }).click();
+  const todo = page.locator(".contact-row:not(.contact-done)", { hasText: name });
+  await expect(todo).toContainText("No answer · last tried by phone by");
+  // Got them on WhatsApp: moves to "Done today", saying how and who; it stays there.
+  await todo.getByLabel("How").selectOption("whatsapp");
+  await todo.getByRole("button", { name: "Contacted ✓" }).click();
+  const done = page.locator(".contact-done", { hasText: name });
+  await expect(done).toContainText("✓ Contacted on WhatsApp by");
+  await expect(todo).toHaveCount(0);
+  // Undo: back on the list.
+  await done.getByRole("button", { name: /Undo/ }).click();
+  await expect(todo).toHaveCount(1);
+  await expect(done).toHaveCount(0);
+  // The customer page keeps the history.
+  await todo.getByRole("link", { name }).click();
+  const history = page.locator("section", { has: page.getByRole("heading", { name: "getting in touch" }) });
+  await expect(history).toContainText("Contacted undone");
+  await expect(history).toContainText("Contacted (WhatsApp)");
+  await expect(history).toContainText("No answer (Call)");
 });
 
 test("create a weekly session, then refuse an overlapping one", async ({ page }) => {

@@ -14,16 +14,54 @@ describe("staff calendar and get-in-touch list", () => {
       expect(await db.fails(c.user!, "select * from public.staff_timetable(now(), now() + interval '1 day')")).toBe("staff_only");
     }));
 
-  it("lists new customers and pay-on-the-day bookings until someone ticks Contacted", () =>
+  it("lists new customers and pay-on-the-day bookings; contacted ones stay for the rest of the day as done", () =>
     inTx(async (db) => {
       const manager = await db.staff("manager");
       const c = await db.customer();
       const id = await db.book(c.user!, await db.session());
-      const list = await db.as(manager, "select booking_id, first_booking, unpaid from public.contact_list()");
-      expect(list).toContainEqual({ booking_id: id, first_booking: true, unpaid: true });
-      await db.as(manager, "select public.mark_contacted($1)", [id]);
+      const list = await db.as(manager, "select booking_id, first_booking, unpaid, contacted_at from public.contact_list()");
+      expect(list).toContainEqual({ booking_id: id, first_booking: true, unpaid: true, contacted_at: null });
+      await db.as(manager, "select public.log_contact($1, 'zalo', 'contacted')", [id]);
+      const [row] = await db.as(manager, "select contacted_at, contacted_by, contacted_way from public.contact_list() where booking_id = $1", [id]);
+      expect(row.contacted_at).not.toBeNull();
+      expect(row.contacted_way).toBe("zalo");
+      expect(row.contacted_by).toBeTruthy();
+      // Contacted yesterday: off the list.
+      await db.su("update public.bookings set contacted_at = now() - interval '1 day' where id = $1", [id]);
       const after = await db.as(manager, "select booking_id from public.contact_list()");
       expect(after.map((r) => r.booking_id)).not.toContain(id);
+    }));
+
+  it("logs unanswered tries, refuses contacting twice, and undo puts the booking back on the list", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const instructor = await db.staff("instructor");
+      const c = await db.customer();
+      const id = await db.book(c.user!, await db.session());
+      await db.as(manager, "select public.log_contact($1, 'call', 'no_answer')", [id]);
+      await db.as(manager, "select public.log_contact($1, 'whatsapp', 'no_answer')", [id]);
+      const [p] = await db.as(manager, "select contacted_at, tries, last_try_way, last_try_by from public.contact_list() where booking_id = $1", [id]);
+      expect(p).toMatchObject({ contacted_at: null, tries: 2, last_try_way: "whatsapp" });
+      expect(p.last_try_by).toBeTruthy();
+      await db.as(manager, "select public.log_contact($1, 'in_person', 'contacted')", [id]);
+      expect(await db.fails(manager, "select public.log_contact($1, 'call', 'contacted')", [id])).toBe("already_contacted");
+      expect(await db.fails(manager, "select public.log_contact($1, null, 'no_answer')", [id])).toBe("invalid_contact");
+      expect(await db.fails(manager, "select public.log_contact($1, 'call', 'undone')", [id])).toBe("invalid_contact");
+      await db.as(manager, "select public.undo_contact($1)", [id]);
+      const [u] = await db.as(manager, "select contacted_at, contacted_way from public.contact_list() where booking_id = $1", [id]);
+      expect(u).toEqual({ contacted_at: null, contacted_way: null });
+      const hist = await db.as(manager, "select outcome, way from public.contact_history($1)", [c.customerId]);
+      expect(hist).toEqual([
+        { outcome: "undone", way: null },
+        { outcome: "contacted", way: "in_person" },
+        { outcome: "no_answer", way: "whatsapp" },
+        { outcome: "no_answer", way: "call" },
+      ]);
+      // Customers can't log, read the log or the history; an instructor can't see a customer of someone else's class.
+      expect(await db.fails(c.user!, "select public.log_contact($1, 'call', 'contacted')", [id])).toBe("staff_only");
+      expect(await db.fails(c.user!, "select * from public.contact_history($1)", [c.customerId])).toBe("staff_only");
+      expect(await db.as(c.user!, "select id from public.contact_log")).toEqual([]);
+      expect(await db.fails(instructor, "select public.undo_contact($1)", [id])).toBe("booking_not_found");
     }));
 });
 

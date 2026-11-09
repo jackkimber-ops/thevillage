@@ -2,7 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { ActionError, staffApi, type ContactMethod } from "@/lib/data";
+import { ActionError, staffApi, type ContactMethod, type ContactWay } from "@/lib/data";
+import { WAYS } from "@/lib/contact-ways";
 import { isEmail, toE164 } from "@/lib/phone";
 import { parseVnd } from "@/lib/vnd";
 
@@ -80,9 +81,28 @@ export async function saveStaffAction(_: StaffFormState, form: FormData): Promis
   return { ok: userId ? "Saved." : `Added. ${str(form, "name")} logs in at the staff app with ${email} (a code by email, no password).` };
 }
 
-export async function markContactedAction(form: FormData) {
-  await staffApi().markContacted(str(form, "bookingId"));
+// Get-in-touch list: "Contacted" or "No answer", with how; Undo puts them back on the list. All logged.
+export async function logContactAction(form: FormData) {
+  const outcome = str(form, "outcome") === "no_answer" ? "no_answer" : "contacted";
+  const way = str(form, "way") as ContactWay;
+  try {
+    if (!WAYS.includes(way)) throw new ActionError("invalid_contact");
+    await staffApi().logContact(str(form, "bookingId"), way, outcome);
+  } catch (e) {
+    redirect(`/staff?error=${code(e)}`);
+  }
   revalidatePath("/staff");
+  redirect("/staff");
+}
+
+export async function undoContactAction(form: FormData) {
+  try {
+    await staffApi().undoContact(str(form, "bookingId"));
+  } catch (e) {
+    redirect(`/staff?error=${code(e)}`);
+  }
+  revalidatePath("/staff");
+  redirect("/staff");
 }
 
 export async function attendanceAction(form: FormData) {

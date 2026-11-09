@@ -14,6 +14,7 @@ create temp table qa_u on commit drop as
 delete from public.notifications where booking_id in (select id from qa_b) or customer_id in (select id from qa_c) or staff_user_id in (select id from qa_u);
 delete from public.payments where booking_id in (select id from qa_b) or customer_id in (select id from qa_c) or session_id in (select id from qa_s);
 delete from public.credit_ledger where booking_id in (select id from qa_b) or customer_id in (select id from qa_c);
+delete from public.contact_log where booking_id in (select id from qa_b) or customer_id in (select id from qa_c) or staff_id in (select id from qa_u);
 delete from public.bookings where id in (select id from qa_b);
 delete from public.pack_pauses where customer_pack_id in (select id from public.customer_packs where customer_id in (select id from qa_c));
 delete from public.customer_packs where customer_id in (select id from qa_c);

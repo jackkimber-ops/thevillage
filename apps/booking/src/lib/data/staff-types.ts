@@ -94,7 +94,18 @@ export interface ContactItem {
   sessionId: string;
   title: string;
   startsAt: string;
+  /** Set when someone got in touch (today's done items stay on the list until the end of the day). */
+  contactedAt: string | null;
+  contactedBy: string | null;
+  contactedWay: ContactWay | null;
+  /** Unanswered tries so far, and the last one. */
+  tries: number;
+  lastTry: { at: string; by: string | null; way: ContactWay } | null;
 }
+
+export type ContactWay = "whatsapp" | "zalo" | "call" | "in_person";
+export type ContactOutcome = "contacted" | "no_answer" | "undone";
+export interface ContactLogEntry { at: string; outcome: ContactOutcome; way: ContactWay | null; staffName: string | null; title: string; startsAt: string }
 
 export interface RosterRow {
   bookingId: string;
@@ -191,7 +202,11 @@ export interface StaffApi {
   session(id: string): Promise<StaffSession | null>;
   roster(sessionId: string): Promise<RosterRow[]>;
   contactList(): Promise<ContactItem[]>;
-  markContacted(bookingId: string): Promise<void>;
+  /** "Got in touch" or "no answer", with how. Contacting an already-contacted booking fails with already_contacted. */
+  logContact(bookingId: string, way: ContactWay, outcome: "contacted" | "no_answer"): Promise<void>;
+  /** Back on the to-contact list; logged. */
+  undoContact(bookingId: string): Promise<void>;
+  contactHistory(customerId: string): Promise<ContactLogEntry[]>;
   markAttendance(bookingId: string, status: "booked" | "attended" | "no_show"): Promise<void>;
   cancelBooking(bookingId: string, reason: string | null): Promise<BookingStatus>;
   restoreCredit(bookingId: string, reason: string): Promise<void>;
