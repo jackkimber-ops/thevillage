@@ -45,6 +45,7 @@ test("dashboard: a guest booking shows in the get-in-touch list until Contacted"
   const row = page.locator(".contact-row", { hasText: name });
   await expect(row).toContainText("New · guest");
   await expect(row).toContainText("prefers Zalo");
+  await expect(row).toContainText(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun) \d{1,2} [A-Z][a-z]{2}, \d{1,2}:\d{2}/); // the date too (Jack, 10 Nov)
   await expect(row.getByRole("link", { name: "Zalo" })).toHaveAttribute("href", /zalo\.me\/09/);
   await row.getByRole("button", { name: "Contacted ✓" }).click();
   await expect(page.locator(".contact-row", { hasText: name })).toHaveCount(0);

@@ -8,9 +8,10 @@ import { markContactedAction } from "@/lib/actions/staff";
 import { formatVnd } from "@/lib/money";
 import { requireStaff } from "@/lib/staff-guard";
 import { sessionLine } from "@/lib/staff-format";
-import { addDays, formatDayLong, formatTime, vnDateKey, vnDayStart } from "@/lib/time";
+import { addDays, formatDayLong, formatDayShort, formatTime, vnDateKey, vnDayStart } from "@/lib/time";
 
-const fmtDay = (iso: string) => `${formatDayLong(vnDateKey(iso), "en").split(" ")[0].slice(0, 3)} ${formatTime(iso, "en")}`;
+// "Mon 16 Nov, 9:00": the date too, not just the weekday (Jack, 10 Nov).
+const fmtDay = (iso: string) => `${formatDayShort(vnDateKey(iso), "en")}, ${formatTime(iso, "en")}`;
 
 function why(c: ContactItem) {
   if (c.source === "guest" && c.firstBooking) return { label: "New · guest", cls: "tag-new" };
