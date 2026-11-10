@@ -11,6 +11,25 @@
 - 21 Oct: **visual style v1**: a style sheet plus 5 key screens in the brand (login, timetable, confirm a class, staff dashboard, website top), as a new row at the bottom of the preview canvas.
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
+## Update (10 Nov): get-in-touch fail-safe
+
+All merged to `main` and live; staging matches `main`. The full staging check passes (71 of 71).
+
+- **Get-in-touch list shows the date** (#63, change #38): "Core & Cuddle · Mon 16 Nov, 9:00" instead of "Mon 9:00".
+- **Studio alert emails checked:** Dakota's new-booking alert to hello@thevillagesaigon.com was delivered (Resend), and so was her confirmation email.
+- **Dakota vanished from the list:** the database showed she had been marked Contacted from Jack's login at 6:39 on 10 Nov (an accidental tap). Cleared on production at Jack's request, with an `audit_log` row (`undo_contacted`); she's back on the list.
+- **Get-in-touch fail-safe** (#64, change #39, migration `20261110000001_contact_log`):
+  - Each person has **How** (WhatsApp / Zalo / Call / In person, starting on their preferred way), **No answer**, and a **Not contacted** button (light fill, dark green border).
+  - Tapping it turns it dark green, **Contacted ✓**, in place, with "✓ Contacted on WhatsApp by Phuong, 9:12". The row stays until midnight (Vietnam time); tapping Contacted ✓ again undoes it.
+  - No answer keeps them waiting: "No answer ×2 · last tried by phone by Phuong, 9:12".
+  - Header: "2 to contact · 1 contacted today".
+  - Every contact, no-answer and undo is logged (`contact_log`: who, how, when) and shown on the customer's page under "getting in touch".
+  - Contacting twice is refused (`already_contacted`), so two staff can't both mark the same person.
+  - Contacts from before 10 Nov have no who/how record.
+  - The old `mark_contacted` function is still in the database, unused; it can be dropped later.
+- **Staging check:** the "edit a session" step waits for the page to load before typing (a Save tapped too early was a plain reload). The clean-up script also removes test `contact_log` rows.
+- **Pre-launch to-do message** drafted for the team: policy and terms wording, instructor names and emails, hello@ on everyone's phones, WhatsApp/Zalo on the new number, December timetable, home-screen apps (staff, instructors, customers), Vietnamese read-through, photos, a last test run, the pinned password, closure days.
+
 ## Update (4–9 Nov): schedule agreed, staff app on phones, places, business number
 
 All merged to `main` and live; staging matches `main`. The full staging check passes (71 of 71).
