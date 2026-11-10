@@ -147,7 +147,7 @@ export interface CustomerProfile extends Omit<CustomerHit, "creditsLeft"> {
   }>;
   bookings: Array<{
     id: string; sessionId: string; title: string; startsAt: string; status: BookingStatus; unpaid: boolean; paid: boolean;
-    amountDueVnd: number; credits: number; packName: string | null; freeTrial: boolean; childNames: string[];
+    amountDueVnd: number; credits: number; packId: string | null; packName: string | null; freeTrial: boolean; childNames: string[];
   }>;
   ledger: Array<{ at: string; kind: string; amount: number; reason: string; packName: string }>;
   hadFreeTrial: boolean;
@@ -168,6 +168,8 @@ export interface SessionType {
   tagline: string | null;
   description: string | null;
 }
+
+export interface PaidDropIn { bookingId: string; title: string; startsAt: string; sessionTypeId: string; amountVnd: number }
 
 export interface PackType {
   id: string;
@@ -223,7 +225,10 @@ export interface StaffApi {
   customer(id: string): Promise<CustomerProfile | null>;
   addCustomer(d: { fullName: string; phone: string; email: string | null; preferredContact: ContactMethod; children: Array<{ name: string; birthMonth: string }> }): Promise<string>;
   bookCustomer(d: { sessionId: string; customerId: string; childIds: string[]; unnamedChildren: number; parents: number; freeTrial: boolean; override: boolean }): Promise<string>;
-  sellPack(d: { customerId: string; packTypeId: string; method: "qr" | "transfer" | "cash"; validFrom: string | null }): Promise<string>;
+  /** Change #40: `countPaidDropIns` counts today's paid drop-ins in the pack and takes what was paid off its price. */
+  sellPack(d: { customerId: string; packTypeId: string; method: "qr" | "transfer" | "cash"; validFrom: string | null; countPaidDropIns?: boolean }): Promise<string>;
+  /** Managers: today's drop-ins already paid for, which a pack sold now could count instead. */
+  paidDropInsToday(customerId: string): Promise<PaidDropIn[]>;
   recordPayment(d: { customerId: string | null; amountVnd: number; method: "qr" | "transfer" | "cash"; paidFor: "drop_in" | "private_hire" | "workshop" | "other"; bookingId: string | null; sessionId?: string | null; note: string | null }): Promise<void>;
   /** A private hire's agreed price and the payments recorded against it. Managers only. */
   hirePayments(sessionId: string): Promise<{ agreedVnd: number | null; payments: Array<{ amountVnd: number; method: "qr" | "transfer" | "cash"; note: string | null; recordedAt: string }> }>;

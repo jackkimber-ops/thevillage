@@ -338,7 +338,7 @@ export const supabaseStaff: StaffApi = {
       bookings: rows.map((b) => ({
         id: b.id, sessionId: b.sessions.id, title: b.sessions.title, startsAt: b.sessions.starts_at, status: b.status,
         unpaid: b.unpaid, paid: b.paid_at !== null, amountDueVnd: Number(b.amount_due_vnd), credits: b.credits,
-        packName: packName(b.customer_pack_id), freeTrial: b.free_trial,
+        packId: b.customer_pack_id, packName: packName(b.customer_pack_id), freeTrial: b.free_trial,
         childNames: b.booking_children.map((x) => x.customer_children?.name).filter((n): n is string => Boolean(n)),
       })).sort((a, b) => b.startsAt.localeCompare(a.startsAt)),
       ledger: (ledger ?? []).map((l) => ({ at: l.created_at, kind: l.kind, amount: l.amount, reason: l.reason, packName: packName(l.customer_pack_id) ?? "" })),
@@ -365,9 +365,18 @@ export const supabaseStaff: StaffApi = {
   async sellPack(d) {
     const { data, error } = await (await createClient()).rpc("sell_pack", {
       p_customer_id: d.customerId, p_pack_type_id: d.packTypeId, p_method: d.method, p_valid_from: d.validFrom,
+      ...(d.countPaidDropIns ? { p_count_paid_drop_ins: true } : {}),
     });
     check(error);
     return data as string;
+  },
+  async paidDropInsToday(customerId) {
+    const { data, error } = await (await createClient()).rpc("paid_drop_ins_today", { p_customer_id: customerId });
+    check(error);
+    return (data as Array<Record<string, unknown>>).map((r) => ({
+      bookingId: r.booking_id as string, title: r.title as string, startsAt: r.starts_at as string,
+      sessionTypeId: r.session_type_id as string, amountVnd: Number(r.amount_vnd),
+    }));
   },
   async recordPayment(d) {
     const { error } = await (await createClient()).rpc("record_payment", {

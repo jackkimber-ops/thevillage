@@ -317,7 +317,7 @@ export const demoStaff: StaffApi = {
       bookings: store.bookings.filter((b) => b.customerId === id).map((b) => {
         const s = store.sessions.find((x) => x.id === b.sessionId)!;
         return { id: b.id, sessionId: s.id, title: s.title, startsAt: s.startsAt, status: b.status, unpaid: b.unpaid, paid: b.paid,
-          amountDueVnd: b.amountDueVnd, credits: b.credits, packName: packName(b.packId), freeTrial: b.freeTrial,
+          amountDueVnd: b.amountDueVnd, credits: b.credits, packId: b.packId, packName: packName(b.packId), freeTrial: b.freeTrial,
           childNames: c.children.filter((k) => b.childIds.includes(k.id)).map((k) => k.name) };
       }).sort((a, b) => b.startsAt.localeCompare(a.startsAt)),
       ledger: c.ledger.map((l) => ({ at: l.at, kind: l.kind, amount: l.amount, reason: l.reason, packName: packName(l.packId) ?? "" })).reverse(),
@@ -351,12 +351,21 @@ export const demoStaff: StaffApi = {
     const t = packTypes.find((p) => p.id === d.packTypeId);
     if (!c || !t) throw new ActionError("pack_not_on_sale");
     if (t.isIntro && c.packs.length > 0) throw new ActionError("intro_pack_new_customers_only");
-    const id = addPack(c, t, d.validFrom ?? vnDateKey(new Date()));
-    logMoney(by, { amountVnd: t.priceVnd, method: d.method, paidFor: "pack", customerName: c.fullName, note: null, what: t.name });
-    // Switch upcoming unpaid bookings onto the new pack.
+    const today = vnDateKey(new Date());
+    const paid = d.countPaidDropIns ? (await this.paidDropInsToday(c.id)).filter((x) => t.coversSessionTypeIds.includes(x.sessionTypeId)) : [];
+    const less = paid.reduce((n, x) => n + x.amountVnd, 0);
+    const id = addPack(c, t, d.validFrom ?? today);
+    logMoney(by, { amountVnd: Math.max(t.priceVnd - less, 0), method: d.method, paidFor: "pack", customerName: c.fullName, note: less ? "Less drop-in paid today" : null, what: t.name });
     const pack = c.packs.find((p) => p.id === id)!;
-    for (const b of store.bookings.filter((x) => x.customerId === c.id && x.status === "booked" && x.unpaid && !x.paid)) {
+    for (const x of paid) {
+      Object.assign(store.bookings.find((b) => b.id === x.bookingId)!, { unpaid: false, amountDueVnd: 0, packId: id, credits: 1 });
+      pack.remaining -= 1;
+      pack.reserved += 1;
+    }
+    // Switch unpaid bookings onto the new pack: upcoming ones, and today's even after the class (change #40).
+    for (const b of store.bookings.filter((x) => x.customerId === c.id && x.unpaid && !x.paid && !x.packId)) {
       const s = store.sessions.find((x) => x.id === b.sessionId)!;
+      if (!(b.status === "booked" || (b.status === "attended" && vnDateKey(s.startsAt) === today))) continue;
       const needed = kindOf(s) === "open_play" ? b.childIds.length + b.unnamedChildren : 1;
       if (!pack.sessionTypeIds.includes(s.sessionTypeId) || pack.remaining < needed || vnDateKey(s.startsAt) > pack.lastDay) continue;
       Object.assign(b, { unpaid: false, amountDueVnd: 0, packId: id, credits: needed });
@@ -364,6 +373,15 @@ export const demoStaff: StaffApi = {
       pack.reserved += needed;
     }
     return id;
+  },
+  async paidDropInsToday(customerId) {
+    await requireManager();
+    const today = vnDateKey(new Date());
+    return store.bookings
+      .filter((b) => b.customerId === customerId && b.paid && !b.packId && (b.status === "booked" || b.status === "attended"))
+      .map((b) => ({ b, s: store.sessions.find((x) => x.id === b.sessionId)! }))
+      .filter(({ s }) => vnDateKey(s.startsAt) === today && kindOf(s) === "class")
+      .map(({ b, s }) => ({ bookingId: b.id, title: s.title, startsAt: s.startsAt, sessionTypeId: s.sessionTypeId, amountVnd: b.amountDueVnd }));
   },
   async recordPayment(d) {
     const by = await requireManager();

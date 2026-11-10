@@ -355,14 +355,16 @@ export async function staffBookAction(_: StaffFormState, form: FormData): Promis
 
 export async function sellPackAction(_: StaffFormState, form: FormData): Promise<StaffFormState> {
   const customerId = str(form, "customerId");
+  let packId: string;
   try {
-    await staffApi().sellPack({
+    packId = await staffApi().sellPack({
       customerId, packTypeId: str(form, "packTypeId"), method: str(form, "method") as "qr", validFrom: str(form, "validFrom") || null,
+      countPaidDropIns: str(form, "countPaidDropIns") === "on",
     });
   } catch (e) {
     return { error: code(e) };
   }
-  redirect(`/staff/customers/${customerId}?sold=1`);
+  redirect(`/staff/customers/${customerId}?sold=${encodeURIComponent(packId)}`);
 }
 
 export async function savePackTypeAction(_: StaffFormState, form: FormData): Promise<StaffFormState> {
