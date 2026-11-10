@@ -1,6 +1,6 @@
 // Core rules 1, 3 and 4: credit reservation, safe booking and the booking rules.
 import { describe, expect, it } from "vitest";
-import { connect, Ctx, inTx, PACKS, TYPES } from "./db";
+import { connect, Ctx, inTx, PACKS, TYPES, type Who } from "./db";
 
 describe("booking with a pack", () => {
   it("reserves one credit straight away and writes a reserve row", () =>
@@ -303,6 +303,72 @@ describe("selling packs", () => {
         expect(await db.booking(id)).toMatchObject({ unpaid: false, customer_pack_id: pack, credits: 1, amount_due_vnd: "0" });
       }
       expect(await db.balance(pack)).toBe(8);
+    }));
+
+  // Change #40 (Jack, 10 Nov): a pack bought on the day counts today's class, even after it.
+  const earlierToday = `greatest((date_trunc('day', now() at time zone 'Asia/Ho_Chi_Minh')) at time zone 'Asia/Ho_Chi_Minh', now() - interval '2 hours')`;
+  async function pastClass(db: Parameters<Parameters<typeof inTx>[0]>[0], customer: { user?: Who | null }, when = earlierToday) {
+    const session = await db.session();
+    const booking = await db.book(customer.user!, session);
+    await db.su(`update public.sessions set starts_at = ${when}, ends_at = ${when} + interval '1 minute' where id = $1`, [session]);
+    await db.su("select public.close_finished_sessions()");
+    return booking;
+  }
+
+  it("a pack sold after class counts today's unpaid drop-in, used", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer();
+      const today = await pastClass(db, c);
+      expect(await db.booking(today)).toMatchObject({ status: "attended", unpaid: true, customer_pack_id: null });
+      const pack = await db.sellPack(manager, c.customerId);
+      expect(await db.booking(today)).toMatchObject({ unpaid: false, customer_pack_id: pack, credits: 1, amount_due_vnd: "0" });
+      expect(await db.balance(pack)).toBe(9);
+      const kinds = await db.su("select kind, amount from public.credit_ledger where booking_id = $1 order by id", [today]);
+      expect(kinds).toEqual([{ kind: "reserve", amount: -1 }, { kind: "use", amount: 0 }]);
+      const [pay] = await db.su("select amount_vnd from public.payments where customer_pack_id = $1", [pack]);
+      expect(pay.amount_vnd).toBe("4000000");
+    }));
+
+  it("yesterday's drop-in is not counted", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer();
+      const yesterday = await pastClass(db, c, "now() - interval '1 day 2 hours'");
+      const pack = await db.sellPack(manager, c.customerId, PACKS.ten, "2020-01-01");
+      expect(await db.booking(yesterday)).toMatchObject({ unpaid: true, customer_pack_id: null });
+      expect(await db.balance(pack)).toBe(10);
+    }));
+
+  it("a drop-in paid today counts when ticked: the class moves onto the pack and its price comes off", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer();
+      const today = await pastClass(db, c);
+      await db.as(manager, "select public.record_payment($1, 450000, 'qr', 'drop_in', $2)", [c.customerId, today]);
+      const offered = await db.as(manager, "select booking_id, amount_vnd from public.paid_drop_ins_today($1)", [c.customerId]);
+      expect(offered).toEqual([{ booking_id: today, amount_vnd: "450000" }]);
+      expect(await db.fails(c.user!, "select * from public.paid_drop_ins_today($1)", [c.customerId])).toBe("managers_only");
+
+      // Not ticked: nothing changes, full price.
+      const plain = await db.sellPack(manager, c.customerId, PACKS.twenty);
+      expect(await db.booking(today)).toMatchObject({ customer_pack_id: null });
+      const [p1] = await db.su("select amount_vnd from public.payments where customer_pack_id = $1", [plain]);
+      expect(p1.amount_vnd).toBe("7200000");
+
+      const [{ id: pack }] = await db.as(manager, "select public.sell_pack($1, $2, 'cash', null, null, true) as id", [c.customerId, PACKS.ten]);
+      expect(await db.booking(today)).toMatchObject({ customer_pack_id: pack, credits: 1 });
+      expect(await db.balance(pack)).toBe(9);
+      const pays = await db.su("select amount_vnd, paid_for, note from public.payments where customer_id = $1 order by amount_vnd", [c.customerId]);
+      expect(pays).toEqual([
+        { amount_vnd: "450000", paid_for: "drop_in", note: null },
+        { amount_vnd: "3550000", paid_for: "pack", note: expect.stringContaining("Less drop-in paid today") },
+        { amount_vnd: "7200000", paid_for: "pack", note: null },
+      ]);
+      const [cp] = await db.su("select price_paid_vnd from public.customer_packs where id = $1", [pack]);
+      expect(cp.price_paid_vnd).toBe("3550000");
+      // Once counted, it isn't offered again.
+      expect(await db.as(manager, "select booking_id from public.paid_drop_ins_today($1)", [c.customerId])).toEqual([]);
     }));
 
   it("only managers sell packs and record payments", () =>

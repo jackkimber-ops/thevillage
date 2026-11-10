@@ -143,5 +143,5 @@ export async function sellTenPack(page: Page) {
   const value = await page.getByLabel("Pack", { exact: true }).locator("option", { hasText: "10-class pack" }).getAttribute("value");
   await page.getByLabel("Pack", { exact: true }).selectOption(value!);
   await page.getByRole("button", { name: "Sell and record payment" }).click();
-  await expect(page.getByText("Pack sold and payment recorded.")).toBeVisible();
+  await expect(page.getByText(/Pack sold and payment recorded/)).toBeVisible();
 }

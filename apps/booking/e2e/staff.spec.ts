@@ -132,7 +132,7 @@ test("add a customer, sell a pack, book them in and check them in", async ({ pag
   await page.getByText("Sell a pack").click();
   await page.getByLabel("Pack", { exact: true }).selectOption({ index: 1 });
   await page.getByRole("button", { name: "Sell and record payment" }).click();
-  await expect(page.getByText("Pack sold and payment recorded.")).toBeVisible();
+  await expect(page.getByText(/Pack sold and payment recorded/)).toBeVisible();
   const packs = page.locator("section", { has: page.getByRole("heading", { name: "packs" }) });
   await expect(packs.locator(".list-row", { hasText: "10-class pack" })).toContainText("10 of 10 left");
 
@@ -165,6 +165,55 @@ test("add a customer, sell a pack, book them in and check them in", async ({ pag
   await row().getByRole("button", { name: /Here/ }).click(); // undo
   await expect(row().getByRole("button", { name: "Here" })).toHaveAttribute("aria-pressed", "false");
   await expect(row().getByRole("button", { name: /Late cancel|Cancel booking/ })).toBeVisible();
+});
+
+async function pickPack(page: Page, name: string) {
+  const select = page.getByLabel("Pack", { exact: true });
+  await select.selectOption((await select.locator("option", { hasText: name }).first().getAttribute("value"))!);
+}
+
+// Change #40 (Jack, 10 Nov): a pack bought on the day counts today's class, even after check-in or payment.
+async function dropInToday(page: Page, name: string, pay: boolean) {
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name", { exact: true }).fill(name);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Customer added.")).toBeVisible();
+  const profile = page.url();
+  await page.goto(`/staff/book?session=demo-now`);
+  await page.getByLabel("Customer: name, phone or email").fill(name);
+  await page.getByRole("button", { name }).click();
+  await page.getByLabel(/Override booking times/).check();
+  await page.getByRole("button", { name: "Book", exact: true }).click();
+  await expect(page.getByText("Booked in.")).toBeVisible();
+  const row = page.locator(".checkin-row", { hasText: name });
+  await row.getByRole("button", { name: "Here" }).click();
+  await expect(row.getByRole("button", { name: /Here/ })).toHaveAttribute("aria-pressed", "true");
+  if (pay) {
+    await row.getByRole("button", { name: /^Record/ }).click();
+    await expect(page.locator(".checkin-row", { hasText: name }).getByRole("button", { name: /^Record/ })).toHaveCount(0);
+  }
+  await page.goto(profile);
+  await page.getByText("Sell a pack").click();
+}
+
+test("change #40: a pack sold after check-in counts today's unpaid drop-in", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  await dropInToday(page, `After Class ${uid()}`, false);
+  await pickPack(page, "10-class pack");
+  await page.getByRole("button", { name: "Sell and record payment" }).click();
+  await expect(page.getByText(/Practice class \(on now\) \(.+\) is counted in it: 9 of 10 credits left/)).toBeVisible();
+});
+
+test("change #40: a drop-in paid today comes off the pack price when ticked", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  await dropInToday(page, `Paid Then Pack ${uid()}`, true);
+  await expect(page.getByText(/Paid today for a drop-in: Practice class \(on now\)/)).toBeVisible();
+  await pickPack(page, "10-class pack");
+  await expect(page.getByLabel(/Count today's Practice class/)).toBeChecked();
+  await expect(page.getByText(/Take 3,550,000 ₫ now \(4,000,000 ₫ less 450,000 ₫ already paid\)/)).toBeVisible();
+  await page.getByRole("button", { name: "Sell and record payment" }).click();
+  await expect(page.getByText(/is counted in it: 9 of 10 credits left/)).toBeVisible();
 });
 
 test("instructors: their sessions, no catalog, can't sell packs", async ({ page }) => {
@@ -249,7 +298,7 @@ test("M3 money report: a pack sold today shows in the month by method, and downl
   await page.getByLabel("Pack", { exact: true }).selectOption({ index: 1 }); // the 10-class pack
   await page.getByLabel("Paid by").selectOption("cash");
   await page.getByRole("button", { name: "Sell and record payment" }).click();
-  await expect(page.getByText("Pack sold and payment recorded.")).toBeVisible();
+  await expect(page.getByText(/Pack sold and payment recorded/)).toBeVisible();
 
   await page.getByRole("link", { name: "Reports" }).first().click();
   await expect(page.getByRole("heading", { name: /^money · / })).toBeVisible();
