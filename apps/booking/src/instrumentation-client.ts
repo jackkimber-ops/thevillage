@@ -22,6 +22,9 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
     ...sentryOptions,
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
     environment: process.env.NEXT_PUBLIC_VERCEL_ENV ?? "development",
+    // Sentry, 10 Nov: pages opened inside the Zalo app on iPhone get Zalo's own script added, which
+    // fails with "Can't find variable: zaloJSV2". Not our code, and the page still works.
+    ignoreErrors: [/zaloJSV2/],
   });
 }
 
