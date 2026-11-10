@@ -31,6 +31,18 @@ All merged to `main` and live; staging matches `main`. The full staging check pa
 - **Sentry: Zalo in-app browser** (#66): two production errors "Can't find variable: zaloJSV2" (issues 159920090 and 159923706, 10 Nov 10:16 Vietnam time). Someone opened the site inside the Zalo app on an iPhone; Zalo adds its own script to the page and that script failed. Not our code, and the visitor carried on to the booking page. The browser's Sentry setup now ignores this error (`ignoreErrors` in `instrumentation-client.ts`). Expect more Zalo visitors once links are shared there.
 - **Caroline couldn't see Dakota's booking:** she was on the test site (`…vercel.app`, its own database), not the live staff app (staff.thevillagesaigon.com). Live is correct: Core & Cuddle Mon 16 Nov 9:00 (Phuong), 1 booked. Reply drafted for Jack to send: use the live app from the home screen, the test link only for testing.
 - **Test site tidied to match live:** removed 6 leftover cancelled sessions from the earlier draft timetable (Mon 16 Nov 8:30, 9:30, 13:00; Tue 17 Nov 9:00; Sun 22 Nov 10:00; Thu 26 Nov 9:00) with their old team test bookings and emails (no payments or credits). Upcoming sessions (30), studio settings and class types now identical on staging and production. Production untouched.
+- **A pack bought on the day counts that day's class** (#69, change #40, migration `20261110000002_pack_counts_todays_class`). Same day only (Vietnam date), as Jack chose:
+  - An **unpaid** drop-in today moves onto the pack when it's sold, even after check-in or after the class. It uses 1 credit, and the credit is marked used straight away if the class has closed.
+  - A drop-in **already paid** today: Sell a pack shows "Count today's … (450,000 ₫) in this pack", ticked by default, and "Take 3,550,000 ₫ now". The class moves onto the pack and the pack payment is the difference; the drop-in payment stays as recorded.
+  - The confirmation says which class was counted and how many credits are left.
+  - Database: `paid_drop_ins_today()` (managers) and `sell_pack(…, p_count_paid_drop_ins)`.
+- **Cancellation cut-off 21:00 the evening before; intro pack 1 month** (#70, change #41, migration `20261110000003_cutoff_21`, data `supabase/data/20261110-cutoff-21-intro-1-month.sql`):
+  - Owners' decision. Cancelling after 21:00 still uses the credit.
+  - Set on staging and production (studio setting and pack catalog). Every screen and email reads the time from Settings.
+  - No intro packs had been sold. Confirmations sent earlier said 20:00; the later cut-off only helps those customers.
+  - `CLAUDE.md`, `docs/database.md` and `docs/open-questions.md` updated.
+- **Staging check:** on evening runs, "QA Today" now starts 80 minutes out, so it no longer clashes with the phone run's "QA Very Soon" class. Full check 71 of 71 with #69 and #70.
+- **Policy wording:** the cancellation policy draft and the terms page still need the owners' final wording, and they should say 21:00.
 - **Pre-launch to-do message** drafted for the team: policy and terms wording, instructor names and emails, hello@ on everyone's phones, WhatsApp/Zalo on the new number, December timetable, home-screen apps (staff, instructors, customers), Vietnamese read-through, photos, a last test run, the pinned password, closure days.
 
 ## Update (4–9 Nov): schedule agreed, staff app on phones, places, business number
