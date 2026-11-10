@@ -5,11 +5,13 @@ import { EditCustomerForm } from "@/components/staff/EditCustomerForm";
 import { SellPackForm } from "@/components/staff/SellPackForm";
 import { data, staffApi } from "@/lib/data";
 import { extendPackAction, recordPaymentAction, removeChildAction, restoreCreditAction, saveChildAction, setCustomerActiveAction, staffCancelBookingAction } from "@/lib/actions/staff";
+import { WAY_LABEL } from "@/lib/contact-ways";
 import { formatVnd } from "@/lib/money";
 import { requireStaff } from "@/lib/staff-guard";
 import { addDays, formatDayShort, formatTime, vnDateKey, thisMonthVn } from "@/lib/time";
 
 const CONTACT = { whatsapp: "WhatsApp", zalo: "Zalo", call: "Call" } as const;
+const OUTCOME = { contacted: "Contacted", no_answer: "No answer", undone: "Contacted undone, back on the list" } as const;
 const STATUS: Record<string, string> = { booked: "Booked", attended: "Attended", no_show: "No-show", cancelled: "Cancelled", late_cancelled: "Late cancellation" };
 
 // S5 Customer profile (with S6 Sell a pack for managers).
@@ -20,7 +22,9 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
   const api = staffApi();
   const c = await api.customer(id);
   if (!c) notFound();
-  const [packs, prices] = await Promise.all([me.role === "manager" ? api.packTypes() : Promise.resolve([]), data().dropInPrices()]);
+  const [packs, prices, contacts] = await Promise.all([
+    me.role === "manager" ? api.packTypes() : Promise.resolve([]), data().dropInPrices(), api.contactHistory(id),
+  ]);
   const today = vnDateKey(new Date());
   const back = `/staff/customers/${id}`;
   const upcoming = c.bookings.filter((b) => b.status === "booked" && new Date(b.startsAt) > new Date());
@@ -204,6 +208,19 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
               </div>
             ))}
           </section>
+          {contacts.length > 0 && (
+            <section className="card">
+              <h2 className="heading sec">getting in touch</h2>
+              {contacts.slice(0, 20).map((l, i) => (
+                <div key={i} className="list-row">
+                  <span>
+                    {formatDayShort(vnDateKey(l.at), "en")} {formatTime(l.at, "en")} · {OUTCOME[l.outcome]}{l.way ? ` (${WAY_LABEL[l.way]})` : ""}{l.staffName ? ` by ${l.staffName}` : ""}
+                    <span className="muted"> · about {l.title}, {formatDayShort(vnDateKey(l.startsAt), "en")}</span>
+                  </span>
+                </div>
+              ))}
+            </section>
+          )}
           {me.role === "manager" && c.ledger.length > 0 && (
             <section className="card" style={{ overflowX: "auto" }}>
               <h2 className="heading sec">credit history</h2>

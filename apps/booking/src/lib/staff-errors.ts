@@ -1,5 +1,7 @@
 // Plain-English messages for the staff app (English only).
 const MESSAGES: Record<string, string> = {
+  already_contacted: "Someone has already marked them contacted: see the done list below.",
+  invalid_contact: "Choose how you got in touch.",
   overlap: "That time overlaps another session: there's one room.",
   capacity_below_booked: "Capacity can't be lower than the number already booked.",
   session_full: "That session is full. Capacity is never overridden.",

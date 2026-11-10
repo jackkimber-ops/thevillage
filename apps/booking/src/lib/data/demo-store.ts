@@ -6,7 +6,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { addDays, vnDateKey } from "@/lib/time";
 import { ActionError, type BookingStatus, type Closure, type ContactMethod, type MyPack, type SessionKind, type StudioSettings } from "./types";
-import type { PackType, SessionType, StaffMember } from "./staff-types";
+import type { ContactLogEntry, ContactWay, PackType, SessionType, StaffMember } from "./staff-types";
 
 export const settings: StudioSettings = {
   name: "The Village - Family Club",
@@ -74,7 +74,7 @@ export type DemoBooking = {
   amountDueVnd: number;
   freeTrial: boolean;
   firstBooking: boolean;
-  contacted: boolean;
+  contacted: { at: string; by: string; way: ContactWay } | null;
   createdAt: string;
 };
 
@@ -145,6 +145,9 @@ type Store = { sessions: DemoSession[]; bookings: DemoBooking[]; customers: Map<
 const g = globalThis as unknown as { __villageDemo?: Store };
 export const store: Store = (g.__villageDemo ??= { sessions: seedSessions(), bookings: [], customers: new Map() });
 /** M1 closures in demo mode (shared like the store). */
+export type DemoContact = Omit<ContactLogEntry, "title" | "startsAt"> & { bookingId: string; customerId: string };
+export const demoContactLog: DemoContact[] = ((globalThis as { __villageContactLog?: DemoContact[] }).__villageContactLog ??= []);
+
 export const demoClosures: Closure[] = ((globalThis as { __villageClosures?: Closure[] }).__villageClosures ??= []);
 
 export const typeOf = (s: DemoSession) => sessionTypes.find((t) => t.id === s.sessionTypeId)!;
@@ -227,7 +230,7 @@ export function book(d: {
     id, sessionId: s.id, customerId: d.customer.id, status: "booked", source: d.source, parents: d.parents,
     childIds: d.childIds, unnamedChildren: d.unnamedChildren ?? 0, credits: pack ? needed : 0, packId: pack?.id ?? null,
     unpaid: !pack && !d.freeTrial && price > 0, paid: false, amountDueVnd: pack || d.freeTrial ? 0 : price * units,
-    freeTrial: Boolean(d.freeTrial), firstBooking: !mine.some((b) => b.status !== "cancelled"), contacted: false,
+    freeTrial: Boolean(d.freeTrial), firstBooking: !mine.some((b) => b.status !== "cancelled"), contacted: null,
     createdAt: new Date().toISOString(),
   });
   return id;
