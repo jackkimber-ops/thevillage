@@ -29,9 +29,10 @@ export default function globalSetup() {
   const vnNow = new Date(Date.now() + 7 * 3600000);
   const today = vnNow.toISOString().slice(0, 10);
   const minutes = vnNow.getUTCHours() * 60 + vnNow.getUTCMinutes();
-  // Late in the evening it starts 50 minutes from now: clear of the customer check's "very soon" session
-  // (25-45 minutes from now), which would otherwise overlap it (4 Nov).
-  const startMin = minutes < 21 * 60 ? 22 * 60 : Math.min(Math.ceil((minutes + 50) / 5) * 5, 23 * 60 + 25);
+  // Late in the evening it starts 80 minutes from now: clear of the customer check's "very soon" session
+  // (25-45 minutes from when that spec starts, which on the phone run can be 10+ minutes after this setup;
+  // 4 Nov and 10 Nov). Before 20:40 it's 22:00 as usual.
+  const startMin = minutes < 20 * 60 + 40 ? 22 * 60 : Math.min(Math.ceil((minutes + 80) / 5) * 5, 23 * 60 + 25);
   const start = `${today} ${String(Math.floor(startMin / 60)).padStart(2, "0")}:${String(startMin % 60).padStart(2, "0")}`;
   const [{ id }] = sql<{ id: string }>(`
     insert into public.sessions (session_type_id, title, starts_at, ends_at, capacity, instructor_id)

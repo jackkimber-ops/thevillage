@@ -21,7 +21,7 @@ export const settings: StudioSettings = {
   facebookUrl: "https://www.facebook.com/thevillage.saigon",
   instagramUrl: "https://www.instagram.com/thevillage.saigon",
   mapsUrl: "https://maps.app.goo.gl/shhU5KCEVMMrX4cd8",
-  cancelCutoffTime: "20:00",
+  cancelCutoffTime: "21:00",
   bookingWindowDays: 31,
   hireMaxGroup: 15,
   placesHintAt: 3,
@@ -42,7 +42,7 @@ export const sessionTypes: SessionType[] = [
 export const packTypes: PackType[] = [
   { id: "demo-10", name: "10-class pack", credits: 10, priceVnd: 4000000, validityMonths: 3, validityDays: null, isIntro: false, onSale: true, coversSessionTypeIds: ["demo-class"] },
   { id: "demo-20", name: "20-class pack", credits: 20, priceVnd: 7200000, validityMonths: 7, validityDays: null, isIntro: false, onSale: true, coversSessionTypeIds: ["demo-class"] },
-  { id: "demo-intro", name: "Intro pack · 3 classes", credits: 3, priceVnd: 750000, validityMonths: null, validityDays: 21, isIntro: true, onSale: true, coversSessionTypeIds: ["demo-class"] },
+  { id: "demo-intro", name: "Intro pack · 3 classes", credits: 3, priceVnd: 750000, validityMonths: 1, validityDays: null, isIntro: true, onSale: true, coversSessionTypeIds: ["demo-class"] },
 ];
 
 export type DemoSession = {

@@ -72,7 +72,7 @@ test("book a class with a pack, then cancel it and get the credit back", async (
   await fillDetails(page);
   await openBookableClass(page);
   await expect(page.getByText("1 credit from your 10-class pack")).toBeVisible();
-  await expect(page.getByText(/^Free cancellation until 20:00 on/)).toBeVisible();
+  await expect(page.getByText(/^Free cancellation until 21:00 on/)).toBeVisible();
   await page.getByRole("button", { name: "Confirm booking" }).click();
 
   await expect(page.getByRole("heading", { name: "you're booked, Lan" })).toBeVisible();

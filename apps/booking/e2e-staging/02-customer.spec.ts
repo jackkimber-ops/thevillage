@@ -101,7 +101,7 @@ test("new parent: first login asks for details once, then books, sees ✓ Booked
 
   await page.goto(`/classes/${classA}/book`);
   await expect(page.locator(".pay-box")).toContainText("450,000 ₫");
-  await expect(page.getByText(/^Free cancellation until 20:00 on/)).toBeVisible();
+  await expect(page.getByText(/^Free cancellation until 21:00 on/)).toBeVisible();
   await shot(page, "book-confirm");
   await page.getByRole("button", { name: "Confirm booking" }).click();
   await expect(page.getByRole("heading", { name: "you're booked, QA" })).toBeVisible();

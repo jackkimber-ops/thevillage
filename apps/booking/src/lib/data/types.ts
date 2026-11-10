@@ -14,7 +14,7 @@ export interface StudioSettings {
   facebookUrl: string | null;
   instagramUrl: string | null;
   mapsUrl: string | null;
-  cancelCutoffTime: string; // "20:00"
+  cancelCutoffTime: string; // "21:00"
   bookingWindowDays: number;
   /** Largest group for a private hire, shown on the hire page. */
   hireMaxGroup: number;

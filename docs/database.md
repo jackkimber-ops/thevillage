@@ -27,7 +27,7 @@ erDiagram
 
 | Table | Holds |
 |---|---|
-| `studio_settings` | One row: name, address, hours, contact details, message links, cancellation cutoff (20:00), booking window (1 month), latest booking (1 hour), reminder time (18:00) |
+| `studio_settings` | One row: name, address, hours, contact details, message links, cancellation cutoff (21:00), booking window (1 month), latest booking (1 hour), reminder time (18:00) |
 | `staff_roles` | Each staff login: manager or instructor, display name, instructor access (own sessions only / all customers) |
 | `session_types` | Class types, Open Play, Private hire, workshops: colour, picture, length, capacity, drop-in price |
 | `pack_types` + `pack_type_covers` | Packs on sale (credits, price, validity, intro flag) and which session types they cover |
@@ -50,7 +50,7 @@ Each pack's balance is the sum of its ledger rows:
 |---|---|---|
 | Pack sold (10 classes) | purchase +10 | 10 |
 | Class booked | reserve −1 | 9 (shown as "9 remaining, 1 reserved") |
-| Cancelled before 20:00 the evening before | return +1 | 10 |
+| Cancelled before 21:00 the evening before | return +1 | 10 |
 | Class ends (job every 15 min) | use 0 (the reserved credit is now used) | 9 |
 | Late cancellation or no-show | forfeit / use 0 | 9 |
 | Manager restores it | restore +1 (with a reason) | 10 |
@@ -62,7 +62,7 @@ Each pack's balance is the sum of its ledger rows:
 - **Which pack:** the one that expires first, among packs that cover the session type and are valid on the session date (pause days included). No suitable pack means pay on the day.
 - **Who comes:** class = 1 parent (1 credit or 450,000 ₫) + up to 2 children free. Open play = 1–2 children (1 credit or 150,000 ₫ each) + up to 2 parents free. Capacity counts parents for classes and children for open play.
 - **Times:** customers book up to 1 month ahead and up to 1 hour before. Staff can override both, never capacity.
-- **Cancelling:** before 20:00 the evening before (Saigon time), the credit comes back. After that only staff can cancel; the credit is used unless a manager restores it.
+- **Cancelling:** before 21:00 the evening before (Saigon time), the credit comes back. After that only staff can cancel; the credit is used unless a manager restores it.
 - **Guests:** matched to an existing customer by phone or email, never a second account. If phone and email point to different customers, the booking goes to the email match and the customer is flagged for a manager. One unpaid booking at a time.
 - **Free trial:** given by a manager, classes only, one per customer. Doesn't block the intro pack.
 - **Intro pack:** one per customer, only if they've never had a pack or paid for a class.

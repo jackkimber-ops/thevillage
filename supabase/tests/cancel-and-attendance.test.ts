@@ -1,4 +1,4 @@
-// Cancelling (20:00 the evening before), late cancellations, restores, and core rule 2: automatic attendance.
+// Cancelling (21:00 the evening before), late cancellations, restores, and core rule 2: automatic attendance.
 import { describe, expect, it } from "vitest";
 import { inTx } from "./db";
 
@@ -52,10 +52,10 @@ describe("cancelling", () => {
       expect(await db.fails(b.user!, "select public.cancel_booking($1)", [id])).toBe("booking_not_found");
     }));
 
-  it("the cutoff is 20:00 Saigon time the evening before", () =>
+  it("the cutoff is 21:00 Saigon time the evening before (change #41)", () =>
     inTx(async (db) => {
       const [r] = await db.su(
-        "select public.cancel_cutoff('2026-11-15 09:00+07') = '2026-11-14 20:00+07' as ok, public.vn_date('2026-11-13 17:30Z')::text as d",
+        "select public.cancel_cutoff('2026-11-15 09:00+07') = '2026-11-14 21:00+07' as ok, public.vn_date('2026-11-13 17:30Z')::text as d",
       );
       expect(r).toEqual({ ok: true, d: "2026-11-14" });
     }));
