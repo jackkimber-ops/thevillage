@@ -74,6 +74,9 @@ test("manager: create a weekly session, refuse an overlap, edit it, drag it", as
   // Edit: change the capacity.
   await page.goto(`/staff/calendar?view=day&date=${d}`);
   await page.locator(".staff-block", { hasText: title }).click();
+  // Wait for the page to be fully loaded: a Save tapped before that is a plain reload and loses the edit.
+  await page.waitForURL(/\/sessions\/[^/]+$/);
+  await page.waitForLoadState("networkidle");
   await page.getByLabel("Capacity").fill("8");
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page.getByText(/Saved/)).toBeVisible();
