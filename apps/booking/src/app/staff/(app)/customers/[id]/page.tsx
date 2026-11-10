@@ -14,6 +14,16 @@ const CONTACT = { whatsapp: "WhatsApp", zalo: "Zalo", call: "Call" } as const;
 const OUTCOME = { contacted: "Contacted", no_answer: "No answer", undone: "Contacted undone, back on the list" } as const;
 const STATUS: Record<string, string> = { booked: "Booked", attended: "Attended", no_show: "No-show", cancelled: "Cancelled", late_cancelled: "Late cancellation" };
 
+// "Pack sold and payment recorded. Core & Cuddle (Mon 16 Nov) counted in it: 9 of 10 credits left." (change #40)
+function soldMessage(c: NonNullable<Awaited<ReturnType<ReturnType<typeof staffApi>["customer"]>>>, packId: string) {
+  const pack = c.packs.find((p) => p.id === packId);
+  if (!pack) return "Pack sold and payment recorded.";
+  const on = c.bookings.filter((b) => b.packId === packId).sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+  if (on.length === 0) return `Pack sold and payment recorded: ${pack.remaining} of ${pack.credits} credits.`;
+  const list = on.map((b) => `${b.title} (${formatDayShort(vnDateKey(b.startsAt), "en")})`).join(", ");
+  return `Pack sold and payment recorded. ${list} ${on.length === 1 ? "is" : "are"} counted in it: ${pack.remaining} of ${pack.credits} credits left.`;
+}
+
 // S5 Customer profile (with S6 Sell a pack for managers).
 export default async function CustomerPage({ params, searchParams }: PageProps<"/staff/customers/[id]">) {
   const { id } = await params;
@@ -22,14 +32,15 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
   const api = staffApi();
   const c = await api.customer(id);
   if (!c) notFound();
-  const [packs, prices, contacts] = await Promise.all([
+  const [packs, prices, contacts, paidToday] = await Promise.all([
     me.role === "manager" ? api.packTypes() : Promise.resolve([]), data().dropInPrices(), api.contactHistory(id),
+    me.role === "manager" ? api.paidDropInsToday(id) : Promise.resolve([]),
   ]);
   const today = vnDateKey(new Date());
   const back = `/staff/customers/${id}`;
   const upcoming = c.bookings.filter((b) => b.status === "booked" && new Date(b.startsAt) > new Date());
   const history = c.bookings.filter((b) => !upcoming.includes(b)).slice(0, 15);
-  const ok = sp.added ? "Customer added." : sp.sold ? "Pack sold and payment recorded." : sp.extended ? "Pack extended." : sp.booked ? "Booked in." : sp.updated ? "Details saved." : sp.child ? "Child saved." : sp.child_removed ? "Child removed."
+  const ok = sp.added ? "Customer added." : sp.sold ? soldMessage(c, String(sp.sold)) : sp.extended ? "Pack extended." : sp.booked ? "Booked in." : sp.updated ? "Details saved." : sp.child ? "Child saved." : sp.child_removed ? "Child removed."
     : sp.deactivated ? "Customer deactivated: they can't be booked in until reactivated." : sp.reactivated ? "Customer reactivated." : null;
   const monthYear = (d: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", month: "short", year: "numeric" }).format(new Date(`${d}T00:00:00Z`));
 
@@ -98,7 +109,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
             {me.role === "manager" && (
               <details open={Boolean(sp.sell)} style={{ marginTop: 12 }}>
                 <summary className="sbtn2" style={{ display: "inline-flex", listStyle: "none" }}>Sell a pack</summary>
-                <div style={{ marginTop: 12 }}><SellPackForm customerId={c.customerId} packs={packs} today={today} /></div>
+                <div style={{ marginTop: 12 }}><SellPackForm customerId={c.customerId} packs={packs} today={today} paidToday={paidToday} /></div>
               </details>
             )}
           </section>
