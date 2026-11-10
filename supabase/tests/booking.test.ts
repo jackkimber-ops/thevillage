@@ -1,6 +1,6 @@
 // Core rules 1, 3 and 4: credit reservation, safe booking and the booking rules.
 import { describe, expect, it } from "vitest";
-import { connect, Ctx, inTx, PACKS, TYPES } from "./db";
+import { connect, Ctx, inTx, PACKS, TYPES, type Who } from "./db";
 
 describe("booking with a pack", () => {
   it("reserves one credit straight away and writes a reserve row", () =>
