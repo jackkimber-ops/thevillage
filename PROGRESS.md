@@ -11,7 +11,7 @@
 - 21 Oct: **visual style v1**: a style sheet plus 5 key screens in the brand (login, timetable, confirm a class, staff dashboard, website top), as a new row at the bottom of the preview canvas.
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
-## Update (10 Nov): get-in-touch fail-safe
+## Update (10 Nov): get-in-touch fail-safe, Zalo error filtered
 
 All merged to `main` and live; staging matches `main`. The full staging check passes (71 of 71).
 
@@ -28,6 +28,7 @@ All merged to `main` and live; staging matches `main`. The full staging check pa
   - Contacts from before 10 Nov have no who/how record.
   - The old `mark_contacted` function is still in the database, unused; it can be dropped later.
 - **Staging check:** the "edit a session" step waits for the page to load before typing (a Save tapped too early was a plain reload). The clean-up script also removes test `contact_log` rows.
+- **Sentry: Zalo in-app browser** (#66): two production errors "Can't find variable: zaloJSV2" (issues 159920090 and 159923706, 10 Nov 10:16 Vietnam time). Someone opened the site inside the Zalo app on an iPhone; Zalo adds its own script to the page and that script failed. Not our code, and the visitor carried on to the booking page. The browser's Sentry setup now ignores this error (`ignoreErrors` in `instrumentation-client.ts`). Expect more Zalo visitors once links are shared there.
 - **Pre-launch to-do message** drafted for the team: policy and terms wording, instructor names and emails, hello@ on everyone's phones, WhatsApp/Zalo on the new number, December timetable, home-screen apps (staff, instructors, customers), Vietnamese read-through, photos, a last test run, the pinned password, closure days.
 
 ## Update (4–9 Nov): schedule agreed, staff app on phones, places, business number
