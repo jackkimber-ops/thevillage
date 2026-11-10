@@ -262,7 +262,7 @@ describe("free trial and intro pack", () => {
 });
 
 describe("selling packs", () => {
-  it("sets validity in calendar months (10: 3 months, 20: 7 months) and 21 days for the intro pack", () =>
+  it("sets validity in calendar months (10: 3 months, 20: 7 months) and 1 month for the intro pack (change #41)", () =>
     inTx(async (db) => {
       const manager = await db.staff("manager");
       const c = await db.customer();
@@ -277,7 +277,7 @@ describe("selling packs", () => {
       const byId = Object.fromEntries(rows.map((r) => [r.id, r]));
       expect(byId[ten]).toMatchObject({ valid_to: "2027-02-13", price_paid_vnd: "4000000" });
       expect(byId[twenty]).toMatchObject({ valid_to: "2027-06-13", price_paid_vnd: "7200000" });
-      expect(byId[intro]).toMatchObject({ valid_to: "2026-12-04", price_paid_vnd: "750000" });
+      expect(byId[intro]).toMatchObject({ valid_to: "2026-12-13", price_paid_vnd: "750000" });
     }));
 
   it("records the payment and copies the price, so later price changes don't touch it", () =>

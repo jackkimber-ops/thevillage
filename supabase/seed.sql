@@ -32,7 +32,7 @@ insert into public.session_types (id, kind, name, description, colour, default_m
 insert into public.pack_types (id, name, credits, price_vnd, validity_months, validity_days, is_intro) values
   ('00000000-0000-4000-8000-000000000101', '10-class pack', 10, 4000000, 3, null, false),
   ('00000000-0000-4000-8000-000000000102', '20-class pack', 20, 7200000, 7, null, false),
-  ('00000000-0000-4000-8000-000000000103', 'Intro pack · 3 classes', 3, 750000, null, 21, true);
+  ('00000000-0000-4000-8000-000000000103', 'Intro pack · 3 classes', 3, 750000, 1, null, true);
 
 insert into public.pack_type_covers (pack_type_id, session_type_id) values
   ('00000000-0000-4000-8000-000000000101', '00000000-0000-4000-8000-000000000001'),

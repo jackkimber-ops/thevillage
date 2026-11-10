@@ -63,11 +63,11 @@ Database also enforces: unique active booking per (session, customer); customers
 
 ## Agreed business rules (20–21 Oct)
 
-- Free cancellation until **20:00 the evening before**; inside the cutoff Cancel becomes "Message us", staff cancel, credit used unless a manager restores it. No-show: credit used.
+- Free cancellation until **21:00 the evening before** (changed 10 Nov, was 20:00); inside the cutoff Cancel becomes "Message us", staff cancel, credit used unless a manager restores it. No-show: credit used.
 - Book up to **1 month** ahead, up to **1 hour** before start. Staff can override both, never capacity.
 - Expired pack can't be used; staff can extend.
 - Private hire: from 1 hour up to a full day (changed 2 Nov, was 1 or 2 h), case by case, in open hours, ≥ 24 h notice, priced and paid in person; arranged on WhatsApp/Zalo, staff add it to the calendar. The hire page has no time or length pickers: customers say when and how long in their own words.
-- Prices (updated 21 Oct): single class / drop-in **450,000 VND** (was 400,000; higher on purpose to encourage packs); 10-class pack **4,000,000** (400,000/class); 20-class pack **7,200,000** (10% off, 360,000/class); intro pack 3 classes 750,000 (new customers only, sold by a manager); open play 150,000 per child, paid on the day (no open play packs at launch). Validity: 10-class pack **3 months**, 20-class pack **7 months** (calendar months from the valid-from date). Intro pack valid **3 weeks**. No promotions in the app at launch (the opening-weekend free class is handled offline). **Undecided:** 40/60 packs and open play packs are undecided and not on sale. All prices live in the catalog, never in code.
+- Prices (updated 21 Oct): single class / drop-in **450,000 VND** (was 400,000; higher on purpose to encourage packs); 10-class pack **4,000,000** (400,000/class); 20-class pack **7,200,000** (10% off, 360,000/class); intro pack 3 classes 750,000 (new customers only, sold by a manager); open play 150,000 per child, paid on the day (no open play packs at launch). Validity: 10-class pack **3 months**, 20-class pack **7 months** (calendar months from the valid-from date). Intro pack valid **1 month** (changed 10 Nov, was 3 weeks). No promotions in the app at launch (the opening-weekend free class is handled offline). **Undecided:** 40/60 packs and open play packs are undecided and not on sale. All prices live in the catalog, never in code.
 - No online payment. Payment by QR at check-in (cash/transfer also recorded). Managers only record payments.
 - Unpaid late cancellation: no fee at launch; no screen says "full price due".
 - Multi-date booking = pick dates one by one; nothing repeats automatically (no recurring series).
