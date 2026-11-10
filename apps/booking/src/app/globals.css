@@ -285,7 +285,13 @@ a { color: var(--forrest-deep); }
 .extend-pack[open] form { margin-top: 8px; align-items: center; }
 .contact-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 18px; background: var(--linen); }
 .contact-log { flex-basis: 100%; justify-content: flex-end; align-items: center; }
-.contact-done { background: transparent; box-shadow: inset 0 0 0 1px #e6ded3; padding: 10px 16px; }
+.contact-done { background: #f6f3e6; }
+.contact-who { color: var(--forrest-deep); font-weight: 600; margin-top: 2px; }
+.contact-toggle { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 0 14px; border-radius: 17px; font: 600 13px var(--font-body), sans-serif; cursor: pointer; white-space: nowrap;
+  border: 1.5px solid var(--forrest-deep); background: var(--sky); color: var(--forrest-deep); }
+.contact-toggle:hover { background: var(--sage); }
+.contact-toggle[aria-pressed="true"] { background: var(--forrest-deep); color: var(--linen); }
+.contact-toggle[aria-pressed="true"]:hover { background: #4e4b30; }
 .contact-tries { color: var(--coral-deep); margin-top: 2px; }
 .sess-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px; text-decoration: none; color: var(--ink); }
 .sess-row strong { width: 50px; flex: none; }

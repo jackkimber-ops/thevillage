@@ -22,7 +22,7 @@ test("customers can't get into the staff app", async ({ page }) => {
   await expect(page.getByText("This email isn't a staff account")).toBeVisible();
 });
 
-test("dashboard: a guest booking on the get-in-touch list: no answer, contacted (stays as done today), undo", async ({ page, browser }) => {
+test("dashboard: get-in-touch toggle: no answer, Not contacted → Contacted ✓ (stays all day), tap again to undo", async ({ page, browser }) => {
   // A guest books from the customer site.
   const guest = await (await browser.newContext()).newPage();
   const name = `Guest ${uid()}`;
@@ -47,21 +47,21 @@ test("dashboard: a guest booking on the get-in-touch list: no answer, contacted 
   await expect(row).toContainText("prefers Zalo");
   await expect(row).toContainText(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun) \d{1,2} [A-Z][a-z]{2}, \d{1,2}:\d{2}/); // the date too (Jack, 10 Nov)
   await expect(row.getByRole("link", { name: "Zalo" })).toHaveAttribute("href", /zalo\.me\/09/);
-  // Tried by phone, no answer: still to contact, with the try shown.
+  // Tried by phone, no answer: still "Not contacted", with the try shown.
   await row.getByLabel("How").selectOption("call");
   await row.getByRole("button", { name: "No answer" }).click();
-  const todo = page.locator(".contact-row:not(.contact-done)", { hasText: name });
-  await expect(todo).toContainText("No answer · last tried by phone by");
-  // Got them on WhatsApp: moves to "Done today", saying how and who; it stays there.
-  await todo.getByLabel("How").selectOption("whatsapp");
-  await todo.getByRole("button", { name: "Contacted ✓" }).click();
-  const done = page.locator(".contact-done", { hasText: name });
-  await expect(done).toContainText("✓ Contacted on WhatsApp by");
-  await expect(todo).toHaveCount(0);
-  // Undo: back on the list.
-  await done.getByRole("button", { name: /Undo/ }).click();
-  await expect(todo).toHaveCount(1);
-  await expect(done).toHaveCount(0);
+  await expect(row).toContainText("No answer · last tried by phone by");
+  await expect(row.getByRole("button", { name: "Not contacted" })).toHaveAttribute("aria-pressed", "false");
+  // Got them on WhatsApp: the button turns to Contacted ✓ in place, saying how and who.
+  await row.getByLabel("How").selectOption("whatsapp");
+  await row.getByRole("button", { name: "Not contacted" }).click();
+  await expect(row.getByRole("button", { name: "Contacted ✓" })).toHaveAttribute("aria-pressed", "true");
+  await expect(row).toContainText("✓ Contacted on WhatsApp by");
+  await expect(row.getByRole("button", { name: "No answer" })).toHaveCount(0);
+  // Tap it again: back to Not contacted.
+  await row.getByRole("button", { name: "Contacted ✓" }).click();
+  await expect(row.getByRole("button", { name: "Not contacted" })).toBeVisible();
+  const todo = row;
   // The customer page keeps the history.
   await todo.getByRole("link", { name }).click();
   const history = page.locator("section", { has: page.getByRole("heading", { name: "getting in touch" }) });
