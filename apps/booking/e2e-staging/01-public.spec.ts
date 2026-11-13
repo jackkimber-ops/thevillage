@@ -75,7 +75,7 @@ test("message us links come from the studio settings", async ({ page }) => {
   await expect(page.getByRole("link", { name: "WhatsApp" })).toHaveAttribute("href", /wa\.me\/84906446214/);
   await expect(page.getByRole("link", { name: "Zalo" })).toHaveAttribute("href", /zalo\.me\/(0|84)906446214/);
   await expect(page.getByRole("link", { name: "Messenger" })).toHaveAttribute("href", /m\.me\/thevillage\.saigon/);
-  await expect(page.getByRole("link", { name: "Email" })).toHaveAttribute("href", "mailto:thevillage.saigon@gmail.com");
+  await expect(page.getByRole("link", { name: "Email" })).toHaveAttribute("href", "mailto:hello@thevillagesaigon.com");
 });
 
 test("hire the studio builds the WhatsApp message", async ({ page }) => {

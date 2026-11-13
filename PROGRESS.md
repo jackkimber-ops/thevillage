@@ -30,6 +30,7 @@ All merged to `main` and live; staging matches `main`. The full staging check pa
   - Agreed by Jack for the owners: free cancellation until 21:00; unpaid no-shows have nothing to pay; free cancellation if the studio moves a session; packs not refundable or transferable; private hire free to cancel up to 24 h before; details kept 2 years after the last visit, replies to data requests within 7 days; no marketing emails; "The Village, 47/1 Quốc Hương, An Khánh, Hồ Chí Minh" until the business is registered.
   - The Claude Docs draft (doc `3a1b0fb6…`) and the staff guide (`fcc6e9a0…`) are now out of date; the Docs connector was down on 13 Nov, so they couldn't be edited.
 - **WhatsApp and Zalo on the business number** (#75, change #46): wa.me/84906446214 and zalo.me/0906446214 in Settings on staging and production (audit entries). The website's fallback values, the Settings examples, the staging check and `CLAUDE.md` follow.
+- **Contact email is hello@thevillagesaigon.com** (change #47, Jack): customer-facing contact email in Settings on staging and production (audit entries). The booking site, emails, policy pages and the website (within the hour) follow. Studio alerts already went there.
 - **Dung** (front desk, tthoangdung.1011@gmail.com) has a **manager** login on production (Jack's choice until the staff role exists), with an `add_staff` audit entry. She signs in at staff.thevillagesaigon.com with a code; no invitation email is sent.
 - **Access matrix** for managers, staff and instructors: [Village Staff Access](https://claude.ai/artifact/2aVeBLyymbUmW2oc1MYD9D) (private until Jack shares it). It shows today's rights against proposed ones, with six decisions open. The app has only two roles today; a "staff" role is about half a day once agreed.
 - **Caroline couldn't see a booking:** she was on the test site. The test site's sessions were tidied to match live (6 leftover cancelled sessions removed). Use staff.thevillagesaigon.com for real work.
@@ -338,7 +339,7 @@ All merged to `main` and live; staging matches `main`.
 
 ## Waiting on the owners
 - **December timetable (most urgent):** nothing is loaded from 1 Dec, and from 16 Nov customers see early December empty (1-month booking window). "Same as November" is enough for Claude to load it, or managers add it (Calendar, "Every week").
-- **Instructors:** names, emails and who teaches what (Phuong teaches Core & Cuddle). Jack adds them on the Staff page, or sends them to Claude.
+- **Instructors:** names, emails and who teaches what (Phuong teaches Core & Cuddle; 8 of the 15 classes to 30 Nov have no instructor). Jack is sending them. Jack adds them on the Staff page, or sends them to Claude.
 - **Access matrix decisions** (six, on the page above), then the staff role is built and Dung moved onto it.
 - **Before opening:** everyone on the live staff app (not the test link); hello@ on the managers' phones; change the password shown in the team WhatsApp group's pinned message; one test run on the live site.
 - A native speaker to read the Vietnamese: app screens, emails, the new terms and privacy pages, the home-screen and calendar cards, the "studio is closed" note and the "sorry, that didn't load" page.
@@ -346,7 +347,6 @@ All merged to `main` and live; staging matches `main`.
 - Registered business name for the privacy policy, once the company is registered.
 - **Closure days** (e.g. Tết, around 6–10 Feb 2027): managers enter them under Settings → closures.
 - Studio photo for the login and home screens; website photos, FAQ and headline copy.
-- When to switch the customer-facing contact email to hello@thevillagesaigon.com.
 - **Strong & Snuggly:** not on the agreed November schedule.
 - Optional: `sentry.io` allowed in the environment's network settings plus a read-only Sentry token, so Claude can read new errors directly (today Jack pastes them in).
 - SVGs of the full-colour wordmark and badges (later).

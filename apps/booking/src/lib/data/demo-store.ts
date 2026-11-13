@@ -13,7 +13,7 @@ export const settings: StudioSettings = {
   address: "47/1 Quốc Hương, An Khánh, Hồ Chí Minh",
   openingHours: "Every day 8:30–17:00",
   openingHoursVi: "Mở cửa mỗi ngày 8:30–17:00",
-  contactEmail: "thevillage.saigon@gmail.com",
+  contactEmail: "hello@thevillagesaigon.com",
   contactPhone: "+84933834068",
   whatsappUrl: "https://wa.me/84933834068",
   zaloUrl: "https://zalo.me/0933834068",
