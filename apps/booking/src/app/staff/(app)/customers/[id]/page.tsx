@@ -119,14 +119,14 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
             {c.children.map((k) => (
               <div key={k.id} className="list-row">
                 <span>{k.name}</span>
-                <span className="muted small">born {monthYear(k.birthMonth)}</span>
+                <span className="muted small">{k.birthMonth ? `born ${monthYear(k.birthMonth)}` : "birth month not given"}</span>
                 <details className="extend-pack">
                   <summary className="sbtn2 sbtn-sm">Change</summary>
                   <form action={saveChildAction} className="staff-actions">
                     <input type="hidden" name="customerId" value={c.customerId} />
                     <input type="hidden" name="childId" value={k.id} />
                     <input name="name" defaultValue={k.name} required className="small-input" aria-label={`Name of ${k.name}`} />
-                    <input name="birthMonth" type="month" max={thisMonthVn()} defaultValue={k.birthMonth.slice(0, 7)} required className="small-input" aria-label={`Month and year of birth of ${k.name}`} />
+                    <input name="birthMonth" type="month" max={thisMonthVn()} defaultValue={k.birthMonth?.slice(0, 7) ?? ""} className="small-input" aria-label={`Month and year of birth of ${k.name} (optional)`} />
                     <button className="sbtn sbtn-sm" type="submit">Save</button>
                   </form>
                   <form action={removeChildAction} className="staff-actions">
@@ -143,7 +143,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
                 <form action={saveChildAction} className="staff-actions" style={{ marginTop: 10 }}>
                   <input type="hidden" name="customerId" value={c.customerId} />
                   <input name="name" placeholder="Child's name" required className="small-input" aria-label="Child's name" />
-                  <input name="birthMonth" type="month" max={thisMonthVn()} required className="small-input" aria-label="Month and year of birth" />
+                  <input name="birthMonth" type="month" max={thisMonthVn()} className="small-input" aria-label="Month and year of birth (optional)" />
                   <button className="sbtn sbtn-sm" type="submit">Add child</button>
                 </form>
               </details>

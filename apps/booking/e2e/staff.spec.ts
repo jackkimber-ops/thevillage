@@ -216,6 +216,32 @@ test("change #40: a drop-in paid today comes off the pack price when ticked", as
   await expect(page.getByText(/is counted in it: 9 of 10 credits left/)).toBeVisible();
 });
 
+test("change #43: a manager books someone into a class that finished yesterday: attended", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  const name = `Late ${uid()}`;
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name", { exact: true }).fill(name);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Customer added.")).toBeVisible();
+  await page.getByRole("link", { name: "Book in", exact: true }).click();
+  const session = page.getByLabel("Session");
+  const past = session.locator("optgroup option").first();
+  await session.selectOption((await past.getAttribute("value"))!);
+  await expect(page.getByText(/This class has already finished/)).toBeVisible();
+  await expect(page.getByLabel(/Override booking times/)).toHaveCount(0);
+  await page.getByRole("button", { name: "Book", exact: true }).click();
+  await expect(page.getByText("Booked in.")).toBeVisible();
+  const history = page.locator("section", { has: page.getByRole("heading", { name: "history" }) });
+  await expect(history.locator(".list-row").first()).toContainText("Attended");
+});
+
+test("change #43: instructors don't see finished classes to book into", async ({ page }) => {
+  await staffLogin(page, "instructor@village.test");
+  await page.goto("/staff/book");
+  await expect(page.getByLabel("Session").locator("optgroup")).toHaveCount(0);
+});
+
 test("instructors: their sessions, no catalog, can't sell packs", async ({ page }) => {
   await staffLogin(page, "instructor@village.test");
   await expect(page.getByRole("link", { name: "Catalog" })).toHaveCount(0);
@@ -537,7 +563,7 @@ test("managers record a private hire payment (S14)", async ({ page }) => {
   await expect(page.getByText("1,500,000 ₫ · TRANSFER")).toBeVisible();
 });
 
-test("team feedback 27 Oct: child needs a birth month, full customer list with credits, totals and extension history", async ({ page }) => {
+test("team feedback 27 Oct, changed 13 Nov (#42): a child's birth month is optional, full customer list with credits, totals and extension history", async ({ page }) => {
   await staffLogin(page, "manager@village.test");
   const name = `Feedback ${uid()}`;
   await page.goto("/staff/customers/new");
@@ -545,12 +571,14 @@ test("team feedback 27 Oct: child needs a birth month, full customer list with c
   await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
   await page.getByRole("button", { name: "+ Add a child" }).click();
   await page.getByLabel("Child 1 name").fill("Mi");
-  await page.getByRole("button", { name: "Save customer" }).click();
-  await expect(page.getByText("Add the month and year of birth for each child")).toBeVisible();
-  await expect(page.getByLabel("Child 1 name")).toHaveValue("Mi"); // nothing lost
-  await page.getByLabel("Month and year of birth").fill("2025-06");
-  await page.getByRole("button", { name: "Save customer" }).click();
+  await page.getByRole("button", { name: "Save customer" }).click(); // name only: saved (change #42)
   await expect(page.getByText("Customer added.")).toBeVisible();
+  await expect(page.getByText("birth month not given")).toBeVisible();
+  // Add it later on the profile.
+  const kid = page.locator(".list-row", { hasText: "Mi" }).first();
+  await kid.getByText("Change", { exact: true }).click();
+  await kid.getByLabel(/Month and year of birth of Mi/).fill("2025-06");
+  await kid.getByRole("button", { name: "Save", exact: true }).click();
   await expect(page.getByText("born Jun 2025")).toBeVisible();
 
   await page.getByText("Sell a pack").click();

@@ -146,6 +146,20 @@ describe("editing customers (S21, S22)", () => {
       await db.as(instructor, "select public.staff_remove_child($1)", [k.id]);
       expect(await db.su("select id from public.customer_children where customer_id = $1", [r.id])).toEqual([]);
     }));
+
+  it("a child's month of birth is optional, for staff and customers (change #42)", () =>
+    inTx(async (db) => {
+      const instructor = await db.staff("instructor");
+      const [r] = await db.as(instructor, `select public.staff_add_customer('Name Only', '+84912340002', null, 'zalo', 'en', '[{"name":"An"}]') as id`);
+      const [k] = await db.as(instructor, "select public.staff_save_child($1, null, 'Bi', null) as id", [r.id]);
+      const kids = await db.su("select name, birth_month from public.customer_children where customer_id = $1 order by name", [r.id]);
+      expect(kids).toEqual([{ name: "An", birth_month: null }, { name: "Bi", birth_month: null }]);
+      await db.as(instructor, "select public.staff_save_child($1, $2, 'Bi', '2025-02-10')", [r.id, k.id]);
+      const c = await db.customer();
+      const [mine] = await db.as(c.user!, "select public.add_my_child('Mi', null) as id");
+      const [row] = await db.su("select birth_month from public.customer_children where id = $1", [mine.id]);
+      expect(row.birth_month).toBeNull();
+    }));
 });
 
 describe("sessions", () => {
@@ -416,5 +430,55 @@ describe("safeguards (team feedback 4 Nov)", () => {
       expect(await db.fails("su", "update public.sessions set status = 'cancelled' where id = $1", [s])).toBe("session_has_bookings");
       const [n] = await db.as(manager, "select public.cancel_session($1, 'Teacher ill') as n", [s]);
       expect(n.n).toBe(1);
+    }));
+});
+
+describe("booking into a class that has finished (change #43)", () => {
+  // A class that ended `ago` (a Postgres interval), closed by the 15-minute job.
+  async function finished(db: Parameters<Parameters<typeof inTx>[0]>[0], ago: string) {
+    const id = await db.session();
+    await db.su(`update public.sessions set starts_at = now() - $2::interval - interval '1 hour', ends_at = now() - $2::interval where id = $1`, [id, ago]);
+    await db.su("select public.close_finished_sessions()");
+    return id;
+  }
+
+  it("a manager books someone in afterwards: attended, a credit used, no emails", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer();
+      const session = await finished(db, "2 days");
+      const [{ d }] = await db.su("select (public.vn_date(starts_at) - 1)::text d from public.sessions where id = $1", [session]);
+      const pack = await db.sellPack(manager, c.customerId, PACKS.ten, d);
+      const id = await db.book(manager, session, { customerId: c.customerId, override: true });
+      expect(await db.booking(id)).toMatchObject({ status: "attended", customer_pack_id: pack, credits: 1, unpaid: false });
+      expect(await db.balance(pack)).toBe(9);
+      const kinds = await db.su("select kind, amount from public.credit_ledger where booking_id = $1 order by id", [id]);
+      expect(kinds).toEqual([{ kind: "reserve", amount: -1 }, { kind: "use", amount: 0 }]);
+      expect(await db.su("select kind from public.notifications where booking_id = $1", [id])).toEqual([]);
+    }));
+
+  it("without a pack it's an unpaid drop-in; capacity still applies", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer();
+      const session = await finished(db, "3 hours");
+      const id = await db.book(manager, session, { customerId: c.customerId, override: true });
+      expect(await db.booking(id)).toMatchObject({ status: "attended", unpaid: true, amount_due_vnd: "450000" });
+      await db.su("update public.sessions set capacity = 1 where id = $1", [session]);
+      const d = await db.customer();
+      expect(await db.fails(manager, "select public.book_session($1, $2, '{}', 0, 1, false, true)", [session, d.customerId])).toBe("session_full");
+    }));
+
+  it("refused for instructors, without Override, and more than 7 days back", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const instructor = await db.staff("instructor", { access: "all_customers" });
+      const c = await db.customer();
+      const recent = await finished(db, "1 day");
+      const old = await finished(db, "8 days");
+      const call = "select public.book_session($1, $2, '{}', 0, 1, false, $3)";
+      expect(await db.fails(instructor, call, [recent, c.customerId, true])).toBe("session_finished");
+      expect(await db.fails(manager, call, [recent, c.customerId, false])).toBe("too_late_to_book");
+      expect(await db.fails(manager, call, [old, c.customerId, true])).toBe("finished_too_long_ago");
     }));
 });

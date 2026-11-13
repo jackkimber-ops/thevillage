@@ -12,11 +12,17 @@ export default async function BookSomeone({ searchParams }: PageProps<"/staff/bo
   const api = staffApi();
   const today = vnDateKey(new Date());
   const sessions = (await api.timetable(new Date(nowMs() - 3 * 3600000), vnDayStart(addDays(today, 45))))
-    .filter((s) => s.kind !== "private_hire" && s.status === "scheduled");
+    .filter((s) => s.kind !== "private_hire" && s.status === "scheduled" && new Date(s.endsAt).getTime() > nowMs());
+  // Change #43: managers can also book someone into a class that finished in the last 7 days (saved as attended).
+  const finished = me.role === "manager"
+    ? (await api.timetable(new Date(nowMs() - 7 * 86400000), new Date(nowMs())))
+        .filter((s) => s.kind !== "private_hire" && (s.status === "scheduled" || s.status === "closed") && new Date(s.endsAt).getTime() <= nowMs())
+        .reverse()
+    : [];
   const customerId = typeof sp.customer === "string" ? sp.customer : null;
   // Opened from a session that can't be booked any more (finished or cancelled): say why it isn't in the list.
   const wanted = typeof sp.session === "string" ? sp.session : null;
-  const unavailable = wanted && !sessions.some((x) => x.id === wanted) ? await api.session(wanted) : null;
+  const unavailable = wanted && !sessions.some((x) => x.id === wanted) && !finished.some((x) => x.id === wanted) ? await api.session(wanted) : null;
   const customer = customerId ? await api.customer(customerId) : null;
   const sessionId = typeof sp.session === "string" ? sp.session : null;
   // Back to where they came from: the customer, else that session's check-in list, else the dashboard.
@@ -33,7 +39,10 @@ export default async function BookSomeone({ searchParams }: PageProps<"/staff/bo
         </p>
       )}
       <BookSomeoneForm
-        sessions={sessions.map((s) => ({ id: s.id, kind: s.kind, label: `${formatDayShort(vnDateKey(s.startsAt), "en")} ${formatTime(s.startsAt, "en")} · ${s.title} · ${sessionLine(s)}` }))}
+        sessions={[
+          ...sessions.map((s) => ({ id: s.id, kind: s.kind, label: `${formatDayShort(vnDateKey(s.startsAt), "en")} ${formatTime(s.startsAt, "en")} · ${s.title} · ${sessionLine(s)}` })),
+          ...finished.map((s) => ({ id: s.id, kind: s.kind, finished: true, label: `${formatDayShort(vnDateKey(s.startsAt), "en")} ${formatTime(s.startsAt, "en")} · ${s.title} · ${sessionLine(s)}` })),
+        ]}
         sessionId={typeof sp.session === "string" ? sp.session : null}
         customer={customer ? { id: customer.customerId, name: customer.fullName } : null}
         isManager={me.role === "manager"}

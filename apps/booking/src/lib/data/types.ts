@@ -81,7 +81,7 @@ export type BookingStatus = "booked" | "attended" | "no_show" | "cancelled" | "l
 export interface Child {
   id: string;
   name: string;
-  birthMonth: string; // "YYYY-MM-01"
+  birthMonth: string | null; // "YYYY-MM-01", or null when not given (change #42)
 }
 
 export interface Me {
@@ -137,7 +137,7 @@ export interface GuestDetails {
   email: string;
   preferredContact: ContactMethod;
   language: "en" | "vi";
-  children: Array<{ name: string; birthMonth: string }>;
+  children: Array<{ name: string; birthMonth: string | null }>;
 }
 
 /** A failed action: `code` is a short reason from the database (e.g. "session_full"), translated in the UI. */
@@ -162,7 +162,7 @@ export interface Account {
 
   me(): Promise<Me | null>;
   saveDetails(d: { fullName: string; phone: string; preferredContact: ContactMethod; language: "en" | "vi" }): Promise<void>;
-  addChild(name: string, birthMonth: string): Promise<string>;
+  addChild(name: string, birthMonth: string | null): Promise<string>;
 
   myPacks(): Promise<MyPack[]>;
   myBookings(): Promise<MyBooking[]>;

@@ -60,7 +60,7 @@ export default async function MenuPage({ searchParams }: PageProps<"/menu">) {
               </div>
               <Link className="menu-item" href="/menu/details"><span>{t("editDetails")}</span><span aria-hidden="true">›</span></Link>
               <div className="menu-item">
-                <span>{t("children")}{me.children.length > 0 && <span className="muted"> · {me.children.map((c) => `${c.name} (${monthYear(c.birthMonth)})`).join(", ")}</span>}</span>
+                <span>{t("children")}{me.children.length > 0 && <span className="muted"> · {me.children.map((c) => (c.birthMonth ? `${c.name} (${monthYear(c.birthMonth)})` : c.name)).join(", ")}</span>}</span>
               </div>
             </div>
           </>
