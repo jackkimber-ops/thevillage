@@ -11,6 +11,30 @@
 - 21 Oct: **visual style v1**: a style sheet plus 5 key screens in the brand (login, timetable, confirm a class, staff dashboard, website top), as a new row at the bottom of the preview canvas.
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
+## Update (13 Nov): ready for opening
+
+All merged to `main` and live; staging matches `main`. The full staging check passes (71 of 71).
+
+- **Sentry: scripts added by apps or extensions** (#72). "Error: Na" at line 520 of `/`: every page we send is one line, and our code is all in `/_next/` files (none over 34 lines), so it came from an in-app browser or an extension. The visitor wasn't affected. The browser's Sentry setup now drops errors whose every frame is deep inside a page address (`lib/sentry-injected.ts`, unit tests).
+- **A child's birth month is optional** (#73, change #42, migration `20261113000001_child_month_optional_late_book_in`). Staff and customers can save a child with just a name; the field says "(optional)". Staff see "birth month not given", and no age is shown when booking.
+- **Booking into a class that has already finished** (#73, change #43). Managers only, up to 7 days back: Book in lists "Already finished (last 7 days)". The booking is saved as attended and uses a credit from a pack valid that day if there is one (sell the pack first, Valid from on or before the class date), otherwise it's an unpaid drop-in. No emails; capacity still applies.
+- **Minimum sign-ups** (#74, change #44, migration `20261113000002_minimum_signups`). From the owners' comments on the minimum sign-ups doc:
+  - No automatic cancellations.
+  - `studio_settings.min_signups` = 2 (managers change it in Settings; 0 = off).
+  - At 19:00 Vietnam time (`pg_cron` `low-signups`, 12:00 UTC), each active manager gets one email listing tomorrow's **classes** below the minimum; each instructor gets one for their own classes.
+  - Staff decide, and cancel with "Cancel session for everyone".
+  - **The job is unscheduled on staging** (real managers are on the staging staff list). The email was tested end to end there with the QA manager address.
+  - First live email: Sun 15 Nov 19:00, about Monday's classes.
+- **Booking and cancellation terms, and the privacy policy** (#75, change #45). The agreed wording, in English and Vietnamese (the Vietnamese is my draft), in `src/lib/policies.tsx`.
+  - Times, prices, the pack table, the hire group size and contact details are read live from Settings and the catalog.
+  - Agreed by Jack for the owners: free cancellation until 21:00; unpaid no-shows have nothing to pay; free cancellation if the studio moves a session; packs not refundable or transferable; private hire free to cancel up to 24 h before; details kept 2 years after the last visit, replies to data requests within 7 days; no marketing emails; "The Village, 47/1 Quốc Hương, An Khánh, Hồ Chí Minh" until the business is registered.
+  - The Claude Docs draft (doc `3a1b0fb6…`) and the staff guide (`fcc6e9a0…`) are now out of date; the Docs connector was down on 13 Nov, so they couldn't be edited.
+- **WhatsApp and Zalo on the business number** (#75, change #46): wa.me/84906446214 and zalo.me/0906446214 in Settings on staging and production (audit entries). The website's fallback values, the Settings examples, the staging check and `CLAUDE.md` follow.
+- **Dung** (front desk, tthoangdung.1011@gmail.com) has a **manager** login on production (Jack's choice until the staff role exists), with an `add_staff` audit entry. She signs in at staff.thevillagesaigon.com with a code; no invitation email is sent.
+- **Access matrix** for managers, staff and instructors: [Village Staff Access](https://claude.ai/artifact/2aVeBLyymbUmW2oc1MYD9D) (private until Jack shares it). It shows today's rights against proposed ones, with six decisions open. The app has only two roles today; a "staff" role is about half a day once agreed.
+- **Caroline couldn't see a booking:** she was on the test site. The test site's sessions were tidied to match live (6 leftover cancelled sessions removed). Use staff.thevillagesaigon.com for real work.
+- **Staging check:** CI's type check caught a missing import in the DB tests (#69); fixed.
+
 ## Update (10 Nov): get-in-touch fail-safe, Zalo error filtered
 
 All merged to `main` and live; staging matches `main`. The full staging check passes (71 of 71).
@@ -313,16 +337,21 @@ All merged to `main` and live; staging matches `main`.
 - 25 Oct: **designs signed off.** Build plan in `docs/build-plan.md`.
 
 ## Waiting on the owners
-- **Instructors:** agreed (7 Nov); Jack adds them on the Staff page, then they're set on their sessions (by a manager, or Claude in bulk). Phuong teaches Core & Cuddle.
-- **December timetable:** nothing is loaded from 1 Dec, and early December already shows (empty) to customers booking a month ahead. Needed as soon as possible; managers can add it (Calendar, "Every week") or send it to Claude. (Children's classes, if they come back: price per child, packs, two badges, and booking a child without a parent to build.)
-- **Strong & Snuggly:** not on the agreed November schedule.
-- **Closure days** (e.g. Tết, around 6–10 Feb 2027): sessions currently run every day. Managers can enter them under Settings → closures.
-- Privacy policy and cancellation terms (EN and VI); studio photo for the login and home screens; website photos, FAQ and headline copy.
-- A native speaker to read the new Vietnamese: the home-screen card, calendar card, "studio is closed" note and the "sorry, that didn't load" page.
-- Optional: `sentry.io` allowed in the environment's network settings plus a read-only Sentry token, so Claude can read new errors directly (today Jack pastes them in).
-- **WhatsApp and Zalo on the business number +84 906 446 214:** then the buttons switch (Settings, or Claude).
+- **December timetable (most urgent):** nothing is loaded from 1 Dec, and from 16 Nov customers see early December empty (1-month booking window). "Same as November" is enough for Claude to load it, or managers add it (Calendar, "Every week").
+- **Instructors:** names, emails and who teaches what (Phuong teaches Core & Cuddle). Jack adds them on the Staff page, or sends them to Claude.
+- **Access matrix decisions** (six, on the page above), then the staff role is built and Dung moved onto it.
+- **Before opening:** everyone on the live staff app (not the test link); hello@ on the managers' phones; change the password shown in the team WhatsApp group's pinned message; one test run on the live site.
+- A native speaker to read the Vietnamese: app screens, emails, the new terms and privacy pages, the home-screen and calendar cards, the "studio is closed" note and the "sorry, that didn't load" page.
+- A Vietnamese legal advisor to check the privacy policy (Decree 13/2023, the Personal Data Protection Law from 1 Jan 2026, data stored in Singapore, Japan and Germany, a consent tick box for children's details).
+- Registered business name for the privacy policy, once the company is registered.
+- **Closure days** (e.g. Tết, around 6–10 Feb 2027): managers enter them under Settings → closures.
+- Studio photo for the login and home screens; website photos, FAQ and headline copy.
 - When to switch the customer-facing contact email to hello@thevillagesaigon.com.
+- **Strong & Snuggly:** not on the agreed November schedule.
+- Optional: `sentry.io` allowed in the environment's network settings plus a read-only Sentry token, so Claude can read new errors directly (today Jack pastes them in).
 - SVGs of the full-colour wordmark and badges (later).
+
+**Next for Claude:** a final check on production (book, cancel, sell a pack, check in, every email, with test accounts, then clean up); refresh the policy and staff guide Claude Docs when the connector is back; DMARC to `p=quarantine` once hello@ mail is confirmed landing; drop the unused `mark_contacted` function; build the staff role once the matrix is agreed.
 
 ## Sign-off log
 - **Designs signed off 25 Oct 2026** in the Claude session by Jack (jack@savian.ai.vn) for the owners ("consider #1 signed off"). Frozen at canvas version 70 (https://claude.ai/artifact/Lc55EEnJbQhBEtzfheUhCF). Build may start; changes now go through `docs/change-list.md`.
