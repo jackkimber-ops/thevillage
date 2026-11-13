@@ -246,3 +246,19 @@ test("team feedback 9 Nov: places only show when few are left, and the class pag
   await danceFit.getByRole("link").first().click();
   await expect(page.locator(".details")).toContainText("Only 2 places left");
 });
+
+test("change #45: the terms and privacy policy, in English and Vietnamese, with the live rules", async ({ page }) => {
+  await page.goto("/terms?lang=en");
+  await expect(page.getByRole("heading", { name: "booking and cancellation terms" })).toBeVisible();
+  await expect(page.getByText("Free until 21:00 the evening before.")).toBeVisible();
+  await expect(page.locator(".policy-table")).toContainText("10-class pack");
+  await expect(page.getByText(/for up to 15 people/)).toBeVisible();
+  await expect(page.getByText(/PLACEHOLDER/)).toHaveCount(0);
+  await page.goto("/privacy");
+  await expect(page.getByText("While you have an account, and for 2 years after your last visit.")).toBeVisible();
+  await expect(page.getByText(/We don't send marketing emails/)).toBeVisible();
+  await page.goto("/terms?lang=vi");
+  await expect(page.getByText(/Huỷ miễn phí trước 21:00 tối hôm trước/)).toBeVisible();
+  await page.goto("/privacy");
+  await expect(page.getByText(/2 năm kể từ lần bạn đến gần nhất/)).toBeVisible();
+});

@@ -56,6 +56,14 @@ a { color: var(--forrest-deep); }
   .page { background: var(--linen); box-shadow: 0 0 0 1px rgba(94, 91, 59, .06), 0 12px 48px rgba(94, 91, 59, .14); }
 }
 .page-body { flex: 1; padding: 6px 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+.policy { max-width: 720px; line-height: 1.55; }
+.policy h2 { font: 500 19px var(--font-heading), system-ui, sans-serif; color: var(--forrest-deep); text-transform: lowercase; margin: 10px 0 0; }
+.policy p, .policy ul { margin: 0; }
+.policy ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.policy-table { overflow-x: auto; }
+.policy-table table { border-collapse: collapse; width: 100%; font-size: 14px; }
+.policy-table th, .policy-table td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--sky); }
+.policy-table th { font-weight: 600; color: var(--muted); }
 .topbar { display: flex; align-items: center; justify-content: space-between; min-height: 60px; padding: 0 8px 0 16px; gap: 8px; }
 .topbar-actions { display: flex; align-items: center; gap: 4px; }
 .logo { display: block; height: 34px; width: auto; }
