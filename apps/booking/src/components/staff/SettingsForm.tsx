@@ -58,8 +58,8 @@ export function SettingsForm({ s }: { s: EditableSettings }) {
         </section>
         <section className="card" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <h2 className="heading sec">message us and follow us</h2>
-          <Text name="whatsappUrl" label="WhatsApp link" value={s.whatsappUrl} type="url" hint="e.g. https://wa.me/84933834068" />
-          <Text name="zaloUrl" label="Zalo link" value={s.zaloUrl} type="url" hint="e.g. https://zalo.me/0933834068" />
+          <Text name="whatsappUrl" label="WhatsApp link" value={s.whatsappUrl} type="url" hint="e.g. https://wa.me/84906446214" />
+          <Text name="zaloUrl" label="Zalo link" value={s.zaloUrl} type="url" hint="e.g. https://zalo.me/0906446214" />
           <Text name="messengerUrl" label="Messenger link" value={s.messengerUrl} type="url" />
           <Text name="facebookUrl" label="Facebook page" value={s.facebookUrl} type="url" />
           <Text name="instagramUrl" label="Instagram" value={s.instagramUrl} type="url" />
