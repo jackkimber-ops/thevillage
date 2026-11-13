@@ -203,6 +203,52 @@ describe("email outbox", () => {
     }));
 });
 
+describe("minimum sign-ups (change #44)", () => {
+  it("at 19:00 the evening before, managers and the instructor get tomorrow's classes below the minimum; nothing is cancelled", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const teacher = await db.staff("instructor");
+      const other = await db.staff("instructor");
+      const tomorrow = (time: string) => `((public.vn_date(now()) + 1) + time '${time}') at time zone 'Asia/Ho_Chi_Minh'`;
+      const at = async (id: string, time: string) =>
+        db.su(`update public.sessions set starts_at = ${tomorrow(time)}, ends_at = ${tomorrow(time)} + interval '1 hour' where id = $1`, [id]);
+      const quiet = await db.session({ instructor: teacher.id, title: "Quiet Class" });
+      const busy = await db.session({ instructor: other.id, title: "Busy Class" });
+      const play = await db.session({ type: TYPES.openPlay, title: "Empty Open Play" });
+      await at(quiet, "06:00"); await at(busy, "07:10"); await at(play, "08:20");
+      await db.book((await db.customer()).user!, quiet);
+      for (let i = 0; i < 2; i++) await db.book((await db.customer()).user!, busy);
+
+      const [{ n }] = await db.su("select public.queue_low_signup_alerts() as n");
+      expect(n).toBeGreaterThanOrEqual(2);
+      await db.su("select public.queue_low_signup_alerts()"); // twice: still one email each
+      const sent = async (who: string) =>
+        (await db.su("select payload from public.notifications where kind = 'low_signups' and staff_user_id = $1", [who]));
+      const mine = await sent(manager.id);
+      expect(mine).toHaveLength(1);
+      const titles = mine[0].payload.classes.map((c: { title: string }) => c.title);
+      expect(titles).toContain("Quiet Class");
+      expect(titles).not.toContain("Busy Class");
+      expect(titles).not.toContain("Empty Open Play");
+      expect(mine[0].payload.min).toBe(2);
+      expect((await sent(teacher.id))[0].payload.classes.map((c: { title: string }) => c.title)).toEqual(["Quiet Class"]);
+      expect(await sent(other.id)).toEqual([]);
+      const [{ status }] = await db.su("select status from public.sessions where id = $1", [quiet]);
+      expect(status).toBe("scheduled");
+      // The sender gets the staff member's address.
+      const rows = await db.su("select staff_email from public.claim_notifications(100) where kind = 'low_signups'");
+      expect(rows.length).toBeGreaterThanOrEqual(2);
+      expect(rows.every((r) => r.staff_email)).toBe(true);
+    }));
+
+  it("0 turns it off; managers change it in Settings", () =>
+    inTx(async (db) => {
+      await db.su("update public.studio_settings set min_signups = 0");
+      await db.su("select public.queue_low_signup_alerts()");
+      expect(await db.su("select id from public.notifications where kind = 'low_signups'")).toEqual([]);
+    }));
+});
+
 describe("calendar feeds", () => {
   it("a customer's feed shows their bookings; a new link replaces the old one", () =>
     inTx(async (db) => {

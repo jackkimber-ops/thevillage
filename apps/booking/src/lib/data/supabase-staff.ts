@@ -76,6 +76,7 @@ export const supabaseStaff: StaffApi = {
       whatsappUrl: s.whatsapp_url, zaloUrl: s.zalo_url, messengerUrl: s.messenger_url, facebookUrl: s.facebook_url,
       instagramUrl: s.instagram_url, mapsUrl: s.maps_url, cancelCutoffTime: String(s.cancel_cutoff_time).slice(0, 5),
       bookingWindow: windowOf(String(s.booking_window)), latestBookingMinutes: minutesOf(String(s.latest_booking)), hireMaxGroup: s.hire_max_group, placesHintAt: s.places_hint_at,
+      minSignups: s.min_signups ?? 2,
     };
   },
 
@@ -87,7 +88,7 @@ export const supabaseStaff: StaffApi = {
       whatsapp_url: s.whatsappUrl ?? "", zalo_url: s.zaloUrl ?? "", messenger_url: s.messengerUrl ?? "",
       facebook_url: s.facebookUrl ?? "", instagram_url: s.instagramUrl ?? "", maps_url: s.mapsUrl ?? "",
       cancel_cutoff_time: s.cancelCutoffTime, booking_window: `${s.bookingWindow.n} ${s.bookingWindow.unit}`,
-      latest_booking: `${s.latestBookingMinutes} minutes`, hire_max_group: s.hireMaxGroup, places_hint_at: s.placesHintAt,
+      latest_booking: `${s.latestBookingMinutes} minutes`, hire_max_group: s.hireMaxGroup, places_hint_at: s.placesHintAt, min_signups: s.minSignups,
     } });
     check(error);
   },

@@ -1,7 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
 import { Resend } from "resend";
 import { renderEmail } from "@/emails/render";
-import { renderInstructorMoved, renderStaffAlert, staffUrlFor } from "@/emails/StaffAlertEmail";
+import { renderInstructorMoved, renderLowSignups, renderStaffAlert, staffUrlFor } from "@/emails/StaffAlertEmail";
 import type { EmailData, EmailKind } from "@/emails/types";
 import type { SessionKind, StudioSettings } from "@/lib/data/types";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -16,8 +16,8 @@ function authorised(request: Request) {
 }
 
 type Claimed = {
-  id: number; kind: EmailKind | "staff_alert" | "instructor_session_moved";
-  payload: { old_starts_at?: string; reason?: string; late?: boolean; credit_back?: boolean; first?: boolean; booked?: number };
+  id: number; kind: EmailKind | "staff_alert" | "instructor_session_moved" | "low_signups";
+  payload: { old_starts_at?: string; reason?: string; late?: boolean; credit_back?: boolean; first?: boolean; booked?: number; day?: string; min?: number; classes?: unknown[] };
   staff_email: string | null; staff_name: string | null;
   email: string | null; language: "en" | "vi"; full_name: string; phone: string | null; preferred_contact: "whatsapp" | "zalo" | "call";
   first_name: string; session_title: string; session_kind: SessionKind; starts_at: string; ends_at: string; child_names: string[];
@@ -50,6 +50,26 @@ export async function POST(request: Request) {
   const alertTo = (s.alert_email as string | null) || settings.contactEmail;
 
   for (const n of data as Claimed[]) {
+    if (n.kind === "low_signups") {
+      // Change #44: tomorrow's classes below the minimum, to a manager or the class's instructor.
+      try {
+        if (!n.staff_email) throw new Error("no staff email");
+        type Row = { title: string; starts_at: string; booked: number; instructor: string | null };
+        const email = await renderLowSignups({
+          name: n.staff_name ?? "", day: String(n.payload?.day ?? ""), min: Number(n.payload?.min ?? 0),
+          classes: ((n.payload?.classes ?? []) as Row[]).map((c) => ({ title: c.title, startsAt: c.starts_at, booked: Number(c.booked), instructor: c.instructor })),
+          staffUrl: staffUrlFor(appUrl),
+        });
+        const res = await resend.emails.send({ from, to: n.staff_email, replyTo: settings.contactEmail, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
+        if (res.error) throw new Error(res.error.message);
+        await db.rpc("finish_notification", { p_id: n.id, p_ok: true, p_provider_id: res.data?.id ?? null });
+        sent++;
+      } catch (e) {
+        await db.rpc("finish_notification", { p_id: n.id, p_ok: false, p_error: (e as Error).message });
+        failed++;
+      }
+      continue;
+    }
     if (n.kind === "instructor_session_moved") {
       try {
         if (!n.staff_email) throw new Error("no instructor email");

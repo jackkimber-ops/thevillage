@@ -306,6 +306,13 @@ test("M9 settings: a manager changes a messaging link and the booking site uses 
   await expect(page.getByText(/^Saved\./)).toBeVisible();
 });
 
+test("change #44: minimum sign-ups is a setting (2 to start)", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  await page.goto("/staff/settings");
+  await expect(page.getByLabel("Minimum sign-ups for a class")).toHaveValue("2");
+  await expect(page.getByText(/Nothing is cancelled automatically/)).toBeVisible();
+});
+
 test("instructors can't open settings", async ({ page }) => {
   await staffLogin(page, "instructor@village.test");
   await page.goto("/staff/settings");

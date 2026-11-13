@@ -54,6 +54,7 @@ export async function saveSettingsAction(_: StaffFormState, form: FormData): Pro
       bookingWindow: { n: Number(str(form, "windowN")), unit: str(form, "windowUnit") === "days" ? "days" : "months" },
       latestBookingMinutes: Number(str(form, "latestMinutes")), hireMaxGroup: Number(str(form, "hireMaxGroup")),
       placesHintAt: Number(str(form, "placesHintAt")),
+      minSignups: Number(str(form, "minSignups")),
     });
   } catch (e) {
     return { error: code(e) };

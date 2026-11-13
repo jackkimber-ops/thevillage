@@ -46,6 +46,8 @@ export function SettingsForm({ s }: { s: EditableSettings }) {
           </div>
           <Text name="placesHintAt" label="Show &ldquo;Only X places left&rdquo; from" value={String(s.placesHintAt)} type="number" required
             hint="Customers see nothing about places until this few are left (Open Play says &ldquo;Almost full&rdquo;). 0 = never, only &ldquo;Full&rdquo;. Staff always see the counts." />
+          <Text name="minSignups" label="Minimum sign-ups for a class" value={String(s.minSignups)} type="number" required
+            hint="At 19:00 the evening before, managers and the class's instructor get an email listing tomorrow's classes with fewer booked than this. Nothing is cancelled automatically: cancel from the session if you decide to. Classes only, not Open Play. 0 = no email." />
           <Text name="hireMaxGroup" label="Private hire: largest group" value={String(s.hireMaxGroup)} type="number" required />
         </section>
         <section className="card" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
