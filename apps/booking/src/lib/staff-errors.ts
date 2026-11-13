@@ -16,6 +16,7 @@ const MESSAGES: Record<string, string> = {
   invalid_link: "Links must start with https:// (or leave them empty).",
   invalid_booking_window: "Customers can book between 1 day and 6 months ahead.",
   invalid_latest_booking: "Booking can close between 0 minutes and 2 days before the start.",
+  invalid_min_signups: "Minimum sign-ups must be between 0 and 50.",
   invalid_group: "Group size must be between 1 and 200.",
   invalid_places_hint: "\"Only X places left\" must be between 0 and 50.",
   invalid_setting: "Check the times and numbers.",

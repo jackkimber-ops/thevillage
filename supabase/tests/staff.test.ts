@@ -329,6 +329,13 @@ describe("studio settings page (M9)", () => {
       expect(s).toEqual({ contact_email: "hello@thevillagesaigon.com", alert_email: null, zalo_url: null, cut: "19:30:00", win: "45 days", latest: "00:30:00", hire_max_group: 12 });
       const [a] = await db.su("select count(*)::int n from public.audit_log where action = 'change_settings'");
       expect(a.n).toBe(1);
+      // Minimum sign-ups (change #44): left out keeps it, 3 saves, 99 is refused.
+      const [m0] = await db.su("select min_signups from public.studio_settings");
+      expect(m0.min_signups).toBe(2);
+      await db.as(manager, "select public.manager_save_settings($1)", [JSON.stringify({ ...good, min_signups: 3 })]);
+      const [m1] = await db.su("select min_signups from public.studio_settings");
+      expect(m1.min_signups).toBe(3);
+      expect(await db.fails(manager, "select public.manager_save_settings($1)", [JSON.stringify({ ...good, min_signups: 99 })])).toBe("invalid_min_signups");
       // 40 days ahead is now bookable (it wasn't with 1 month).
       const c = await db.customer();
       const far = await db.session({ startsIn: "40 days" });

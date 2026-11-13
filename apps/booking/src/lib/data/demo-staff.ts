@@ -57,7 +57,7 @@ function logMoney(by: StaffMember, p: Omit<MoneyRow, "id" | "day" | "recordedAt"
   const now = new Date();
   demoMoney.push({ ...p, id: randomUUID(), day: vnDateKey(now), recordedAt: now.toISOString(), recordedBy: by.name });
 }
-const demoRules = { alertEmail: null as string | null, bookingWindow: { n: 1, unit: "months" } as EditableSettings["bookingWindow"], latestBookingMinutes: 60 };
+const demoRules = { alertEmail: null as string | null, bookingWindow: { n: 1, unit: "months" } as EditableSettings["bookingWindow"], latestBookingMinutes: 60, minSignups: 2 };
 
 export const demoStaff: StaffApi = {
   me,
@@ -102,9 +102,10 @@ export const demoStaff: StaffApi = {
     for (const link of [s.whatsappUrl, s.zaloUrl, s.messengerUrl, s.facebookUrl, s.instagramUrl, s.mapsUrl]) {
       if (link && !/^https:\/\/\S+$/.test(link)) throw new ActionError("invalid_link");
     }
-    const { alertEmail, bookingWindow, latestBookingMinutes, ...shown } = s;
+    if (!(s.minSignups >= 0 && s.minSignups <= 50)) throw new ActionError("invalid_min_signups");
+    const { alertEmail, bookingWindow, latestBookingMinutes, minSignups, ...shown } = s;
     Object.assign(settings, shown, { bookingWindowDays: bookingWindow.unit === "months" ? bookingWindow.n * 31 : bookingWindow.n });
-    Object.assign(demoRules, { alertEmail, bookingWindow, latestBookingMinutes });
+    Object.assign(demoRules, { alertEmail, bookingWindow, latestBookingMinutes, minSignups });
   },
   async staffList() {
     await requireManager();

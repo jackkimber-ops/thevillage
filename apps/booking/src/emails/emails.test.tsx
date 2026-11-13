@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { renderEmail } from "./render";
-import { renderStaffAlert, staffUrlFor } from "./StaffAlertEmail";
+import { renderLowSignups, renderStaffAlert, staffUrlFor } from "./StaffAlertEmail";
 import type { EmailData } from "./types";
 
 const settings = {
@@ -94,5 +94,22 @@ describe("studio alert (S25)", () => {
     expect(e.html).toContain("https://staff.thevillagesaigon.com");
     expect((await renderStaffAlert({ ...alert, first: false })).subject).toBe("Pay-on-the-day booking: Linh Tran, Core & Cuddle");
     expect(staffUrlFor("https://preview.example.app")).toBe("https://preview.example.app/staff");
+  });
+});
+
+describe("minimum sign-ups email (change #44)", () => {
+  it("lists tomorrow's classes below the minimum and says nothing was cancelled", async () => {
+    const e = await renderLowSignups({
+      name: "Caroline Smith", day: "2030-11-02", min: 2, staffUrl: "https://staff.thevillagesaigon.com",
+      classes: [
+        { title: "Core & Cuddle", startsAt: "2030-11-02T02:00:00Z", booked: 1, instructor: "Phuong" },
+        { title: "Bump & Breathe", startsAt: "2030-11-02T03:30:00Z", booked: 0, instructor: null },
+      ],
+    });
+    expect(e.subject).toBe("2 classes tomorrow below 2 booked: Saturday 2 Nov");
+    expect(e.text).toContain("hi caroline, classes tomorrow are below the minimum");
+    expect(e.text).toContain("9:00 · Core & Cuddle (Phuong) · 1 booked");
+    expect(e.text).toContain("10:30 · Bump & Breathe · nobody booked");
+    expect(e.text).toContain("Nothing has been cancelled.");
   });
 });

@@ -49,6 +49,8 @@ export interface EditableSettings {
   latestBookingMinutes: number;
   hireMaxGroup: number;
   placesHintAt: number;
+  /** Change #44: classes with fewer booked than this are emailed to staff at 19:00 the evening before (0 = off). */
+  minSignups: number;
 }
 
 /** S2 Staff page: everyone with a staff role (managers only). */
