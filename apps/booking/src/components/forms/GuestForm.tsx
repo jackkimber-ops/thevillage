@@ -46,7 +46,7 @@ function GuestFormFields({ sessionId, needsChild, cutoffTime, draft }: Props & {
             </button>
           )}
           <div className="field"><label htmlFor={`c${row}n`}>{d("childName")}</label><input id={`c${row}n`} name={`child${i + 1}Name`} required={needsChild && i === 0} /></div>
-          <div className="field"><label htmlFor={`c${row}m`}>{d("childBorn")}</label><input id={`c${row}m`} name={`child${i + 1}Month`} type="month" max={thisMonthVn()} required={needsChild && i === 0} /></div>
+          <div className="field"><label htmlFor={`c${row}m`}>{d("childBorn")}</label><input id={`c${row}m`} name={`child${i + 1}Month`} type="month" max={thisMonthVn()} /></div>
         </fieldset>
       ))}
       {rows.length < 2 && (

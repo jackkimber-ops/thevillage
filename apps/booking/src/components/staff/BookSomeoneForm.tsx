@@ -7,7 +7,7 @@ import type { CustomerHit } from "@/lib/data/staff-types";
 import { StaffFormError } from "./StaffFormError";
 import { keepValues } from "@/lib/keep-values";
 
-type SessionOption = { id: string; label: string; kind: string };
+type SessionOption = { id: string; label: string; kind: string; finished?: boolean };
 
 export function BookSomeoneForm(p: {
   sessions: SessionOption[];
@@ -29,6 +29,7 @@ export function BookSomeoneForm(p: {
   } | null>(null);
   const [, start] = useTransition();
   const kind = p.sessions.find((s) => s.id === sessionId)?.kind;
+  const finished = Boolean(p.sessions.find((s) => s.id === sessionId)?.finished);
 
   useEffect(() => {
     if (!customer) return;
@@ -55,7 +56,12 @@ export function BookSomeoneForm(p: {
         <label htmlFor="session">Session</label>
         <select id="session" name="sessionId" value={sessionId} onChange={(e) => setSessionId(e.target.value)} required>
           <option value="">Choose a session…</option>
-          {p.sessions.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
+          {p.sessions.filter((s) => !s.finished).map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
+          {p.sessions.some((s) => s.finished) && (
+            <optgroup label="Already finished (last 7 days): booked as attended">
+              {p.sessions.filter((s) => s.finished).map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
+            </optgroup>
+          )}
         </select>
       </div>
 
@@ -100,7 +106,17 @@ export function BookSomeoneForm(p: {
         </fieldset>
       )}
 
-      <label className="check"><input type="checkbox" name="override" />Override booking times (outside the 1-month window or less than 1 hour before). Capacity is never overridden.</label>
+      {finished ? (
+        <>
+          {/* Change #43: booking into a class that has finished (managers, up to 7 days back). */}
+          <input type="hidden" name="override" value="on" />
+          <p className="notice" style={{ margin: 0 }}>
+            This class has already finished. They&apos;ll be booked in as <strong>attended</strong>, using a credit from a pack valid on that day if they have one (sell the pack first), otherwise as an unpaid drop-in. No email is sent.
+          </p>
+        </>
+      ) : (
+        <label className="check"><input type="checkbox" name="override" />Override booking times (outside the 1-month window or less than 1 hour before). Capacity is never overridden.</label>
+      )}
       {p.isManager && kind === "class" && !info?.hadFreeTrial && (
         <label className="check"><input type="checkbox" name="freeTrial" defaultChecked={p.trial} />Free trial (one per customer)</label>
       )}

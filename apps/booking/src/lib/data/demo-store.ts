@@ -86,7 +86,7 @@ export type DemoCustomer = {
   preferredContact: ContactMethod;
   language?: "en" | "vi";
   deactivated?: boolean;
-  children: Array<{ id: string; name: string; birthMonth: string }>;
+  children: Array<{ id: string; name: string; birthMonth: string | null }>;
   packs: Array<MyPack & { packTypeId: string }>;
   ledger: Array<{ at: string; kind: string; amount: number; reason: string; packId: string }>;
   createdAt: string;
@@ -193,9 +193,14 @@ export function cutoff(startsAt: string) {
 export function book(d: {
   sessionId: string; customer: DemoCustomer; childIds: string[]; unnamedChildren?: number; parents: number;
   source: "online" | "staff" | "guest"; freeTrial?: boolean; override?: boolean;
+  /** Change #43: a manager booking into a class that finished in the last 7 days (saved as attended). */
+  late?: boolean;
 }): string {
   const s = store.sessions.find((x) => x.id === d.sessionId);
   if (!s || s.status !== "scheduled") throw new ActionError("session_not_bookable");
+  const ended = new Date(s.endsAt).getTime() <= Date.now();
+  if (ended && !d.late) throw new ActionError(d.override ? "session_finished" : "too_late_to_book");
+  if (d.late && new Date(s.endsAt).getTime() < Date.now() - 7 * 86400_000) throw new ActionError("finished_too_long_ago");
   const kind = kindOf(s);
   if (kind === "private_hire") throw new ActionError("session_not_bookable");
   if (d.customer.deactivated) throw new ActionError("customer_deactivated");
@@ -227,7 +232,7 @@ export function book(d: {
   }
   const price = typeOf(s).dropInPriceVnd ?? 0;
   store.bookings.push({
-    id, sessionId: s.id, customerId: d.customer.id, status: "booked", source: d.source, parents: d.parents,
+    id, sessionId: s.id, customerId: d.customer.id, status: d.late && ended ? "attended" : "booked", source: d.source, parents: d.parents,
     childIds: d.childIds, unnamedChildren: d.unnamedChildren ?? 0, credits: pack ? needed : 0, packId: pack?.id ?? null,
     unpaid: !pack && !d.freeTrial && price > 0, paid: false, amountDueVnd: pack || d.freeTrial ? 0 : price * units,
     freeTrial: Boolean(d.freeTrial), firstBooking: !mine.some((b) => b.status !== "cancelled"), contacted: null,

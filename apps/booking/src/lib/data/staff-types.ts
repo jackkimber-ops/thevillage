@@ -139,7 +139,7 @@ export interface CustomerProfile extends Omit<CustomerHit, "creditsLeft"> {
   language: "en" | "vi";
   needsReview: boolean;
   createdAt: string;
-  children: Array<{ id: string; name: string; birthMonth: string }>;
+  children: Array<{ id: string; name: string; birthMonth: string | null }>;
   packs: Array<{
     id: string; name: string; credits: number; remaining: number; validFrom: string; lastDay: string;
     /** Each time a manager moved the end date (from the audit log; managers only). */
@@ -223,7 +223,7 @@ export interface StaffApi {
   /** Everyone this staff member may see, A–Z, a page at a time. */
   listCustomers(limit: number, offset: number): Promise<{ rows: CustomerListRow[]; total: number }>;
   customer(id: string): Promise<CustomerProfile | null>;
-  addCustomer(d: { fullName: string; phone: string; email: string | null; preferredContact: ContactMethod; children: Array<{ name: string; birthMonth: string }> }): Promise<string>;
+  addCustomer(d: { fullName: string; phone: string; email: string | null; preferredContact: ContactMethod; children: Array<{ name: string; birthMonth: string | null }> }): Promise<string>;
   bookCustomer(d: { sessionId: string; customerId: string; childIds: string[]; unnamedChildren: number; parents: number; freeTrial: boolean; override: boolean }): Promise<string>;
   /** Change #40: `countPaidDropIns` counts today's paid drop-ins in the pack and takes what was paid off its price. */
   sellPack(d: { customerId: string; packTypeId: string; method: "qr" | "transfer" | "cash"; validFrom: string | null; countPaidDropIns?: boolean }): Promise<string>;
@@ -237,7 +237,7 @@ export interface StaffApi {
   // S21/S22: change a customer's details and children; managers deactivate (no new bookings) and reactivate.
   updateCustomer(id: string, d: { fullName: string; phone: string; email: string | null; preferredContact: ContactMethod; language: "en" | "vi" }): Promise<void>;
   setCustomerActive(id: string, active: boolean): Promise<void>;
-  saveChild(customerId: string, childId: string | null, name: string, birthMonth: string): Promise<void>;
+  saveChild(customerId: string, childId: string | null, name: string, birthMonth: string | null): Promise<void>;
   removeChild(childId: string): Promise<void>;
 
   // M1 Closures (managers): sessions on the days are cancelled for everyone; packs optionally extended.

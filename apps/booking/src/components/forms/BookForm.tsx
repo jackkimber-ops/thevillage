@@ -11,7 +11,7 @@ import { thisMonthVn } from "@/lib/time";
 type Props = {
   sessionId: string;
   kind: "class" | "open_play" | "private_hire" | "workshop";
-  me: { name: string; children: Array<{ id: string; name: string; birthMonth: string }> };
+  me: { name: string; children: Array<{ id: string; name: string; birthMonth: string | null }> };
   packs: Array<{ name: string; remaining: number; lastDay: string }>;
   dropIn: string | null;
   dropInVnd: number | null;
@@ -55,7 +55,7 @@ export function BookForm(p: Props) {
           <label key={c.id} className="check">
             <input form="book" type="checkbox" name="child" value={c.id} checked={chosen.includes(c.id)} onChange={() => toggle(c.id)}
               disabled={!chosen.includes(c.id) && chosen.length >= 2} />
-            {c.name} · {age(c.birthMonth, t)}
+            {c.name}{c.birthMonth ? ` · ${age(c.birthMonth, t)}` : ""}
           </label>
         ))}
         {adding ? (

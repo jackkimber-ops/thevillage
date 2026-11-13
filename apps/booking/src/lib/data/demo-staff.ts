@@ -343,7 +343,7 @@ export const demoStaff: StaffApi = {
     const c = store.customers.get(d.customerId);
     if (!c) throw new ActionError("customer_not_found");
     return book({ sessionId: d.sessionId, customer: c, childIds: d.childIds, unnamedChildren: d.unnamedChildren, parents: d.parents,
-      source: "staff", freeTrial: d.freeTrial, override: d.override });
+      source: "staff", freeTrial: d.freeTrial, override: d.override, late: d.override && m.role === "manager" });
   },
   async sellPack(d) {
     const by = await requireManager();
@@ -420,7 +420,7 @@ export const demoStaff: StaffApi = {
     await requireStaff();
     const c = store.customers.get(customerId);
     if (!c) throw new ActionError("customer_not_found");
-    const month = `${birthMonth.slice(0, 7)}-01`;
+    const month = birthMonth ? `${birthMonth.slice(0, 7)}-01` : null;
     const k = childId ? c.children.find((x) => x.id === childId) : undefined;
     if (childId && !k) throw new ActionError("child_not_found");
     if (k) Object.assign(k, { name, birthMonth: month });

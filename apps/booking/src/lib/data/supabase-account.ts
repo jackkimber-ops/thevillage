@@ -87,7 +87,7 @@ export const supabaseAccount: Account = {
       phone: c.phone,
       email: c.email,
       preferredContact: c.preferred_contact,
-      children: (c.customer_children ?? []).map((k: { id: string; name: string; birth_month: string }) => ({ id: k.id, name: k.name, birthMonth: k.birth_month })),
+      children: (c.customer_children ?? []).map((k: { id: string; name: string; birth_month: string | null }) => ({ id: k.id, name: k.name, birthMonth: k.birth_month })),
     };
   },
 

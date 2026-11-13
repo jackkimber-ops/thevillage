@@ -20,7 +20,7 @@ export function CustomerForm({ next }: { next: string }) {
       {Array.from({ length: kids }, (_, i) => (
         <div key={i} className="form-grid">
           <div className="field"><label htmlFor={`k${i}`}>Child {i + 1} name</label><input id={`k${i}`} name={`child${i + 1}Name`} /></div>
-          <div className="field"><label htmlFor={`m${i}`}>Month and year of birth</label><input id={`m${i}`} name={`child${i + 1}Month`} type="month" max={thisMonthVn()} /></div>
+          <div className="field"><label htmlFor={`m${i}`}>Month and year of birth <span className="muted">(optional)</span></label><input id={`m${i}`} name={`child${i + 1}Month`} type="month" max={thisMonthVn()} /></div>
         </div>
       ))}
       {kids < 3 && <button type="button" className="sbtn2" style={{ alignSelf: "flex-start" }} onClick={() => setKids(kids + 1)}>+ Add a child</button>}

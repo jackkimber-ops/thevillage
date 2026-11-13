@@ -36,7 +36,7 @@ const MESSAGES: Record<string, string> = {
   free_trial_used: "This customer has already had their free trial.",
   free_trial_class_only: "Free trials are for classes only.",
   intro_pack_new_customers_only: "The intro pack is only for customers who haven't had a pack before.",
-  too_late_to_book: "Too close to the start: tick 'Override booking times' to book anyway.",
+  too_late_to_book: "Too close to the start (or already finished): tick 'Override booking times' to book anyway.",
   too_far_ahead: "Beyond the booking window: tick 'Override booking times' to book anyway.",
   open_play_needs_a_child: "Open play needs at least one child.",
   too_many_children: "Up to 2 children per booking.",
@@ -53,7 +53,8 @@ const MESSAGES: Record<string, string> = {
   child_not_found: "That child wasn't found.",
   invalid_birth_month: "Choose the month and year of birth.",
   session_in_past: "That time has already passed. Pick a date and time that's still to come.",
-  session_finished: "That session has already finished, so nobody can be booked into it.",
+  session_finished: "That session has already finished. Only a manager can book someone into it afterwards (up to 7 days back).",
+  finished_too_long_ago: "That class finished more than 7 days ago, so nobody can be booked into it now.",
   child_needs_birth_month: "Add the month and year of birth for each child (or clear the child's name).",
   invalid_amount: "Enter the amount in VND, e.g. 450000, 450,000 or 450k (1.5m for millions).",
 };

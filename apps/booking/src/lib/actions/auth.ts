@@ -51,7 +51,7 @@ export async function saveDetailsAction(_: FormState, form: FormData): Promise<F
     await account().saveDetails({ fullName, phone, preferredContact: contact, language: locale });
     const childName = String(form.get("childName") ?? "").trim();
     const childMonth = String(form.get("childMonth") ?? "");
-    if (childName && /^\d{4}-\d{2}$/.test(childMonth)) await account().addChild(childName, `${childMonth}-01`);
+    if (childName) await account().addChild(childName, /^\d{4}-\d{2}$/.test(childMonth) ? `${childMonth}-01` : null); // month optional (change #42)
   } catch (e) {
     return { error: e instanceof ActionError ? e.code : "not_saved" };
   }

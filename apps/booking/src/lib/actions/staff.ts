@@ -201,9 +201,10 @@ export async function saveChildAction(form: FormData) {
   const id = str(form, "customerId");
   const month = str(form, "birthMonth");
   if (!str(form, "name")) redirect(`/staff/customers/${id}?error=name_required`);
-  if (!/^\d{4}-\d{2}$/.test(month)) redirect(`/staff/customers/${id}?error=invalid_birth_month`);
+  if (month && !/^\d{4}-\d{2}$/.test(month)) redirect(`/staff/customers/${id}?error=invalid_birth_month`);
   try {
-    await staffApi().saveChild(id, str(form, "childId") || null, str(form, "name"), `${month}-01`);
+    // The month is optional (change #42): blank clears it.
+    await staffApi().saveChild(id, str(form, "childId") || null, str(form, "name"), month ? `${month}-01` : null);
   } catch (e) {
     redirect(`/staff/customers/${id}?error=${code(e)}`);
   }
@@ -312,12 +313,11 @@ export async function addCustomerAction(_: StaffFormState, form: FormData): Prom
   if (!str(form, "fullName")) return { error: "name_required" };
   if (!phone) return { error: "invalid_phone" };
   if (email && !isEmail(email)) return { error: "invalid_email" };
-  const children: Array<{ name: string; birthMonth: string }> = [];
+  const children: Array<{ name: string; birthMonth: string | null }> = [];
   for (const i of [1, 2, 3]) {
     const name = str(form, `child${i}Name`);
     const month = str(form, `child${i}Month`);
-    if (name && !/^\d{4}-\d{2}$/.test(month)) return { error: "child_needs_birth_month" }; // never drop a child silently
-    if (name) children.push({ name, birthMonth: `${month}-01` });
+    if (name) children.push({ name, birthMonth: /^\d{4}-\d{2}$/.test(month) ? `${month}-01` : null }); // month optional (change #42)
   }
   let id: string;
   try {

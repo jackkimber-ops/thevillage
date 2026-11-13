@@ -6,6 +6,8 @@ import { isBot } from "@/lib/bot-check";
 import { account, ActionError, type ContactMethod } from "@/lib/data";
 import { isEmail, toE164 } from "@/lib/phone";
 
+const monthOrNull = (m: string) => (/^\d{4}-\d{2}$/.test(m) ? `${m}-01` : null); // optional (change #42)
+
 export type FormState = { error?: string } | undefined;
 
 const code = (e: unknown) => (e instanceof ActionError ? e.code : "generic");
@@ -28,9 +30,8 @@ export async function addChildAction(_: FormState, form: FormData): Promise<Form
   const month = String(form.get("childMonth") ?? "");
   const back = String(form.get("back") ?? "/classes");
   if (!name) return { error: "child_name_required" };
-  if (!/^\d{4}-\d{2}$/.test(month)) return { error: "child_month_required" };
   try {
-    await account().addChild(name, `${month}-01`);
+    await account().addChild(name, monthOrNull(month));
   } catch (e) {
     return { error: code(e) };
   }
@@ -57,11 +58,11 @@ export async function guestBookAction(_: FormState, form: FormData): Promise<For
   if (!phone) return { error: "invalid_phone" };
   if (!isEmail(email)) return { error: "invalid_email" };
   if (await isBot()) return { error: "bot_check_failed" };
-  const children: Array<{ name: string; birthMonth: string }> = [];
+  const children: Array<{ name: string; birthMonth: string | null }> = [];
   for (const i of [1, 2]) {
     const name = String(form.get(`child${i}Name`) ?? "").trim();
     const month = String(form.get(`child${i}Month`) ?? "");
-    if (name && /^\d{4}-\d{2}$/.test(month)) children.push({ name, birthMonth: `${month}-01` });
+    if (name) children.push({ name, birthMonth: monthOrNull(month) });
   }
   try {
     await account().guestBook({

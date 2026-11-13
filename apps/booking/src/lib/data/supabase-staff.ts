@@ -324,7 +324,7 @@ export const supabaseStaff: StaffApi = {
     return {
       customerId: c.id, fullName: c.full_name, phone: c.phone, email: c.email, preferredContact: c.preferred_contact,
       language: c.language, deactivated: c.deactivated_at !== null, needsReview: c.needs_review, createdAt: c.created_at,
-      children: (c.customer_children ?? []).map((k: { id: string; name: string; birth_month: string }) => ({ id: k.id, name: k.name, birthMonth: k.birth_month })),
+      children: (c.customer_children ?? []).map((k: { id: string; name: string; birth_month: string | null }) => ({ id: k.id, name: k.name, birthMonth: k.birth_month })),
       packs: (packs ?? []).map((p) => {
         const last = new Date(`${p.valid_to}T00:00:00Z`);
         last.setUTCDate(last.getUTCDate() + p.paused_days);
