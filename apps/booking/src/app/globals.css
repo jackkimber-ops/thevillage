@@ -69,7 +69,8 @@ a { color: var(--forrest-deep); }
 .logo { display: block; height: 34px; width: auto; }
 .icon-button { width: 44px; height: 44px; border: 0; border-radius: 22px; background: none; display: inline-flex; align-items: center; justify-content: center; color: var(--forrest-deep); }
 .back-button { width: 44px; height: 44px; border-radius: 22px; background: #fff; display: inline-flex; align-items: center; justify-content: center; color: var(--forrest-deep); box-shadow: 0 1px 0 var(--sky); flex: none; }
-.tabbar { position: sticky; bottom: 0; display: flex; background: #fff; height: 68px; border-radius: 24px 24px 0 0; box-shadow: 0 -1px 0 var(--sky); padding-bottom: env(safe-area-inset-bottom); }
+/* Height is the 68px of tabs plus the phone's bottom edge (Jack, 14 Nov: Facebook's in-app browser reports a big edge and squashed the tabs). */
+.tabbar { position: sticky; bottom: 0; display: flex; background: #fff; height: calc(68px + env(safe-area-inset-bottom, 0px)); border-radius: 24px 24px 0 0; box-shadow: 0 -1px 0 var(--sky); padding-bottom: env(safe-area-inset-bottom, 0px); }
 .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 13px; color: var(--muted); text-decoration: none; }
 .tab[aria-current="page"] { color: var(--forrest-deep); font-weight: 600; }
 .tab-dot { width: 6px; height: 6px; border-radius: 3px; }
@@ -320,8 +321,8 @@ a { color: var(--forrest-deep); }
 @media (max-width: 800px) {
   .staff { flex-direction: column; }
   .staff-side { display: none; }
-  .staff-main { padding: 16px 16px 90px; gap: 14px; }
-  .staff-tabs { display: flex; position: fixed; left: 0; right: 0; bottom: 0; background: #fff; height: 68px; border-radius: 24px 24px 0 0; box-shadow: 0 -1px 0 var(--sky); z-index: 10; }
+  .staff-main { padding: 16px 16px calc(90px + env(safe-area-inset-bottom, 0px)); gap: 14px; }
+  .staff-tabs { display: flex; position: fixed; left: 0; right: 0; bottom: 0; background: #fff; height: calc(68px + env(safe-area-inset-bottom, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); border-radius: 24px 24px 0 0; box-shadow: 0 -1px 0 var(--sky); z-index: 10; }
   .staff h1 { font-size: 26px; }
 }
 .staff-grid { display: grid; column-gap: 3px; }
