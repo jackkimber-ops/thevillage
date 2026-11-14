@@ -226,7 +226,7 @@ test("change #43: a manager books someone into a class that finished yesterday: 
   await expect(page.getByText("Customer added.")).toBeVisible();
   await page.getByRole("link", { name: "Book in", exact: true }).click();
   const session = page.getByLabel("Session");
-  const past = session.locator("optgroup option").first();
+  const past = session.locator("optgroup option", { hasText: /Pilates Flow/ }).first(); // never a full one
   await session.selectOption((await past.getAttribute("value"))!);
   await expect(page.getByText(/This class has already finished/)).toBeVisible();
   await expect(page.getByLabel(/Override booking times/)).toHaveCount(0);
