@@ -87,7 +87,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                 <a key={c.k} className="whats-card" href={c.href}>
                   <div className={`whats-pic ${c.cls}`}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img className="whats-photo" style={c.k === "hire" ? { objectPosition: "center 15%" } : undefined} src={c.photo} alt={t(`photos.${c.k === "openPlay" ? "openPlay" : c.k}`)} width={750} height={1000} loading="lazy" />
+                    <img className={`whats-photo${c.k === "hire" ? " whole" : ""}`} src={c.photo} alt={t(`photos.${c.k === "openPlay" ? "openPlay" : c.k}`)} width={750} height={1000} loading="lazy" />
                   </div>
                   <strong>{t(`${c.k}.title`)}</strong>
                   <span className="muted">{t(`${c.k}.body`)}</span>
