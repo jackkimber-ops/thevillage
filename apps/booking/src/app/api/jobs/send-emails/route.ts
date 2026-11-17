@@ -1,7 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
 import { Resend } from "resend";
 import { renderEmail } from "@/emails/render";
-import { renderInstructorMoved, renderLowSignups, renderStaffAlert, staffUrlFor } from "@/emails/StaffAlertEmail";
+import { renderDailySummary, renderInstructorMoved, renderLowSignups, renderStaffAlert, staffUrlFor } from "@/emails/StaffAlertEmail";
 import type { EmailData, EmailKind } from "@/emails/types";
 import type { SessionKind, StudioSettings } from "@/lib/data/types";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -16,8 +16,8 @@ function authorised(request: Request) {
 }
 
 type Claimed = {
-  id: number; kind: EmailKind | "staff_alert" | "instructor_session_moved" | "low_signups";
-  payload: { old_starts_at?: string; reason?: string; late?: boolean; credit_back?: boolean; first?: boolean; booked?: number; day?: string; min?: number; classes?: unknown[]; event?: string; source?: string; by?: string | null };
+  id: number; kind: EmailKind | "staff_alert" | "instructor_session_moved" | "low_signups" | "daily_summary";
+  payload: { old_starts_at?: string; reason?: string; late?: boolean; credit_back?: boolean; first?: boolean; booked?: number; day?: string; min?: number; classes?: unknown[]; activity?: unknown[]; tomorrow?: unknown[]; event?: string; source?: string; by?: string | null };
   staff_email: string | null; staff_name: string | null;
   email: string | null; language: "en" | "vi"; full_name: string; phone: string | null; preferred_contact: "whatsapp" | "zalo" | "call";
   first_name: string; session_title: string; session_kind: SessionKind; starts_at: string; ends_at: string; child_names: string[];
@@ -50,6 +50,34 @@ export async function POST(request: Request) {
   const alertTo = (s.alert_email as string | null) || settings.contactEmail;
 
   for (const n of data as Claimed[]) {
+    if (n.kind === "daily_summary") {
+      // Change #51: 21:05 summary to the alert address.
+      try {
+        type A = { at: string; event: string; full_name: string; title: string; starts_at: string; children: string[] | null; on_pack: boolean; unpaid: boolean; free_trial: boolean; amount_due_vnd: number; first_booking: boolean; source: string; by: string | null };
+        type P = { name: string; children: string[] | null; unnamed: number; on_pack: boolean; unpaid: boolean; amount_due_vnd: number; free_trial: boolean; first: boolean };
+        type S = { title: string; starts_at: string; kind: string; capacity: number | null; taken: number; instructor: string | null; people: P[] | null };
+        const email = await renderDailySummary({
+          day: String(n.payload?.day ?? ""),
+          activity: ((n.payload?.activity ?? []) as A[]).map((a) => ({
+            at: a.at, event: a.event, fullName: a.full_name, title: a.title, startsAt: a.starts_at, children: a.children ?? [],
+            onPack: a.on_pack, unpaid: a.unpaid, freeTrial: a.free_trial, amountDueVnd: Number(a.amount_due_vnd), first: a.first_booking, source: a.source, by: a.by,
+          })),
+          tomorrow: ((n.payload?.tomorrow ?? []) as S[]).map((x) => ({
+            title: x.title, startsAt: x.starts_at, kind: x.kind, capacity: x.capacity, taken: Number(x.taken), instructor: x.instructor,
+            people: (x.people ?? []).map((p) => ({ name: p.name, children: p.children ?? [], unnamed: Number(p.unnamed), onPack: p.on_pack, unpaid: p.unpaid, amountDueVnd: Number(p.amount_due_vnd), freeTrial: p.free_trial, first: p.first })),
+          })),
+          staffUrl: staffUrlFor(appUrl),
+        });
+        const res = await resend.emails.send({ from, to: alertTo, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
+        if (res.error) throw new Error(res.error.message);
+        await db.rpc("finish_notification", { p_id: n.id, p_ok: true, p_provider_id: res.data?.id ?? null });
+        sent++;
+      } catch (e) {
+        await db.rpc("finish_notification", { p_id: n.id, p_ok: false, p_error: (e as Error).message });
+        failed++;
+      }
+      continue;
+    }
     if (n.kind === "low_signups") {
       // Change #44: tomorrow's classes below the minimum, to a manager or the class's instructor.
       try {
