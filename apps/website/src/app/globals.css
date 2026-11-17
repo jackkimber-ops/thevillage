@@ -45,8 +45,6 @@ a { color: var(--forrest-deep); }
 .whats-card strong { font-size: 19px; margin-top: 6px; }
 .whats-pic { height: 200px; border-radius: 18px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .whats-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
-/* A tall photo shown whole (Jack, 17 Nov: not zoomed in on a face), on the card's colour. */
-.whats-photo.whole { object-fit: contain; }
 .arch { overflow: hidden; }
 .arch-photo { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; display: block; }
 .sage { background: var(--sage); } .rose { background: var(--rose); } .sky { background: var(--sky); }
