@@ -88,11 +88,11 @@ describe("studio alert (S25)", () => {
   };
   it("names the customer, how to reach them, the session and what they owe", async () => {
     const e = await renderStaffAlert(alert);
-    expect(e.subject).toBe("New customer to welcome: Linh Tran, Core & Cuddle");
+    expect(e.subject).toBe("New customer to welcome: Linh Tran, Core & Cuddle, Sat 2 Nov, 9:00");
     expect(e.text).toContain("+84901234567 · prefers Zalo");
     expect(e.text).toContain("Pay on the day: 450,000 ₫");
     expect(e.html).toContain("https://staff.thevillagesaigon.com");
-    expect((await renderStaffAlert({ ...alert, first: false })).subject).toBe("Pay-on-the-day booking: Linh Tran, Core & Cuddle");
+    expect((await renderStaffAlert({ ...alert, first: false })).subject).toBe("Pay-on-the-day booking: Linh Tran, Core & Cuddle, Sat 2 Nov, 9:00");
     expect(staffUrlFor("https://preview.example.app")).toBe("https://preview.example.app/staff");
   });
 });
@@ -113,3 +113,30 @@ describe("minimum sign-ups email (change #44)", () => {
     expect(e.text).toContain("Nothing has been cancelled.");
   });
 });
+
+describe("studio alerts for all activity (change #50)", () => {
+  const base = {
+    first: false, fullName: "Henny", phone: "+84901234567", preferredContact: "whatsapp" as const, email: "henny@example.com",
+    title: "Core & Cuddle", startsAt: "2030-11-22T02:00:00Z", unpaid: false, amountDueVnd: 0, credits: 1, packName: "10-class pack",
+    childNames: ["Xavi"], staffUrl: "https://staff.thevillagesaigon.com",
+  };
+  it("a returning customer booking with a credit", async () => {
+    const e = await renderStaffAlert({ ...base, event: "booked", source: "online" });
+    expect(e.subject).toBe("Booked: Henny, Core & Cuddle, Fri 22 Nov, 9:00");
+    expect(e.text).toContain("Henny + Xavi");
+    expect(e.text).toContain("1 credit from their 10-class pack");
+    expect(e.text).toContain("Booked online");
+    expect(e.text).not.toContain("get in touch");
+  });
+  it("cancellations, on time by the customer and late by staff", async () => {
+    const onTime = await renderStaffAlert({ ...base, event: "cancelled", creditBack: true });
+    expect(onTime.subject).toBe("Cancelled: Henny, Core & Cuddle, Fri 22 Nov, 9:00");
+    expect(onTime.text).toContain("Their credit went back to their pack");
+    expect(onTime.text).toContain("Cancelled online by the customer");
+    const late = await renderStaffAlert({ ...base, event: "late_cancelled", by: "Caroline", reason: "Child ill" });
+    expect(late.subject).toBe("Late cancellation: Henny, Core & Cuddle, Fri 22 Nov, 9:00");
+    expect(late.text).toContain("Their credit is used (late), unless a manager restores it");
+    expect(late.text).toContain("Cancelled by Caroline (Child ill)");
+  });
+});
+

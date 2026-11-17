@@ -449,7 +449,7 @@ describe("booking into a class that has finished (change #43)", () => {
     return id;
   }
 
-  it("a manager books someone in afterwards: attended, a credit used, no emails", () =>
+  it("a manager books someone in afterwards: attended, a credit used, no customer emails", () =>
     inTx(async (db) => {
       const manager = await db.staff("manager");
       const c = await db.customer();
@@ -461,7 +461,8 @@ describe("booking into a class that has finished (change #43)", () => {
       expect(await db.balance(pack)).toBe(9);
       const kinds = await db.su("select kind, amount from public.credit_ledger where booking_id = $1 order by id", [id]);
       expect(kinds).toEqual([{ kind: "reserve", amount: -1 }, { kind: "use", amount: 0 }]);
-      expect(await db.su("select kind from public.notifications where booking_id = $1", [id])).toEqual([]);
+      // No email to the customer; only the studio's alert (change #50).
+      expect(await db.su("select kind from public.notifications where booking_id = $1", [id])).toEqual([{ kind: "staff_alert" }]);
     }));
 
   it("without a pack it's an unpaid drop-in; capacity still applies", () =>
