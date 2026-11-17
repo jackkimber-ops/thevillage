@@ -237,6 +237,13 @@ export interface StaffApi {
   markAttendance(bookingId: string, status: "booked" | "attended" | "no_show"): Promise<void>;
   cancelBooking(bookingId: string, reason: string | null): Promise<BookingStatus>;
   restoreCredit(bookingId: string, reason: string): Promise<void>;
+  /** Managers: count a booking (up to 30 days back) in the customer's pack instead of a drop-in; optionally remove a
+   *  drop-in payment recorded for it by mistake (change #55). */
+  countInPack(bookingId: string, removeDropInPayment: boolean): Promise<void>;
+  /** Managers: add (+) or take away (-) credits on a pack, with a reason; never below zero (change #56). Returns credits left. */
+  adjustCredits(customerPackId: string, amount: number, reason: string): Promise<number>;
+  /** Managers: a pack bought before the app (no payment recorded), with the credits it has left (change #57). */
+  addPackFromBefore(d: { customerId: string; packTypeId: string; validFrom: string; creditsLeft: number }): Promise<string>;
   /** Managers: move a customer's pack end date later (agreed rule: an expired pack can't be used; staff can extend). */
   extendPack(customerPackId: string, newLastDay: string, reason: string): Promise<void>;
 

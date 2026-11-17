@@ -23,6 +23,10 @@ const toSession = (r: TRow): StaffSession => ({
   unpaid: r.unpaid, hireCustomer: r.hire_customer, notes: r.notes,
 });
 
+// Credits put on a pack: the purchase plus any bonus or added adjustment (change #56). Taking credits away reads as used.
+const added = (ledger: Array<{ customer_pack_id: string; kind: string; amount: number }>, packId: string) =>
+  ledger.filter((l) => l.customer_pack_id === packId && ["purchase", "bonus", "adjust"].includes(l.kind) && l.amount > 0).reduce((n, l) => n + l.amount, 0);
+
 const balances = (ledger: Array<{ customer_pack_id: string; amount: number }>) =>
   ledger.reduce<Record<string, number>>((acc, l) => ({ ...acc, [l.customer_pack_id]: (acc[l.customer_pack_id] ?? 0) + l.amount }), {});
 
@@ -260,6 +264,22 @@ export const supabaseStaff: StaffApi = {
     const { error } = await (await createClient()).rpc("restore_credit", { p_booking_id: id, p_reason: reason });
     check(error);
   },
+  async countInPack(id, removeDropInPayment) {
+    const { error } = await (await createClient()).rpc("count_booking_in_pack", { p_booking_id: id, p_remove_drop_in_payment: removeDropInPayment });
+    check(error);
+  },
+  async adjustCredits(id, amount, reason) {
+    const { data, error } = await (await createClient()).rpc("adjust_credits", { p_customer_pack_id: id, p_amount: amount, p_reason: reason });
+    check(error);
+    return data as number;
+  },
+  async addPackFromBefore(d) {
+    const { data, error } = await (await createClient()).rpc("add_pack_from_before", {
+      p_customer_id: d.customerId, p_pack_type_id: d.packTypeId, p_valid_from: d.validFrom, p_credits_left: d.creditsLeft,
+    });
+    check(error);
+    return data as string;
+  },
   async extendPack(id, newLastDay, reason) {
     const { error } = await (await createClient()).rpc("extend_pack", { p_customer_pack_id: id, p_new_valid_to: newLastDay, p_reason: reason });
     check(error);
@@ -341,7 +361,7 @@ export const supabaseStaff: StaffApi = {
         const last = new Date(`${p.valid_to}T00:00:00Z`);
         last.setUTCDate(last.getUTCDate() + p.paused_days);
         return {
-          id: p.id, name: p.name, credits: p.credits, remaining: bal[p.id] ?? 0, validFrom: p.valid_from, lastDay: last.toISOString().slice(0, 10),
+          id: p.id, name: p.name, credits: added(ledger ?? [], p.id), remaining: bal[p.id] ?? 0, validFrom: p.valid_from, lastDay: last.toISOString().slice(0, 10),
           extensions: (ext ?? []).filter((e) => e.entity_id === p.id).map((e) => ({
             at: e.created_at, from: e.before?.valid_to, to: e.after?.valid_to, reason: e.after?.reason ?? "", by: nameOf(e.actor),
           })),

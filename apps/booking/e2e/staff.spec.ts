@@ -239,6 +239,46 @@ test("change #43: a manager books someone into a class that finished yesterday: 
   await expect(history.locator(".list-row").first()).toContainText("Attended");
 });
 
+test("change #55: a class from last week counts in a pack bought afterwards (Dakota's case)", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  const name = `Counted ${uid()}`;
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name", { exact: true }).fill(name);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Customer added.")).toBeVisible();
+  const profile = page.url();
+  await page.getByRole("link", { name: "Book in", exact: true }).click();
+  const session = page.getByLabel("Session");
+  await session.selectOption((await session.locator("optgroup option", { hasText: /Pilates Flow/ }).first().getAttribute("value"))!);
+  await page.getByRole("button", { name: "Book", exact: true }).click();
+  await expect(page.getByText("Booked in.")).toBeVisible();
+  const history = page.locator("section", { has: page.getByRole("heading", { name: "history" }) });
+  await expect(history.locator(".list-row").first()).toContainText("Drop-in, unpaid");
+  // No pack yet: nothing to count it in.
+  await expect(history.getByText("Count in a pack")).toHaveCount(0);
+
+  await page.goto(profile);
+  await page.getByText("Sell a pack").click();
+  await pickPack(page, "10-class pack");
+  const from = new Date(Date.now() - 9 * 86_400_000).toISOString().slice(0, 10);
+  await page.getByLabel("Valid from", { exact: true }).fill(from);
+  await page.getByRole("button", { name: "Sell and record payment" }).click();
+  await expect(page.getByText(/10 of 10 credits/)).toBeVisible();
+
+  await history.getByText("Count in a pack").click();
+  await history.getByRole("button", { name: "Use a credit from their pack" }).click();
+  await expect(page.getByText("Counted in their pack.")).toBeVisible();
+  await expect(history.locator(".list-row").first()).toContainText("1 credit · 10-class pack");
+});
+
+test("change #55: instructors don't see Count in a pack", async ({ page }) => {
+  await staffLogin(page, "instructor@village.test");
+  await page.goto("/staff/customers");
+  await page.locator("a[href^='/staff/customers/']").first().click();
+  await expect(page.getByText("Count in a pack")).toHaveCount(0);
+});
+
 test("change #43: instructors don't see finished classes to book into", async ({ page }) => {
   await staffLogin(page, "instructor@village.test");
   await page.goto("/staff/book");
@@ -469,10 +509,39 @@ test("managers extend a customer's pack", async ({ page }) => {
   await expect(row2.locator(".muted.small").first()).not.toHaveText(before!);
 });
 
+test("change #56: managers adjust a pack's credits with a reason; never below zero", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name", { exact: true }).fill(`Adjust ${uid()}`);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Customer added.")).toBeVisible();
+  await page.getByText("Sell a pack").click();
+  await pickPack(page, "10-class pack");
+  await page.getByRole("button", { name: "Sell and record payment" }).click();
+  await expect(page.getByText(/10 of 10 credits/)).toBeVisible();
+
+  await page.getByText("Adjust credits").click();
+  await page.getByLabel(/Add or take away credits/).selectOption("remove");
+  await page.getByLabel("Number of credits").fill("2");
+  await page.getByLabel("Reason for adjusting").fill("Two classes before the app");
+  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await expect(page.getByText("Credits adjusted: 8 left on the pack.")).toBeVisible();
+  await expect(page.getByText("Adjusted by a manager: Two classes before the app")).toBeVisible();
+
+  await page.getByText("Adjust credits").click();
+  await page.getByLabel(/Add or take away credits/).selectOption("remove");
+  await page.getByLabel("Number of credits").fill("9");
+  await page.getByLabel("Reason for adjusting").fill("Too many");
+  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await expect(page.getByText(/doesn't have that many credits left/)).toBeVisible();
+});
+
 test("instructors don't see Extend", async ({ page }) => {
   await staffLogin(page, "instructor@village.test");
   await page.goto("/staff/customers");
-  await expect(page.getByText("Extend", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Extend", { exact: true })).toHaveCount(0);  await expect(page.getByText("Adjust credits")).toHaveCount(0);
+  await expect(page.getByText("Add a pack bought before the app")).toHaveCount(0);
 });
 
 test("book someone in: 'name, email' still finds the customer, and the greyed Book says why", async ({ page }) => {
@@ -604,6 +673,32 @@ test("team feedback 27 Oct, changed 13 Nov (#42): a child's birth month is optio
   await page.goto("/staff/customers");
   await expect(page.getByText(/customers?, A–Z/)).toBeVisible();
   await expect(page.locator("tr", { hasText: name })).toContainText("10");
+});
+
+test("change #57: add a pack bought before the app: no payment, credits left, their unpaid booking moves onto it", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name", { exact: true }).fill(`Before App ${uid()}`);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Customer added.")).toBeVisible();
+  const profile = page.url();
+  await page.getByRole("link", { name: "Book in", exact: true }).click();
+  const session = page.getByLabel("Session");
+  await session.selectOption((await session.locator("option", { hasText: /Pilates Flow/ }).nth(4).getAttribute("value"))!);
+  await page.getByRole("button", { name: "Book", exact: true }).click();
+  await expect(page.getByText("Booked in.")).toBeVisible();
+
+  await page.goto(profile);
+  await page.getByText("Add a pack bought before the app").click();
+  await page.getByLabel("Pack they bought").selectOption({ label: "10-class pack (10 classes)" });
+  await page.getByLabel(/Valid from \(the day it started\)/).fill(new Date(Date.now() - 10 * 86_400_000).toISOString().slice(0, 10));
+  await page.getByLabel("Credits left").fill("7");
+  await page.getByRole("button", { name: "Add pack (no payment)" }).click();
+  await expect(page.getByText(/Pack added, no payment recorded\. Pilates Flow \(.+\) is counted in it: 6 of 10 credits left/)).toBeVisible();
+  await expect(page.getByText("Used before the app")).toBeVisible();
+  const row = page.locator("section", { has: page.getByRole("heading", { name: "upcoming bookings" }) }).locator(".list-row").first();
+  await expect(row).toContainText("1 credit · 10-class pack");
 });
 
 test("a one-class drop-in: Book in from the profile, then record a payment made before the day (change #14)", async ({ page }) => {

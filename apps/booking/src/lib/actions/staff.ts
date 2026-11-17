@@ -137,6 +137,43 @@ export async function restoreCreditAction(form: FormData) {
   redirect(back(form, "/staff")); // fresh page: drops an old "Booked in." note
 }
 
+export async function countInPackAction(form: FormData) {
+  try {
+    await staffApi().countInPack(str(form, "bookingId"), str(form, "removePayment") === "on");
+  } catch (e) {
+    redirect(`${back(form, "/staff")}?error=${code(e)}`);
+  }
+  revalidatePath(back(form, "/staff"));
+  redirect(`${back(form, "/staff")}?counted=1`);
+}
+
+export async function adjustCreditsAction(form: FormData) {
+  const n = Number(str(form, "credits"));
+  const amount = str(form, "direction") === "remove" ? -n : n;
+  let left = 0;
+  try {
+    left = await staffApi().adjustCredits(str(form, "packId"), amount, str(form, "reason"));
+  } catch (e) {
+    redirect(`${back(form, "/staff")}?error=${code(e)}`);
+  }
+  revalidatePath(back(form, "/staff"));
+  redirect(`${back(form, "/staff")}?adjusted=${left}`);
+}
+
+export async function addPackFromBeforeAction(form: FormData) {
+  const customerId = str(form, "customerId");
+  let packId = "";
+  try {
+    packId = await staffApi().addPackFromBefore({
+      customerId, packTypeId: str(form, "packTypeId"), validFrom: str(form, "validFrom"), creditsLeft: Number(str(form, "creditsLeft")),
+    });
+  } catch (e) {
+    redirect(`/staff/customers/${customerId}?error=${code(e)}`);
+  }
+  revalidatePath(`/staff/customers/${customerId}`);
+  redirect(`/staff/customers/${customerId}?prior=${encodeURIComponent(packId)}`);
+}
+
 export async function extendPackAction(form: FormData) {
   try {
     await staffApi().extendPack(str(form, "packId"), str(form, "newLastDay"), str(form, "reason"));

@@ -243,6 +243,72 @@ export const demoStaff: StaffApi = {
     p.remaining += b.credits;
     p.used -= b.credits;
   },
+  async countInPack(id, removeDropInPayment) {
+    await requireManager();
+    const b = store.bookings.find((x) => x.id === id);
+    if (!b || !["booked", "attended"].includes(b.status)) throw new ActionError("booking_not_found");
+    if (b.packId) throw new ActionError("already_on_pack");
+    if (b.freeTrial) throw new ActionError("free_trial_not_counted");
+    const s = store.sessions.find((x) => x.id === b.sessionId)!;
+    if (Date.now() - new Date(s.startsAt).getTime() > 30 * 86_400_000) throw new ActionError("too_long_ago");
+    if (b.paid && !removeDropInPayment) throw new ActionError("drop_in_already_paid");
+    const needed = kindOf(s) === "open_play" ? Math.max(b.childIds.length + b.unnamedChildren, 1) : 1;
+    const day = vnDateKey(s.startsAt);
+    const pack = store.customers.get(b.customerId)?.packs
+      .filter((p) => p.sessionTypeIds.includes(s.sessionTypeId) && p.validFrom <= day && day <= p.lastDay && p.remaining >= needed)
+      .sort((x, y) => x.lastDay.localeCompare(y.lastDay))[0];
+    if (!pack) throw new ActionError("no_pack_covers");
+    Object.assign(b, { unpaid: false, paid: false, amountDueVnd: 0, packId: pack.id, credits: needed });
+    pack.remaining -= needed;
+    pack.reserved += needed;
+  },
+  async adjustCredits(id, amount, reason) {
+    await requireManager();
+    if (!Number.isInteger(amount) || amount === 0 || Math.abs(amount) > 100) throw new ActionError("invalid_credits");
+    if (!reason.trim()) throw new ActionError("reason_required");
+    const c = [...store.customers.values()].find((x) => x.packs.some((p) => p.id === id));
+    const p = c?.packs.find((x) => x.id === id);
+    if (!c || !p) throw new ActionError("pack_not_found");
+    if (p.remaining + amount < 0) throw new ActionError("not_enough_credits");
+    p.remaining += amount;
+    if (amount > 0) p.credits += amount;
+    else p.used -= amount;
+    c.ledger.push({ at: new Date().toISOString(), kind: "adjust", amount, reason: reason.trim(), packId: id });
+    return p.remaining;
+  },
+  async addPackFromBefore(d) {
+    await requireManager();
+    const c = store.customers.get(d.customerId);
+    const t = packTypes.find((p) => p.id === d.packTypeId);
+    if (!c) throw new ActionError("customer_not_found");
+    if (!t) throw new ActionError("pack_not_found");
+    const today = vnDateKey(new Date());
+    if (!d.validFrom || d.validFrom > today) throw new ActionError("valid_from_in_future");
+    if (!Number.isInteger(d.creditsLeft) || d.creditsLeft < 1 || d.creditsLeft > t.credits) throw new ActionError("invalid_credits");
+    const id = addPack(c, t, d.validFrom);
+    const pack = c.packs.find((p) => p.id === id)!;
+    if (pack.lastDay < today) {
+      c.packs = c.packs.filter((p) => p.id !== id);
+      c.ledger = c.ledger.filter((l) => l.packId !== id);
+      throw new ActionError("pack_already_expired");
+    }
+    c.ledger[c.ledger.length - 1].reason = `Bought before the app: ${t.name}`;
+    if (d.creditsLeft < t.credits) {
+      c.ledger.push({ at: new Date().toISOString(), kind: "adjust", amount: d.creditsLeft - t.credits, reason: "Used before the app", packId: id });
+      pack.used = t.credits - d.creditsLeft;
+      pack.remaining = d.creditsLeft;
+    }
+    // Upcoming unpaid bookings move onto it, as when a pack is sold.
+    for (const b of store.bookings.filter((x) => x.customerId === c.id && x.unpaid && !x.paid && !x.packId && x.status === "booked")) {
+      const s = store.sessions.find((x) => x.id === b.sessionId)!;
+      const needed = kindOf(s) === "open_play" ? b.childIds.length + b.unnamedChildren : 1;
+      if (!pack.sessionTypeIds.includes(s.sessionTypeId) || pack.remaining < needed || vnDateKey(s.startsAt) > pack.lastDay) continue;
+      Object.assign(b, { unpaid: false, amountDueVnd: 0, packId: id, credits: needed });
+      pack.remaining -= needed;
+      pack.reserved += needed;
+    }
+    return id;
+  },
   async extendPack(id, newLastDay, reason) {
     await requireManager();
     if (!reason.trim()) throw new ActionError("reason_required");
