@@ -64,7 +64,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
   const upcoming = c.bookings.filter((b) => b.status === "booked" && new Date(b.startsAt) > new Date());
   const history = c.bookings.filter((b) => !upcoming.includes(b)).slice(0, 15);
   const canCount = (b: Booking) => me.role === "manager" && !b.packId && !b.freeTrial && ["booked", "attended"].includes(b.status)
-    && Date.now() - new Date(b.startsAt).getTime() <= 30 * 86_400_000 && c.packs.some((p) => p.remaining > 0);
+    && vnDateKey(b.startsAt) >= addDays(today, -30) && c.packs.some((p) => p.remaining > 0);
   const ok = sp.counted ? "Counted in their pack." : sp.added ? "Customer added." : sp.sold ? soldMessage(c, String(sp.sold)) : sp.extended ? "Pack extended." : sp.adjusted ? `Credits adjusted: ${sp.adjusted} left on the pack.` : sp.booked ? "Booked in." : sp.updated ? "Details saved." : sp.child ? "Child saved." : sp.child_removed ? "Child removed."
     : sp.deactivated ? "Customer deactivated: they can't be booked in until reactivated." : sp.reactivated ? "Customer reactivated." : null;
   const monthYear = (d: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", month: "short", year: "numeric" }).format(new Date(`${d}T00:00:00Z`));
