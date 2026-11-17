@@ -3,7 +3,7 @@
 -- who is booked (final by then: nobody can cancel online after 21:00). Sent every day, even a quiet one, so a
 -- missing email means something is wrong. The every-booking emails (change #50) carry on as well.
 
-alter type public.notification_kind add value if not exists 'daily_summary';
+-- The new email kind is added in 20261117000003 (a new enum value must be committed before it is used).
 
 alter table public.notifications drop constraint notifications_about_someone,
   add constraint notifications_about_someone
