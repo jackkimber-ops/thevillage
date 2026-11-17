@@ -11,6 +11,30 @@
 - 21 Oct: **visual style v1**: a style sheet plus 5 key screens in the brand (login, timetable, confirm a class, staff dashboard, website top), as a new row at the bottom of the preview canvas.
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
+## Update (14–17 Nov): first days open, studio emails, photos, manager credit tools
+
+All merged to `main` and live; staging matches `main`. Live checks after the last merge: booking health OK (database OK), website and new photos served.
+
+- **Bottom tab bar in the Facebook in-app browser** (#77): it was squashed under the browser's own bar. Its height now includes the phone's safe area (`calc(68px + env(safe-area-inset-bottom))`).
+- **Latest bookings on the staff dashboard** (#78, change #49, migration `20261117000001_recent_activity`): a "Latest bookings" card with bookings and cancellations from the last few days, newest first, and who made them. The dashboard refreshes itself every 60 seconds.
+- **Studio emails for all booking activity** (#79, change #50, migration `20261117000002_alert_all_activity`): hello@ now gets an email for every booking and cancellation (online, guest, by staff, into a finished class), saying who did it and whether a credit went back.
+- **Daily summary email** (#80, change #51, migrations `20261117000003`/`4`): at **21:05** Vietnam time (`pg_cron` `daily-summary`, 14:05 UTC), one email to hello@ with today's bookings and cancellations and tomorrow's sessions. **Unscheduled on staging**, like `low-signups`.
+- **Opening hours every day 8:30–12:30** (change #52): set in Settings on staging and production (EN/VI), with audit entries. The timetable itself is unchanged.
+- **Opening photos** (#81, change #53) and **class photos** (#82, change #54), from the owners' Drive folders (consent confirmed by Jack; #03 and #06 are Phuong):
+  - Website header: a class in action, bigger and wider.
+  - Classes card: a new class photo. Private hire: the empty studio (#07).
+  - The front door, with its steps and the Village sign, sits beside the map under "Visit us", with the caption "Look for the white arch and the Village sign."
+  - App login: a wide class photo.
+  - Photos are WebP with location and camera data removed. The door video is still to come.
+- **Dakota fixed on production** (Jack's approval): she came to Monday's class, then bought a 10-class pack; a 450,000 drop-in payment had been recorded by mistake. The payment was removed (audit `remove_payment`) and Monday moved onto her pack (audit `count_in_pack`). The pack has 8 left, with Friday as credit 2.
+- **Three manager tools for credits** (managers only, on a customer's profile):
+  - **Count in a pack** (#83, change #55, `count_booking_in_pack`): a class from the last 30 days that isn't on a pack uses a credit from their pack. If a drop-in payment was recorded for it, the manager must tick "remove the payment", or it's refused. A pack only counts classes from its valid-from date. The history list now says how each class was paid.
+  - **Adjust credits** (#84, change #56, `adjust_credits`): add or take away credits with a reason. A pack can't go below zero. Each change is logged ("Adjusted by a manager: …") and kept in the audit log.
+  - **Add a pack bought before the app** (#85, change #57, `add_pack_from_before`): the pack, the day it started and the credits left, with no payment recorded. "Used before the app" shows in the credit history, and unpaid bookings move onto the pack. **Phuong can now enter the packs she sold before opening.**
+  - "x of N left" counts added credits in N; credits taken away read as used (staff and customers).
+- **Next.js 16.4.6** (#86): security update (advisory GHSA-mfr8-8qww-v76h; we didn't use the affected feature). The booking app's `npm audit` still lists moderate items in Sentry's build-time plugins (glob/minimatch), which aren't part of the running site.
+- Tests: 116 database tests and 69 browser tests pass.
+
 ## Update (13 Nov): ready for opening
 
 All merged to `main` and live; staging matches `main`. The full staging check passes (71 of 71).
@@ -346,12 +370,14 @@ All merged to `main` and live; staging matches `main`.
 - A Vietnamese legal advisor to check the privacy policy (Decree 13/2023, the Personal Data Protection Law from 1 Jan 2026, data stored in Singapore, Japan and Germany, a consent tick box for children's details).
 - Registered business name for the privacy policy, once the company is registered.
 - **Closure days** (e.g. Tết, around 6–10 Feb 2027): managers enter them under Settings → closures.
-- Studio photo for the login and home screens; website photos, FAQ and headline copy.
+- **Door video** for the website header (the front door photo is used meanwhile); FAQ and headline copy.
+- **Packs sold before opening:** Phuong enters them with "Add a pack bought before the app" on each customer's profile.
+- Whether staging's studio alert emails should go somewhere other than hello@ (test bookings on staging email hello@ today).
 - **Strong & Snuggly:** not on the agreed November schedule.
 - Optional: `sentry.io` allowed in the environment's network settings plus a read-only Sentry token, so Claude can read new errors directly (today Jack pastes them in).
 - SVGs of the full-colour wordmark and badges (later).
 
-**Next for Claude:** a final check on production (book, cancel, sell a pack, check in, every email, with test accounts, then clean up); refresh the policy and staff guide Claude Docs when the connector is back; DMARC to `p=quarantine` once hello@ mail is confirmed landing; drop the unused `mark_contacted` function; build the staff role once the matrix is agreed.
+**Next for Claude:** Sentry plugin update (moderate audit items, build-time only); a final check on production (book, cancel, sell a pack, check in, every email, with test accounts, then clean up); refresh the policy and staff guide Claude Docs when the connector is back; DMARC to `p=quarantine` once hello@ mail is confirmed landing; drop the unused `mark_contacted` function; build the staff role once the matrix is agreed.
 
 ## Sign-off log
 - **Designs signed off 25 Oct 2026** in the Claude session by Jack (jack@savian.ai.vn) for the owners ("consider #1 signed off"). Frozen at canvas version 70 (https://claude.ai/artifact/Lc55EEnJbQhBEtzfheUhCF). Build may start; changes now go through `docs/change-list.md`.
