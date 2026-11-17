@@ -4,7 +4,7 @@ import { Notice } from "@/components/staff/Notice";
 import { EditCustomerForm } from "@/components/staff/EditCustomerForm";
 import { SellPackForm } from "@/components/staff/SellPackForm";
 import { data, staffApi } from "@/lib/data";
-import { adjustCreditsAction, countInPackAction, extendPackAction, recordPaymentAction, removeChildAction, restoreCreditAction, saveChildAction, setCustomerActiveAction, staffCancelBookingAction } from "@/lib/actions/staff";
+import { addPackFromBeforeAction, adjustCreditsAction, countInPackAction, extendPackAction, recordPaymentAction, removeChildAction, restoreCreditAction, saveChildAction, setCustomerActiveAction, staffCancelBookingAction } from "@/lib/actions/staff";
 import { WAY_LABEL } from "@/lib/contact-ways";
 import { formatVnd } from "@/lib/money";
 import { requireStaff } from "@/lib/staff-guard";
@@ -15,13 +15,13 @@ const OUTCOME = { contacted: "Contacted", no_answer: "No answer", undone: "Conta
 const STATUS: Record<string, string> = { booked: "Booked", attended: "Attended", no_show: "No-show", cancelled: "Cancelled", late_cancelled: "Late cancellation" };
 
 // "Pack sold and payment recorded. Core & Cuddle (Mon 16 Nov) counted in it: 9 of 10 credits left." (change #40)
-function soldMessage(c: NonNullable<Awaited<ReturnType<ReturnType<typeof staffApi>["customer"]>>>, packId: string) {
+function soldMessage(c: NonNullable<Awaited<ReturnType<ReturnType<typeof staffApi>["customer"]>>>, packId: string, lead = "Pack sold and payment recorded") {
   const pack = c.packs.find((p) => p.id === packId);
-  if (!pack) return "Pack sold and payment recorded.";
+  if (!pack) return `${lead}.`;
   const on = c.bookings.filter((b) => b.packId === packId).sort((a, b) => a.startsAt.localeCompare(b.startsAt));
-  if (on.length === 0) return `Pack sold and payment recorded: ${pack.remaining} of ${pack.credits} credits.`;
+  if (on.length === 0) return `${lead}: ${pack.remaining} of ${pack.credits} credits.`;
   const list = on.map((b) => `${b.title} (${formatDayShort(vnDateKey(b.startsAt), "en")})`).join(", ");
-  return `Pack sold and payment recorded. ${list} ${on.length === 1 ? "is" : "are"} counted in it: ${pack.remaining} of ${pack.credits} credits left.`;
+  return `${lead}. ${list} ${on.length === 1 ? "is" : "are"} counted in it: ${pack.remaining} of ${pack.credits} credits left.`;
 }
 
 type Booking = NonNullable<Awaited<ReturnType<ReturnType<typeof staffApi>["customer"]>>>["bookings"][number];
@@ -65,7 +65,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
   const history = c.bookings.filter((b) => !upcoming.includes(b)).slice(0, 15);
   const canCount = (b: Booking) => me.role === "manager" && !b.packId && !b.freeTrial && ["booked", "attended"].includes(b.status)
     && Date.now() - new Date(b.startsAt).getTime() <= 30 * 86_400_000 && c.packs.some((p) => p.remaining > 0);
-  const ok = sp.counted ? "Counted in their pack." : sp.added ? "Customer added." : sp.sold ? soldMessage(c, String(sp.sold)) : sp.extended ? "Pack extended." : sp.adjusted ? `Credits adjusted: ${sp.adjusted} left on the pack.` : sp.booked ? "Booked in." : sp.updated ? "Details saved." : sp.child ? "Child saved." : sp.child_removed ? "Child removed."
+  const ok = sp.counted ? "Counted in their pack." : sp.added ? "Customer added." : sp.sold ? soldMessage(c, String(sp.sold)) : sp.prior ? soldMessage(c, String(sp.prior), "Pack added, no payment recorded") : sp.extended ? "Pack extended." : sp.adjusted ? `Credits adjusted: ${sp.adjusted} left on the pack.` : sp.booked ? "Booked in." : sp.updated ? "Details saved." : sp.child ? "Child saved." : sp.child_removed ? "Child removed."
     : sp.deactivated ? "Customer deactivated: they can't be booked in until reactivated." : sp.reactivated ? "Customer reactivated." : null;
   const monthYear = (d: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", month: "short", year: "numeric" }).format(new Date(`${d}T00:00:00Z`));
 
@@ -150,6 +150,25 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
               <details open={Boolean(sp.sell)} style={{ marginTop: 12 }}>
                 <summary className="sbtn2" style={{ display: "inline-flex", listStyle: "none" }}>Sell a pack</summary>
                 <div style={{ marginTop: 12 }}><SellPackForm customerId={c.customerId} packs={packs} today={today} paidToday={paidToday} /></div>
+              </details>
+            )}
+            {me.role === "manager" && !c.deactivated && (
+              <details style={{ marginTop: 12 }}>
+                <summary className="small-link">Add a pack bought before the app</summary>
+                <form action={addPackFromBeforeAction} style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 10 }}>
+                  <input type="hidden" name="customerId" value={c.customerId} />
+                  <p className="muted small" style={{ margin: 0 }}>For a pack paid before The Village opened. No payment is recorded. Their unpaid bookings move onto it.</p>
+                  <div className="field">
+                    <label htmlFor="prior-pack">Pack they bought</label>
+                    <select id="prior-pack" name="packTypeId" required defaultValue="">
+                      <option value="" disabled>Choose a pack…</option>
+                      {packs.map((p) => <option key={p.id} value={p.id}>{p.name} ({p.credits} classes)</option>)}
+                    </select>
+                  </div>
+                  <div className="field"><label htmlFor="prior-from">Valid from (the day it started)</label><input id="prior-from" name="validFrom" type="date" required max={today} /></div>
+                  <div className="field"><label htmlFor="prior-left">Credits left</label><input id="prior-left" name="creditsLeft" type="number" min={1} max={100} required /></div>
+                  <button className="sbtn" type="submit" style={{ alignSelf: "flex-start" }}>Add pack (no payment)</button>
+                </form>
               </details>
             )}
           </section>

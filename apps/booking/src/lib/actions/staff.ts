@@ -160,6 +160,20 @@ export async function adjustCreditsAction(form: FormData) {
   redirect(`${back(form, "/staff")}?adjusted=${left}`);
 }
 
+export async function addPackFromBeforeAction(form: FormData) {
+  const customerId = str(form, "customerId");
+  let packId = "";
+  try {
+    packId = await staffApi().addPackFromBefore({
+      customerId, packTypeId: str(form, "packTypeId"), validFrom: str(form, "validFrom"), creditsLeft: Number(str(form, "creditsLeft")),
+    });
+  } catch (e) {
+    redirect(`/staff/customers/${customerId}?error=${code(e)}`);
+  }
+  revalidatePath(`/staff/customers/${customerId}`);
+  redirect(`/staff/customers/${customerId}?prior=${encodeURIComponent(packId)}`);
+}
+
 export async function extendPackAction(form: FormData) {
   try {
     await staffApi().extendPack(str(form, "packId"), str(form, "newLastDay"), str(form, "reason"));
