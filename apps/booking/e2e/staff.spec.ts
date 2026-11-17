@@ -509,10 +509,38 @@ test("managers extend a customer's pack", async ({ page }) => {
   await expect(row2.locator(".muted.small").first()).not.toHaveText(before!);
 });
 
+test("change #56: managers adjust a pack's credits with a reason; never below zero", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name", { exact: true }).fill(`Adjust ${uid()}`);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Customer added.")).toBeVisible();
+  await page.getByText("Sell a pack").click();
+  await pickPack(page, "10-class pack");
+  await page.getByRole("button", { name: "Sell and record payment" }).click();
+  await expect(page.getByText(/10 of 10 credits/)).toBeVisible();
+
+  await page.getByText("Adjust credits").click();
+  await page.getByLabel(/Add or take away credits/).selectOption("remove");
+  await page.getByLabel("Number of credits").fill("2");
+  await page.getByLabel("Reason for adjusting").fill("Two classes before the app");
+  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await expect(page.getByText("Credits adjusted: 8 left on the pack.")).toBeVisible();
+  await expect(page.getByText("Adjusted by a manager: Two classes before the app")).toBeVisible();
+
+  await page.getByText("Adjust credits").click();
+  await page.getByLabel(/Add or take away credits/).selectOption("remove");
+  await page.getByLabel("Number of credits").fill("9");
+  await page.getByLabel("Reason for adjusting").fill("Too many");
+  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await expect(page.getByText(/doesn't have that many credits left/)).toBeVisible();
+});
+
 test("instructors don't see Extend", async ({ page }) => {
   await staffLogin(page, "instructor@village.test");
   await page.goto("/staff/customers");
-  await expect(page.getByText("Extend", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Extend", { exact: true })).toHaveCount(0);  await expect(page.getByText("Adjust credits")).toHaveCount(0);
 });
 
 test("book someone in: 'name, email' still finds the customer, and the greyed Book says why", async ({ page }) => {
