@@ -383,6 +383,30 @@ describe("selling packs", () => {
     }));
 });
 
+describe("adjust credits (change #56)", () => {
+  it("a manager adds or takes away credits with a reason; logged; never below zero; instructors can't", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const instructor = await db.staff("instructor", { access: "all_customers" });
+      const c = await db.customer();
+      const pack = await db.sellPack(manager, c.customerId, PACKS.ten);
+      const [{ adjust_credits: left }] = await db.as(manager, "select public.adjust_credits($1, -2, 'Two classes before the app')", [pack]);
+      expect(left).toBe(8);
+      await db.as(manager, "select public.adjust_credits($1, 1, 'Goodwill')", [pack]);
+      expect(await db.balance(pack)).toBe(9);
+      const rows = await db.su("select amount, reason from public.credit_ledger where customer_pack_id = $1 and kind = 'adjust' order by id", [pack]);
+      expect(rows).toEqual([{ amount: -2, reason: "Two classes before the app" }, { amount: 1, reason: "Goodwill" }]);
+      const [a] = await db.su("select count(*)::int n from public.audit_log where action = 'adjust_credits' and entity_id = $1", [pack]);
+      expect(a.n).toBe(2);
+
+      expect(await db.fails(manager, "select public.adjust_credits($1, -10, 'Too many')", [pack])).toBe("not_enough_credits");
+      expect(await db.fails(manager, "select public.adjust_credits($1, 0, 'Nothing')", [pack])).toBe("invalid_credits");
+      expect(await db.fails(manager, "select public.adjust_credits($1, 1, '  ')", [pack])).toBe("reason_required");
+      expect(await db.fails(instructor, "select public.adjust_credits($1, 1, 'Nope')", [pack])).toBe("managers_only");
+      expect(await db.balance(pack)).toBe(9);
+    }));
+});
+
 describe("count a class in a pack (change #55)", () => {
   // A class that ended `ago`, closed by the 15-minute job, with this customer booked into it (pay on the day).
   async function pastDropIn(db: Parameters<Parameters<typeof inTx>[0]>[0], customer: { user?: Who | null }, ago = "1 day") {

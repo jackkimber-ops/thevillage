@@ -4,7 +4,7 @@ import { Notice } from "@/components/staff/Notice";
 import { EditCustomerForm } from "@/components/staff/EditCustomerForm";
 import { SellPackForm } from "@/components/staff/SellPackForm";
 import { data, staffApi } from "@/lib/data";
-import { countInPackAction, extendPackAction, recordPaymentAction, removeChildAction, restoreCreditAction, saveChildAction, setCustomerActiveAction, staffCancelBookingAction } from "@/lib/actions/staff";
+import { adjustCreditsAction, countInPackAction, extendPackAction, recordPaymentAction, removeChildAction, restoreCreditAction, saveChildAction, setCustomerActiveAction, staffCancelBookingAction } from "@/lib/actions/staff";
 import { WAY_LABEL } from "@/lib/contact-ways";
 import { formatVnd } from "@/lib/money";
 import { requireStaff } from "@/lib/staff-guard";
@@ -65,7 +65,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
   const history = c.bookings.filter((b) => !upcoming.includes(b)).slice(0, 15);
   const canCount = (b: Booking) => me.role === "manager" && !b.packId && !b.freeTrial && ["booked", "attended"].includes(b.status)
     && Date.now() - new Date(b.startsAt).getTime() <= 30 * 86_400_000 && c.packs.some((p) => p.remaining > 0);
-  const ok = sp.counted ? "Counted in their pack." : sp.added ? "Customer added." : sp.sold ? soldMessage(c, String(sp.sold)) : sp.extended ? "Pack extended." : sp.booked ? "Booked in." : sp.updated ? "Details saved." : sp.child ? "Child saved." : sp.child_removed ? "Child removed."
+  const ok = sp.counted ? "Counted in their pack." : sp.added ? "Customer added." : sp.sold ? soldMessage(c, String(sp.sold)) : sp.extended ? "Pack extended." : sp.adjusted ? `Credits adjusted: ${sp.adjusted} left on the pack.` : sp.booked ? "Booked in." : sp.updated ? "Details saved." : sp.child ? "Child saved." : sp.child_removed ? "Child removed."
     : sp.deactivated ? "Customer deactivated: they can't be booked in until reactivated." : sp.reactivated ? "Customer reactivated." : null;
   const monthYear = (d: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", month: "short", year: "numeric" }).format(new Date(`${d}T00:00:00Z`));
 
@@ -119,6 +119,21 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
                       </label>
                       <input name="reason" placeholder="Reason" required className="small-input" aria-label="Reason for extending" />
                       <button className="sbtn sbtn-sm" type="submit">Extend pack</button>
+                    </form>
+                  </details>
+                )}
+                {me.role === "manager" && (
+                  <details className="extend-pack">
+                    <summary className="sbtn2 sbtn-sm">Adjust credits</summary>
+                    <form action={adjustCreditsAction} className="staff-actions">
+                      <input type="hidden" name="packId" value={p.id} />
+                      <input type="hidden" name="back" value={back} />
+                      <select name="direction" aria-label={`Add or take away credits on ${p.name}`} className="small-select">
+                        <option value="add">Add</option><option value="remove">Take away</option>
+                      </select>
+                      <input type="number" name="credits" min={1} max={100} defaultValue={1} required className="small-input" style={{ width: 70 }} aria-label="Number of credits" />
+                      <input name="reason" placeholder="Reason" required className="small-input" aria-label="Reason for adjusting" />
+                      <button className="sbtn sbtn-sm" type="submit">Save</button>
                     </form>
                   </details>
                 )}
@@ -271,7 +286,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
                 <thead><tr><th>When</th><th>What</th><th>Credits</th><th>Pack</th></tr></thead>
                 <tbody>
                   {c.ledger.slice(0, 20).map((l, i) => (
-                    <tr key={i}><td>{formatDayShort(vnDateKey(l.at), "en")} {formatTime(l.at, "en")}</td><td>{l.reason}</td><td>{l.amount > 0 ? `+${l.amount}` : l.amount}</td><td>{l.packName}</td></tr>
+                    <tr key={i}><td>{formatDayShort(vnDateKey(l.at), "en")} {formatTime(l.at, "en")}</td><td>{l.kind === "adjust" ? `Adjusted by a manager: ${l.reason}` : l.reason}</td><td>{l.amount > 0 ? `+${l.amount}` : l.amount}</td><td>{l.packName}</td></tr>
                   ))}
                 </tbody>
               </table>

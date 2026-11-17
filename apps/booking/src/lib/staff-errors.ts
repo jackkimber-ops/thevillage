@@ -46,6 +46,8 @@ const MESSAGES: Record<string, string> = {
   too_long_ago: "That class was more than 30 days ago.",
   drop_in_already_paid: "A drop-in payment is recorded for this class. Tick 'remove the payment' if they didn't pay it separately.",
   no_pack_covers: "None of their packs covers this class with credits left. A pack only covers classes from its valid-from date: extend or correct the pack first if needed.",
+  invalid_credits: "Enter a number of credits from 1 to 100.",
+  not_enough_credits: "The pack doesn't have that many credits left (credits held by upcoming bookings count as used).",
   nothing_to_restore: "There's no used credit to restore on this booking.",
   already_restored: "That credit has already been restored.",
   session_closed: "This session has already closed.",

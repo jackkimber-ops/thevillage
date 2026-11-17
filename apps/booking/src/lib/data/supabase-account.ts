@@ -120,7 +120,7 @@ export const supabaseAccount: Account = {
     return (packs ?? []).map((p) => {
       const rows = (ledger ?? []).filter((l) => l.customer_pack_id === p.id);
       const remaining = rows.reduce((sum, l) => sum + l.amount, 0);
-      const added = rows.filter((l) => ["purchase", "bonus", "adjust"].includes(l.kind)).reduce((sum, l) => sum + l.amount, 0);
+      const added = rows.filter((l) => ["purchase", "bonus", "adjust"].includes(l.kind) && l.amount > 0).reduce((sum, l) => sum + l.amount, 0);
       const reserved = (held ?? []).filter((b) => b.customer_pack_id === p.id).reduce((sum, b) => sum + b.credits, 0);
       const last = new Date(`${p.valid_to}T00:00:00Z`);
       last.setUTCDate(last.getUTCDate() + p.paused_days);

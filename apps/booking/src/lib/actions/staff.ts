@@ -147,6 +147,19 @@ export async function countInPackAction(form: FormData) {
   redirect(`${back(form, "/staff")}?counted=1`);
 }
 
+export async function adjustCreditsAction(form: FormData) {
+  const n = Number(str(form, "credits"));
+  const amount = str(form, "direction") === "remove" ? -n : n;
+  let left = 0;
+  try {
+    left = await staffApi().adjustCredits(str(form, "packId"), amount, str(form, "reason"));
+  } catch (e) {
+    redirect(`${back(form, "/staff")}?error=${code(e)}`);
+  }
+  revalidatePath(back(form, "/staff"));
+  redirect(`${back(form, "/staff")}?adjusted=${left}`);
+}
+
 export async function extendPackAction(form: FormData) {
   try {
     await staffApi().extendPack(str(form, "packId"), str(form, "newLastDay"), str(form, "reason"));

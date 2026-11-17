@@ -262,6 +262,20 @@ export const demoStaff: StaffApi = {
     pack.remaining -= needed;
     pack.reserved += needed;
   },
+  async adjustCredits(id, amount, reason) {
+    await requireManager();
+    if (!Number.isInteger(amount) || amount === 0 || Math.abs(amount) > 100) throw new ActionError("invalid_credits");
+    if (!reason.trim()) throw new ActionError("reason_required");
+    const c = [...store.customers.values()].find((x) => x.packs.some((p) => p.id === id));
+    const p = c?.packs.find((x) => x.id === id);
+    if (!c || !p) throw new ActionError("pack_not_found");
+    if (p.remaining + amount < 0) throw new ActionError("not_enough_credits");
+    p.remaining += amount;
+    if (amount > 0) p.credits += amount;
+    else p.used -= amount;
+    c.ledger.push({ at: new Date().toISOString(), kind: "adjust", amount, reason: reason.trim(), packId: id });
+    return p.remaining;
+  },
   async extendPack(id, newLastDay, reason) {
     await requireManager();
     if (!reason.trim()) throw new ActionError("reason_required");
