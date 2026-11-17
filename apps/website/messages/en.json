@@ -46,6 +46,12 @@
     "messageUs": "Message us",
     "privacy": "Privacy",
     "terms": "Terms",
-    "followUs": "Follow us"
+    "followUs": "Follow us",
+    "photos": {
+      "door": "The front door of The Village at 47/1 Quốc Hương",
+      "classes": "Families on the studio floor on opening day",
+      "openPlay": "Children playing on the play mat",
+      "hire": "The empty studio, ready to hire"
+    }
   }
 }

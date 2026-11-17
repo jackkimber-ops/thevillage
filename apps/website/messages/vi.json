@@ -47,6 +47,12 @@
     "messageUs": "Nhắn cho chúng tôi",
     "privacy": "Bảo mật",
     "terms": "Điều khoản",
-    "followUs": "Theo dõi chúng tôi"
+    "followUs": "Theo dõi chúng tôi",
+    "photos": {
+      "door": "Cửa trước của The Village tại 47/1 Quốc Hương",
+      "classes": "Các gia đình trong studio ngày khai trương",
+      "openPlay": "Các bé chơi trên thảm",
+      "hire": "Studio trống, sẵn sàng cho thuê"
+    }
   }
 }

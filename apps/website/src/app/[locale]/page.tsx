@@ -48,10 +48,11 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
               <a className="btn2" href={bookingUrl("/classes", locale)}>{t("seeTimetable")}</a>
             </div>
           </div>
-          <div className="hero-pic" aria-hidden="true">
+          <div className="hero-pic">
             <div className="arch">
+              {/* Opening photos (Jack, 17 Nov; change #53): the front door until the door video comes. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/brand/badge-linen-full-colour.png" alt="" width={140} height={140} />
+              <img className="arch-photo" src="/photos/front-door.webp" alt={t("photos.door")} width={758} height={1400} />
             </div>
             <div className="blob" />
           </div>
@@ -79,14 +80,14 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             <h2 className="h">{t("whatsOn")}</h2>
             <div className="grid3">
               {([
-                { k: "classes", href: bookingUrl("/classes?filter=classes", locale), cls: "sage" },
-                { k: "openPlay", href: bookingUrl("/classes?filter=open-play", locale), cls: "rose" },
-                { k: "hire", href: bookingUrl("/hire", locale), cls: "sky" },
+                { k: "classes", href: bookingUrl("/classes?filter=classes", locale), cls: "sage", photo: "/photos/classes.webp" },
+                { k: "openPlay", href: bookingUrl("/classes?filter=open-play", locale), cls: "rose", photo: "/photos/open-play.webp" },
+                { k: "hire", href: bookingUrl("/hire", locale), cls: "sky", photo: "/photos/private-hire.webp" },
               ] as const).map((c) => (
                 <a key={c.k} className="whats-card" href={c.href}>
-                  <div className={`whats-pic ${c.cls}`} aria-hidden="true">
+                  <div className={`whats-pic ${c.cls}`}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/brand/icon-house-linen-badge.png" alt="" width={64} height={64} />
+                    <img className="whats-photo" src={c.photo} alt={t(`photos.${c.k === "openPlay" ? "openPlay" : c.k}`)} width={750} height={1000} loading="lazy" />
                   </div>
                   <strong>{t(`${c.k}.title`)}</strong>
                   <span className="muted">{t(`${c.k}.body`)}</span>
