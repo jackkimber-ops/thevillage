@@ -210,8 +210,8 @@ a { color: var(--forrest-deep); }
 .small { font-size: 13px; }
 .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .row-between { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.login-hero { position: relative; height: 110px; border-radius: 0 0 36px 36px; overflow: hidden; background: var(--sage); display: flex; flex-direction: column; justify-content: space-between; }
-.login-hero::before { content: ""; position: absolute; right: -60px; top: -60px; width: 200px; height: 200px; border-radius: 50%; background: var(--rose); opacity: .6; }
+/* The studio photo (opening photos, change #53) under the gradient; sage shows while it loads. */
+.login-hero { position: relative; height: 190px; border-radius: 0 0 36px 36px; overflow: hidden; background: var(--sage) url("/photos/studio-wide.webp") center 60% / cover no-repeat; display: flex; flex-direction: column; justify-content: space-between; }
 .login-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(59,58,42,.3) 0%, rgba(59,58,42,0) 30%, rgba(59,58,42,0) 55%, rgba(59,58,42,.7) 100%); }
 .login-hero > * { position: relative; z-index: 1; }
 .login-hero .lang-button, .icon-button.on-photo { background: var(--linen); }
