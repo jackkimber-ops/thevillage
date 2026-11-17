@@ -1,12 +1,13 @@
 import { Body, Button, Container, Head, Heading, Html, Text } from "@react-email/components";
 import { render } from "@react-email/render";
 import { formatVnd } from "@/lib/money";
-import { formatDayLong, formatTime, vnDateKey } from "@/lib/time";
+import { formatDayLong, formatDayShort, formatTime, vnDateKey } from "@/lib/time";
 
-// S25: tells the studio about a new customer's first booking or an unpaid drop-in, so someone calls them.
-// Staff-facing, so English only (like the staff app).
+// S25, changed 17 Nov (change #50): tells the studio about every booking and cancellation. New customers and
+// unpaid drop-ins also ask someone to get in touch. Staff-facing, so English only (like the staff app).
 
 export interface StaffAlert {
+  event?: "booked" | "cancelled" | "late_cancelled";
   first: boolean;
   fullName: string;
   phone: string | null;
@@ -18,20 +19,44 @@ export interface StaffAlert {
   amountDueVnd: number;
   credits: number;
   packName: string | null;
+  freeTrial?: boolean;
+  childNames?: string[];
+  /** "online" | "guest" | "staff" */
+  source?: string | null;
+  /** The staff member who booked or cancelled it, if one did. */
+  by?: string | null;
+  creditBack?: boolean;
+  reason?: string | null;
   staffUrl: string; // the staff app's dashboard
 }
 
 const CONTACT = { whatsapp: "WhatsApp", zalo: "Zalo", call: "a call" } as const;
 
 function lines(a: StaffAlert) {
+  const event = a.event ?? "booked";
+  const short = `${formatDayShort(vnDateKey(a.startsAt), "en")}, ${formatTime(a.startsAt, "en")}`;
   const when = `${formatDayLong(vnDateKey(a.startsAt), "en")}, ${formatTime(a.startsAt, "en")}`;
+  const kids = a.childNames && a.childNames.length > 0 ? ` + ${a.childNames.join(", ")}` : "";
+  const booked = event === "booked";
+  const prefix = !booked ? (event === "late_cancelled" ? "Late cancellation" : "Cancelled")
+    : a.first ? "New customer to welcome" : a.unpaid && !a.freeTrial ? "Pay-on-the-day booking" : "Booked";
+  const heading = !booked ? (event === "late_cancelled" ? "a late cancellation" : "a booking was cancelled")
+    : a.first ? "a new customer has booked" : a.unpaid && !a.freeTrial ? "an unpaid drop-in has booked" : "a new booking";
+  const pay = booked
+    ? (a.freeTrial ? "Free trial" : a.unpaid ? `Pay on the day: ${formatVnd(a.amountDueVnd, "en")}` : a.credits > 0 && a.packName ? `${a.credits} credit from their ${a.packName}` : a.credits > 0 ? `${a.credits} credit` : "Nothing to pay")
+    : (a.creditBack ? "Their credit went back to their pack" : a.credits > 0 ? "Their credit is used (late), unless a manager restores it" : "Nothing to pay");
+  const how = booked
+    ? (a.by ? `Booked by ${a.by}` : a.source === "guest" ? "Booked online as a guest" : "Booked online")
+    : (a.by ? `Cancelled by ${a.by}${a.reason ? ` (${a.reason})` : ""}` : "Cancelled online by the customer");
   return {
-    subject: a.first ? `New customer to welcome: ${a.fullName}, ${a.title}` : `Pay-on-the-day booking: ${a.fullName}, ${a.title}`,
-    heading: a.first ? "a new customer has booked" : "an unpaid drop-in has booked",
-    who: `${a.fullName}${a.phone ? ` · ${a.phone}` : ""} · prefers ${CONTACT[a.preferredContact]}${a.email ? ` · ${a.email}` : ""}`,
+    subject: `${prefix}: ${a.fullName}, ${a.title}, ${short}`,
+    heading,
+    who: `${a.fullName}${kids}${a.phone ? ` · ${a.phone}` : ""} · prefers ${CONTACT[a.preferredContact]}${a.email ? ` · ${a.email}` : ""}`,
     what: `${a.title} · ${when}`,
-    pay: a.unpaid ? `Pay on the day: ${formatVnd(a.amountDueVnd, "en")}` : a.credits > 0 && a.packName ? `${a.credits} credit from their ${a.packName}` : "Nothing to pay",
-    ask: "Please get in touch to say hello and confirm, then tick Contacted on the dashboard.",
+    pay,
+    how,
+    ask: booked && (a.first || (a.unpaid && !a.freeTrial)) ? "Please get in touch to say hello and confirm, then mark them Contacted on the dashboard." : null,
+    red: booked ? a.unpaid && !a.freeTrial : event === "late_cancelled",
   };
 }
 
@@ -45,8 +70,9 @@ function StaffAlertHtml(a: StaffAlert) {
           <Heading as="h1" style={{ fontWeight: 500, color: "#5E5B3B", fontSize: 22, margin: "0 0 12px" }}>{l.heading}</Heading>
           <Text style={{ fontSize: 15, margin: 0, fontWeight: 600 }}>{l.who}</Text>
           <Text style={{ fontSize: 15, margin: "6px 0 0" }}>{l.what}</Text>
-          <Text style={{ fontSize: 15, margin: "6px 0 0", color: a.unpaid ? "#A44A2C" : "#66624A" }}>{l.pay}</Text>
-          <Text style={{ fontSize: 14, margin: "14px 0 0" }}>{l.ask}</Text>
+          <Text style={{ fontSize: 15, margin: "6px 0 0", color: l.red ? "#A44A2C" : "#66624A" }}>{l.pay}</Text>
+          <Text style={{ fontSize: 14, margin: "6px 0 0", color: "#66624A" }}>{l.how}</Text>
+          {l.ask && <Text style={{ fontSize: 14, margin: "14px 0 0" }}>{l.ask}</Text>}
           <Button href={a.staffUrl} style={{ background: "#5E5B3B", color: "#FFF4E6", borderRadius: 26, padding: "12px 22px", fontWeight: 600, fontSize: 15, marginTop: 16 }}>
             Open the dashboard
           </Button>
@@ -61,7 +87,7 @@ export async function renderStaffAlert(a: StaffAlert) {
   return {
     subject: l.subject,
     html: await render(StaffAlertHtml(a)),
-    text: [l.heading, "", l.who, l.what, l.pay, "", l.ask, a.staffUrl].join("\n"),
+    text: [l.heading, "", l.who, l.what, l.pay, l.how, ...(l.ask ? ["", l.ask] : []), a.staffUrl].join("\n"),
   };
 }
 

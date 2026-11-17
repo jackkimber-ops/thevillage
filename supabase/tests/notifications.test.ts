@@ -165,19 +165,39 @@ describe("email outbox", () => {
       expect(kinds).toEqual([{ kind: "session_cancelled" }]);
     }));
 
-  it("S25: the studio hears about a new customer's first booking and unpaid drop-ins, not staff bookings", () =>
+  it("S25, changed 17 Nov (#50): the studio hears about every booking and cancellation, with who did it", () =>
     inTx(async (db) => {
-      const manager = await db.staff("manager");
+      const manager = await db.staff("manager", { name: "Phuong" });
       const c = await db.customer({ name: "Lan Pham" });
+      await db.sellPack(manager, c.customerId);
       const first = await db.book(c.user!, await db.session());
       const second = await db.book(c.user!, await db.session({ startsIn: "4 days" }));
       const [byStaff] = await db.as(manager, "select public.staff_add_customer('Walk In', '+84911112222', null, 'call') as id");
       const staffBooking = await db.book(manager, await db.session({ startsIn: "5 days" }), { customerId: byStaff.id });
-      const alerts = await db.su("select booking_id, payload->>'first' as first from public.notifications where kind = 'staff_alert' order by created_at");
-      expect(alerts).toEqual([{ booking_id: first, first: "true" }, { booking_id: second, first: "false" }]);
-      void staffBooking;
+      await db.as(c.user!, "select public.cancel_booking($1)", [second]);
+      await db.su("set constraints all immediate"); // what happens at commit
+      const alerts = await db.su(
+        "select booking_id, payload->>'event' as event, payload->>'first' as first, payload->>'by' as by, payload->>'credit_back' as back from public.notifications where kind = 'staff_alert' order by id");
+      expect(alerts).toEqual([
+        { booking_id: first, event: "booked", first: "true", by: null, back: null },
+        { booking_id: second, event: "booked", first: "false", by: null, back: null },
+        { booking_id: staffBooking, event: "booked", first: "true", by: "Phuong", back: null },
+        { booking_id: second, event: "cancelled", first: null, by: null, back: "true" },
+      ]);
       const claimed = await db.as("service", "select kind, full_name, phone from public.claim_notifications(50) where kind = 'staff_alert'");
       expect(claimed[0]).toMatchObject({ full_name: "Lan Pham" });
+    }));
+
+  it("a whole session cancelled by staff doesn't send a studio alert per booking", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer();
+      const s = await db.session();
+      const id = await db.book(c.user!, s);
+      await db.as(manager, "select public.cancel_session($1, 'Flooding')", [s]);
+      await db.su("set constraints all immediate");
+      const alerts = await db.su("select payload->>'event' as event from public.notifications where kind = 'staff_alert' and booking_id = $1", [id]);
+      expect(alerts).toEqual([{ event: "booked" }]);
     }));
 
   it("S22: a customer added by staff with an email gets a welcome email", () =>

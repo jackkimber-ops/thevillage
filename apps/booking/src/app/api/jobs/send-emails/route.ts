@@ -17,7 +17,7 @@ function authorised(request: Request) {
 
 type Claimed = {
   id: number; kind: EmailKind | "staff_alert" | "instructor_session_moved" | "low_signups";
-  payload: { old_starts_at?: string; reason?: string; late?: boolean; credit_back?: boolean; first?: boolean; booked?: number; day?: string; min?: number; classes?: unknown[] };
+  payload: { old_starts_at?: string; reason?: string; late?: boolean; credit_back?: boolean; first?: boolean; booked?: number; day?: string; min?: number; classes?: unknown[]; event?: string; source?: string; by?: string | null };
   staff_email: string | null; staff_name: string | null;
   email: string | null; language: "en" | "vi"; full_name: string; phone: string | null; preferred_contact: "whatsapp" | "zalo" | "call";
   first_name: string; session_title: string; session_kind: SessionKind; starts_at: string; ends_at: string; child_names: string[];
@@ -90,9 +90,11 @@ export async function POST(request: Request) {
     if (n.kind === "staff_alert") {
       try {
         const email = await renderStaffAlert({
+          event: (n.payload?.event as "booked" | "cancelled" | "late_cancelled" | undefined) ?? "booked",
           first: Boolean(n.payload?.first), fullName: n.full_name, phone: n.phone, preferredContact: n.preferred_contact, email: n.email,
           title: n.session_title, startsAt: n.starts_at, unpaid: n.unpaid, amountDueVnd: Number(n.amount_due_vnd), credits: n.credits,
-          packName: n.pack_name, staffUrl: staffUrlFor(appUrl),
+          packName: n.pack_name, freeTrial: n.free_trial, childNames: n.child_names ?? [], source: n.payload?.source ?? null,
+          by: n.payload?.by ?? null, creditBack: Boolean(n.payload?.credit_back), reason: n.payload?.reason ?? null, staffUrl: staffUrlFor(appUrl),
         });
         const res = await resend.emails.send({ from, to: alertTo, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
         if (res.error) throw new Error(res.error.message);
