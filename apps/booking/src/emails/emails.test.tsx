@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { renderEmail } from "./render";
-import { renderLowSignups, renderStaffAlert, staffUrlFor } from "./StaffAlertEmail";
+import { renderDailySummary, renderLowSignups, renderStaffAlert, staffUrlFor } from "./StaffAlertEmail";
 import type { EmailData } from "./types";
 
 const settings = {
@@ -137,6 +137,30 @@ describe("studio alerts for all activity (change #50)", () => {
     expect(late.subject).toBe("Late cancellation: Henny, Core & Cuddle, Fri 22 Nov, 9:00");
     expect(late.text).toContain("Their credit is used (late), unless a manager restores it");
     expect(late.text).toContain("Cancelled by Caroline (Child ill)");
+  });
+});
+
+describe("daily summary (change #51)", () => {
+  it("today's activity and tomorrow's sessions with who is booked", async () => {
+    const e = await renderDailySummary({
+      day: "2030-11-21", staffUrl: "https://staff.thevillagesaigon.com",
+      activity: [
+        { at: "2030-11-21T09:13:00Z", event: "booked", fullName: "Henny", title: "Core & Cuddle", startsAt: "2030-11-22T02:00:00Z", children: ["Xavi"], onPack: true, unpaid: false, freeTrial: false, amountDueVnd: 0, first: false, source: "online", by: null },
+        { at: "2030-11-21T10:00:00Z", event: "late_cancelled", fullName: "Kim Willis", title: "Core & Cuddle", startsAt: "2030-11-22T02:00:00Z", children: [], onPack: true, unpaid: false, freeTrial: false, amountDueVnd: 0, first: false, source: "online", by: "Caroline" },
+      ],
+      tomorrow: [
+        { title: "Core & Cuddle", startsAt: "2030-11-22T02:00:00Z", kind: "class", capacity: 10, taken: 1, instructor: "Phuong",
+          people: [{ name: "Henny", children: ["Xavi"], unnamed: 0, onPack: true, unpaid: false, amountDueVnd: 0, freeTrial: false, first: false }] },
+        { title: "Open Play", startsAt: "2030-11-22T03:00:00Z", kind: "open_play", capacity: 10, taken: 0, instructor: null, people: [] },
+      ],
+    });
+    expect(e.subject).toBe("Daily summary, Thu 21 Nov: 1 booking, 1 cancellation · tomorrow 2 sessions, 1 booked");
+    expect(e.text).toContain("16:13 · Henny + Xavi booked Core & Cuddle, Fri 22 Nov 9:00 · credit · online");
+    expect(e.text).toContain("Kim Willis late-cancelled Core & Cuddle, Fri 22 Nov 9:00 · by Caroline");
+    expect(e.text).toContain("9:00 Core & Cuddle (Phuong) · 1/10 booked");
+    expect(e.text).toContain("  Henny + Xavi · credit");
+    expect(e.text).toContain("10:00 Open Play · 0/10 children");
+    expect(e.text).toContain("Nobody booked");
   });
 });
 

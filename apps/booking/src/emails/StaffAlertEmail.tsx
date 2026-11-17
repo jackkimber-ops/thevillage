@@ -198,3 +198,85 @@ export async function renderLowSignups(l: LowSignups) {
     text: [x.heading, "", x.intro, ...x.rows, "", x.ask, l.staffUrl].join("\n"),
   };
 }
+
+// Daily summary (Jack, 17 Nov; change #51): at 21:05, after the cancellation cut-off, to the alert address.
+export interface DailySummary {
+  day: string; // YYYY-MM-DD (Vietnam)
+  activity: Array<{
+    at: string; event: string; fullName: string; title: string; startsAt: string; children: string[];
+    onPack: boolean; unpaid: boolean; freeTrial: boolean; amountDueVnd: number; first: boolean; source: string; by: string | null;
+  }>;
+  tomorrow: Array<{
+    title: string; startsAt: string; kind: string; capacity: number | null; taken: number; instructor: string | null;
+    people: Array<{ name: string; children: string[]; unnamed: number; onPack: boolean; unpaid: boolean; amountDueVnd: number; freeTrial: boolean; first: boolean }>;
+  }>;
+  staffUrl: string;
+}
+
+const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+
+function summaryLines(d: DailySummary) {
+  const tomorrowKey = (() => { const t = new Date(`${d.day}T00:00:00Z`); t.setUTCDate(t.getUTCDate() + 1); return t.toISOString().slice(0, 10); })();
+  const bookings = d.activity.filter((a) => a.event === "booked").length;
+  const cancels = d.activity.length - bookings;
+  const booked = d.tomorrow.reduce((n, s) => n + s.people.length, 0);
+  const pay = (p: { onPack: boolean; unpaid: boolean; freeTrial: boolean; amountDueVnd: number }) =>
+    p.freeTrial ? "free trial" : p.onPack ? "credit" : p.unpaid ? `pay on the day ${formatVnd(p.amountDueVnd, "en")}` : "paid";
+  const who = (name: string, kids: string[], unnamed = 0) =>
+    `${name}${kids.length ? ` + ${kids.join(", ")}` : ""}${unnamed ? ` + ${plural(unnamed, "child", "children")}` : ""}`;
+  const activity = d.activity.map((a) => {
+    const verb = a.event === "booked" ? "booked" : a.event === "late_cancelled" ? "late-cancelled" : "cancelled";
+    const how = a.by ? `by ${a.by}` : a.source === "guest" ? "guest, online" : "online";
+    return `${formatTime(a.at, "en")} · ${who(a.fullName, a.children)} ${verb} ${a.title}, ${formatDayShort(vnDateKey(a.startsAt), "en")} ${formatTime(a.startsAt, "en")} · ${a.event === "booked" ? `${pay(a)} · ` : ""}${how}${a.event === "booked" && a.first ? " · new customer" : ""}`;
+  });
+  const sessions = d.tomorrow.map((s) => ({
+    head: `${formatTime(s.startsAt, "en")} ${s.title}${s.instructor ? ` (${s.instructor})` : ""} · ${s.capacity !== null ? `${s.taken}/${s.capacity}` : s.taken} ${s.kind === "open_play" ? "children" : "booked"}`,
+    people: s.people.length === 0 ? ["Nobody booked"] : s.people.map((p) => `${who(p.name, p.children, p.unnamed)} · ${pay(p)}${p.first ? " · first visit" : ""}`),
+  }));
+  return {
+    subject: `Daily summary, ${formatDayShort(d.day, "en")}: ${plural(bookings, "booking", "bookings")}, ${plural(cancels, "cancellation", "cancellations")} · tomorrow ${plural(d.tomorrow.length, "session", "sessions")}, ${booked} booked`,
+    heading: `daily summary · ${formatDayLong(d.day, "en").toLowerCase()}`,
+    todayTitle: "Today's bookings and cancellations",
+    activity: activity.length ? activity : ["No bookings or cancellations today."],
+    tomorrowTitle: `Tomorrow, ${formatDayLong(tomorrowKey, "en")} (final: online cancelling has closed)`,
+    sessions,
+    none: d.tomorrow.length === 0 ? "No sessions tomorrow." : null,
+  };
+}
+
+function DailySummaryHtml(d: DailySummary) {
+  const l = summaryLines(d);
+  return (
+    <Html lang="en">
+      <Head />
+      <Body style={{ margin: 0, background: "#FFF4E6", fontFamily: "Helvetica, Arial, sans-serif", color: "#3B3A2A" }}>
+        <Container style={{ maxWidth: 560, margin: "0 auto", padding: "24px 18px" }}>
+          <Heading as="h1" style={{ fontWeight: 500, color: "#5E5B3B", fontSize: 22, margin: "0 0 12px" }}>{l.heading}</Heading>
+          <Text style={{ fontSize: 15, margin: "8px 0 4px", fontWeight: 600 }}>{l.todayTitle}</Text>
+          {l.activity.map((r, i) => <Text key={i} style={{ fontSize: 14, margin: "2px 0" }}>{r}</Text>)}
+          <Text style={{ fontSize: 15, margin: "18px 0 4px", fontWeight: 600 }}>{l.tomorrowTitle}</Text>
+          {l.none && <Text style={{ fontSize: 14, margin: "2px 0" }}>{l.none}</Text>}
+          {l.sessions.map((s, i) => (
+            <div key={i}>
+              <Text style={{ fontSize: 14, margin: "10px 0 2px", fontWeight: 600 }}>{s.head}</Text>
+              {s.people.map((p, j) => <Text key={j} style={{ fontSize: 14, margin: "1px 0 1px 14px", color: "#66624A" }}>{p}</Text>)}
+            </div>
+          ))}
+          <Button href={d.staffUrl} style={{ background: "#5E5B3B", color: "#FFF4E6", borderRadius: 26, padding: "12px 22px", fontWeight: 600, fontSize: 15, marginTop: 18 }}>
+            Open the dashboard
+          </Button>
+        </Container>
+      </Body>
+    </Html>
+  );
+}
+
+export async function renderDailySummary(d: DailySummary) {
+  const l = summaryLines(d);
+  return {
+    subject: l.subject,
+    html: await render(DailySummaryHtml(d)),
+    text: [l.heading, "", l.todayTitle, ...l.activity, "", l.tomorrowTitle, ...(l.none ? [l.none] : []),
+      ...l.sessions.flatMap((s) => ["", s.head, ...s.people.map((p) => `  ${p}`)]), "", d.staffUrl].join("\n"),
+  };
+}

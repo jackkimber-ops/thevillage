@@ -269,6 +269,31 @@ describe("minimum sign-ups (change #44)", () => {
     }));
 });
 
+describe("daily summary (change #51)", () => {
+  it("21:05: today's bookings and cancellations, and tomorrow's sessions with who is booked; once a day", () =>
+    inTx(async (db) => {
+      const c = await db.customer({ name: "Henny Summary" });
+      const kid = await db.child(c.customerId, "Xavi");
+      const tomorrow = await db.session({ title: "Summary Class" });
+      await db.su(`update public.sessions set starts_at = ((public.vn_date(now()) + 1) + time '06:40') at time zone 'Asia/Ho_Chi_Minh',
+                   ends_at = ((public.vn_date(now()) + 1) + time '07:40') at time zone 'Asia/Ho_Chi_Minh' where id = $1`, [tomorrow]);
+      await db.book(c.user!, tomorrow, { childIds: [kid] });
+      const other = await db.book(c.user!, await db.session({ startsIn: "5 days" }));
+      await db.as(c.user!, "select public.cancel_booking($1)", [other]);
+      const [{ n }] = await db.su("select public.queue_daily_summary() as n");
+      expect(n).toBe(1);
+      const [{ again }] = await db.su("select public.queue_daily_summary() as again");
+      expect(again).toBe(0);
+      const [row] = await db.su("select payload from public.notifications where kind = 'daily_summary'");
+      const mine = row.payload.activity.filter((a: { full_name: string }) => a.full_name === "Henny Summary");
+      expect(mine.map((a: { event: string }) => a.event).sort()).toEqual(["booked", "booked", "cancelled"]);
+      const cls = row.payload.tomorrow.find((s: { title: string }) => s.title === "Summary Class");
+      expect(cls.people).toEqual([expect.objectContaining({ name: "Henny Summary", children: ["Xavi"], unpaid: true })]);
+      const claimed = await db.su("select kind from public.claim_notifications(100) where kind = 'daily_summary'");
+      expect(claimed).toHaveLength(1);
+    }));
+});
+
 describe("calendar feeds", () => {
   it("a customer's feed shows their bookings; a new link replaces the old one", () =>
     inTx(async (db) => {
