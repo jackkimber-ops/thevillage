@@ -69,3 +69,11 @@ a { color: var(--forrest-deep); }
 .icon-circle { width: 52px; height: 52px; border-radius: 50%; background: var(--sky); color: var(--deep, #5E5B3B); display: inline-flex; align-items: center; justify-content: center; }
 .icon-circle svg { width: 28px; height: 28px; }
 .icon-links a:hover .icon-circle, .icon-links a:focus-visible .icon-circle { background: var(--sage); }
+
+/* Visit us (change #54): the front door, never cropped (arch to bottom step), beside the map; stacked on phones. */
+.find-pics { flex: 1 1 480px; display: flex; gap: 16px; align-items: stretch; }
+.find-pics .map { flex: 1 1 0; min-height: 320px; }
+.door-pic { flex: 0 0 42%; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.door-pic img { width: 100%; height: auto; border-radius: 999px 999px 22px 22px; display: block; }
+.door-pic figcaption { font-size: 14px; }
+@media (max-width: 600px) { .find-pics { flex-direction: column; } .door-pic { flex-basis: auto; } .find-pics .map { min-height: 240px; } }

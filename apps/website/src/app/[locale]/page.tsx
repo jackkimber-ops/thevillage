@@ -124,11 +124,19 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             )}
           </div>
           {/* Change list #7: a picture of the map (owners' Google Maps screenshot); tapping opens Google Maps. */}
-          <a className="map" href={s.mapsUrl ?? undefined} target="_blank" rel="noopener noreferrer" aria-label={t("mapAlt")}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/map-the-village.jpg" alt="" width={741} height={372} />
-            <span className="map-credit">Map data © Google</span>
-          </a>
+          {/* Jack, 17 Nov (change #54): the front door next to the map, shown whole with its steps. */}
+          <div className="find-pics">
+            <figure className="door-pic">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/photos/front-door-steps.webp" alt={t("photos.door")} width={718} height={1500} loading="lazy" />
+              <figcaption className="muted">{t("photos.doorCaption")}</figcaption>
+            </figure>
+            <a className="map" href={s.mapsUrl ?? undefined} target="_blank" rel="noopener noreferrer" aria-label={t("mapAlt")}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/brand/map-the-village.jpg" alt="" width={741} height={372} />
+              <span className="map-credit">Map data © Google</span>
+            </a>
+          </div>
         </section>
       </main>
 
