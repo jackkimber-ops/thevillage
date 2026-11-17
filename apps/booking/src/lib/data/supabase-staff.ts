@@ -273,6 +273,13 @@ export const supabaseStaff: StaffApi = {
     check(error);
     return data as number;
   },
+  async addPackFromBefore(d) {
+    const { data, error } = await (await createClient()).rpc("add_pack_from_before", {
+      p_customer_id: d.customerId, p_pack_type_id: d.packTypeId, p_valid_from: d.validFrom, p_credits_left: d.creditsLeft,
+    });
+    check(error);
+    return data as string;
+  },
   async extendPack(id, newLastDay, reason) {
     const { error } = await (await createClient()).rpc("extend_pack", { p_customer_pack_id: id, p_new_valid_to: newLastDay, p_reason: reason });
     check(error);
