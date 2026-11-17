@@ -4,7 +4,7 @@ import { Notice } from "@/components/staff/Notice";
 import { EditCustomerForm } from "@/components/staff/EditCustomerForm";
 import { SellPackForm } from "@/components/staff/SellPackForm";
 import { data, staffApi } from "@/lib/data";
-import { extendPackAction, recordPaymentAction, removeChildAction, restoreCreditAction, saveChildAction, setCustomerActiveAction, staffCancelBookingAction } from "@/lib/actions/staff";
+import { countInPackAction, extendPackAction, recordPaymentAction, removeChildAction, restoreCreditAction, saveChildAction, setCustomerActiveAction, staffCancelBookingAction } from "@/lib/actions/staff";
 import { WAY_LABEL } from "@/lib/contact-ways";
 import { formatVnd } from "@/lib/money";
 import { requireStaff } from "@/lib/staff-guard";
@@ -24,6 +24,29 @@ function soldMessage(c: NonNullable<Awaited<ReturnType<ReturnType<typeof staffAp
   return `Pack sold and payment recorded. ${list} ${on.length === 1 ? "is" : "are"} counted in it: ${pack.remaining} of ${pack.credits} credits left.`;
 }
 
+type Booking = NonNullable<Awaited<ReturnType<ReturnType<typeof staffApi>["customer"]>>>["bookings"][number];
+
+// Managers: count a drop-in (up to 30 days back) in the customer's pack, e.g. they bought a pack after the class
+// (change #55). The database picks the pack and refuses if none covers it.
+function CountInPack({ b, back }: { b: Booking; back: string }) {
+  return (
+    <details className="count-in-pack">
+      <summary className="small-link">Count in a pack</summary>
+      <form action={countInPackAction} className="staff-actions" style={{ marginTop: 6 }}>
+        <input type="hidden" name="bookingId" value={b.id} />
+        <input type="hidden" name="back" value={back} />
+        {b.paid && (
+          <label className="small" style={{ display: "flex", gap: 6, alignItems: "flex-start" }}>
+            <input type="checkbox" name="removePayment" />
+            <span>They didn&apos;t pay this drop-in separately: remove the {formatVnd(b.amountDueVnd, "en")} payment</span>
+          </label>
+        )}
+        <button className="sbtn2 sbtn-sm" type="submit">Use a credit from their pack</button>
+      </form>
+    </details>
+  );
+}
+
 // S5 Customer profile (with S6 Sell a pack for managers).
 export default async function CustomerPage({ params, searchParams }: PageProps<"/staff/customers/[id]">) {
   const { id } = await params;
@@ -40,7 +63,9 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
   const back = `/staff/customers/${id}`;
   const upcoming = c.bookings.filter((b) => b.status === "booked" && new Date(b.startsAt) > new Date());
   const history = c.bookings.filter((b) => !upcoming.includes(b)).slice(0, 15);
-  const ok = sp.added ? "Customer added." : sp.sold ? soldMessage(c, String(sp.sold)) : sp.extended ? "Pack extended." : sp.booked ? "Booked in." : sp.updated ? "Details saved." : sp.child ? "Child saved." : sp.child_removed ? "Child removed."
+  const canCount = (b: Booking) => me.role === "manager" && !b.packId && !b.freeTrial && ["booked", "attended"].includes(b.status)
+    && Date.now() - new Date(b.startsAt).getTime() <= 30 * 86_400_000 && c.packs.some((p) => p.remaining > 0);
+  const ok = sp.counted ? "Counted in their pack." : sp.added ? "Customer added." : sp.sold ? soldMessage(c, String(sp.sold)) : sp.extended ? "Pack extended." : sp.booked ? "Booked in." : sp.updated ? "Details saved." : sp.child ? "Child saved." : sp.child_removed ? "Child removed."
     : sp.deactivated ? "Customer deactivated: they can't be booked in until reactivated." : sp.reactivated ? "Customer reactivated." : null;
   const monthYear = (d: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", month: "short", year: "numeric" }).format(new Date(`${d}T00:00:00Z`));
 
@@ -198,6 +223,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
                     <input type="hidden" name="back" value={back} />
                     <button className="sbtn2 sbtn-sm" type="submit">Cancel</button>
                   </form>
+                  {canCount(b) && <CountInPack b={b} back={back} />}
                 </div>
               </div>
             ))}
@@ -207,7 +233,13 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
             {history.length === 0 && <p className="muted" style={{ margin: 0 }}>Nothing yet.</p>}
             {history.map((b) => (
               <div key={b.id} className="list-row">
-                <span>{b.title} · {formatDayShort(vnDateKey(b.startsAt), "en")} · <span className="muted">{STATUS[b.status]}</span></span>
+                <span>
+                  {b.title} · {formatDayShort(vnDateKey(b.startsAt), "en")} · <span className="muted">{STATUS[b.status]}</span>
+                  {["booked", "attended"].includes(b.status) && (
+                    <span className="muted small"> · {b.freeTrial ? "Free trial" : b.packId ? `${b.credits} credit · ${b.packName}` : b.paid ? `Paid ${formatVnd(b.amountDueVnd, "en")}` : `Drop-in, unpaid ${formatVnd(b.amountDueVnd, "en")}`}</span>
+                  )}
+                </span>
+                {canCount(b) && <CountInPack b={b} back={back} />}
                 {me.role === "manager" && b.credits > 0 && ["late_cancelled", "no_show"].includes(b.status) && (
                   <form action={restoreCreditAction} className="staff-actions">
                     <input type="hidden" name="bookingId" value={b.id} />

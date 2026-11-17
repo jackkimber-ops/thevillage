@@ -260,6 +260,10 @@ export const supabaseStaff: StaffApi = {
     const { error } = await (await createClient()).rpc("restore_credit", { p_booking_id: id, p_reason: reason });
     check(error);
   },
+  async countInPack(id, removeDropInPayment) {
+    const { error } = await (await createClient()).rpc("count_booking_in_pack", { p_booking_id: id, p_remove_drop_in_payment: removeDropInPayment });
+    check(error);
+  },
   async extendPack(id, newLastDay, reason) {
     const { error } = await (await createClient()).rpc("extend_pack", { p_customer_pack_id: id, p_new_valid_to: newLastDay, p_reason: reason });
     check(error);

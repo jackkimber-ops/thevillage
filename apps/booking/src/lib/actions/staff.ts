@@ -137,6 +137,16 @@ export async function restoreCreditAction(form: FormData) {
   redirect(back(form, "/staff")); // fresh page: drops an old "Booked in." note
 }
 
+export async function countInPackAction(form: FormData) {
+  try {
+    await staffApi().countInPack(str(form, "bookingId"), str(form, "removePayment") === "on");
+  } catch (e) {
+    redirect(`${back(form, "/staff")}?error=${code(e)}`);
+  }
+  revalidatePath(back(form, "/staff"));
+  redirect(`${back(form, "/staff")}?counted=1`);
+}
+
 export async function extendPackAction(form: FormData) {
   try {
     await staffApi().extendPack(str(form, "packId"), str(form, "newLastDay"), str(form, "reason"));

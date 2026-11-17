@@ -382,3 +382,61 @@ describe("selling packs", () => {
       ).toBe("managers_only");
     }));
 });
+
+describe("count a class in a pack (change #55)", () => {
+  // A class that ended `ago`, closed by the 15-minute job, with this customer booked into it (pay on the day).
+  async function pastDropIn(db: Parameters<Parameters<typeof inTx>[0]>[0], customer: { user?: Who | null }, ago = "1 day") {
+    const session = await db.session();
+    const booking = await db.book(customer.user!, session);
+    await db.su(`update public.sessions set starts_at = now() - $2::interval - interval '1 hour', ends_at = now() - $2::interval where id = $1`, [session, ago]);
+    await db.su("select public.close_finished_sessions()");
+    return booking;
+  }
+
+  it("Dakota's case: came yesterday as a drop-in, bought a pack today; the class becomes credit 1", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer();
+      const yesterday = await pastDropIn(db, c);
+      const [{ d }] = await db.su("select (public.vn_date(now()) - 2)::text d");
+      const pack = await db.sellPack(manager, c.customerId, PACKS.ten, d);
+      expect(await db.booking(yesterday)).toMatchObject({ unpaid: true, customer_pack_id: null }); // not same day: not switched
+      await db.as(manager, "select public.count_booking_in_pack($1)", [yesterday]);
+      expect(await db.booking(yesterday)).toMatchObject({ unpaid: false, customer_pack_id: pack, credits: 1, amount_due_vnd: "0" });
+      expect(await db.balance(pack)).toBe(9);
+      const kinds = await db.su("select kind from public.credit_ledger where booking_id = $1 order by id", [yesterday]);
+      expect(kinds.map((k) => k.kind)).toEqual(["reserve", "use"]);
+    }));
+
+  it("a drop-in payment recorded by mistake: refused unless the manager removes it, then gone from the money", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const c = await db.customer();
+      const yesterday = await pastDropIn(db, c);
+      await db.as(manager, "select public.record_payment($1, 450000, 'qr', 'drop_in', $2)", [c.customerId, yesterday]);
+      const [{ d }] = await db.su("select (public.vn_date(now()) - 2)::text d");
+      await db.sellPack(manager, c.customerId, PACKS.ten, d);
+      expect(await db.fails(manager, "select public.count_booking_in_pack($1)", [yesterday])).toBe("drop_in_already_paid");
+      await db.as(manager, "select public.count_booking_in_pack($1, true)", [yesterday]);
+      expect(await db.su("select amount_vnd from public.payments where booking_id = $1", [yesterday])).toEqual([]);
+      const [a] = await db.su("select count(*)::int n from public.audit_log where action = 'remove_payment'");
+      expect(a.n).toBe(1);
+    }));
+
+  it("refused: instructors, no pack that covers it, already on a pack, more than 30 days ago", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const instructor = await db.staff("instructor", { access: "all_customers" });
+      const c = await db.customer();
+      const recent = await pastDropIn(db, c);
+      expect(await db.fails(instructor, "select public.count_booking_in_pack($1)", [recent])).toBe("managers_only");
+      expect(await db.fails(manager, "select public.count_booking_in_pack($1)", [recent])).toBe("no_pack_covers");
+      const old = await pastDropIn(db, c, "31 days");
+      const [{ d }] = await db.su("select (public.vn_date(now()) - 40)::text d");
+      await db.sellPack(manager, c.customerId, PACKS.twenty, d);
+      expect(await db.fails(manager, "select public.count_booking_in_pack($1)", [old])).toBe("too_long_ago");
+      await db.as(manager, "select public.count_booking_in_pack($1)", [recent]);
+      expect(await db.fails(manager, "select public.count_booking_in_pack($1)", [recent])).toBe("already_on_pack");
+    }));
+});
+

@@ -243,6 +243,25 @@ export const demoStaff: StaffApi = {
     p.remaining += b.credits;
     p.used -= b.credits;
   },
+  async countInPack(id, removeDropInPayment) {
+    await requireManager();
+    const b = store.bookings.find((x) => x.id === id);
+    if (!b || !["booked", "attended"].includes(b.status)) throw new ActionError("booking_not_found");
+    if (b.packId) throw new ActionError("already_on_pack");
+    if (b.freeTrial) throw new ActionError("free_trial_not_counted");
+    const s = store.sessions.find((x) => x.id === b.sessionId)!;
+    if (Date.now() - new Date(s.startsAt).getTime() > 30 * 86_400_000) throw new ActionError("too_long_ago");
+    if (b.paid && !removeDropInPayment) throw new ActionError("drop_in_already_paid");
+    const needed = kindOf(s) === "open_play" ? Math.max(b.childIds.length + b.unnamedChildren, 1) : 1;
+    const day = vnDateKey(s.startsAt);
+    const pack = store.customers.get(b.customerId)?.packs
+      .filter((p) => p.sessionTypeIds.includes(s.sessionTypeId) && p.validFrom <= day && day <= p.lastDay && p.remaining >= needed)
+      .sort((x, y) => x.lastDay.localeCompare(y.lastDay))[0];
+    if (!pack) throw new ActionError("no_pack_covers");
+    Object.assign(b, { unpaid: false, paid: false, amountDueVnd: 0, packId: pack.id, credits: needed });
+    pack.remaining -= needed;
+    pack.reserved += needed;
+  },
   async extendPack(id, newLastDay, reason) {
     await requireManager();
     if (!reason.trim()) throw new ActionError("reason_required");
