@@ -76,6 +76,8 @@ export type DemoBooking = {
   firstBooking: boolean;
   contacted: { at: string; by: string; way: ContactWay } | null;
   createdAt: string;
+  cancelledAt?: string;
+  createdBy?: string | null;
 };
 
 export type DemoCustomer = {
@@ -249,6 +251,7 @@ export function cancel(bookingId: string, byStaff: boolean, reason = "Cancelled"
   const inTime = Date.now() < cutoff(s.startsAt).getTime();
   if (!byStaff && !inTime) throw new ActionError("cutoff_passed");
   b.status = inTime ? "cancelled" : "late_cancelled";
+  b.cancelledAt = new Date().toISOString();
   const c = store.customers.get(b.customerId)!;
   const pack = c.packs.find((p) => p.id === b.packId);
   if (pack) {

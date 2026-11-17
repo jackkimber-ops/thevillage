@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CalendarFeed } from "@/components/CalendarFeed";
 import { Notice } from "@/components/staff/Notice";
+import { AutoRefresh } from "@/components/staff/AutoRefresh";
 import { FEED_TEXT, HOME_SCREEN_TEXT } from "@/lib/staff-feed-text";
 import { HomeScreenTip } from "@/components/HomeScreenTip";
 import { data, staffApi, type ContactItem } from "@/lib/data";
@@ -35,8 +36,8 @@ export default async function Dashboard({ searchParams }: PageProps<"/staff">) {
   const me = await requireStaff();
   const api = staffApi();
   const today = vnDateKey(new Date());
-  const [contacts, sessions, settings] = await Promise.all([
-    api.contactList(), api.timetable(vnDayStart(today), vnDayStart(addDays(today, 1))), data().settings(),
+  const [contacts, sessions, settings, activity] = await Promise.all([
+    api.contactList(), api.timetable(vnDayStart(today), vnDayStart(addDays(today, 1))), data().settings(), api.recentActivity(7, 30),
   ]);
   const todo = contacts.filter((c) => !c.contactedAt);
   const doneToday = contacts.filter((c) => c.contactedAt);
@@ -124,6 +125,30 @@ export default async function Dashboard({ searchParams }: PageProps<"/staff">) {
           ))}
         </section>
       </div>
+      <section className="card" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <div className="staff-head">
+          <h2 className="heading sec" style={{ margin: 0 }}>latest bookings</h2>
+          <span className="muted small">last 7 days · updates every minute</span>
+        </div>
+        {activity.length === 0 && <p className="muted" style={{ margin: 0 }}>No bookings or cancellations in the last 7 days.</p>}
+        {activity.map((a) => (
+          <div key={`${a.bookingId}-${a.event}`} className={`activity-row${a.event !== "booked" ? " activity-cancel" : ""}`}>
+            <span className="activity-when small muted">{fmtWhen(a.at, today)}</span>
+            <span style={{ minWidth: 0 }}>
+              <Link href={`/staff/customers/${a.customerId}`}><strong>{a.fullName}</strong></Link>
+              {a.childNames.length > 0 ? ` + ${a.childNames.join(", ")}` : ""}
+              {a.event === "booked" ? " booked " : a.event === "late_cancelled" ? " late-cancelled " : " cancelled "}
+              <Link href={`/staff/sessions/${a.sessionId}/check-in`}>{a.title} · {fmtDay(a.startsAt)}</Link>
+              <br />
+              <span className="small muted">
+                {a.freeTrial ? "free trial" : a.onPack ? "credit" : a.unpaid ? "pay on the day" : "paid"}
+                {a.byStaff ? ` · by ${a.byStaff}` : a.source === "guest" ? " · guest, online" : " · online"}
+              </span>
+            </span>
+          </div>
+        ))}
+      </section>
+      <AutoRefresh seconds={60} />
       <HomeScreenTip text={HOME_SCREEN_TEXT} hideKey="village:staff-home-screen-tip" />
       <CalendarFeed text={me.role === "manager" ? { ...FEED_TEXT, title: "Add the studio's sessions to my calendar", body: "Managers' calendars show every session. Titles and times only, no customer names." } : FEED_TEXT} staff />
     </>

@@ -42,6 +42,9 @@ test("dashboard: get-in-touch toggle: no answer, Not contacted → Contacted ✓
   await expect(guest.getByRole("heading", { name: "you're booked" })).toBeVisible();
 
   await staffLogin(page, "manager@village.test");
+  // Change #49: every booking also shows under latest bookings.
+  await expect(page.locator(".activity-row", { hasText: name })).toContainText(/booked .* · (Mon|Tue|Wed|Thu|Fri|Sat|Sun) \d{1,2} [A-Z][a-z]{2}, \d{1,2}:\d{2}/);
+  await expect(page.locator(".activity-row", { hasText: name })).toContainText("pay on the day · guest, online");
   const row = page.locator(".contact-row", { hasText: name });
   await expect(row).toContainText("New · guest");
   await expect(row).toContainText("prefers Zalo");
