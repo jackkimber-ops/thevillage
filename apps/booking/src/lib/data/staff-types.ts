@@ -105,6 +105,27 @@ export interface ContactItem {
   lastTry: { at: string; by: string | null; way: ContactWay } | null;
 }
 
+/** Change #49: a booking made or cancelled, for the dashboard's latest bookings. */
+export interface ActivityItem {
+  at: string;
+  event: "booked" | "cancelled" | "late_cancelled";
+  bookingId: string;
+  customerId: string;
+  fullName: string;
+  childNames: string[];
+  children: number;
+  parents: number;
+  sessionId: string;
+  title: string;
+  startsAt: string;
+  kind: string;
+  source: "online" | "staff" | "guest";
+  onPack: boolean;
+  unpaid: boolean;
+  freeTrial: boolean;
+  byStaff: string | null;
+}
+
 export type ContactWay = "whatsapp" | "zalo" | "call" | "in_person";
 export type ContactOutcome = "contacted" | "no_answer" | "undone";
 export interface ContactLogEntry { at: string; outcome: ContactOutcome; way: ContactWay | null; staffName: string | null; title: string; startsAt: string }
@@ -211,6 +232,8 @@ export interface StaffApi {
   /** Back on the to-contact list; logged. */
   undoContact(bookingId: string): Promise<void>;
   contactHistory(customerId: string): Promise<ContactLogEntry[]>;
+  /** Bookings made and cancelled in the last few days, newest first (change #49). */
+  recentActivity(days?: number, limit?: number): Promise<ActivityItem[]>;
   markAttendance(bookingId: string, status: "booked" | "attended" | "no_show"): Promise<void>;
   cancelBooking(bookingId: string, reason: string | null): Promise<BookingStatus>;
   restoreCredit(bookingId: string, reason: string): Promise<void>;

@@ -292,6 +292,10 @@ a { color: var(--forrest-deep); }
 .extend-pack summary::-webkit-details-marker { display: none; }
 .extend-pack[open] { flex-basis: 100%; }
 .extend-pack[open] form { margin-top: 8px; align-items: center; }
+.activity-row { display: flex; gap: 12px; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--sky); }
+.activity-row:last-of-type { border-bottom: 0; }
+.activity-when { width: 108px; flex: none; font-variant-numeric: tabular-nums; }
+.activity-cancel > span:last-child { color: var(--coral-deep); }
 .contact-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 18px; background: var(--linen); }
 .contact-log { flex-basis: 100%; justify-content: flex-end; align-items: center; }
 .contact-done { background: #f6f3e6; }

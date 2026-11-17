@@ -3,7 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { vnDateKey } from "@/lib/time";
 import { ActionError, type BookingStatus } from "./types";
-import type { ContactOutcome, ContactWay, CustomerProfile, EditableSettings, MoneyRow, PackType, RosterRow, SessionType, StaffApi, StaffListRow, StaffSession } from "./staff-types";
+import type { ActivityItem, ContactOutcome, ContactWay, CustomerProfile, EditableSettings, MoneyRow, PackType, RosterRow, SessionType, StaffApi, StaffListRow, StaffSession } from "./staff-types";
 
 function check(error: { code?: string; message: string } | null) {
   if (!error) return;
@@ -227,6 +227,17 @@ export const supabaseStaff: StaffApi = {
   async undoContact(id) {
     const { error } = await (await createClient()).rpc("undo_contact", { p_booking_id: id });
     check(error);
+  },
+  async recentActivity(days = 7, limit = 30) {
+    const { data, error } = await (await createClient()).rpc("recent_activity", { p_days: days, p_limit: limit });
+    check(error);
+    return (data as Array<Record<string, unknown>>).map((r) => ({
+      at: r.at as string, event: r.event as ActivityItem["event"], bookingId: r.booking_id as string, customerId: r.customer_id as string,
+      fullName: r.full_name as string, childNames: (r.child_names as string[] | null) ?? [], children: Number(r.children), parents: Number(r.parents),
+      sessionId: r.session_id as string, title: r.title as string, startsAt: r.starts_at as string, kind: r.kind as string,
+      source: r.source as ActivityItem["source"], onPack: Boolean(r.on_pack), unpaid: Boolean(r.unpaid), freeTrial: Boolean(r.free_trial),
+      byStaff: (r.by_staff as string | null) ?? null,
+    }));
   },
   async contactHistory(customerId) {
     const { data, error } = await (await createClient()).rpc("contact_history", { p_customer_id: customerId });

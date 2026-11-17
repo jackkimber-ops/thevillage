@@ -7,7 +7,7 @@ import {
   addPack, book, cancel, demoClosures, demoContactLog, instructorName, kindOf, packTypes, sessionTypes, settings, staff, store, taken, type DemoSession,
 } from "./demo-store";
 import { ActionError } from "./types";
-import type { EditableSettings, MoneyRow, StaffApi, StaffMember, StaffSession } from "./staff-types";
+import type { ActivityItem, EditableSettings, MoneyRow, StaffApi, StaffMember, StaffSession } from "./staff-types";
 
 const demoInactive = new Set<string>();
 
@@ -194,6 +194,24 @@ export const demoStaff: StaffApi = {
     if (!b.contacted) return;
     b.contacted = null;
     demoContactLog.push({ bookingId: id, customerId: b.customerId, at: new Date().toISOString(), outcome: "undone", way: null, staffName: m.name });
+  },
+  async recentActivity(days = 7, limit = 30) {
+    await requireStaff();
+    const since = Date.now() - days * 86400_000;
+    const items = store.bookings.flatMap((b) => {
+      const s = store.sessions.find((x) => x.id === b.sessionId)!;
+      const c = store.customers.get(b.customerId)!;
+      const base = {
+        bookingId: b.id, customerId: c.id, fullName: c.fullName ?? "",
+        childNames: c.children.filter((k) => b.childIds.includes(k.id)).map((k) => k.name),
+        children: b.childIds.length + b.unnamedChildren, parents: b.parents, sessionId: s.id, title: s.title, startsAt: s.startsAt,
+        kind: kindOf(s), source: b.source, onPack: Boolean(b.packId), unpaid: b.unpaid && !b.paid, freeTrial: b.freeTrial, byStaff: null,
+      };
+      const out: ActivityItem[] = [{ ...base, at: b.createdAt, event: "booked" }];
+      if (b.cancelledAt && (b.status === "cancelled" || b.status === "late_cancelled")) out.push({ ...base, at: b.cancelledAt, event: b.status as ActivityItem["event"] });
+      return out;
+    });
+    return items.filter((x) => new Date(x.at).getTime() > since).sort((a, b) => b.at.localeCompare(a.at)).slice(0, limit);
   },
   async contactHistory(customerId) {
     await requireStaff();

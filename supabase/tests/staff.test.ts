@@ -489,3 +489,28 @@ describe("booking into a class that has finished (change #43)", () => {
       expect(await db.fails(manager, call, [old, c.customerId, true])).toBe("finished_too_long_ago");
     }));
 });
+
+describe("latest bookings on the dashboard (change #49)", () => {
+  it("lists bookings made and cancelled, newest first, with how they were paid; staff only", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const regular = await db.customer({ name: "Henny Regular" });
+      await db.sellPack(manager, regular.customerId);
+      const first = await db.book(regular.user!, await db.session({ startsIn: "3 days" }));
+      const second = await db.book(regular.user!, await db.session({ startsIn: "4 days" }));
+      await db.su("update public.bookings set created_at = now() - interval '2 hours' where id = $1", [first]);
+      await db.as(regular.user!, "select public.cancel_booking($1)", [second]);
+      const rows = await db.as(manager, "select event, booking_id, full_name, on_pack, unpaid, source from public.recent_activity()");
+      const mine = rows.filter((r) => r.full_name === "Henny Regular");
+      expect(mine.map((r) => [r.event, r.booking_id])).toEqual([
+        ["cancelled", second], ["booked", second], ["booked", first],
+      ]);
+      expect(mine[2]).toMatchObject({ on_pack: true, unpaid: false, source: "online" });
+      expect(await db.fails(regular.user!, "select * from public.recent_activity()")).toBe("staff_only");
+      // Older than the window: not listed.
+      await db.su("update public.bookings set created_at = now() - interval '9 days' where id = $1", [first]);
+      const later = await db.as(manager, "select booking_id from public.recent_activity(7, 30) where event = 'booked'");
+      expect(later.map((r) => r.booking_id)).not.toContain(first);
+    }));
+});
+
