@@ -49,10 +49,10 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             </div>
           </div>
           <div className="hero-pic">
+            {/* Jack, 17 Nov (change #54): a class in action, so people see straight away what happens here. */}
             <div className="arch">
-              {/* Opening photos (Jack, 17 Nov; change #53): the front door until the door video comes. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="arch-photo" src="/photos/front-door.webp" alt={t("photos.door")} width={758} height={1400} />
+              <img className="arch-photo" src="/photos/class-in-action.webp" alt={t("photos.classAction")} width={1600} height={1056} />
             </div>
             <div className="blob" />
           </div>
@@ -124,11 +124,19 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             )}
           </div>
           {/* Change list #7: a picture of the map (owners' Google Maps screenshot); tapping opens Google Maps. */}
-          <a className="map" href={s.mapsUrl ?? undefined} target="_blank" rel="noopener noreferrer" aria-label={t("mapAlt")}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/map-the-village.jpg" alt="" width={741} height={372} />
-            <span className="map-credit">Map data © Google</span>
-          </a>
+          {/* Jack, 17 Nov (change #54): the front door next to the map, shown whole with its steps. */}
+          <div className="find-pics">
+            <figure className="door-pic">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/photos/front-door-steps.webp" alt={t("photos.door")} width={718} height={1500} loading="lazy" />
+              <figcaption className="muted">{t("photos.doorCaption")}</figcaption>
+            </figure>
+            <a className="map" href={s.mapsUrl ?? undefined} target="_blank" rel="noopener noreferrer" aria-label={t("mapAlt")}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/brand/map-the-village.jpg" alt="" width={741} height={372} />
+              <span className="map-credit">Map data © Google</span>
+            </a>
+          </div>
         </section>
       </main>
 
