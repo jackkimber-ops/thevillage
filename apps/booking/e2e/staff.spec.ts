@@ -239,6 +239,46 @@ test("change #43: a manager books someone into a class that finished yesterday: 
   await expect(history.locator(".list-row").first()).toContainText("Attended");
 });
 
+test("change #55: a class from last week counts in a pack bought afterwards (Dakota's case)", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  const name = `Counted ${uid()}`;
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name", { exact: true }).fill(name);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Customer added.")).toBeVisible();
+  const profile = page.url();
+  await page.getByRole("link", { name: "Book in", exact: true }).click();
+  const session = page.getByLabel("Session");
+  await session.selectOption((await session.locator("optgroup option", { hasText: /Pilates Flow/ }).first().getAttribute("value"))!);
+  await page.getByRole("button", { name: "Book", exact: true }).click();
+  await expect(page.getByText("Booked in.")).toBeVisible();
+  const history = page.locator("section", { has: page.getByRole("heading", { name: "history" }) });
+  await expect(history.locator(".list-row").first()).toContainText("Drop-in, unpaid");
+  // No pack yet: nothing to count it in.
+  await expect(history.getByText("Count in a pack")).toHaveCount(0);
+
+  await page.goto(profile);
+  await page.getByText("Sell a pack").click();
+  await pickPack(page, "10-class pack");
+  const from = new Date(Date.now() - 9 * 86_400_000).toISOString().slice(0, 10);
+  await page.getByLabel("Valid from").fill(from);
+  await page.getByRole("button", { name: "Sell and record payment" }).click();
+  await expect(page.getByText(/10 of 10 credits/)).toBeVisible();
+
+  await history.getByText("Count in a pack").click();
+  await history.getByRole("button", { name: "Use a credit from their pack" }).click();
+  await expect(page.getByText("Counted in their pack.")).toBeVisible();
+  await expect(history.locator(".list-row").first()).toContainText("1 credit · 10-class pack");
+});
+
+test("change #55: instructors don't see Count in a pack", async ({ page }) => {
+  await staffLogin(page, "instructor@village.test");
+  await page.goto("/staff/customers");
+  await page.locator("a[href^='/staff/customers/']").first().click();
+  await expect(page.getByText("Count in a pack")).toHaveCount(0);
+});
+
 test("change #43: instructors don't see finished classes to book into", async ({ page }) => {
   await staffLogin(page, "instructor@village.test");
   await page.goto("/staff/book");
