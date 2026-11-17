@@ -49,10 +49,15 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             </div>
           </div>
           <div className="hero-pic">
+            {/* Jack, 17 Nov (change #54): a class in action, so people see straight away what happens here,
+                and the front door in a round picture, so they know the place. */}
             <div className="arch">
-              {/* Opening photos (Jack, 17 Nov; change #53): the front door until the door video comes. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="arch-photo" src="/photos/front-door.webp" alt={t("photos.door")} width={758} height={1400} />
+              <img className="arch-photo" src="/photos/class-in-action.webp" alt={t("photos.classAction")} width={1600} height={1056} />
+            </div>
+            <div className="door-inset">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/photos/front-door.webp" alt={t("photos.door")} width={910} height={1400} />
             </div>
             <div className="blob" />
           </div>
