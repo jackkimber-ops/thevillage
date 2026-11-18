@@ -5,6 +5,7 @@ import { renderDailySummary, renderInstructorMoved, renderLowSignups, renderStaf
 import type { EmailData, EmailKind } from "@/emails/types";
 import type { SessionKind, StudioSettings } from "@/lib/data/types";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { markTest } from "@/lib/test-email";
 
 // Sends queued customer emails. Called every minute by pg_cron (see the notifications migration)
 // with "Authorization: Bearer <CRON_SECRET>". Safe to run twice: rows are claimed with SKIP LOCKED.
@@ -43,6 +44,9 @@ export async function POST(request: Request) {
   const { data, error } = await db.rpc("claim_notifications", { p_limit: 25 });
   if (error) return Response.json({ error: error.message }, { status: 500 });
   const resend = new Resend(key);
+  // Anywhere but the live site, every email is marked as a test ([TEST] subject and a banner).
+  type Mail = { from: string; to: string; replyTo?: string; subject: string; html: string; text: string };
+  const mail = { send: (m: Mail, o?: { idempotencyKey: string }) => resend.emails.send(markTest(m), o) };
   let sent = 0;
   let failed = 0;
 
@@ -68,7 +72,7 @@ export async function POST(request: Request) {
           })),
           staffUrl: staffUrlFor(appUrl),
         });
-        const res = await resend.emails.send({ from, to: alertTo, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
+        const res = await mail.send({ from, to: alertTo, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
         if (res.error) throw new Error(res.error.message);
         await db.rpc("finish_notification", { p_id: n.id, p_ok: true, p_provider_id: res.data?.id ?? null });
         sent++;
@@ -91,7 +95,7 @@ export async function POST(request: Request) {
           classes: ((n.payload?.classes ?? []) as Row[]).map((c) => ({ title: c.title, startsAt: c.starts_at, booked: Number(c.booked), instructor: c.instructor })),
           staffUrl: staffUrlFor(appUrl),
         });
-        const res = await resend.emails.send({ from, to, replyTo: settings.contactEmail, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
+        const res = await mail.send({ from, to, replyTo: settings.contactEmail, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
         if (res.error) throw new Error(res.error.message);
         await db.rpc("finish_notification", { p_id: n.id, p_ok: true, p_provider_id: res.data?.id ?? null });
         sent++;
@@ -108,7 +112,7 @@ export async function POST(request: Request) {
           name: n.staff_name ?? "", title: n.session_title, fromStartsAt: n.payload?.old_starts_at ?? n.starts_at, startsAt: n.starts_at,
           booked: Number(n.payload?.booked ?? 0), staffUrl: staffUrlFor(appUrl),
         });
-        const res = await resend.emails.send({ from, to: n.staff_email, replyTo: settings.contactEmail, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
+        const res = await mail.send({ from, to: n.staff_email, replyTo: settings.contactEmail, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
         if (res.error) throw new Error(res.error.message);
         await db.rpc("finish_notification", { p_id: n.id, p_ok: true, p_provider_id: res.data?.id ?? null });
         sent++;
@@ -127,7 +131,7 @@ export async function POST(request: Request) {
           packName: n.pack_name, freeTrial: n.free_trial, childNames: n.child_names ?? [], source: n.payload?.source ?? null,
           by: n.payload?.by ?? null, creditBack: Boolean(n.payload?.credit_back), reason: n.payload?.reason ?? null, staffUrl: staffUrlFor(appUrl),
         });
-        const res = await resend.emails.send({ from, to: alertTo, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
+        const res = await mail.send({ from, to: alertTo, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
         if (res.error) throw new Error(res.error.message);
         await db.rpc("finish_notification", { p_id: n.id, p_ok: true, p_provider_id: res.data?.id ?? null });
         sent++;
@@ -146,7 +150,7 @@ export async function POST(request: Request) {
     };
     try {
       const email = await renderEmail(d);
-      const res = await resend.emails.send(
+      const res = await mail.send(
         { from, to: n.email!, replyTo: settings.contactEmail, subject: email.subject, html: email.html, text: email.text },
         { idempotencyKey: `notification-${n.id}` },
       );
