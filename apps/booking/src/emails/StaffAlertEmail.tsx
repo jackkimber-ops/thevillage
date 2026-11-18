@@ -163,7 +163,7 @@ function lowLines(l: LowSignups) {
   const n = l.classes.length;
   return {
     subject: `${n === 1 ? "1 class" : `${n} classes`} tomorrow below ${l.min} booked: ${day}`,
-    heading: `hi ${l.name.split(" ")[0].toLowerCase()}, ${n === 1 ? "a class tomorrow is" : "classes tomorrow are"} below the minimum`,
+    heading: `hi ${l.name.split(" ")[0].toLowerCase() || "team"}, ${n === 1 ? "a class tomorrow is" : "classes tomorrow are"} below the minimum`,
     intro: `${day}. The minimum is ${l.min} booked.`,
     rows: l.classes.map((c) => `${formatTime(c.startsAt, "en")} · ${c.title}${c.instructor ? ` (${c.instructor})` : ""} · ${c.booked === 0 ? "nobody booked" : `${c.booked} booked`}`),
     ask: "Nothing has been cancelled. If you decide to cancel, open the session in the staff app and use Cancel session for everyone: everyone booked gets an email. Customers can cancel themselves until the cut-off this evening.",

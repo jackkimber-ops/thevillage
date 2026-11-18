@@ -250,7 +250,13 @@ test("change #55: a class from last week counts in a pack bought afterwards (Dak
   const profile = page.url();
   await page.getByRole("link", { name: "Book in", exact: true }).click();
   const session = page.getByLabel("Session");
-  await session.selectOption((await session.locator("optgroup option", { hasText: /Pilates Flow/ }).first().getAttribute("value"))!);
+  // A class from an earlier day: a pack sold on the same day counts today's class by itself (change #40), which is
+  // right but not what this test is about, and which classes have finished today depends on the time of day.
+  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Ho_Chi_Minh", weekday: "short", day: "numeric", month: "short" }).formatToParts(new Date());
+  const get = (t: string) => parts.find((x) => x.type === t)!.value;
+  const todayLabel = new RegExp(`^\\s*${get("weekday")}\\s+${get("day")}\\s+${get("month")}\\b`);
+  const earlier = session.locator("optgroup option", { hasText: /Pilates Flow/ }).filter({ hasNotText: todayLabel });
+  await session.selectOption((await earlier.first().getAttribute("value"))!);
   await page.getByRole("button", { name: "Book", exact: true }).click();
   await expect(page.getByText("Booked in.")).toBeVisible();
   const history = page.locator("section", { has: page.getByRole("heading", { name: "history" }) });

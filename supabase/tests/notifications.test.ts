@@ -224,7 +224,7 @@ describe("email outbox", () => {
 });
 
 describe("minimum sign-ups (change #44)", () => {
-  it("at 19:00 the evening before, managers and the instructor get tomorrow's classes below the minimum; nothing is cancelled", () =>
+  it("at 19:00 the evening before, the studio (managers, one shared email) and the instructor get tomorrow's classes below the minimum; nothing is cancelled", () =>
     inTx(async (db) => {
       const manager = await db.staff("manager");
       const teacher = await db.staff("instructor");
@@ -244,8 +244,11 @@ describe("minimum sign-ups (change #44)", () => {
       await db.su("select public.queue_low_signup_alerts()"); // twice: still one email each
       const sent = async (who: string) =>
         (await db.su("select payload from public.notifications where kind = 'low_signups' and staff_user_id = $1", [who]));
-      const mine = await sent(manager.id);
+      // Change #59: no personal copy for managers: one shared email for the studio address (no staff member on it).
+      expect(await sent(manager.id)).toEqual([]);
+      const mine = await db.su("select payload from public.notifications where kind = 'low_signups' and staff_user_id is null");
       expect(mine).toHaveLength(1);
+      expect(mine[0].payload.studio).toBe(true);
       const titles = mine[0].payload.classes.map((c: { title: string }) => c.title);
       expect(titles).toContain("Quiet Class");
       expect(titles).not.toContain("Busy Class");
@@ -256,9 +259,10 @@ describe("minimum sign-ups (change #44)", () => {
       const [{ status }] = await db.su("select status from public.sessions where id = $1", [quiet]);
       expect(status).toBe("scheduled");
       // The sender gets the staff member's address.
-      const rows = await db.su("select staff_email from public.claim_notifications(100) where kind = 'low_signups'");
+      const rows = await db.su("select staff_email, payload from public.claim_notifications(100) where kind = 'low_signups'");
       expect(rows.length).toBeGreaterThanOrEqual(2);
-      expect(rows.every((r) => r.staff_email)).toBe(true);
+      expect(rows.filter((r) => r.payload.studio)).toHaveLength(1);
+      expect(rows.filter((r) => !r.payload.studio).every((r) => r.staff_email)).toBe(true);
     }));
 
   it("0 turns it off; managers change it in Settings", () =>
