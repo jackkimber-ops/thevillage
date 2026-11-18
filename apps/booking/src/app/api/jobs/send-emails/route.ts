@@ -17,7 +17,7 @@ function authorised(request: Request) {
 
 type Claimed = {
   id: number; kind: EmailKind | "staff_alert" | "instructor_session_moved" | "low_signups" | "daily_summary";
-  payload: { old_starts_at?: string; reason?: string; late?: boolean; credit_back?: boolean; first?: boolean; booked?: number; day?: string; min?: number; classes?: unknown[]; activity?: unknown[]; tomorrow?: unknown[]; event?: string; source?: string; by?: string | null };
+  payload: { old_starts_at?: string; reason?: string; late?: boolean; credit_back?: boolean; first?: boolean; booked?: number; day?: string; min?: number; classes?: unknown[]; studio?: boolean; activity?: unknown[]; tomorrow?: unknown[]; event?: string; source?: string; by?: string | null };
   staff_email: string | null; staff_name: string | null;
   email: string | null; language: "en" | "vi"; full_name: string; phone: string | null; preferred_contact: "whatsapp" | "zalo" | "call";
   first_name: string; session_title: string; session_kind: SessionKind; starts_at: string; ends_at: string; child_names: string[];
@@ -79,16 +79,19 @@ export async function POST(request: Request) {
       continue;
     }
     if (n.kind === "low_signups") {
-      // Change #44: tomorrow's classes below the minimum, to a manager or the class's instructor.
+      // Change #44: tomorrow's classes below the minimum, to the class's instructor, and (change #59) to the
+      // studio address for the managers: that copy has no staff member, so it goes to hello@ and says "team".
       try {
-        if (!n.staff_email) throw new Error("no staff email");
+        const studio = n.payload?.studio === true;
+        const to = studio ? alertTo : n.staff_email;
+        if (!to) throw new Error("no staff email");
         type Row = { title: string; starts_at: string; booked: number; instructor: string | null };
         const email = await renderLowSignups({
-          name: n.staff_name ?? "", day: String(n.payload?.day ?? ""), min: Number(n.payload?.min ?? 0),
+          name: studio ? "" : n.staff_name ?? "", day: String(n.payload?.day ?? ""), min: Number(n.payload?.min ?? 0),
           classes: ((n.payload?.classes ?? []) as Row[]).map((c) => ({ title: c.title, startsAt: c.starts_at, booked: Number(c.booked), instructor: c.instructor })),
           staffUrl: staffUrlFor(appUrl),
         });
-        const res = await resend.emails.send({ from, to: n.staff_email, replyTo: settings.contactEmail, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
+        const res = await resend.emails.send({ from, to, replyTo: settings.contactEmail, subject: email.subject, html: email.html, text: email.text }, { idempotencyKey: `notification-${n.id}` });
         if (res.error) throw new Error(res.error.message);
         await db.rpc("finish_notification", { p_id: n.id, p_ok: true, p_provider_id: res.data?.id ?? null });
         sent++;
