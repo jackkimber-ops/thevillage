@@ -4,7 +4,7 @@ import { Notice } from "@/components/staff/Notice";
 import { EditCustomerForm } from "@/components/staff/EditCustomerForm";
 import { SellPackForm } from "@/components/staff/SellPackForm";
 import { data, staffApi } from "@/lib/data";
-import { addPackFromBeforeAction, adjustCreditsAction, countInPackAction, extendPackAction, recordPaymentAction, removeChildAction, restoreCreditAction, saveChildAction, setCustomerActiveAction, staffCancelBookingAction } from "@/lib/actions/staff";
+import { addPackFromBeforeAction, adjustCreditsAction, countInPackAction, extendPackAction, recordPackPaymentAction, recordPaymentAction, removeChildAction, restoreCreditAction, saveChildAction, setCustomerActiveAction, staffCancelBookingAction } from "@/lib/actions/staff";
 import { WAY_LABEL } from "@/lib/contact-ways";
 import { formatVnd } from "@/lib/money";
 import { requireStaff } from "@/lib/staff-guard";
@@ -65,7 +65,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
   const history = c.bookings.filter((b) => !upcoming.includes(b)).slice(0, 15);
   const canCount = (b: Booking) => me.role === "manager" && !b.packId && !b.freeTrial && ["booked", "attended"].includes(b.status)
     && vnDateKey(b.startsAt) >= addDays(today, -30) && c.packs.some((p) => p.remaining > 0);
-  const ok = sp.counted ? "Counted in their pack." : sp.added ? "Customer added." : sp.sold ? soldMessage(c, String(sp.sold)) : sp.prior ? soldMessage(c, String(sp.prior), "Pack added, no payment recorded") : sp.extended ? "Pack extended." : sp.adjusted ? `Credits adjusted: ${sp.adjusted} left on the pack.` : sp.booked ? "Booked in." : sp.updated ? "Details saved." : sp.child ? "Child saved." : sp.child_removed ? "Child removed."
+  const ok = sp.packpaid ? `Payment recorded: ${formatVnd(Number(sp.packpaid), "en")}.` : sp.counted ? "Counted in their pack." : sp.added ? "Customer added." : sp.sold ? soldMessage(c, String(sp.sold)) : sp.prior ? soldMessage(c, String(sp.prior), "Pack added, no payment recorded") : sp.extended ? "Pack extended." : sp.adjusted ? `Credits adjusted: ${sp.adjusted} left on the pack.` : sp.booked ? "Booked in." : sp.updated ? "Details saved." : sp.child ? "Child saved." : sp.child_removed ? "Child removed."
     : sp.deactivated ? "Customer deactivated: they can't be booked in until reactivated." : sp.reactivated ? "Customer reactivated." : null;
   const monthYear = (d: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", month: "short", year: "numeric" }).format(new Date(`${d}T00:00:00Z`));
 
@@ -98,7 +98,7 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
             {c.packs.length === 0 && <p className="muted" style={{ marginTop: 0 }}>No packs.</p>}
             {c.packs.map((p) => (
               <div key={p.id} className="list-row">
-                <span><strong>{p.name}</strong><br /><span className="muted small">{p.lastDay < today ? "Expired" : "Expires"} {formatDayShort(p.lastDay, "en")} {p.lastDay.slice(0, 4)}</span></span>
+                <span><strong>{p.name}</strong><br /><span className="muted small">{p.lastDay < today ? "Expired" : "Expires"} {formatDayShort(p.lastDay, "en")} {p.lastDay.slice(0, 4)}{me.role === "manager" && p.paidVnd > 0 ? ` · Paid ${formatVnd(p.paidVnd, "en")}` : ""}</span></span>
                 <span><strong style={{ fontSize: 20 }}>{p.remaining}</strong> <span className="small">of {p.credits} left</span></span>
                 {p.extensions.length > 0 && (
                   <div className="muted small" style={{ flexBasis: "100%" }}>
@@ -119,6 +119,21 @@ export default async function CustomerPage({ params, searchParams }: PageProps<"
                       </label>
                       <input name="reason" placeholder="Reason" required className="small-input" aria-label="Reason for extending" />
                       <button className="sbtn sbtn-sm" type="submit">Extend pack</button>
+                    </form>
+                  </details>
+                )}
+                {me.role === "manager" && (
+                  <details className="extend-pack">
+                    <summary className="sbtn2 sbtn-sm">Record payment</summary>
+                    <form action={recordPackPaymentAction} className="staff-actions">
+                      <input type="hidden" name="packId" value={p.id} />
+                      <input type="hidden" name="back" value={back} />
+                      <input name="amount" required inputMode="numeric" placeholder="Amount, e.g. 750k" className="small-input" aria-label={`Payment amount for ${p.name}`} />
+                      <select name="method" aria-label={`Payment method for ${p.name}`} className="small-select">
+                        <option value="qr">QR</option><option value="transfer">Transfer</option><option value="cash">Cash</option>
+                      </select>
+                      <input name="note" placeholder="Note (optional)" className="small-input" aria-label="Payment note" />
+                      <button className="sbtn sbtn-sm" type="submit">Record payment</button>
                     </form>
                   </details>
                 )}

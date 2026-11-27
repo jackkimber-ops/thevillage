@@ -497,3 +497,34 @@ describe("add a pack bought before the app (change #57)", () => {
     }));
 });
 
+describe("record a payment against a pack (change #62)", () => {
+  it("a manager records a payment on a pack given without one; part payments add up; money report row; instructors can't", () =>
+    inTx(async (db) => {
+      const manager = await db.staff("manager");
+      const instructor = await db.staff("instructor", { access: "all_customers" });
+      const c = await db.customer();
+      const [{ d }] = await db.su("select public.vn_date(now())::text d");
+      // An intro pack given first, the money to come (as "add a pack bought before the app" does: nothing recorded).
+      const [{ add_pack_from_before: pack }] = await db.as(manager, "select public.add_pack_from_before($1, $2, $3::date, 3)", [c.customerId, PACKS.intro, d]);
+      expect(await db.su("select amount_vnd from public.payments where customer_id = $1", [c.customerId])).toEqual([]);
+
+      await db.as(manager, "select public.record_pack_payment($1, 500000, 'qr', 'First part')", [pack]);
+      await db.as(manager, "select public.record_pack_payment($1, 250000, 'cash')", [pack]);
+      const rows = await db.su("select amount_vnd::int a, method::text m, paid_for::text f, customer_pack_id = $2 on_pack, note from public.payments where customer_id = $1 order by recorded_at, amount_vnd desc", [c.customerId, pack]);
+      expect(rows).toEqual([
+        { a: 500000, m: "qr", f: "pack", on_pack: true, note: "First part" },
+        { a: 250000, m: "cash", f: "pack", on_pack: true, note: null },
+      ]);
+      const [p] = await db.su("select price_paid_vnd::int paid from public.customer_packs where id = $1", [pack]);
+      expect(p.paid).toBe(750000);
+      const [a] = await db.su("select count(*)::int n from public.audit_log where action = 'record_payment' and (after ->> 'customer_pack_id') = $1", [pack]);
+      expect(a.n).toBe(2);
+
+      expect(await db.fails(instructor, "select public.record_pack_payment($1, 1000, 'qr')", [pack])).toBe("managers_only");
+      expect(await db.fails(manager, "select public.record_pack_payment($1, 0, 'qr')", [pack])).toBe("invalid_amount");
+      expect(await db.fails(manager, "select public.record_pack_payment($1, -5, 'qr')", [pack])).toBe("invalid_amount");
+      expect(await db.fails(manager, "select public.record_pack_payment($1, 1000, 'qr')", ["00000000-0000-4000-8000-00000000dead"])).toBe("pack_not_found");
+      expect(await db.su("select count(*)::int n from public.payments where customer_id = $1", [c.customerId])).toEqual([{ n: 2 }]);
+    }));
+});
+

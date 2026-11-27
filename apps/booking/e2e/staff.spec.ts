@@ -548,6 +548,7 @@ test("instructors don't see Extend", async ({ page }) => {
   await page.goto("/staff/customers");
   await expect(page.getByText("Extend", { exact: true })).toHaveCount(0);  await expect(page.getByText("Adjust credits")).toHaveCount(0);
   await expect(page.getByText("Add a pack bought before the app")).toHaveCount(0);
+  await expect(page.getByText("Record payment", { exact: true })).toHaveCount(0);
 });
 
 test("book someone in: 'name, email' still finds the customer, and the greyed Book says why", async ({ page }) => {
@@ -705,6 +706,43 @@ test("change #57: add a pack bought before the app: no payment, credits left, th
   await expect(page.getByText("Used before the app")).toBeVisible();
   const row = page.locator("section", { has: page.getByRole("heading", { name: "upcoming bookings" }) }).locator(".list-row").first();
   await expect(row).toContainText("1 credit · 10-class pack");
+});
+
+test("change #62: record the payment on a pack that was given first (Dakota's 750,000), in parts if needed", async ({ page }) => {
+  await staffLogin(page, "manager@village.test");
+  await page.goto("/staff/customers/new");
+  await page.getByLabel("Name", { exact: true }).fill(`Pay Later ${uid()}`);
+  await page.getByLabel("Mobile number").fill(`09${uid().slice(-8)}`);
+  await page.getByRole("button", { name: "Save customer" }).click();
+  await expect(page.getByText("Customer added.")).toBeVisible();
+  // The pack is given with no payment (as for a pack bought before the app).
+  await page.getByText("Add a pack bought before the app").click();
+  await page.getByLabel("Pack they bought").selectOption({ label: "Intro pack · 3 classes (3 classes)" });
+  await page.getByLabel(/Valid from \(the day it started\)/).fill(new Date().toISOString().slice(0, 10));
+  await page.getByLabel("Credits left").fill("3");
+  await page.getByRole("button", { name: "Add pack (no payment)" }).click();
+  await expect(page.getByText(/Pack added, no payment recorded/)).toBeVisible();
+  await expect(page.getByText(/ · Paid /)).toHaveCount(0);
+
+  const pack = page.locator(".list-row", { hasText: "Intro pack" }).first();
+  await pack.locator("summary", { hasText: "Record payment" }).click();
+  await pack.getByLabel(/Payment amount/).fill("500k");
+  await pack.getByLabel(/Payment method/).selectOption("qr");
+  await pack.getByRole("button", { name: "Record payment" }).click();
+  await expect(page.getByText("Payment recorded: 500,000 ₫.")).toBeVisible();
+  await expect(page.getByText(/ · Paid 500,000 ₫/)).toBeVisible();
+
+  await pack.locator("summary", { hasText: "Record payment" }).click();
+  await pack.getByLabel(/Payment amount/).fill("250,000");
+  await pack.getByLabel(/Payment method/).selectOption("cash");
+  await pack.getByRole("button", { name: "Record payment" }).click();
+  await expect(page.getByText(/ · Paid 750,000 ₫/)).toBeVisible();
+
+  // Nothing or nonsense is refused.
+  await pack.locator("summary", { hasText: "Record payment" }).click();
+  await pack.getByLabel(/Payment amount/).fill("abc");
+  await pack.getByRole("button", { name: "Record payment" }).click();
+  await expect(page.getByText(/Enter the amount in VND/)).toBeVisible();
 });
 
 test("a one-class drop-in: Book in from the profile, then record a payment made before the day (change #14)", async ({ page }) => {
