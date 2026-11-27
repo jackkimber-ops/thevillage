@@ -11,6 +11,16 @@
 - 21 Oct: **visual style v1**: a style sheet plus 5 key screens in the brand (login, timetable, confirm a class, staff dashboard, website top), as a new row at the bottom of the preview canvas.
 - 21 Oct: owners approved the visual style ("design looks good"). **Designs v2:** brand style applied to all 29 screens.
 
+## Update (27 Nov): December timetable
+
+- **December is loaded** (change #60, `supabase/data/20261127-december-schedule.sql`), from the owners' schedule graphic: **Tue 1 Dec to Thu 31 Dec**, 55 sessions with 10 places each.
+  - Mon & Fri: Core & Cuddle 9:00, Open Play 10:00. Tue: Little Yogi & Me 9:00, Open Play 10:00. Wed: Open Play 9:00–12:00. Thu: Bump & Breathe 9:00, Open Play 10:00.
+  - **Sat: Music & Movement (baby, 0–3) 8:30–10:30, then Core & Cuddle 10:30. Sun: Wiggle & Wonder (toddler, 18 months–3) 8:30–10:30, then Little Yogi & Me 10:30.** There is no Open Play on Saturdays or Sundays any more.
+  - Phuong is the instructor on every Core & Cuddle; the other classes have none yet.
+- **Closed Christmas Day (Fri 25 Dec) and New Year's Day (Fri 1 Jan 2027)** as two closures: customers see "Studio closed" on those days and no session can be added. Packs are not extended for them (a manager can extend from a customer's page if the owners want).
+- **New class type: Music & Movement** (2 hours, 450,000 drop-in, covered by the 10-class, 20-class and intro packs). Its description and badge picture are still needed from the owners; until then it shows the house badge and no description. The ages from the graphic show under "Who it's for" for Music & Movement and Wiggle & Wonder (Vietnamese is my draft).
+- **Not done:** the website's "Classes" card still lists "Core & Cuddle, Little Yogi & Me, Breathe & Unwind, Bump & Breathe and Wiggle & Wonder" (no Music & Movement; Breathe & Unwind isn't on the December timetable). Nothing is loaded from 2 January.
+
 ## Update (14–17 Nov): first days open, studio emails, photos, manager credit tools
 
 All merged to `main` and live; staging matches `main`. Live checks after the last merge: booking health OK (database OK), website and new photos served.
@@ -362,7 +372,8 @@ All merged to `main` and live; staging matches `main`.
 - 25 Oct: **designs signed off.** Build plan in `docs/build-plan.md`.
 
 ## Waiting on the owners
-- **December timetable (most urgent):** nothing is loaded from 1 Dec, and from 16 Nov customers see early December empty (1-month booking window). "Same as November" is enough for Claude to load it, or managers add it (Calendar, "Every week").
+- **January timetable:** December is loaded to Thu 31 Dec. Nothing is loaded from 2 Jan, so customers will see the end of December empty from about 2 Dec onwards (1-month booking window). Send the January schedule (and the closure days, e.g. Tết around 6–10 Feb 2027) before then.
+- **Music & Movement:** its description, Vietnamese text and badge picture; and whether the website's Classes card should list it.
 - **Instructors:** names, emails and who teaches what (Phuong teaches Core & Cuddle; 8 of the 15 classes to 30 Nov have no instructor). Jack is sending them. Jack adds them on the Staff page, or sends them to Claude.
 - **Access matrix decisions** (six, on the page above), then the staff role is built and Dung moved onto it.
 - **Before opening:** everyone on the live staff app (not the test link); hello@ on the managers' phones; change the password shown in the team WhatsApp group's pinned message; one test run on the live site.
