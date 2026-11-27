@@ -13,6 +13,8 @@
 
 ## Update (27 Nov): December timetable
 
+- **Dakota's pack corrected on production** (Jack's approval): she bought the Intro pack (3 classes), not a 10-class pack, and hasn't paid yet. The Intro pack runs from her first class (Mon 16 Nov) to Tue 15 Dec with 1 credit left (Mon 16 Nov and Fri 27 Nov counted; Fri 20 Nov not counted). The 10-class pack stays on file at 0 credits, expired (credit records can't be deleted). The wrong 4,000,000 payment was removed; audit entries `remove_payment`, `correct_pack`, `add_pack_from_before`. **750,000 is still to come** (record it with Record payment on her Intro pack, change #62). Her trial pack expires 15 Dec, before she's back in January: extend it then.
+- **Record payment on a pack** (change #62, `record_pack_payment`), so a pack can be given first and paid for later.
 - **December is loaded** (change #60, `supabase/data/20261127-december-schedule.sql`), from the owners' schedule graphic: **Tue 1 Dec to Thu 31 Dec**, 55 sessions with 10 places each.
   - Mon & Fri: Core & Cuddle 9:00, Open Play 10:00. Tue: Little Yogi & Me 9:00, Open Play 10:00. Wed: Open Play 9:00–12:00. Thu: Bump & Breathe 9:00, Open Play 10:00.
   - **Sat: Music & Movement (baby, 0–3) 8:30–10:30, then Core & Cuddle 10:30. Sun: Wiggle & Wonder (toddler, 18 months–3) 8:30–10:30, then Little Yogi & Me 10:30.** There is no Open Play on Saturdays or Sundays any more.

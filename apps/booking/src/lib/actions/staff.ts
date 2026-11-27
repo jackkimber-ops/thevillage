@@ -203,6 +203,21 @@ export async function recordPaymentAction(form: FormData) {
   revalidatePath(back(form, "/staff"));
 }
 
+// Change #62: a payment recorded against a pack after it was given or added.
+export async function recordPackPaymentAction(form: FormData) {
+  const amount = parseVnd(str(form, "amount")); // "750k", "750,000"
+  if (amount === null) redirect(`${back(form, "/staff")}?error=invalid_amount`);
+  try {
+    await staffApi().recordPackPayment({
+      customerPackId: str(form, "packId"), amountVnd: amount, method: str(form, "method") as "qr", note: str(form, "note") || null,
+    });
+  } catch (e) {
+    redirect(`${back(form, "/staff")}?error=${code(e)}`);
+  }
+  revalidatePath(back(form, "/staff"));
+  redirect(`${back(form, "/staff")}?packpaid=${amount}`);
+}
+
 // S22: change a customer's details (email is their login: a new one moves the login to that address).
 export async function updateCustomerAction(_: StaffFormState, form: FormData): Promise<StaffFormState> {
   const id = str(form, "customerId");

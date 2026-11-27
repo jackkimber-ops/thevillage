@@ -165,6 +165,8 @@ export interface CustomerProfile extends Omit<CustomerHit, "creditsLeft"> {
   children: Array<{ id: string; name: string; birthMonth: string | null }>;
   packs: Array<{
     id: string; name: string; credits: number; remaining: number; validFrom: string; lastDay: string;
+    /** Pack payments recorded for it, in VND (managers only; 0 for others and for packs added as bought before the app). */
+    paidVnd: number;
     /** Each time a manager moved the end date (from the audit log; managers only). */
     extensions: Array<{ at: string; from: string; to: string; reason: string; by: string | null }>;
   }>;
@@ -261,6 +263,8 @@ export interface StaffApi {
   sellPack(d: { customerId: string; packTypeId: string; method: "qr" | "transfer" | "cash"; validFrom: string | null; countPaidDropIns?: boolean }): Promise<string>;
   /** Managers: today's drop-ins already paid for, which a pack sold now could count instead. */
   paidDropInsToday(customerId: string): Promise<PaidDropIn[]>;
+  /** Managers: record a payment against a pack that was given or added without one (change #62). */
+  recordPackPayment(d: { customerPackId: string; amountVnd: number; method: "qr" | "transfer" | "cash"; note: string | null }): Promise<void>;
   recordPayment(d: { customerId: string | null; amountVnd: number; method: "qr" | "transfer" | "cash"; paidFor: "drop_in" | "private_hire" | "workshop" | "other"; bookingId: string | null; sessionId?: string | null; note: string | null }): Promise<void>;
   /** A private hire's agreed price and the payments recorded against it. Managers only. */
   hirePayments(sessionId: string): Promise<{ agreedVnd: number | null; payments: Array<{ amountVnd: number; method: "qr" | "transfer" | "cash"; note: string | null; recordedAt: string }> }>;

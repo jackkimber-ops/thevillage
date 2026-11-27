@@ -333,14 +333,17 @@ export const supabaseStaff: StaffApi = {
       .eq("id", id)
       .maybeSingle();
     if (!c) return null;
-    const [{ data: packs }, { data: ledger }, { data: bookings }] = await Promise.all([
+    const [{ data: packs }, { data: ledger }, { data: bookings }, { data: packPayments }] = await Promise.all([
       supabase.from("customer_packs").select("id, name, credits, valid_from, valid_to, paused_days").eq("customer_id", id).order("valid_to"),
       supabase.from("credit_ledger").select("customer_pack_id, kind, amount, reason, created_at").eq("customer_id", id).order("id", { ascending: false }),
       supabase.from("bookings")
         .select("id, status, unpaid, paid_at, amount_due_vnd, credits, free_trial, customer_pack_id, sessions(id, title, starts_at), booking_children(customer_children(name))")
         .eq("customer_id", id),
+      // Only managers can read payments: everyone else gets none (RLS), so no amounts leak.
+      supabase.from("payments").select("customer_pack_id, amount_vnd").eq("customer_id", id).eq("paid_for", "pack"),
     ]);
     const bal = balances(ledger ?? []);
+    const paidOn = (packId: string) => (packPayments ?? []).filter((x) => x.customer_pack_id === packId).reduce((n, x) => n + Number(x.amount_vnd), 0);
     // Pack extensions from the audit log (only managers can read it; others just see none).
     const packIds = (packs ?? []).map((p) => p.id);
     const { data: ext } = packIds.length
@@ -361,7 +364,7 @@ export const supabaseStaff: StaffApi = {
         const last = new Date(`${p.valid_to}T00:00:00Z`);
         last.setUTCDate(last.getUTCDate() + p.paused_days);
         return {
-          id: p.id, name: p.name, credits: added(ledger ?? [], p.id), remaining: bal[p.id] ?? 0, validFrom: p.valid_from, lastDay: last.toISOString().slice(0, 10),
+          id: p.id, name: p.name, credits: added(ledger ?? [], p.id), remaining: bal[p.id] ?? 0, paidVnd: paidOn(p.id), validFrom: p.valid_from, lastDay: last.toISOString().slice(0, 10),
           extensions: (ext ?? []).filter((e) => e.entity_id === p.id).map((e) => ({
             at: e.created_at, from: e.before?.valid_to, to: e.after?.valid_to, reason: e.after?.reason ?? "", by: nameOf(e.actor),
           })),
@@ -409,6 +412,12 @@ export const supabaseStaff: StaffApi = {
       bookingId: r.booking_id as string, title: r.title as string, startsAt: r.starts_at as string,
       sessionTypeId: r.session_type_id as string, amountVnd: Number(r.amount_vnd),
     }));
+  },
+  async recordPackPayment(d) {
+    const { error } = await (await createClient()).rpc("record_pack_payment", {
+      p_customer_pack_id: d.customerPackId, p_amount_vnd: d.amountVnd, p_method: d.method, p_note: d.note,
+    });
+    check(error);
   },
   async recordPayment(d) {
     const { error } = await (await createClient()).rpc("record_payment", {

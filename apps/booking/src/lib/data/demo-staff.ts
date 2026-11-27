@@ -42,6 +42,7 @@ function overlaps(start: Date, end: Date, ignore?: string) {
   return store.sessions.find((s) => s.status !== "cancelled" && s.id !== ignore && new Date(s.startsAt) < end && new Date(s.endsAt) > start);
 }
 
+const demoPackPaid: Record<string, number> = {};
 const demoExtensions: Record<string, Array<{ at: string; from: string; to: string; reason: string; by: string | null }>> = {};
 const demoHirePrices: Record<string, number> = {};
 /** Credits left on a demo customer's packs that haven't ended. */
@@ -398,7 +399,7 @@ export const demoStaff: StaffApi = {
     return {
       customerId: c.id, fullName: c.fullName, phone: c.phone, email: c.email, preferredContact: c.preferredContact,
       language: c.language ?? "en", deactivated: Boolean(c.deactivated), needsReview: false, createdAt: c.createdAt, children: c.children,
-      packs: c.packs.map((p) => ({ id: p.id, name: p.name, credits: p.credits, remaining: p.remaining, validFrom: p.validFrom, lastDay: p.lastDay, extensions: demoExtensions[p.id] ?? [] })),
+      packs: c.packs.map((p) => ({ id: p.id, name: p.name, credits: p.credits, remaining: p.remaining, validFrom: p.validFrom, lastDay: p.lastDay, paidVnd: demoPackPaid[p.id] ?? 0, extensions: demoExtensions[p.id] ?? [] })),
       bookings: store.bookings.filter((b) => b.customerId === id).map((b) => {
         const s = store.sessions.find((x) => x.id === b.sessionId)!;
         return { id: b.id, sessionId: s.id, title: s.title, startsAt: s.startsAt, status: b.status, unpaid: b.unpaid, paid: b.paid,
@@ -442,6 +443,7 @@ export const demoStaff: StaffApi = {
     const id = addPack(c, t, d.validFrom ?? today);
     logMoney(by, { amountVnd: Math.max(t.priceVnd - less, 0), method: d.method, paidFor: "pack", customerName: c.fullName, note: less ? "Less drop-in paid today" : null, what: t.name });
     const pack = c.packs.find((p) => p.id === id)!;
+    demoPackPaid[id] = Math.max(t.priceVnd - less, 0);
     for (const x of paid) {
       Object.assign(store.bookings.find((b) => b.id === x.bookingId)!, { unpaid: false, amountDueVnd: 0, packId: id, credits: 1 });
       pack.remaining -= 1;
@@ -467,6 +469,15 @@ export const demoStaff: StaffApi = {
       .map((b) => ({ b, s: store.sessions.find((x) => x.id === b.sessionId)! }))
       .filter(({ s }) => vnDateKey(s.startsAt) === today && kindOf(s) === "class")
       .map(({ b, s }) => ({ bookingId: b.id, title: s.title, startsAt: s.startsAt, sessionTypeId: s.sessionTypeId, amountVnd: b.amountDueVnd }));
+  },
+  async recordPackPayment(d) {
+    const by = await requireManager();
+    if (!Number.isInteger(d.amountVnd) || d.amountVnd <= 0) throw new ActionError("invalid_amount");
+    const c = [...store.customers.values()].find((x) => x.packs.some((p) => p.id === d.customerPackId));
+    const pack = c?.packs.find((p) => p.id === d.customerPackId);
+    if (!c || !pack) throw new ActionError("pack_not_found");
+    logMoney(by, { amountVnd: d.amountVnd, method: d.method, paidFor: "pack", customerName: c.fullName, note: d.note, what: pack.name });
+    demoPackPaid[pack.id] = (demoPackPaid[pack.id] ?? 0) + d.amountVnd;
   },
   async recordPayment(d) {
     const by = await requireManager();
