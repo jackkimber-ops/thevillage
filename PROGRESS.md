@@ -19,7 +19,9 @@
   - Phuong is the instructor on every Core & Cuddle; the other classes have none yet.
 - **Closed Christmas Day (Fri 25 Dec) and New Year's Day (Fri 1 Jan 2027)** as two closures: customers see "Studio closed" on those days and no session can be added. Packs are not extended for them (a manager can extend from a customer's page if the owners want).
 - **New class type: Music & Movement** (2 hours, 450,000 drop-in, covered by the 10-class, 20-class and intro packs). Its description and badge picture are still needed from the owners; until then it shows the house badge and no description. The ages from the graphic show under "Who it's for" for Music & Movement and Wiggle & Wonder (Vietnamese is my draft).
-- **Not done:** the website's "Classes" card still lists "Core & Cuddle, Little Yogi & Me, Breathe & Unwind, Bump & Breathe and Wiggle & Wonder" (no Music & Movement; Breathe & Unwind isn't on the December timetable). Nothing is loaded from 2 January.
+- **January 2027 is loaded the same way** (change #61, `supabase/data/20261127-january-and-music-movement.sql`): Sat 2 Jan to Sun 31 Jan, 56 sessions, New Year's Day closed. **Tết dates are still to come from the owners** (Settings, closures).
+- **Music & Movement** (2 hours, 450,000 drop-in or a credit, like Wiggle & Wonder) has a draft description in English and Vietnamese and **Breathe & Unwind's old badge**; Breathe & Unwind isn't on the timetable, so the website's Classes card now lists Music & Movement in its place. The owners can replace the wording any time.
+- Nothing is loaded from 1 February.
 
 ## Update (14–17 Nov): first days open, studio emails, photos, manager credit tools
 
@@ -372,8 +374,8 @@ All merged to `main` and live; staging matches `main`.
 - 25 Oct: **designs signed off.** Build plan in `docs/build-plan.md`.
 
 ## Waiting on the owners
-- **January timetable:** December is loaded to Thu 31 Dec. Nothing is loaded from 2 Jan, so customers will see the end of December empty from about 2 Dec onwards (1-month booking window). Send the January schedule (and the closure days, e.g. Tết around 6–10 Feb 2027) before then.
-- **Music & Movement:** its description, Vietnamese text and badge picture; and whether the website's Classes card should list it.
+- **Tết closure days** (Tết is around 6–10 Feb 2027) and the **February timetable**. December and January are loaded; nothing is loaded from 1 Feb, so customers see February empty from about 1 Jan (1-month booking window).
+- **Music & Movement:** the owners' own description and Vietnamese wording to replace my draft, and a badge picture of its own if they want one (it uses the old Breathe & Unwind badge).
 - **Instructors:** names, emails and who teaches what (Phuong teaches Core & Cuddle; 8 of the 15 classes to 30 Nov have no instructor). Jack is sending them. Jack adds them on the Staff page, or sends them to Claude.
 - **Access matrix decisions** (six, on the page above), then the staff role is built and Dung moved onto it.
 - **Before opening:** everyone on the live staff app (not the test link); hello@ on the managers' phones; change the password shown in the team WhatsApp group's pinned message; one test run on the live site.

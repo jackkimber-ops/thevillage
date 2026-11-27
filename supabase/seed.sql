@@ -49,7 +49,7 @@ insert into public.session_types (id, kind, name, description, colour, picture_u
    '[PLACEHOLDER: description to come]', '#F78666', '/brand/badges/wiggle-wonder.png', 60, 10, 450000),
   -- Timetable from 16 Nov (supabase/data/20261102-timetable-from-16nov.sql): no badges yet.
   ('00000000-0000-4000-8000-000000000007', 'class', 'Breathe & Unwind',
-   '[PLACEHOLDER: description to come]', '#C3BF94', '/brand/badges/breathe-unwind.png', 60, 10, 450000),
+   '[PLACEHOLDER: description to come]', '#C3BF94', null, 60, 10, 450000),
   ('00000000-0000-4000-8000-000000000008', 'class', 'Bump & Breathe',
    '[PLACEHOLDER: description to come]', '#FFBEA1', '/brand/badges/bump-breathe.png', 60, 10, 450000),
   -- 3 Nov (supabase/data/20261103-class-details-and-badges.sql has the owners' descriptions and taglines).
