@@ -372,7 +372,8 @@ All merged to `main` and live; staging matches `main`.
 - 25 Oct: **designs signed off.** Build plan in `docs/build-plan.md`.
 
 ## Waiting on the owners
-- **December timetable (most urgent):** nothing is loaded from 1 Dec, and from 16 Nov customers see early December empty (1-month booking window). "Same as November" is enough for Claude to load it, or managers add it (Calendar, "Every week").
+- **January timetable:** December is loaded to Thu 31 Dec. Nothing is loaded from 2 Jan, so customers will see the end of December empty from about 2 Dec onwards (1-month booking window). Send the January schedule (and the closure days, e.g. Tết around 6–10 Feb 2027) before then.
+- **Music & Movement:** its description, Vietnamese text and badge picture; and whether the website's Classes card should list it.
 - **Instructors:** names, emails and who teaches what (Phuong teaches Core & Cuddle; 8 of the 15 classes to 30 Nov have no instructor). Jack is sending them. Jack adds them on the Staff page, or sends them to Claude.
 - **Access matrix decisions** (six, on the page above), then the staff role is built and Dung moved onto it.
 - **Before opening:** everyone on the live staff app (not the test link); hello@ on the managers' phones; change the password shown in the team WhatsApp group's pinned message; one test run on the live site.
